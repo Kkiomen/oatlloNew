@@ -13,7 +13,7 @@ Alpine.start();
 
 
 
-const url = '/';
+const url = 'temp-dashboard.oatllo.pl/';
 const urlSegments = window.location.pathname.split('/');
 const pageId = urlSegments[2]; //
 
