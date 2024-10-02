@@ -15,10 +15,7 @@ Alpine.start();
 
 const url = '/';
 const urlSegments = window.location.pathname.split('/');
-const pageId = urlSegments[1]; //
-console.log(urlSegments);
-
-
+const pageId = urlSegments[2]; //
 
 import {
     ClassicEditor,
