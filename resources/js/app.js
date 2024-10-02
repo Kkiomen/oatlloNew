@@ -13,9 +13,9 @@ Alpine.start();
 
 
 
-const url = '/automatyka/public';
+const url = '/';
 const urlSegments = window.location.pathname.split('/');
-const pageId = urlSegments[4]; //
+const pageId = urlSegments[1]; //
 
 
 
