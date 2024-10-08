@@ -12,7 +12,7 @@ Route::get('/', function () {
 })->name('index');
 
 
-Route::get('/artykul', function () {
+Route::get('/fotowoltaika/serwis-i-naprawa-falownikow-do-fotowoltaiki', function () {
     return view('article');
 })->name('article');
 
