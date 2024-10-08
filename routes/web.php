@@ -9,7 +9,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/p/{slug}', [\App\Http\Controllers\HomeController::class, 'page'])->name('home.page');
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
+
+
+Route::get('/artykul', function () {
+    return view('article');
+})->name('article');
+
+Route::get('/blog', function () {
+    return view('blog');
+})->name('blog');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

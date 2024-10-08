@@ -13,9 +13,15 @@ Alpine.start();
 
 
 
+// const url = '/automatyka/public';
+// const urlSegments = window.location.pathname.split('/');
+// const pageId = urlSegments[4]; //
+
 const url = 'https://temp-dashboard.oatllo.pl';
 const urlSegments = window.location.pathname.split('/');
 const pageId = urlSegments[2]; //
+
+
 
 import {
     ClassicEditor,
