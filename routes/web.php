@@ -28,7 +28,7 @@ Route::get('/dashboard', function () {
 Route::get('/test', [\App\Http\Controllers\TestController::class, 'test'])->name('test');
 
 
-Route::post('/cmspage/update', [CmsPageController::class, 'update'])->name('cmspage.update');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
     Route::post('/article', [ArticleController::class, 'store'])->name('article.store');
 
-
+    Route::post('/cmspage/update', [CmsPageController::class, 'update'])->name('cmspage.update');
     Route::resource('pages', PageController::class);
 
     Route::post('pages/{page}/sections', [SectionController::class, 'store'])->name('sections.store');

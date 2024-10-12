@@ -17,6 +17,7 @@ return new class extends Migration
         // Odczytaj zawartość pliku
         $jsonData = file_get_contents($jsonFilePath);
 
+        DB::table('cms_pages')->truncate();
         // Wstaw dane do tabeli
         DB::table('cms_pages')->insert([
             'name' => 'Strona Główna - EXAMPLE DASHBOARD',
@@ -29,6 +30,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-
+        Schema::table('cms_pages', function (Blueprint $table) {
+            //
+        });
     }
 };
