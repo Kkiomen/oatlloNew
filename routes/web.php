@@ -6,6 +6,8 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\SectionContentController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CmsPageController;
+
 Route::get('/p/{slug}', [\App\Http\Controllers\HomeController::class, 'page'])->name('home.page');
 Route::get('/', function () {
     return view('welcome');
@@ -40,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
     Route::post('/article', [ArticleController::class, 'store'])->name('article.store');
 
+    Route::post('/cmspage/update', [CmsPageController::class, 'update'])->name('cmspage.update');
 
     Route::resource('pages', PageController::class);
 
@@ -52,6 +55,10 @@ Route::middleware('auth')->group(function () {
     Route::get('pages/{page}/sections', [SectionController::class, 'fetchSections'])->name('sections.fetch');
 
     Route::post('pages/{page}/sections/save', [SectionController::class, 'save'])->name('sections.save');
+
+
+    Route::get('/cmspage/{slug}', [CmsPageController::class, 'edit'])->name('cmspage.edit');
+    Route::post('/cmspage/image/uplaod', [CmsPageController::class, 'uploadImage'])->name('upload.image');
 
 
 

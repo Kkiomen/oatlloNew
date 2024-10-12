@@ -1,0 +1,419 @@
+[
+    {
+        "key": "section1",
+        "type": "section",
+        "content": [
+            {
+                "key": "element1",
+                "type": "text",
+                "value": "Bartłomiej Biernat",
+                "alt": null,
+                "href": null,
+                "classes": "text-white uppercase",
+                "allowCRUD": false
+            },
+            {
+                "key": "image_header_full",
+                "type": "image",
+                "alt": "gfdgdfdg",
+                "file": "{{ asset('assets/images/header.webp') }}",
+                "href": null,
+                "classes": "absolute inset-0 -z-10 h-full w-full object-cover",
+                "allowCRUD": false
+            },
+            {
+                "key": "element4",
+                "type": "text",
+                "value": "Naprawa i serwis automatyki przemysłowej",
+                "alt": null,
+                "href": null,
+                "classes": "text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl",
+                "allowCRUD": false
+            },
+            {
+                "key": "element5",
+                "type": "text",
+                "value": "Profesjonalna naprawa i serwis automatyki przemysłowej. Szybkie usuwanie usterek, modernizacja systemów i wsparcie techniczne. Gwarancja jakości!",
+                "alt": null,
+                "href": null,
+                "classes": "mt-6 text-lg leading-8 text-gray-300",
+                "allowCRUD": false
+            },
+            {
+                "key": "element6",
+                "type": "button",
+                "value": "Sprawdź szczegóły",
+                "alt": null,
+                "href": "#",
+                "classes": "rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400",
+                "allowCRUD": false
+            },
+            {
+                "key": "element7",
+                "type": "button",
+                "value": "Czytaj więcej",
+                "alt": null,
+                "href": "#",
+                "classes": "text-sm font-semibold leading-6 text-white",
+                "allowCRUD": false
+            }
+        ],
+        "subsections": [
+            {
+                "key": "subsection1",
+                "type": "nav",
+                "allowCRUD": true,
+                "content": [
+                    {
+                        "key": "element8",
+                        "type": "button",
+                        "value": "Strona główna",
+                        "alt": null,
+                        "href": "{{ route('index') }}",
+                        "classes": "text-sm font-semibold leading-6 text-white",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "element9",
+                        "type": "button",
+                        "value": "Blog",
+                        "alt": null,
+                        "href": "{{ route('blog') }}",
+                        "classes": "text-sm font-semibold leading-6 text-white",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "element10",
+                        "type": "button",
+                        "value": "Kontakt",
+                        "alt": null,
+                        "href": "{{ route('index') }}#contact",
+                        "classes": "text-sm font-semibold leading-6 text-white",
+                        "allowCRUD": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "section2",
+        "type": "section",
+        "content": [],
+        "subsections": [
+            {
+                "key": "subsection2",
+                "type": "img",
+                "allowCRUD": true,
+                "content": [
+                    {
+                        "key": "element11",
+                        "type": "image",
+                        "alt": "Two models wearing women's black cotton crewneck tee and off-white cotton crewneck tee.",
+                        "file": "{{ asset('assets/images/wozki-widlowe.jpg') }}",
+                        "href": null,
+                        "href_available": true,
+                        "classes": "object-cover object-center group-hover:opacity-75",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "element12",
+                        "type": "text",
+                        "value": "Naprawa elektroniki w wózkach widłowych",
+                        "alt": null,
+                        "href": "{{route('article')}}",
+                        "href_available": true,
+                        "classes": "font-semibold text-white",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "element13",
+                        "type": "text",
+                        "value": "Specjalistyczna naprawa elektroniki wózków widłowych",
+                        "alt": null,
+                        "href": null,
+                        "href_available": true,
+                        "classes": "mt-1 text-sm text-white",
+                        "allowCRUD": true
+                    }
+                ]
+            },
+            {
+                "key": "subsection3",
+                "type": "img",
+                "allowCRUD": true,
+                "content": [
+                    {
+                        "key": "element14",
+                        "type": "image",
+                        "alt": "Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters.",
+                        "file": "{{ asset('assets/images/naprawa-falownikow-fotowoltaicznych.jpg') }}",
+                        "href": null,
+                        "classes": "object-cover object-center group-hover:opacity-75 sm:absolute sm:inset-0 sm:h-full sm:w-full",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "element15",
+                        "type": "text",
+                        "value": "Naprawa falowników fotowoltaicznych",
+                        "alt": null,
+                        "href": "{{route('article')}}",
+                        "classes": "font-semibold text-white",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "element16",
+                        "type": "text",
+                        "value": "Serwis i naprawa falowników do fotowoltaiki",
+                        "alt": null,
+                        "href": null,
+                        "classes": "mt-1 text-sm text-white",
+                        "allowCRUD": true
+                    }
+                ]
+            },
+            {
+                "key": "subsection4",
+                "type": "img",
+                "allowCRUD": true,
+                "content": [
+                    {
+                        "key": "element17",
+                        "type": "image",
+                        "alt": "Walnut desk organizer set with white modular trays, next to porcelain mug on wooden desk.",
+                        "file": "{{ asset('assets/images/naprawa-automatyki-przemyslowej.jpg') }}",
+                        "href": null,
+                        "classes": "object-cover object-center group-hover:opacity-75 sm:absolute sm:inset-0 sm:h-full sm:w-full",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "element18",
+                        "type": "text",
+                        "value": "Naprawa automatyki przemysłowej",
+                        "alt": null,
+                        "href": "{{route('article')}}",
+                        "classes": "font-semibold text-white",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "element19",
+                        "type": "text",
+                        "value": "Skuteczna naprawa systemów automatyki przemysłowej",
+                        "alt": null,
+                        "href": null,
+                        "classes": "mt-1 text-sm text-white",
+                        "allowCRUD": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "section3",
+        "type": "section",
+        "content": [],
+        "subsections": [
+            {
+                "key": "subsection5",
+                "type": "feature",
+                "allowCRUD": false,
+                "content": [
+                    {
+                        "key": "element20",
+                        "type": "image",
+                        "alt": "",
+                        "file": "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
+                        "href": null,
+                        "classes": "absolute inset-0 -z-10 h-full w-full object-cover",
+                        "allowCRUD": false
+                    },
+                    {
+                        "key": "element21",
+                        "type": "text",
+                        "value": "Naprawa inwerterów solarnych Fronius",
+                        "alt": null,
+                        "href": "{{route('article')}}",
+                        "classes": "mt-3 text-lg font-semibold leading-6 text-white",
+                        "allowCRUD": false
+                    }
+                ]
+            },
+            {
+                "key": "subsection6",
+                "type": "feature",
+                "allowCRUD": false,
+                "content": [
+                    {
+                        "key": "element22",
+                        "type": "image",
+                        "alt": "",
+                        "file": "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
+                        "href": null,
+                        "classes": "absolute inset-0 -z-10 h-full w-full object-cover",
+                        "allowCRUD": false
+                    },
+                    {
+                        "key": "element23",
+                        "type": "text",
+                        "value": "Naprawa softstarterów ABB",
+                        "alt": null,
+                        "href": "{{route('article')}}",
+                        "classes": "mt-3 text-lg font-semibold leading-6 text-white",
+                        "allowCRUD": false
+                    }
+                ]
+            },
+            {
+                "key": "subsection7",
+                "type": "feature",
+                "allowCRUD": false,
+                "content": [
+                    {
+                        "key": "element24",
+                        "type": "image",
+                        "alt": "",
+                        "file": "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
+                        "href": null,
+                        "classes": "absolute inset-0 -z-10 h-full w-full object-cover",
+                        "allowCRUD": false
+                    },
+                    {
+                        "key": "element25",
+                        "type": "text",
+                        "value": "Naprawa sterownika silnika",
+                        "alt": null,
+                        "href": "{{route('article')}}",
+                        "classes": "mt-3 text-lg font-semibold leading-6 text-white",
+                        "allowCRUD": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "section4",
+        "type": "section",
+        "content": [
+            {
+                "key": "element26",
+                "type": "text",
+                "value": "Kontakt",
+                "alt": null,
+                "href": null,
+                "classes": "text-3xl font-bold tracking-tight text-white",
+                "allowCRUD": false
+            },
+            {
+                "key": "element27",
+                "type": "text",
+                "value": "Masz pytania? Skontaktuj się bezpośrednio! Wypełnij formularz lub zadzwoń, oferuję fachowe doradztwo i szybką pomoc techniczną.",
+                "alt": null,
+                "href": null,
+                "classes": "mt-6 text-lg leading-8 text-gray-300",
+                "allowCRUD": false
+            }
+        ],
+        "subsections": [
+            {
+                "key": "subsection8",
+                "type": "contact-info",
+                "allowCRUD": false,
+                "content": [
+                    {
+                        "key": "element28",
+                        "type": "text",
+                        "value": "Jasna 25 Gliwice",
+                        "alt": "Address",
+                        "href": null,
+                        "classes": "flex gap-x-4",
+                        "allowCRUD": false
+                    },
+                    {
+                        "key": "element29",
+                        "type": "text",
+                        "value": "+48 504511170",
+                        "alt": "Telephone",
+                        "href": "tel:+48 504511170",
+                        "classes": "flex gap-x-4",
+                        "allowCRUD": false
+                    },
+                    {
+                        "key": "element30",
+                        "type": "text",
+                        "value": "kontakt@serwis-elektroniki-bartlomiej-biernat.pl",
+                        "alt": "Email",
+                        "href": "mailto:kontakt@serwis-elektroniki-bartlomiej-biernat.pl",
+                        "classes": "flex gap-x-4",
+                        "allowCRUD": false
+                    }
+                ]
+            },
+            {
+                "key": "subsection9",
+                "type": "form",
+                "allowCRUD": false,
+                "content": [
+                    {
+                        "key": "element31",
+                        "type": "input",
+                        "fields": [
+                            {
+                                "label": "Imię | Nazwa firmy*",
+                                "name": "first-name",
+                                "type": "text"
+                            },
+                            {
+                                "label": "Nazwisko",
+                                "name": "last-name",
+                                "type": "text"
+                            },
+                            {
+                                "label": "Email*",
+                                "name": "email",
+                                "type": "email"
+                            },
+                            {
+                                "label": "Temat*",
+                                "name": "topic",
+                                "type": "text"
+                            },
+                            {
+                                "label": "Wiadomość*",
+                                "name": "message",
+                                "type": "textarea"
+                            }
+                        ],
+                        "alt": null,
+                        "href": null,
+                        "classes": "grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2",
+                        "allowCRUD": false
+                    },
+                    {
+                        "key": "element32",
+                        "type": "button",
+                        "value": "Wyślij wiadomość",
+                        "alt": null,
+                        "href": null,
+                        "classes": "rounded-md bg-indigo-500 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-400",
+                        "allowCRUD": false
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "key": "section5",
+        "type": "footer",
+        "content": [
+            {
+                "key": "element33",
+                "type": "text",
+                "value": "&copy; {{ date('Y') }} Serwis elektroniki - Bartłomiej Biernat",
+                "alt": null,
+                "href": null,
+                "classes": "mt-8 text-xs leading-5 text-gray-400",
+                "allowCRUD": false
+            }
+        ],
+        "subsections": []
+    }
+]

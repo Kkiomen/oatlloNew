@@ -21,7 +21,7 @@
     <header class="absolute inset-x-0 top-0 z-50" x-data="{ open: true }">
         <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
             <div class="flex lg:flex-1">
-                <div class="text-white uppercase" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
+                <div class="text-white uppercase" id="logo_header" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
                     Bartłomiej Biernat
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     </svg>
                 </button>
             </div>
-            <div class="hidden lg:flex lg:gap-x-12">
+            <div class="hidden lg:flex lg:gap-x-12" id="navbar_desktop">
                 <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-white">Strona główna</a>
                 <a href="{{ route('blog') }}" class="text-sm font-semibold leading-6 text-white">Blog</a>
                 <a href="{{ route('index') }}#contact" class="text-sm font-semibold leading-6 text-white">Kontakt</a>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="mt-6 flow-root">
                     <div class="-my-6 divide-y divide-gray-500/25">
-                        <div class="space-y-2 py-6">
+                        <div class="space-y-2 py-6" id="navbar_mobile">
                             <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Strona główna</a>
                             <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Blog</a>
                             <a href="{{ route('index') }}#contact" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Kontakt</a>
@@ -71,7 +71,7 @@
             </div>
         </div>
     </header>
-    <div class="relative isolate overflow-hidden pt-14">
+    <div class="relative isolate overflow-hidden pt-14" id="header_main">
         <img src="{{ asset('assets/images/header.webp') }}" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
         <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
             <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
@@ -97,9 +97,9 @@
 
 
 <div class="bg-gray-50">
-    <div class="mx-auto max-w-7xl mt-8 px-4 sm:px-6 sm:py-14 lg:px-8">
+    <div class="mx-auto max-w-7xl mt-8 px-4 sm:px-6 sm:py-14 lg:px-8" id="main_information">
         <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:grid-rows-2 sm:gap-x-6 lg:gap-8">
-            <div class="group aspect-h-1 aspect-w-2 overflow-hidden rounded-lg sm:aspect-none sm:relative sm:row-span-2">
+            <div class="group aspect-h-1 aspect-w-2 overflow-hidden rounded-lg sm:aspect-none sm:relative sm:row-span-2" id="main_information_one">
                 <img src="{{ asset('assets/images/wozki-widlowe.jpg') }}" alt="Two models wearing women's black cotton crewneck tee and off-white cotton crewneck tee." class="object-cover object-center group-hover:opacity-75">
                 <div aria-hidden="true" class="bg-gradient-to-b from-transparent to-blue-950 opacity-65 sm:absolute sm:inset-0"></div>
                 <div class="flex items-end p-6 sm:absolute sm:inset-0 bg-blue-950 sm:bg-transparent">
@@ -114,7 +114,7 @@
                     </div>
                 </div>
             </div>
-            <div class="group aspect-h-1 aspect-w-2 overflow-hidden rounded-lg sm:aspect-none sm:relative sm:h-full">
+            <div class="group aspect-h-1 aspect-w-2 overflow-hidden rounded-lg sm:aspect-none sm:relative sm:h-full" id="main_information_two">
                 <img src="{{ asset('assets/images/naprawa-falownikow-fotowoltaicznych.jpg') }}" alt="Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters." class="object-cover object-center group-hover:opacity-75 sm:absolute sm:inset-0 sm:h-full sm:w-full">
                 <div aria-hidden="true" class="bg-gradient-to-b from-transparent to-blue-950 opacity-65 sm:absolute sm:inset-0"></div>
                 <div class="flex items-end p-6 sm:absolute sm:inset-0 bg-blue-950 sm:bg-transparent">
@@ -129,7 +129,7 @@
                     </div>
                 </div>
             </div>
-            <div class="group aspect-h-1 aspect-w-2 overflow-hidden rounded-lg sm:aspect-none sm:relative sm:h-full">
+            <div class="group aspect-h-1 aspect-w-2 overflow-hidden rounded-lg sm:aspect-none sm:relative sm:h-full" id="main_information_three">
                 <img src="{{ asset('assets/images/naprawa-automatyki-przemyslowej.jpg') }}" alt="Walnut desk organizer set with white modular trays, next to porcelain mug on wooden desk." class="object-cover object-center group-hover:opacity-75 sm:absolute sm:inset-0 sm:h-full sm:w-full">
                 <div aria-hidden="true" class="bg-gradient-to-b from-transparent to-blue-950 opacity-65 sm:absolute sm:inset-0"></div>
                 <div class="flex items-end p-6 sm:absolute sm:inset-0 bg-blue-950 sm:bg-transparent">
@@ -149,7 +149,7 @@
 </div>
 
 
-<div class="mx-auto max-w-2xl px-4 mt-8 sm:px-6 lg:max-w-7xl">
+<div class="mx-auto max-w-2xl px-4 mt-8 sm:px-6 lg:max-w-7xl" id="testimonials">
     <div class="relative overflow-hidden rounded-lg lg:h-96">
         <div class="absolute inset-0">
             <img src="{{ asset('assets/images/naprawa-podzespolow-elektronicznych.jpg') }}" alt="" class="h-full w-full object-cover object-center">
@@ -167,8 +167,8 @@
 </div>
 
 
-<div class="grid min-h-full grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-1 mt-14">
-    <div class="relative flex">
+<div class="grid min-h-full grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-1 mt-14" id="information_second">
+    <div class="relative flex" id="information_second_one">
         <img src="{{ asset('assets/images/HMI-naprawa.png') }}" alt="" class="absolute inset-0 h-full w-full object-cover object-center">
         <div class="relative flex w-full flex-col items-start justify-end bg-black bg-opacity-40 p-8 sm:p-12">
             <h2 class="text-lg font-medium text-white text-opacity-75">Naprawa paneli operatorskich HMI</h2>
@@ -176,7 +176,7 @@
             <a href="{{route('article')}}" class="mt-4 rounded-md bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50">Zobacz więcej</a>
         </div>
     </div>
-    <div class="relative flex">
+    <div class="relative flex" id="information_second_two">
         <img src="{{ asset('assets/images/prostownik.jpg') }}" alt="" class="absolute inset-0 h-full w-full object-cover object-center">
         <div class="relative flex w-full flex-col items-start justify-end bg-black bg-opacity-60 p-8 sm:p-12">
             <h2 class="text-lg font-medium text-white text-opacity-75">Naprawa prostownika</h2>
@@ -187,7 +187,7 @@
 </div>
 
 
-<div class="bg-white py-24 sm:py-32">
+<div class="bg-white py-24 sm:py-32" id="articles">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl text-center">
             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Ostatnie artykuły</h2>
@@ -195,7 +195,7 @@
         </div>
         <div class="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
 
-            <article class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80">
+            <article class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80" >
                 <img src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
                 <div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
                 <div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
@@ -346,7 +346,7 @@
 
 
 
-<footer class="bg-gray-900">
+<footer class="bg-gray-900" id="footer">
     <div class="mx-auto max-w-7xl px-6 pb-8 lg:px-8 ">
         <div class="border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
             <p class="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">&copy; {{ date('Y') }} Serwis elektroniki - Bartłomiej Biernat</p>

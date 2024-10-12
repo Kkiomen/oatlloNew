@@ -18,6 +18,14 @@
                     <x-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
                         {{ __('Zarządzanie') }}
                     </x-nav-link>
+
+                    @php $cmsPages = \App\Models\CmsPage::get(); @endphp
+                    @foreach($cmsPages as $cmsPage)
+                        @php $slug = \Illuminate\Support\Str::slug(strtolower($cmsPage->name)); @endphp
+                        <x-nav-link :href="route('cmspage.edit', $slug)" :active="request()->routeIs('cmspage.edit')">
+                            {{ $cmsPage->name }}
+                        </x-nav-link>
+                    @endforeach
                 </div>
             </div>
 

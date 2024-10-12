@@ -19,6 +19,7 @@
         "@ckeditor/ckeditor5-build-classic": "^43.1.1",
         "@ckeditor/ckeditor5-source-editing": "^43.1.1",
         "ckeditor5": "^43.1.1",
+        "dropzone": "^6.0.0-beta.2",
         "sortablejs": "^1.15.3",
         "toastr": "^2.1.4"
     }
