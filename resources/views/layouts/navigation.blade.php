@@ -95,6 +95,18 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
+                <x-responsive-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
+                    {{ __('Zarządzanie') }}
+                </x-responsive-nav-link>
+
+                @php $cmsPages = \App\Models\CmsPage::get(); @endphp
+                @foreach($cmsPages as $cmsPage)
+                    @php $slug = \Illuminate\Support\Str::slug(strtolower($cmsPage->name)); @endphp
+                    <x-responsive-nav-link :href="route('cmspage.edit', $slug)" :active="request()->routeIs('cmspage.edit')">
+                        {{ $cmsPage->name }}
+                    </x-responsive-nav-link>
+                @endforeach
+
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
