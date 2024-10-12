@@ -23,6 +23,7 @@ class CmsPageController extends Controller
             abort(404);
         }
 
+
         return view('cms_page.edit', [
             'page' => $foundedPage->json_page,
             'namePage' => $foundedPage->name
@@ -44,7 +45,7 @@ class CmsPageController extends Controller
                 $filePath = $file->storeAs('uploads', time() . '.webp', 'public');
 
                 // Update the CMS with the WebP file path
-                $cmsPageService->updateKey($data['website'], $data['key'] . '0001000file', asset('storage/' . $filePath));
+                $cmsPageService->updateKey($data['website'], $data['key'] . '0001000file', 'storage/' . $filePath);
 
                 return response()->json(['filePath' => asset('storage/' . $filePath)]);
             }
@@ -81,7 +82,7 @@ class CmsPageController extends Controller
             unlink($originalFilePath);
 
             // Update the CMS with the WebP file path
-            $cmsPageService->updateKey($data['website'], $data['key'] . '0001000file', asset('storage/' . $webpFilePath));
+            $cmsPageService->updateKey($data['website'], $data['key'] . '0001000file', 'storage/' . $webpFilePath);
 
             return response()->json(['filePath' => asset('storage/' . $webpFilePath)]);
         }

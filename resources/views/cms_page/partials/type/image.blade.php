@@ -6,8 +6,17 @@
 
     <div class="mt-5" x-data="{ open: true }">
         <div class="mt-3">
+            @php
+                $currentImage = empty($element['file']) ? 'storage/empty_image.jpg' : $element['file'];
+                $pattern = "/asset\('(.+?)'\)/";
+                if (preg_match($pattern, $currentImage, $matches)) {
+                    $currentImage = $matches[1];
+                }
+                $currentImage = str_contains($currentImage, 'http') ? $currentImage : asset($currentImage);
+            @endphp
+
             <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 text-center ">
-                <img src="{{ asset('storage/uploads/Z3uDHIjLpLpNu1rfm5t0Pipq2UzZYiUCEiJ5RwfE.jpg') }}" id="preview-image-{{ $element['key'] }}" class="h-48"/>
+                <img src="{{ $currentImage }}" id="preview-image-{{ $element['key'] }}" class="h-48"/>
             </div>
             <div class="bg-black hover:bg-gray-800 text-white text-center p-2 mt-2 rounded cursor-pointer select-none" @click="open = !open">
                 Zaaktualizuj obraz
