@@ -23,7 +23,7 @@ class CmsPageController extends Controller
             abort(404);
         }
 
-
+//        dump($foundedPage->json_page);
         return view('cms_page.edit', [
             'page' => $foundedPage->json_page,
             'namePage' => $foundedPage->name
@@ -49,6 +49,17 @@ class CmsPageController extends Controller
 
                 return response()->json(['filePath' => asset('storage/' . $filePath)]);
             }
+
+            // If the file is already Ico, just store it without conversion
+            if ($originalExtension === 'ico') {
+                $filePath = $file->storeAs('uploads', time() . '.ico', 'public');
+
+                // Update the CMS with the Ico file path
+                $cmsPageService->updateKey($data['website'], $data['key'] . '0001000file', 'storage/' . $filePath);
+
+                return response()->json(['filePath' => asset('storage/' . $filePath)]);
+            }
+
 
             // Store the file temporarily in its original format
             $filePath = $file->storeAs('uploads', time() . '.' . $originalExtension, 'public');

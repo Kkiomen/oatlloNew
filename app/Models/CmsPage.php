@@ -11,10 +11,11 @@ class CmsPage extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'id', 'name', 'json_page'
+        'id', 'name', 'json_page', 'to_view'
     ];
 
     protected $casts = [
-        'json_page' => 'array'
+        'json_page' => 'array',
+        'to_view' => 'array'
     ];
 }

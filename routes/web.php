@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ArticleController;
@@ -9,10 +10,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CmsPageController;
 
 Route::get('/p/{slug}', [\App\Http\Controllers\HomeController::class, 'page'])->name('home.page');
-Route::get('/', function () {
-    return view('welcome');
-})->name('index');
 
+Route::get('/', [HomeController::class, 'index'])->name('index');
 
 Route::get('/fotowoltaika/serwis-i-naprawa-falownikow-do-fotowoltaiki', function () {
     return view('article');
@@ -26,7 +25,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/test', [\App\Http\Controllers\TestController::class, 'test'])->name('test');
 
+
+Route::post('/cmspage/update', [CmsPageController::class, 'update'])->name('cmspage.update');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -42,7 +44,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
     Route::post('/article', [ArticleController::class, 'store'])->name('article.store');
 
-    Route::post('/cmspage/update', [CmsPageController::class, 'update'])->name('cmspage.update');
 
     Route::resource('pages', PageController::class);
 

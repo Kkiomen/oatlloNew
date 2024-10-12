@@ -1,10 +1,111 @@
 [
     {
-        "key": "section1",
-        "type": "section",
+        "key": "basic_website_structure",
+        "type": "basic_website_structure",
+        "label": "Podstawowe ustawienia",
         "content": [
             {
-                "key": "element1",
+                "key": "basic_website_structure_title",
+                "label": "SEO - Tytuł strony",
+                "type": "text",
+                "value": "Naprawa Automatyki Przemysłowej Gliwice – Bartłomiej Bernat",
+                "alt": null,
+                "href": null,
+                "classes": "text-white uppercase",
+                "allowCRUD": false
+            },
+            {
+                "key": "basic_website_structure_description",
+                "label": "SEO - Opis strony",
+                "type": "textarea",
+                "value": "Profesjonalna naprawa automatyki przemysłowej w Gliwicach. Bartłomiej Bernat – serwis, diagnostyka i modernizacja systemów automatyki. Gwarancja jakości i precyzji.",
+                "alt": null,
+                "href": null,
+                "classes": "text-white uppercase",
+                "allowCRUD": false
+            },
+            {
+                "key": "basic_website_structure_favicon",
+                "label": "Favicon",
+                "type": "image",
+                "alt": null,
+                "file": null,
+                "href": null,
+                "href_available": true,
+                "classes": "",
+                "allowCRUD": true
+            },
+            {
+                "key": "basic_website_structure_keywords",
+                "label": "SEO - Słowa kluczowe",
+                "type": "text",
+                "value": "https://temp-dashboard.oatllo.pl/",
+                "alt": null,
+                "href": null,
+                "classes": "text-white uppercase",
+                "allowCRUD": false
+            },
+            {
+                "key": "basic_website_structure_canonical",
+                "label": "SEO - Canonical (adres URL)",
+                "type": "text",
+                "value": "https://temp-dashboard.oatllo.pl/",
+                "alt": null,
+                "href": null,
+                "classes": "text-white uppercase",
+                "allowCRUD": false
+            },
+            {
+                "key": "basic_website_structure_op_title",
+                "label": "Open Graph - Tytuł",
+                "type": "text",
+                "value": "Tytuł do udostępnienia na Facebooku",
+                "alt": null,
+                "href": null,
+                "classes": "text-white uppercase",
+                "allowCRUD": false
+            },
+            {
+                "key": "basic_website_structure_op_description",
+                "label": "Open Graph - Opis",
+                "type": "textarea",
+                "value": "Opis strony do wyświetlenia w mediach społecznościowych",
+                "alt": null,
+                "href": null,
+                "classes": "text-white uppercase",
+                "allowCRUD": false
+            },
+            {
+                "key": "basic_website_structure_op_image",
+                "label": "Open Graph - Obrazek",
+                "type": "image",
+                "alt": null,
+                "file": null,
+                "href": null,
+                "href_available": true,
+                "classes": "",
+                "allowCRUD": true
+            },
+            {
+                "key": "basic_website_structure_op_url",
+                "label": "Open Graph - Url",
+                "type": "text",
+                "value": "https://example.com/adres-strony",
+                "alt": null,
+                "href": null,
+                "classes": "text-white uppercase",
+                "allowCRUD": false
+            }
+        ],
+        "subsections": null
+    },
+    {
+        "key": "header",
+        "type": "section",
+        "label": "Sekcja 1",
+        "content": [
+            {
+                "key": "header_title",
                 "type": "text",
                 "value": "Bartłomiej Biernat",
                 "alt": null,
@@ -13,16 +114,16 @@
                 "allowCRUD": false
             },
             {
-                "key": "image_header_full",
+                "key": "header_image_full",
                 "type": "image",
-                "alt": "gfdgdfdg",
+                "alt": "",
                 "file": "{{ asset('assets/images/header.webp') }}",
                 "href": null,
                 "classes": "absolute inset-0 -z-10 h-full w-full object-cover",
                 "allowCRUD": false
             },
             {
-                "key": "element4",
+                "key": "header_head_1",
                 "type": "text",
                 "value": "Naprawa i serwis automatyki przemysłowej",
                 "alt": null,
@@ -31,7 +132,7 @@
                 "allowCRUD": false
             },
             {
-                "key": "element5",
+                "key": "header_head_2",
                 "type": "text",
                 "value": "Profesjonalna naprawa i serwis automatyki przemysłowej. Szybkie usuwanie usterek, modernizacja systemów i wsparcie techniczne. Gwarancja jakości!",
                 "alt": null,
@@ -40,7 +141,7 @@
                 "allowCRUD": false
             },
             {
-                "key": "element6",
+                "key": "header_button_1",
                 "type": "button",
                 "value": "Sprawdź szczegóły",
                 "alt": null,
@@ -49,7 +150,7 @@
                 "allowCRUD": false
             },
             {
-                "key": "element7",
+                "key": "header_button_2",
                 "type": "button",
                 "value": "Czytaj więcej",
                 "alt": null,
@@ -65,7 +166,7 @@
                 "allowCRUD": true,
                 "content": [
                     {
-                        "key": "element8",
+                        "key": "navbar_1",
                         "type": "button",
                         "value": "Strona główna",
                         "alt": null,
@@ -74,7 +175,7 @@
                         "allowCRUD": true
                     },
                     {
-                        "key": "element9",
+                        "key": "navbar_2",
                         "type": "button",
                         "value": "Blog",
                         "alt": null,
@@ -83,7 +184,7 @@
                         "allowCRUD": true
                     },
                     {
-                        "key": "element10",
+                        "key": "navbar_3",
                         "type": "button",
                         "value": "Kontakt",
                         "alt": null,
@@ -98,15 +199,16 @@
     {
         "key": "section2",
         "type": "section",
+        "label": "Sekcja 2",
         "content": [],
         "subsections": [
             {
-                "key": "subsection2",
+                "key": "three_columns_first",
                 "type": "img",
                 "allowCRUD": true,
                 "content": [
                     {
-                        "key": "element11",
+                        "key": "three_columns_first_image",
                         "type": "image",
                         "alt": "Two models wearing women's black cotton crewneck tee and off-white cotton crewneck tee.",
                         "file": "{{ asset('assets/images/wozki-widlowe.jpg') }}",
@@ -116,7 +218,7 @@
                         "allowCRUD": true
                     },
                     {
-                        "key": "element12",
+                        "key": "three_columns_first_head",
                         "type": "text",
                         "value": "Naprawa elektroniki w wózkach widłowych",
                         "alt": null,
@@ -126,13 +228,22 @@
                         "allowCRUD": true
                     },
                     {
-                        "key": "element13",
+                        "key": "three_columns_first_text",
                         "type": "text",
                         "value": "Specjalistyczna naprawa elektroniki wózków widłowych",
                         "alt": null,
                         "href": null,
                         "href_available": true,
                         "classes": "mt-1 text-sm text-white",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "three_columns_first_url",
+                        "type": "link",
+                        "value": "",
+                        "alt": null,
+                        "href": "{{ route('blog') }}",
+                        "classes": "text-sm font-semibold leading-6 text-white",
                         "allowCRUD": true
                     }
                 ]
@@ -143,7 +254,7 @@
                 "allowCRUD": true,
                 "content": [
                     {
-                        "key": "element14",
+                        "key": "three_columns_second_image",
                         "type": "image",
                         "alt": "Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters.",
                         "file": "{{ asset('assets/images/naprawa-falownikow-fotowoltaicznych.jpg') }}",
@@ -152,7 +263,7 @@
                         "allowCRUD": true
                     },
                     {
-                        "key": "element15",
+                        "key": "three_columns_second_head",
                         "type": "text",
                         "value": "Naprawa falowników fotowoltaicznych",
                         "alt": null,
@@ -161,12 +272,21 @@
                         "allowCRUD": true
                     },
                     {
-                        "key": "element16",
+                        "key": "three_columns_second_text",
                         "type": "text",
                         "value": "Serwis i naprawa falowników do fotowoltaiki",
                         "alt": null,
                         "href": null,
                         "classes": "mt-1 text-sm text-white",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "three_columns_second_url",
+                        "type": "link",
+                        "value": "",
+                        "alt": null,
+                        "href": "{{ route('blog') }}",
+                        "classes": "text-sm font-semibold leading-6 text-white",
                         "allowCRUD": true
                     }
                 ]
@@ -177,7 +297,7 @@
                 "allowCRUD": true,
                 "content": [
                     {
-                        "key": "element17",
+                        "key": "three_columns_third_image",
                         "type": "image",
                         "alt": "Walnut desk organizer set with white modular trays, next to porcelain mug on wooden desk.",
                         "file": "{{ asset('assets/images/naprawa-automatyki-przemyslowej.jpg') }}",
@@ -186,7 +306,7 @@
                         "allowCRUD": true
                     },
                     {
-                        "key": "element18",
+                        "key": "three_columns_third_head",
                         "type": "text",
                         "value": "Naprawa automatyki przemysłowej",
                         "alt": null,
@@ -195,12 +315,21 @@
                         "allowCRUD": true
                     },
                     {
-                        "key": "element19",
+                        "key": "three_columns_third_text",
                         "type": "text",
                         "value": "Skuteczna naprawa systemów automatyki przemysłowej",
                         "alt": null,
                         "href": null,
                         "classes": "mt-1 text-sm text-white",
+                        "allowCRUD": true
+                    },
+                    {
+                        "key": "three_columns_third_url",
+                        "type": "link",
+                        "value": "",
+                        "alt": null,
+                        "href": "{{ route('blog') }}",
+                        "classes": "text-sm font-semibold leading-6 text-white",
                         "allowCRUD": true
                     }
                 ]
@@ -208,90 +337,187 @@
         ]
     },
     {
-        "key": "section3",
+        "key": "section_testimonials",
         "type": "section",
+        "label": "Sekcja 3",
+        "content": [
+            {
+                "key": "element_testimonials_image",
+                "type": "image",
+                "alt": "",
+                "file": "{{ asset('assets/images/naprawa-podzespolow-elektronicznych.jpg') }}",
+                "href": null,
+                "href_available": false,
+                "classes": "h-full w-full object-cover object-center",
+                "allowCRUD": false
+            },
+            {
+                "key": "element_testimonials_heading",
+                "type": "text",
+                "alt": null,
+                "href": null,
+                "href_available": false,
+                "classes": "text-xl font-bold text-white",
+                "value": "Naprawa podzespołów elektronicznych",
+                "allowCRUD": false
+            },
+            {
+                "key": "element_testimonials_paragraph",
+                "type": "text",
+                "alt": null,
+                "href": null,
+                "href_available": false,
+                "classes": "mt-1 text-sm text-gray-300",
+                "value": "Profesjonalna naprawa podzespołów elektronicznych – szybka diagnoza i serwis.",
+                "allowCRUD": false
+            },
+            {
+                "key": "element_testimonials_link",
+                "type": "button",
+                "alt": null,
+                "href": "{{route('article')}}",
+                "href_available": true,
+                "classes": "mt-6 flex flex-shrink-0 items-center justify-center rounded-md border border-white border-opacity-25 bg-white bg-opacity-0 px-4 py-3 text-base font-medium text-white hover:bg-opacity-10",
+                "value": "Zobacz więcej",
+                "allowCRUD": true
+            }
+        ],
+        "subsections": []
+    },
+    {
+        "key": "section_information_second",
+        "type": "section",
+        "label": "Sekcja 4",
         "content": [],
         "subsections": [
             {
-                "key": "subsection5",
-                "type": "feature",
-                "allowCRUD": false,
+                "key": "subsection_information_second_one",
+                "type": "subsection",
+                "allowCRUD": true,
                 "content": [
                     {
-                        "key": "element20",
+                        "key": "element_information_second_one_image",
                         "type": "image",
                         "alt": "",
-                        "file": "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
+                        "file": "{{ asset('assets/images/HMI-naprawa.png') }}",
                         "href": null,
-                        "classes": "absolute inset-0 -z-10 h-full w-full object-cover",
+                        "href_available": false,
+                        "classes": "absolute inset-0 h-full w-full object-cover object-center",
                         "allowCRUD": false
                     },
                     {
-                        "key": "element21",
+                        "key": "element_information_second_one_text1",
                         "type": "text",
-                        "value": "Naprawa inwerterów solarnych Fronius",
+                        "alt": null,
+                        "href": null,
+                        "href_available": false,
+                        "classes": "text-lg font-medium text-white text-opacity-75",
+                        "value": "Naprawa paneli operatorskich HMI",
+                        "allowCRUD": false
+                    },
+                    {
+                        "key": "element_information_second_one_text2",
+                        "type": "text",
+                        "alt": null,
+                        "href": null,
+                        "href_available": false,
+                        "classes": "mt-1 text-2xl font-medium text-white",
+                        "value": "Serwis i naprawa paneli HMI",
+                        "allowCRUD": false
+                    },
+                    {
+                        "key": "element_information_second_one_button",
+                        "type": "button",
                         "alt": null,
                         "href": "{{route('article')}}",
-                        "classes": "mt-3 text-lg font-semibold leading-6 text-white",
-                        "allowCRUD": false
+                        "href_available": true,
+                        "classes": "mt-4 rounded-md bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50",
+                        "value": "Zobacz więcej",
+                        "allowCRUD": true
                     }
                 ]
             },
             {
-                "key": "subsection6",
-                "type": "feature",
-                "allowCRUD": false,
+                "key": "subsection_information_second_two",
+                "type": "subsection",
+                "allowCRUD": true,
                 "content": [
                     {
-                        "key": "element22",
+                        "key": "element_information_second_two_image",
                         "type": "image",
                         "alt": "",
-                        "file": "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
+                        "file": "{{ asset('assets/images/prostownik.jpg') }}",
                         "href": null,
-                        "classes": "absolute inset-0 -z-10 h-full w-full object-cover",
+                        "href_available": false,
+                        "classes": "absolute inset-0 h-full w-full object-cover object-center",
                         "allowCRUD": false
                     },
                     {
-                        "key": "element23",
+                        "key": "element_information_second_two_text1",
                         "type": "text",
-                        "value": "Naprawa softstarterów ABB",
                         "alt": null,
-                        "href": "{{route('article')}}",
-                        "classes": "mt-3 text-lg font-semibold leading-6 text-white",
-                        "allowCRUD": false
-                    }
-                ]
-            },
-            {
-                "key": "subsection7",
-                "type": "feature",
-                "allowCRUD": false,
-                "content": [
-                    {
-                        "key": "element24",
-                        "type": "image",
-                        "alt": "",
-                        "file": "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80",
                         "href": null,
-                        "classes": "absolute inset-0 -z-10 h-full w-full object-cover",
+                        "href_available": false,
+                        "classes": "text-lg font-medium text-white text-opacity-75",
+                        "value": "Naprawa prostownika",
                         "allowCRUD": false
                     },
                     {
-                        "key": "element25",
+                        "key": "element_information_second_two_text2",
                         "type": "text",
-                        "value": "Naprawa sterownika silnika",
+                        "alt": null,
+                        "href": null,
+                        "href_available": false,
+                        "classes": "mt-1 text-2xl font-medium text-white",
+                        "value": "Profesjonalna naprawa prostowników",
+                        "allowCRUD": false
+                    },
+                    {
+                        "key": "element_information_second_two_button",
+                        "type": "button",
                         "alt": null,
                         "href": "{{route('article')}}",
-                        "classes": "mt-3 text-lg font-semibold leading-6 text-white",
-                        "allowCRUD": false
+                        "href_available": true,
+                        "classes": "mt-4 rounded-md bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-50",
+                        "value": "Zobacz więcej",
+                        "allowCRUD": true
                     }
                 ]
             }
         ]
     },
     {
-        "key": "section4",
+        "key": "section5",
         "type": "section",
+        "label": "Sekcja 5",
+        "content": [
+            {
+                "key": "element_article_heading",
+                "type": "text",
+                "alt": null,
+                "href": null,
+                "href_available": false,
+                "classes": "text-xl font-bold text-white",
+                "value": "Ostatnie artykuły",
+                "allowCRUD": false
+            },
+            {
+                "key": "element_article_paragraph",
+                "type": "text",
+                "alt": null,
+                "href": null,
+                "href_available": false,
+                "classes": "mt-1 text-sm text-gray-300",
+                "value": "Ostatnie artykuły i nowinki z branży automatyki",
+                "allowCRUD": false
+            }
+        ],
+        "subsections": null
+    },
+    {
+        "key": "section6",
+        "type": "section",
+        "label": "Sekcja 6",
         "content": [
             {
                 "key": "element26",
@@ -304,7 +530,7 @@
             },
             {
                 "key": "element27",
-                "type": "text",
+                "type": "textarea",
                 "value": "Masz pytania? Skontaktuj się bezpośrednio! Wypełnij formularz lub zadzwoń, oferuję fachowe doradztwo i szybką pomoc techniczną.",
                 "alt": null,
                 "href": null,
@@ -321,7 +547,7 @@
                     {
                         "key": "element28",
                         "type": "text",
-                        "value": "Jasna 25 Gliwice",
+                        "value": "Jasna 25 <br/>Gliwice",
                         "alt": "Address",
                         "href": null,
                         "classes": "flex gap-x-4",
@@ -354,32 +580,52 @@
                 "content": [
                     {
                         "key": "element31",
-                        "type": "input",
-                        "fields": [
+                        "type": "form",
+                        "content": [
                             {
-                                "label": "Imię | Nazwa firmy*",
-                                "name": "first-name",
-                                "type": "text"
+                                "key": "first-name",
+                                "type": "text",
+                                "value": "Imię | Nazwa firmy*",
+                                "alt": null,
+                                "href": null,
+                                "classes": "flex gap-x-4",
+                                "allowCRUD": false
                             },
                             {
-                                "label": "Nazwisko",
-                                "name": "last-name",
-                                "type": "text"
+                                "key": "last-name",
+                                "type": "text",
+                                "value": "Nazwisko",
+                                "alt": null,
+                                "href": null,
+                                "classes": "flex gap-x-4",
+                                "allowCRUD": false
                             },
                             {
-                                "label": "Email*",
-                                "name": "email",
-                                "type": "email"
+                                "key": "email",
+                                "type": "email",
+                                "value": "Email*",
+                                "alt": null,
+                                "href": null,
+                                "classes": "flex gap-x-4",
+                                "allowCRUD": false
                             },
                             {
-                                "label": "Temat*",
-                                "name": "topic",
-                                "type": "text"
+                                "key": "topic",
+                                "type": "text",
+                                "value": "Temat*",
+                                "alt": null,
+                                "href": null,
+                                "classes": "flex gap-x-4",
+                                "allowCRUD": false
                             },
                             {
-                                "label": "Wiadomość*",
-                                "name": "message",
-                                "type": "textarea"
+                                "key": "message",
+                                "type": "text",
+                                "value": "Wiadomość*",
+                                "alt": null,
+                                "href": null,
+                                "classes": "flex gap-x-4",
+                                "allowCRUD": false
                             }
                         ],
                         "alt": null,
@@ -401,13 +647,14 @@
         ]
     },
     {
-        "key": "section5",
+        "key": "section9",
         "type": "footer",
+        "label": "Stopka",
         "content": [
             {
                 "key": "element33",
                 "type": "text",
-                "value": "&copy; {{ date('Y') }} Serwis elektroniki - Bartłomiej Biernat",
+                "value": "Serwis elektroniki - Bartłomiej Biernat",
                 "alt": null,
                 "href": null,
                 "classes": "mt-8 text-xs leading-5 text-gray-400",

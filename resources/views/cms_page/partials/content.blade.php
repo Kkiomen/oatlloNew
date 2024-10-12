@@ -1,10 +1,12 @@
 <div class="content">
-    @if($content['type'] == 'text')
+    @if($content['type'] == 'text' || $content['type'] == 'textarea')
         @include('cms_page.partials.type.text', ['element' => $content])
     @elseif($content['type'] == 'image' || $content['type'] == 'img')
         @include('cms_page.partials.type.image', ['element' => $content, 'type' => $content['type']])
-    @elseif($content['type'] == 'button')
+    @elseif($content['type'] == 'button' )
         @include('cms_page.partials.type.button', ['element' => $content, 'type' => $content['type']])
+    @elseif($content['type'] == 'link')
+        @include('cms_page.partials.type.link', ['element' => $content, 'type' => $content['type']])
     @endif
 
     @if(!empty($content['content']))

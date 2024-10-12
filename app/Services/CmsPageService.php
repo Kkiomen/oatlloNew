@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Helper\CmsPageContentHelper;
 use App\Models\CmsPage;
 
 class CmsPageService
@@ -38,6 +39,7 @@ class CmsPageService
 
         if ($info['changes']) {
             $page->json_page = $jsonPage;
+            $page->to_view  = CmsPageContentHelper::prepareOnRowTable($jsonPage);
             $page->save();
         }
 

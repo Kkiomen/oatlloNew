@@ -4,9 +4,11 @@
             @foreach($page as $section)
                 <div class="mx-auto grid max-w-7xl bg-white shadow shadow-2xl rounded-2xl my-6 p-10">
 
+                    @if(!empty($section['label']))
                     <div class="border-b-2 border-gray-200 mb-5 pb-3">
-                        Sekcja {{ $loop->iteration }}
+                        {{ $section['label'] }}
                     </div>
+                    @endif
 
                     @if(!empty($section['content']))
 
@@ -91,6 +93,8 @@
                             formData.append('file', file);
                             formData.append('website', '{{ $namePage }}');
                             formData.append('key', elementKey);
+
+                            console.log(elementKey)
 
                             try {
                                 const response = await fetch('{{ route('upload.image') }}', {

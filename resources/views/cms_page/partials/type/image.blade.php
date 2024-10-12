@@ -1,13 +1,13 @@
 <div class="mt-3 border p-3 border-gray-300 rounded-xl">
     <div class="mb-3">
-        <i class="fa-solid fa-image"></i> - Obraz
+        <i class="fa-solid fa-image"></i> - @if(!empty($element['label'])) {{ $element['label'] }} @else Obraz @endif
     </div>
 
 
     <div class="mt-5" x-data="{ open: true }">
         <div class="mt-3">
             @php
-                $currentImage = empty($element['file']) ? 'storage/empty_image.jpg' : $element['file'];
+                $currentImage = empty($element['file']) ? 'storage/uploads/empty_image.jpg' : $element['file'];
                 $pattern = "/asset\('(.+?)'\)/";
                 if (preg_match($pattern, $currentImage, $matches)) {
                     $currentImage = $matches[1];
