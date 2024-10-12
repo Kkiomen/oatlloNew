@@ -23,7 +23,6 @@ class CmsPageController extends Controller
             abort(404);
         }
 
-        dump($foundedPage->json_page);
         return view('cms_page.edit', [
             'page' => $foundedPage->json_page,
             'namePage' => $foundedPage->name

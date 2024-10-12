@@ -9,7 +9,7 @@
         "ext-gd": "*",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "symfony/filesystem": "*"
+        "symfony/filesystem": "^7.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
