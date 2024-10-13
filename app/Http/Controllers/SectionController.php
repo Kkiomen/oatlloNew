@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Page;
-use App\Models\Section;
-use App\Models\SectionContent;
+use App\Models\Article;
+use App\Models\ArticleSection;
+use App\Models\ArticleSectionContent;
 use Illuminate\Http\Request;
 
 class SectionController extends Controller
 {
-    public function store(Request $request, Page $page)
+    public function store(Request $request, Article $page)
     {
         $section = $page->sections()->create([
             'type' => $request->type,
@@ -19,33 +19,33 @@ class SectionController extends Controller
         return response()->json(['section_id' => $section->id]);
     }
 
-    public function updateOrder(Request $request, Page $page)
+    public function updateOrder(Request $request, Article $page)
     {
         foreach ($request->order as $index => $section_id) {
-            Section::where('id', $section_id)->update(['order' => $index]);
+            ArticleSection::where('id', $section_id)->update(['order' => $index]);
         }
 
         return response()->json(['status' => 'success']);
     }
 
-    public function destroy(Section $section)
+    public function destroy(ArticleSection $section)
     {
         $section->delete();
         return response()->json(['status' => 'success']);
     }
 
-    public function save(Request $request, Page $page)
+    public function save(Request $request, Article $page)
     {
         $sectionsData = $request->input('sections');
 
         foreach ($sectionsData as $sectionData) {
-            $section = Section::find($sectionData['section_id']);
+            $section = ArticleSection::find($sectionData['section_id']);
             if ($section) {
                 $section->order = $sectionData['order'];
                 $section->save();
 
                 foreach ($sectionData['contents'] as $contentData) {
-                    $content = SectionContent::find($contentData['content_id']);
+                    $content = ArticleSectionContent::find($contentData['content_id']);
                     if ($content) {
                         if ($contentData['content_type'] === 'text') {
                             $content->text_content = $contentData['content_value'];
@@ -63,7 +63,7 @@ class SectionController extends Controller
         return response()->json(['status' => 'success']);
     }
 
-    public function fetchSections(Page $page)
+    public function fetchSections(Article $page)
     {
         // Renderuj widok z sekcjami
         $html = view('pages.partials.sections', compact('page'))->render();

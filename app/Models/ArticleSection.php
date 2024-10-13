@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Section extends Model
+class ArticleSection extends Model
 {
     use HasFactory;
 
@@ -13,11 +13,11 @@ class Section extends Model
 
     public function page()
     {
-        return $this->belongsTo(Page::class);
+        return $this->belongsTo(Article::class);
     }
 
     public function contents()
     {
-        return $this->hasMany(SectionContent::class);
+        return $this->hasMany(ArticleSectionContent::class);
     }
 }

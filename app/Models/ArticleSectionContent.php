@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SectionContent extends Model
+class ArticleSectionContent extends Model
 {
     use HasFactory;
 
@@ -20,6 +20,6 @@ class SectionContent extends Model
 
     public function section()
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(ArticleSection::class);
     }
 }

@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="container mx-auto py-4">
+    <div class="mx-auto grid max-w-7xl bg-white shadow shadow-2xl rounded-2xl my-6 p-10">
         <h1 class="text-2xl font-bold mb-4">Edytuj stronę: {{ $page->name }}</h1>
         <form action="{{ route('pages.update', $page) }}" method="POST">
             @csrf

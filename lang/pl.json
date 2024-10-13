@@ -1,0 +1,4 @@
+{
+    "pagination.previous": "<i class=\"fa-solid mr-4 fa-arrow-left\"></i> Poprzednia strona",
+    "pagination.next": "Następna strona <i class=\"ml-4 fa-solid fa-arrow-right\"></i>"
+}

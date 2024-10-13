@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SectionContent;
+use App\Models\ArticleSectionContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,7 +26,7 @@ class SectionContentController extends Controller
             $data['image_path'] = $path;
         }
 
-        $content = SectionContent::updateOrCreate(
+        $content = ArticleSectionContent::updateOrCreate(
             [
                 'section_id' => $data['section_id'],
                 'position' => $data['position']
@@ -37,7 +37,7 @@ class SectionContentController extends Controller
         return response()->json(['status' => 'success', 'content' => $content]);
     }
 
-    public function destroy(SectionContent $content)
+    public function destroy(ArticleSectionContent $content)
     {
         if ($content->image_path) {
             Storage::disk('public')->delete($content->image_path);

@@ -35,14 +35,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/article', [ArticleController::class, 'list'])->name('articles.list');
-
-    Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('article.edit');
-    Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('article.update');
-
-
-    Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
-    Route::post('/article', [ArticleController::class, 'store'])->name('article.store');
+//    Route::get('/article', [ArticleController::class, 'list'])->name('articles.list');
+//
+//    Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('article.edit');
+//    Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('article.update');
+//
+//
+//    Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
+//    Route::post('/article', [ArticleController::class, 'store'])->name('article.store');
 
     Route::post('/cmspage/update', [CmsPageController::class, 'update'])->name('cmspage.update');
     Route::resource('pages', PageController::class);

@@ -16,7 +16,7 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
-                        {{ __('Zarządzanie') }}
+                        {{ __('Zarządzanie artykułami ') }}
                     </x-nav-link>
 
                     @php $cmsPages = \App\Models\CmsPage::get(); @endphp
@@ -96,7 +96,7 @@
                 </x-responsive-nav-link>
 
                 <x-responsive-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
-                    {{ __('Zarządzanie') }}
+                    {{ __('Zarządzanie artykułami') }}
                 </x-responsive-nav-link>
 
                 @php $cmsPages = \App\Models\CmsPage::get(); @endphp

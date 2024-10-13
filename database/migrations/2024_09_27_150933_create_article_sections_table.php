@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sections', function (Blueprint $table) {
+        Schema::create('article_sections', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('page_id')->constrained()->onDelete('cascade');
+            $table->foreignId('article_id')->constrained()->onDelete('cascade');
             $table->integer('type'); // 1 - pełna szerokość, 2 - podzielona na 2, 3 - podzielona na 3
             $table->integer('order')->default(0);
             $table->timestamps();

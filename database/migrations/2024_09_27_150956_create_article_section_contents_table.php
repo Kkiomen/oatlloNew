@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('section_contents', function (Blueprint $table) {
+        Schema::create('article_section_contents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('section_id')->constrained()->onDelete('cascade');
+            $table->foreignId('article_section_id')->constrained()->onDelete('cascade');
             $table->integer('position'); // pozycja w sekcji (1, 2 lub 3)
             $table->string('content_type'); // 'text' lub 'image'
             $table->text('text_content')->nullable();
