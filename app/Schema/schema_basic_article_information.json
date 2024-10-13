@@ -1,0 +1,117 @@
+[
+    {
+        "key": "basic_article",
+        "label": "Podstawowe informacje",
+        "content": [
+            {
+                "label": "Tytuł artykułu",
+                "key": "basic_article_information_title",
+                "small": "Tytuł strony",
+                "max": 60,
+                "type": "text"
+            },
+            {
+                "label": "Krótki opis artykułu",
+                "key": "basic_article_information_description",
+                "small": "Opis strony",
+                "max": 160,
+                "type": "textarea"
+            },
+            {
+                "label": "Slug",
+                "key": "basic_article_information_slug",
+                "small": "Wygląd adresu URL dla artykułu",
+                "type": "text"
+            },
+            {
+                "label": "Opublikowany",
+                "key": "basic_website_structure_is_published",
+                "small": "Czy artykuł jest opublikowany?",
+                "type": "boolean"
+            },
+            {
+                "label": "Zdjęcie artykułu",
+                "key": "basic_website_structure_image",
+                "small": null,
+                "type": "image"
+            }
+        ]
+    },
+    {
+        "key": "basic-attribute",
+        "label": "Podstawowe informacje - SEO",
+        "dropdown": true,
+        "content": [
+            {
+                "label": "Tytuł strony",
+                "key": "basic_website_structure_title",
+                "small": "<title></title>",
+                "max": 60,
+                "type": "text"
+            },
+            {
+                "label": "Opis strony",
+                "key": "basic_website_structure_description",
+                "small": "<meta name=\"description\" content=\"\">",
+                "type": "textarea",
+                "max": 160
+            }
+        ]
+    },
+    {
+        "key": "seo",
+        "label": "Dodatkowe informacje - SEO",
+        "dropdown": true,
+        "content": [
+            {
+                "label": "Słowa kluczowe",
+                "key": "basic_website_structure_keywords",
+                "small": "<meta name=\"keywords\" content=\"\">",
+                "type": "text"
+            },
+            {
+                "label": "Canonical (adres URL)",
+                "key": "basic_website_structure_canonical",
+                "small": "<link rel=\"canonical\" href=\"\">",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "key": "op",
+        "label": "Open Graph",
+        "dropdown": true,
+        "content": [
+            {
+                "label": "Tytuł",
+                "key": "basic_website_structure_op_title",
+                "small": "Tytuł do udostępnienia na Facebooku",
+                "type": "text"
+            },
+            {
+                "label": "Opis",
+                "key": "basic_website_structure_op_description",
+                "small": "Opis strony do wyświetlenia w mediach społecznościowych",
+                "type": "textarea"
+            },
+            {
+                "label": "Obrazek",
+                "key": "basic_website_structure_op_image",
+                "small": null,
+                "type": "image"
+            },
+            {
+                "label": "Url",
+                "key": "basic_website_structure_op_url",
+                "small": "https://example.com/adres-strony",
+                "type": "text"
+            }
+        ]
+    },
+    {
+        "key": "content-list",
+        "label": "Treść artykułu",
+        "type": "array",
+        "content": []
+    }
+]

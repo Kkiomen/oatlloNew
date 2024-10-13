@@ -1,8 +1,10 @@
 <x-app-layout>
     <div class="container mx-auto py-4">
+
+
         @csrf
             @foreach($page as $section)
-                <div class="mx-auto grid max-w-7xl bg-white shadow shadow-2xl rounded-2xl my-6 p-10">
+                <div class="md:mx-auto grid max-w-7xl bg-white md:shadow md:shadow-2xl md:rounded-2xl my-6 px-3 py-3 md:p-10">
 
                     @if(!empty($section['label']))
                     <div class="border-b-2 border-gray-200 mb-5 pb-3">

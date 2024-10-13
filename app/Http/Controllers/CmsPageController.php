@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CmsPageService;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -30,72 +31,23 @@ class CmsPageController extends Controller
         ]);
     }
 
-    public function uploadImage(Request $request, CmsPageService $cmsPageService)
+    public function uploadImage(Request $request, CmsPageService $cmsPageService, ImageService $imageService)
     {
         $data = $request->all();
 
         // Przechowywanie obrazu
         $file = $request->file('file');
         if ($file) {
-            // Get the original file extension and path
-            $originalExtension = strtolower($file->getClientOriginalExtension()); // Convert to lowercase for consistency
+            $filePath = $imageService->uploadImage($file);
 
-            // If the file is already WebP, just store it without conversion
-            if ($originalExtension === 'webp') {
-                $filePath = $file->storeAs('uploads', time() . '.webp', 'public');
-
-                // Update the CMS with the WebP file path
-                $cmsPageService->updateKey($data['website'], $data['key'] . '0001000file', 'storage/' . $filePath);
-
-                return response()->json(['filePath' => asset('storage/' . $filePath)]);
+            if($filePath == null){
+                return response()->json(['status' => 'error']);
             }
-
-            // If the file is already Ico, just store it without conversion
-            if ($originalExtension === 'ico') {
-                $filePath = $file->storeAs('uploads', time() . '.ico', 'public');
-
-                // Update the CMS with the Ico file path
-                $cmsPageService->updateKey($data['website'], $data['key'] . '0001000file', 'storage/' . $filePath);
-
-                return response()->json(['filePath' => asset('storage/' . $filePath)]);
-            }
-
-
-            // Store the file temporarily in its original format
-            $filePath = $file->storeAs('uploads', time() . '.' . $originalExtension, 'public');
-            $originalFilePath = storage_path('app/public/' . $filePath);
-
-            // Create the new WebP filename and path
-            $webpFilePath = 'uploads/' . time() . '.webp';
-            $webpFullPath = storage_path('app/public/' . $webpFilePath);
-
-            // Convert the image to WebP based on its format
-            switch ($originalExtension) {
-                case 'jpeg':
-                case 'jpg':
-                    $image = imagecreatefromjpeg($originalFilePath);
-                    break;
-                case 'png':
-                    $image = imagecreatefrompng($originalFilePath);
-                    break;
-                case 'gif':
-                    $image = imagecreatefromgif($originalFilePath);
-                    break;
-                default:
-                    return response()->json(['status' => 'error', 'message' => 'Unsupported image format']);
-            }
-
-            // Save the image as WebP
-            imagewebp($image, $webpFullPath, 80); // Quality set to 80 (adjust as needed)
-            imagedestroy($image); // Free up memory
-
-            // Delete the original file as it’s no longer needed
-            unlink($originalFilePath);
 
             // Update the CMS with the WebP file path
-            $cmsPageService->updateKey($data['website'], $data['key'] . '0001000file', 'storage/' . $webpFilePath);
+            $cmsPageService->updateKey($data['website'], $data['key'] . '0001000file', $filePath);
 
-            return response()->json(['filePath' => asset('storage/' . $webpFilePath)]);
+            return response()->json(['filePath' => asset($filePath)]);
         }
 
         return response()->json(['status' => 'error']);

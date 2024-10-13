@@ -51,7 +51,7 @@ class CmsPageService
      * @param $inputString
      * @return array|null
      */
-    protected function splitKey($inputString): ?array
+    public function splitKey($inputString): ?array
     {
         $searchString = '0001000';
 
@@ -115,7 +115,7 @@ class CmsPageService
      * @param array $info
      * @return void
      */
-    protected function changeJsonContent(array &$content, ?array $splitKey, string $value, array &$info): void
+    public function changeJsonContent(array &$content, ?array $splitKey, string $value, array &$info): void
     {
         if ($splitKey['element'] === null) {
 

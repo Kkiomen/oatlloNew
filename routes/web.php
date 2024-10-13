@@ -35,17 +35,22 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-//    Route::get('/article', [ArticleController::class, 'list'])->name('articles.list');
-//
-//    Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('article.edit');
-//    Route::put('/articles/{id}', [ArticleController::class, 'update'])->name('article.update');
-//
-//
-//    Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
-//    Route::post('/article', [ArticleController::class, 'store'])->name('article.store');
 
-    Route::post('/cmspage/update', [CmsPageController::class, 'update'])->name('cmspage.update');
+
+
+
+
+
+    Route::get('/pages/create-methods', [PageController::class, 'createMethods'])->name('pages.createMethods');
     Route::resource('pages', PageController::class);
+    Route::post('/pages/update/key/{article}', [PageController::class, 'updateArticleKey'])->name('pages.updateKey');
+    Route::post('/pages/update/key/{article}/image', [PageController::class, 'updateImage'])->name('pages.updateImage');
+
+
+
+
+
+
 
     Route::post('pages/{page}/sections', [SectionController::class, 'store'])->name('sections.store');
     Route::post('pages/{page}/sections/order', [SectionController::class, 'updateOrder'])->name('sections.updateOrder');
@@ -60,6 +65,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cmspage/{slug}', [CmsPageController::class, 'edit'])->name('cmspage.edit');
     Route::post('/cmspage/image/uplaod', [CmsPageController::class, 'uploadImage'])->name('upload.image');
+
+
+
+    Route::post('/cmspage/update', [CmsPageController::class, 'update'])->name('cmspage.update');
 
 
 

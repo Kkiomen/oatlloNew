@@ -1,0 +1,40 @@
+[
+    {
+        "text": {
+            "type": "string",
+            "value": null,
+            "hasLink": false,
+            "linkRedirect": null
+        },
+        "textarea": {
+            "type": "text",
+            "value": null,
+            "hasLink": false,
+            "linkRedirect": null
+        },
+        "image": {
+            "type": "image",
+            "alt": null,
+            "file": null,
+            "hasLink": false,
+            "linkRedirect": null
+        },
+        "gallery": {
+            "type": "gallery",
+            "images": [],
+            "hasLink": false,
+            "linkRedirect": null
+        },
+        "button": {
+            "type": "button",
+            "text": null,
+            "link": null,
+            "hasLink": false,
+            "linkRedirect": null
+        },
+        "boolean": {
+            "type": "boolean",
+            "value": false
+        }
+    }
+]
