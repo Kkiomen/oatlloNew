@@ -20,7 +20,7 @@ class PageController extends Controller
         // Filtracja artykułów na podstawie tytułu, jeśli pole wyszukiwania nie jest puste
         $articles = Article::when($search, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%')->orWhere('slug', 'like', '%' . $search . '%');
-        })->orderBy('created_at', 'desc')->paginate(10);
+        })->orderBy('created_at', 'desc')->where('type', 'normal')->paginate(10);
 
         return view('pages.index', [
             'pages' => $articles,

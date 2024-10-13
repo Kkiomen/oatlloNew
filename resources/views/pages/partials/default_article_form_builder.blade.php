@@ -33,16 +33,6 @@
                     @endif
                 </div>
             </div>
-
-
-
-
-
-            {{--                    @if(!empty($section['subsections']))--}}
-            {{--                        @include('cms_page.partials.subsections', ['section' => $section])--}}
-            {{--                    @endif--}}
-
-
         </div>
     @endforeach
 

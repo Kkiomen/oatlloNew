@@ -24,6 +24,12 @@
                 "type": "text"
             },
             {
+                "label": "Kategoria",
+                "key": "basic_article_information_category",
+                "small": "Kategoria artykułu",
+                "type": "category"
+            },
+            {
                 "label": "Opublikowany",
                 "key": "basic_website_structure_is_published",
                 "small": "Czy artykuł jest opublikowany?",

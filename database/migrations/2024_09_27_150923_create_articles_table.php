@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->boolean('is_published')->default(false);
-            $table->json('json_content')->nullable();
-            $table->json('view_content')->nullable();
-            $table->string('normal')->default('normal');
-            $table->timestamps();
-        });
+//        Schema::create('articles', function (Blueprint $table) {
+//            $table->id();
+//            $table->string('name');
+//            $table->string('slug')->unique();
+//            $table->boolean('is_published')->default(false);
+//            $table->json('json_content')->nullable();
+//            $table->json('view_content')->nullable();
+//            $table->string('type')->default('normal');
+//            $table->timestamps();
+//        });
     }
 
     /**

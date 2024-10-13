@@ -35,6 +35,10 @@
         "boolean": {
             "type": "boolean",
             "value": false
+        },
+        "category": {
+            "type": "category",
+            "value": null
         }
     }
 ]

@@ -17,6 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'pages/update/*',
         ]);
+        $middleware->validateCsrfTokens(except: [
+            'categories/*',
+        ]);
+        $middleware->validateCsrfTokens(except: [
+            'categories',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

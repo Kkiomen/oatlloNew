@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -39,12 +40,21 @@ Route::middleware('auth')->group(function () {
 
 
 
-
+    // ======== Articles =========
 
     Route::get('/pages/create-methods', [PageController::class, 'createMethods'])->name('pages.createMethods');
     Route::resource('pages', PageController::class);
     Route::post('/pages/update/key/{article}', [PageController::class, 'updateArticleKey'])->name('pages.updateKey');
     Route::post('/pages/update/key/{article}/image', [PageController::class, 'updateImage'])->name('pages.updateImage');
+
+
+    // ======== Categories =========
+
+
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.fetch');
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 
 
 
