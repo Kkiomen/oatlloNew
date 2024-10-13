@@ -53,6 +53,9 @@
                                 </div>
                             </div>
 
+                            <div class="text-xs text-gray-400 mt-2">
+                                <i class="fa-regular fa-calendar-plus mr-2"></i> {{ $page->created_at->format('d.m.Y') }}
+                            </div>
                         </div>
                     </div>
                     <div>
