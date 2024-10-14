@@ -20,4 +20,19 @@ class Article extends Model
     {
         return $this->hasMany(ArticleSection::class)->orderBy('order');
     }
+
+    /**
+     * Zwraca nazwę kategorii
+     * @return string|null
+     */
+    public function getCategoryName(): ?string
+    {
+        $categoryName = null;
+        if($this->category_id !== null){
+            $category = Category::find($this->category_id);
+            $categoryName = $category?->name;
+        }
+
+        return $categoryName;
+    }
 }

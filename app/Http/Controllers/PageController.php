@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Category;
+use App\Models\CmsPage;
 use App\Services\Article\ArticleService;
 use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;

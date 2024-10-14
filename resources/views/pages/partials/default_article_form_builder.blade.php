@@ -68,7 +68,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Dane zapisane:', data);
-                    if(data.changes){
+                    if(data.result.changes){
                         notyf.success('Zapisano informacje');
                     }
                 })

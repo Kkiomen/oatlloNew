@@ -54,7 +54,7 @@
                             <tr>
                                 <td class="px-4 py-2" x-text="category.name"></td>
                                 <td class="px-4 py-2 flex justify-end gap-3">
-                                    <i class="fa-solid fa-hand-pointer text-emerald-600 hover:text-emerald-900 cursor-pointer" @click="chooseCategory(category.id)"></i>
+                                    <i class="fa-solid fa-hand-pointer text-emerald-600 hover:text-emerald-900 cursor-pointer" @click="chooseCategory(category)"></i>
                                     <i class="fa-solid fa-pen-to-square text-indigo-600 hover:text-indigo-900 cursor-pointer" @click="editCategory(category)"></i>
                                     <i class="fa-solid fa-trash text-red-500 hover:text-red-900 cursor-pointer" @click="confirmDelete(category.id)"></i>
                                 </td>
@@ -171,10 +171,10 @@
                 });
 
             },
-            chooseCategory(categoryId) {
-
+            chooseCategory(category) {
+                var notyf = new Notyf();
                 const formData = {};
-                formData['basic_article_information_category0001000'] = categoryId;
+                formData['basic_article_information_category0001000'] = category.id;
 
 
                 fetch('{{ route('pages.updateKey', ['article' => $article->id]) }}', {
@@ -187,8 +187,9 @@
                     .then(response => response.json())
                     .then(data => {
                         console.log('Dane zapisane:', data);
-                        if(data.changes){
+                        if(data.result.changes){
                             notyf.success('Zapisano informacje');
+                            document.getElementById("buttonCategory").innerHTML  = "<span class=\"mt-2 text-sm/6 font-medium tracking-tight text-blue-600 mr-4\">Wybrana kategoria:</span> <span class=\"mt-2 max-w-lg text-lg/7 text-gray-600\">" + category.name + "</span>";
                         }
                         this.closePanel();
                     })
