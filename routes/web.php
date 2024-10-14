@@ -46,7 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('pages', PageController::class);
     Route::post('/pages/update/key/{article}', [PageController::class, 'updateArticleKey'])->name('pages.updateKey');
     Route::post('/pages/update/key/{article}/image', [PageController::class, 'updateImage'])->name('pages.updateImage');
-
+    Route::post('/articles/{id}/contents', [PageController::class, 'saveContents'])->name('article.saveContents');
+    Route::post('/articles/{article}', [PageController::class, 'saveContents'])->name('articles.saveContents');
+    Route::post('/image/upload', [PageController::class, 'saveContentsImage'])->name('articles.saveContentsImage');
 
     // ======== Categories =========
 

@@ -90,7 +90,7 @@
 
 <script>
     const urlWEB = '{{ url('/') }}';
-
+    let isRequest = false;
     function categoryPanel() {
         return {
             isPanelOpen: true,
@@ -177,6 +177,9 @@
                 formData['basic_article_information_category0001000'] = category.id;
 
 
+                if(isRequest == false){
+                    isRequest = true;
+
                 fetch('{{ route('pages.updateKey', ['article' => $article->id]) }}', {
                     method: 'POST',
                     headers: {
@@ -187,6 +190,7 @@
                     .then(response => response.json())
                     .then(data => {
                         console.log('Dane zapisane:', data);
+                        isRequest = false;
                         if(data.result.changes){
                             notyf.success('Zapisano informacje');
                             document.getElementById("buttonCategory").innerHTML  = "<span class=\"mt-2 text-sm/6 font-medium tracking-tight text-blue-600 mr-4\">Wybrana kategoria:</span> <span class=\"mt-2 max-w-lg text-lg/7 text-gray-600\">" + category.name + "</span>";
@@ -196,7 +200,9 @@
                     .catch(error => {
                         console.error('Błąd:', error);
                         notyf.error('Wystąpił błąd podczas zapisywania danych');
+                        isRequest = false;
                     });
+                }
             },
             async init() {
                 this.fetchCategories();

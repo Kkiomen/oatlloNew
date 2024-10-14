@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('is_published')->default(false);
             $table->json('json_content')->nullable();
             $table->json('view_content')->nullable();
+            $table->json('contents')->nullable();
             $table->string('type')->default('normal');
             $table->bigInteger('category_id')->nullable();
             $table->timestamps();

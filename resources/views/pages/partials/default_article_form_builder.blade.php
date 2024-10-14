@@ -19,8 +19,12 @@
                         {{ $content['label'] }}
                     </div>
                 @endif
-
             @endif
+
+            @if($content['key'] === 'content-list')
+                @include('pages.partials.contents', ['content' => $content])
+            @endif
+
 
             <div x-show="!open" >
                 <div class="pb-10">

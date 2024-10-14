@@ -23,6 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'categories',
         ]);
+        $middleware->validateCsrfTokens(except: [
+            'articles/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

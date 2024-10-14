@@ -10,6 +10,7 @@ use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PageController extends Controller
@@ -111,5 +112,24 @@ class PageController extends Controller
         }
 
         return response()->json(['status' => 'error']);
+    }
+
+    public function saveContents(Request $request, Article $article)
+    {
+        $contents = $request->input('contents');
+        $article->contents = $contents;
+        $article->save();
+
+        return response()->json(['status' => 'success']);
+    }
+
+    public function saveContentsImage(Request $request)
+    {
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images', 'public');
+            $url = Storage::url($path);
+            return response()->json(['url' => $url]);
+        }
+        return response()->json(['error' => 'No image uploaded'], 400);
     }
 }

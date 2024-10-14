@@ -9,11 +9,12 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'is_published', 'json_content', 'type', 'view_content'];
+    protected $fillable = ['name', 'slug', 'is_published', 'json_content', 'type', 'view_content', 'contents'];
 
     protected $casts = [
         'json_content' => 'array',
-        'view_content' => 'array'
+        'view_content' => 'array',
+        'contents' => 'array',
     ];
 
     public function sections()
