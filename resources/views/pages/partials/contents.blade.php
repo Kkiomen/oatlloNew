@@ -1,15 +1,15 @@
 <div x-data="articleEditor({{ json_encode($article->contents ?? []) }})" class="p-6">
     <!-- Display Existing Sections -->
-    <div id="sections" class="space-y-4">
+    <div id="sections content-articles-list" class="space-y-4">
         <template x-for="(section, index) in sections" :key="section.id">
-            <div class="border p-4 rounded" x-data="{ section }" x-init="$watch('section', value => sections[index] = value)" draggable="true" @dragstart="dragStart($event, index)" @dragover.prevent @drop="drop($event, index)">
+            <div class="border rounded" x-data="{ section }" x-init="$watch('section', value => sections[index] = value)" draggable="true" @dragstart="dragStart($event, index)" @dragover.prevent @drop="drop($event, index)">
                 <!-- Section Content -->
-                <div class="flex justify-between items-center">
+                <div class="flex flex-col md:flex-row justify-between items-center ">
                     <div class="w-full">
                         <!-- Text Section -->
-                        <template x-if="section.type === 'text'">
+                        <template class="p-3" x-if="section.type === 'text'">
                             <div>
-                                <textarea x-model="section.content" class="w-full border rounded" placeholder="Wpisz treść..."></textarea>
+                                <textarea x-model="section.content" class="w-full border contents-textarea p-3 rounded" placeholder="Wpisz treść..."></textarea>
                             </div>
                         </template>
 
@@ -65,17 +65,34 @@
                     </div>
 
                     <!-- Section Controls -->
-                    <div class="flex flex-col space-y-2 ml-4">
-                        <button @click="moveUp(section.id)" :disabled="index === 0" class="p-2 bg-gray-200 rounded" :class="{ 'opacity-50 cursor-not-allowed': index === 0 }">
-                            <i class="fas fa-arrow-up"></i>
-                        </button>
-                        <button @click="moveDown(section.id)" :disabled="index === sections.length - 1" class="p-2 bg-gray-200 rounded" :class="{ 'opacity-50 cursor-not-allowed': index === sections.length - 1 }">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                        <button @click="removeSection(section.id)" class="p-2 bg-red-200 rounded">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                    <div class="hidden lg:block">
+                        <div class="flex flex-col space-y-2 ml-4 bg-gray-600 p-2 ">
+                            <button @click="moveUp(section.id)" :disabled="index === 0" class="p-2 bg-gray-200 hover:bg-gray-300 rounded" :class="{ 'opacity-50 cursor-not-allowed': index === 0 }">
+                                <i class="fas fa-arrow-up"></i>
+                            </button>
+                            <button @click="moveDown(section.id)" :disabled="index === sections.length - 1" class="p-2 bg-gray-200 hover:bg-gray-300 rounded" :class="{ 'opacity-50 cursor-not-allowed': index === sections.length - 1 }">
+                                <i class="fas fa-arrow-down"></i>
+                            </button>
+                            <button @click="removeSection(section.id)" class="p-2 bg-gray-900 text-white border border-gray-300 rounded">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
+
+                    <div class="block lg:hidden w-full">
+                        <div class="flex flex-row bg-gray-600 p-2 gap-4">
+                            <button @click="moveUp(section.id)" :disabled="index === 0" class="p-1 w-full bg-gray-200 hover:bg-gray-300 rounded" :class="{ 'opacity-50 cursor-not-allowed': index === 0 }">
+                                <i class="fas fa-arrow-up text-sm"></i>
+                            </button>
+                            <button @click="moveDown(section.id)" :disabled="index === sections.length - 1" class="p-1 w-full bg-gray-200 hover:bg-gray-300 rounded" :class="{ 'opacity-50 cursor-not-allowed': index === sections.length - 1 }">
+                                <i class="fas fa-arrow-down text-sm"></i>
+                            </button>
+                            <button @click="removeSection(section.id)" class="p-1 bg-gray-900 w-full text-white border border-gray-300 rounded">
+                                <i class="fas fa-trash text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </template>

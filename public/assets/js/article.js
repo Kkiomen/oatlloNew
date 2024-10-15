@@ -1,3 +1,5 @@
+
+
 function articleEditor(initialSections) {
     const generateId = () => '_' + Math.random().toString(36).substr(2, 9);
     return {
@@ -5,9 +7,28 @@ function articleEditor(initialSections) {
         showSectionOptions: false,
         showSectionContentOptions: true,
         generateId,
+        initEditors() {
+            // Find all textareas and initialize CKEditor
+            this.$nextTick(() => {
+                document.querySelectorAll('textarea').forEach((textarea) => {
+                    if (!textarea.classList.contains('editor-initialized')) {
+                        ClassicEditor
+                            .create(textarea, editorConfig)
+                            .then(editor => {
+                                // Mark this textarea as initialized
+                                textarea.classList.add('editor-initialized');
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
+                    }
+                });
+            });
+        },
         // Upewnij się, że wszystkie metody są poprawnie zdefiniowane
         addTextSection() {
             this.sections.push({ type: 'text', content: '', id: generateId() });
+            this.initEditors();
         },
         addImageSection() {
             this.sections.push({ type: 'image', content: '', id: generateId()  });
@@ -125,7 +146,7 @@ function articleEditor(initialSections) {
                     contents: this.sections
                 })
             })
-        .then(response => response.json())
+            .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
                         alert('Zapisano pomyślnie!');
@@ -136,3 +157,17 @@ function articleEditor(initialSections) {
         }
     }
 }
+
+function initializeCKEditors() {
+    document.querySelectorAll('.content-article').forEach((textarea) => {
+        console.log(textarea)
+        ClassicEditor
+            .create(textarea, editorConfig)
+            .catch(error => {
+                console.error(error);
+            });
+    });
+}
+
+
+

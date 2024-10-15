@@ -45,7 +45,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 <script>
-    let articleId = {{ $article->id }};
     document.addEventListener('DOMContentLoaded', function() {
         var notyf = new Notyf();
         // Funkcja, która zapisuje dane z pojedynczego input/textarea
