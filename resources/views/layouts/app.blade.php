@@ -25,7 +25,18 @@
 
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+
+        <!-- Ekran ładowania -->
+        <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
+            <div class="text-center">
+                <i class="fas fa-spinner fa-spin text-4xl text-gray-500"></i>
+                <p class="mt-4 text-lg text-gray-700">Ładowanie strony...</p>
+            </div>
+        </div>
+
+
+
+        <div class="min-h-screen bg-gray-100" id="main-content">
             @include('layouts.navigation')
 
             <!-- Page Heading -->

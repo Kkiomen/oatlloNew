@@ -11,7 +11,6 @@ window.Alpine = Alpine;
 Alpine.start();
 
 
-
 // const url = '/automatyka/public';
 // const urlSegments = window.location.pathname.split('/');
 // const pageId = urlSegments[4]; //
@@ -19,7 +18,6 @@ Alpine.start();
 const url = 'https://temp-dashboard.oatllo.pl';
 const urlSegments = window.location.pathname.split('/');
 const pageId = urlSegments[2]; //
-
 
 
 import {
@@ -205,21 +203,29 @@ const editorConfig = {
         contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
     }
 };
-
-
 initializeCKEditors();
+setInterval(() => {
+    initializeCKEditors();
+}, 3000);
 
 
 function initializeCKEditors() {
-    console.log(document.querySelectorAll('textarea.contents-textarea').length)
     document.querySelectorAll('textarea.contents-textarea').forEach(textarea => {
-        console.log(textarea);
-        ClassicEditor.create(textarea, editorConfig)
-            .then(editor => {
-                textarea.editorInstance = editor;
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        // Sprawdź, czy edytor został już zainicjalizowany dla tego textarea
+        if (!textarea.editorInstance) {
+            ClassicEditor.create(textarea, editorConfig)
+                .then(editor => {
+                    // Przypisz instancję edytora do textarea, aby nie inicjalizować go ponownie
+                    textarea.editorInstance = editor;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
     });
 }
+
+window.addEventListener('load', function () {
+    document.getElementById('loading-screen').classList.add('hidden');
+    document.getElementById('main-content').classList.remove('blur-lg');
+});

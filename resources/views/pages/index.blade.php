@@ -144,7 +144,7 @@
                                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                                             <a href="{{ route('pages.edit', $page) }}"
                                                class="bg-green-500 text-white px-2 py-1 rounded">Edytuj</a>
-                                            <form action="{{ route('pages.destroy', $page) }}" method="POST"
+                                            <form x-data @submit.prevent="confirmDelete($el)" action="{{ route('pages.destroy', $page) }}" method="POST"
                                                   class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
@@ -167,5 +167,22 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function confirmDelete(formElement) {
+            Swal.fire({
+                title: 'Czy na pewno chcesz usunąć?',
+                text: "Tej operacji nie można cofnąć!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Tak, usuń!',
+                cancelButtonText: 'Anuluj'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    formElement.submit();
+                }
+            })
+        }
+    </script>
 </x-app-layout>

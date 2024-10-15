@@ -56,9 +56,14 @@ class PageController extends Controller
         return redirect()->route('pages.edit', $page->id);
     }
 
-    public function edit(Article $page)
+    public function edit(int $page)
     {
-        return view('pages.edit', compact('page'));
+        $article = Article::findOrFail($page);
+
+        return view('pages.create', [
+            'contents' => $article->json_content,
+            'article' => $article,
+        ]);
     }
 
     public function update(Request $request, Article $page)
@@ -118,6 +123,7 @@ class PageController extends Controller
     {
         $contents = $request->input('contents');
         $article->contents = $contents;
+        $article->type = 'normal';
         $article->save();
 
         return response()->json(['status' => 'success']);
@@ -128,7 +134,7 @@ class PageController extends Controller
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('images', 'public');
             $url = Storage::url($path);
-            return response()->json(['url' => $url]);
+            return response()->json(['url' => asset($url)]);
         }
         return response()->json(['error' => 'No image uploaded'], 400);
     }

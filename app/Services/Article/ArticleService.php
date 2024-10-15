@@ -6,6 +6,7 @@ namespace App\Services\Article;
 
 use App\Models\Article;
 use App\Services\CmsPageService;
+use Illuminate\Support\Str;
 
 class ArticleService
 {
@@ -63,6 +64,12 @@ class ArticleService
 
             if(!empty($article->view_content['basic_article_information_category'])){
                 $article->category_id = intval($article->view_content['basic_article_information_category']);
+            }
+            if(!empty($article->view_content['basic_article_information_title'])){
+                $article->name = $article->view_content['basic_article_information_title'];
+            }
+            if(!empty($article->view_content['basic_article_information_slug'])){
+                $article->slug = Str::slug($article->view_content['basic_article_information_slug']);
             }
             $article->save();
         }
