@@ -90,6 +90,7 @@ const editorConfig = {
         ],
         shouldNotGroupWhenFull: false
     },
+    viewportTopOffset: 30,
     plugins: [
         AccessibilityHelp,
         Alignment,
@@ -228,4 +229,23 @@ function initializeCKEditors() {
 window.addEventListener('load', function () {
     document.getElementById('loading-screen').classList.add('hidden');
     document.getElementById('main-content').classList.remove('blur-lg');
+});
+
+// Monitorowanie zmian rozmiaru ekranu
+window.addEventListener('resize', () => {
+    // Re-inicjalizacja edytorów na zmianę rozmiaru ekranu
+    document.querySelectorAll('textarea.contents-textarea').forEach(textarea => {
+        if (textarea.editorInstance) {
+            textarea.editorInstance.destroy().then(() => {
+                // Zainicjuj ponownie z odpowiednią konfiguracją dla nowego rozmiaru
+                ClassicEditor.create(textarea, editorConfig)
+                    .then(editor => {
+                        textarea.editorInstance = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        }
+    });
 });
