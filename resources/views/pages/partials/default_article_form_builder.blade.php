@@ -9,7 +9,7 @@
                         <div>
                             {{ $content['label'] }}
                         </div>
-                        <div class="cursor-pointer select-none" @click="open = !open">
+                        <div class="cursor-pointer pr-5 md:pr-0 select-none" @click="open = !open">
                             <i class="fa-solid fa-arrow-down" x-show="open" ></i>
                             <i class="fa-solid fa-arrow-up" x-show="!open" ></i>
                         </div>
