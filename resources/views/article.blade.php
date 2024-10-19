@@ -89,7 +89,7 @@
                 <div class="relative px-6 py-10 sm:py-10 lg:px-8 lg:py-20 lg:pr-0">
                     <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl">
 
-                        <nav class="flex mb-6" aria-label="Breadcrumb">
+                        <nav class="flex mb-16" aria-label="Breadcrumb">
                             <ol role="list" class="flex items-center space-x-4">
                                 <li>
                                     <div>
@@ -106,7 +106,7 @@
                                         <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                             <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                         </svg>
-                                        <a href="{{ route('blog') }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Blog</a>
+                                        <a href="{{ route('blog') }}" class="ml-4 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700">Blog</a>
                                     </div>
                                 </li>
                                 @if($category)
@@ -115,7 +115,7 @@
                                             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                                 <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                             </svg>
-                                            <a href="{{ route('blog.list.category', ['slug' => $category->slug]) }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">{{ $category->name }}</a>
+                                            <a href="{{ route('blog.list.category', ['slug' => $category->slug]) }}" class="ml-4 text-xs sm:text-sm  font-medium text-gray-500 hover:text-gray-700">{{ $category->name }}</a>
                                         </div>
                                     </li>
                                 @endif
@@ -124,13 +124,15 @@
                                         <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                             <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                         </svg>
-                                        <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700" aria-current="page">{{ $article->name }}</a>
+                                        <a href="#" class="ml-4 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700" aria-current="page">{{ $article->name }}</a>
                                     </div>
                                 </li>
                             </ol>
                         </nav>
 
-                        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">{{ $article->name }}</h1>
+
+
+                        <h1 class="text-3xl font-bold mt-3 sm:mt-0 tracking-tight text-gray-900 sm:text-5xl">{{ $article->name }}</h1>
                         <p class="mt-6 text-lg leading-8 text-gray-600">{{ $article->short_description }}</p>
                         <div class="mt-10 flex items-center gap-x-6">
                             <a href="{{ route('index') }}#contact" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Skorzystaj z usług</a>
@@ -149,7 +151,7 @@
 
 <div class="bg-gray-100 px-6 py-16 lg:px-8" id="article-content">
 
-    <div class="mx-auto max-w-7xl text-base leading-7 bg-white p-10 text-gray-700 rounded-xl article-content-theme">
+    <div class="mx-auto max-w-7xl text-base leading-7 bg-white p-0 md:p-10 text-gray-700 rounded-xl article-content-theme">
 
         @foreach($article->contents as $content)
             @if($content['type'] == 'text')
