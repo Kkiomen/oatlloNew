@@ -54,7 +54,7 @@ class Article extends Model
 
     public function getRoute(bool $absolute = true): string
     {
-        if(!empty($category_id)){
+        if(!empty($this->category_id)){
             $category = Category::find($this->category_id);
             if($category){
                 return route('home.article_with_category', [
