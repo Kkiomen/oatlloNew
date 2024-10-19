@@ -84,7 +84,7 @@
                 })
                 .catch(error => {
                     console.error('Błąd:', error);
-                    notyf.error('Wystąpił błąd podczas zapisywania danych');
+                    // notyf.error('Wystąpił błąd podczas zapisywania danych');
                 });
         }
 
