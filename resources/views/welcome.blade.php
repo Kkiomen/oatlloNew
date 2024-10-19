@@ -18,9 +18,9 @@
     <meta property="og:description" content="{{ $basic_website_structure_op_description }}">
     <meta property="og:image" content="{{ $basic_website_structure_op_image_img_file }}">
     <meta property="og:url" content="{{ $basic_website_structure_op_url }}">
-    {!! NoCaptcha::renderJs('pl', true, 'recaptchaCallback') !!}
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -286,42 +286,43 @@
                 </dl>
             </div>
         </div>
-        <form action="{{ route('send.email') }}" method="POST" class="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48">
+        <form x-data="contactForm()" @submit.prevent="submitForm" class="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48">
             @csrf
             <div class="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
                 <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div>
                         <label for="first-name" class="block text-sm font-semibold leading-6 text-white">Imię | Nazwa firmy*</label>
                         <div class="mt-2.5">
-                            <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                            <input type="text" name="first-name" id="first-name" x-model="firstName" required autocomplete="given-name" class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                            <p x-show="errors.firstName" class="text-red-500 text-sm mt-1" x-text="errors.firstName"></p>
                         </div>
                     </div>
                     <div>
                         <label for="last-name" class="block text-sm font-semibold leading-6 text-white">Nazwisko</label>
                         <div class="mt-2.5">
-                            <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                            <input type="text" name="last-name" id="last-name" x-model="lastName" autocomplete="family-name" class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
                         </div>
                     </div>
                     <div class="sm:col-span-2">
                         <label for="email" class="block text-sm font-semibold leading-6 text-white">Email*</label>
                         <div class="mt-2.5">
-                            <input type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                            <input type="email" name="email" id="email" x-model="email" required autocomplete="email" class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                            <p x-show="errors.email" class="text-red-500 text-sm mt-1" x-text="errors.email"></p>
                         </div>
                     </div>
                     <div class="sm:col-span-2">
-                        <label for="phone-number" class="block text-sm font-semibold leading-6 text-white">Temat*</label>
+                        <label for="topic" class="block text-sm font-semibold leading-6 text-white">Temat*</label>
                         <div class="mt-2.5">
-                            <input type="tel" name="topic" id="topic"  class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                            <input type="text" name="topic" id="topic" x-model="topic" required class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6">
+                            <p x-show="errors.topic" class="text-red-500 text-sm mt-1" x-text="errors.topic"></p>
                         </div>
                     </div>
                     <div class="sm:col-span-2">
                         <label for="message" class="block text-sm font-semibold leading-6 text-white">Wiadomość*</label>
                         <div class="mt-2.5">
-                            <textarea name="message" id="message" rows="4" class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"></textarea>
+                            <textarea name="message" id="message" x-model="message" required rows="4" class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"></textarea>
+                            <p x-show="errors.message" class="text-red-500 text-sm mt-1" x-text="errors.message"></p>
                         </div>
-                    </div>
-                    <div class="sm:col-span-2">
-                        {!! NoCaptcha::display(['data-theme' => 'dark']) !!}
                     </div>
                 </div>
                 <div class="mt-8 flex justify-end">
@@ -343,7 +344,64 @@
 </footer>
 
 
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<script>
 
+    function contactForm() {
+        return {
+            firstName: '',
+            lastName: '',
+            email: '',
+            topic: '',
+            message: '',
+            // hcaptcha: '',
+            errors: {},
+            async submitForm() {
+                var notyf = new Notyf();
+
+                if (document.cookie.split('; ').find(row => row.startsWith('emailSent='))) {
+                    notyf.error('Już wysłałeś wiadomość. Spróbuj ponownie później.');
+                    return;
+                }
+
+                try {
+                    let response = await fetch('{{ route('send.email') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            'first-name': this.firstName,
+                            'last-name': this.lastName,
+                            'email': this.email,
+                            'topic': this.topic,
+                            'message': this.message
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    let data = await response.json();
+
+                    if (data.success) {
+                        document.cookie = "emailSent=true; max-age=172800";
+                        notyf.success('Email został wysłany pomyślnie');
+                    }
+                } catch (error) {
+                    console.log(error);
+                    if (error.response && error.response.status === 422) {
+                        this.errors = error.response.data.errors;
+                    } else {
+                        notyf.error('Wystąpił błąd podczas wysyłania emaila');
+                    }
+                }
+            }
+
+        }
+    }
+</script>
 
 
 </body>

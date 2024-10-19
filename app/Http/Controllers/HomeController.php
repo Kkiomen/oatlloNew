@@ -133,10 +133,15 @@ class HomeController extends Controller
     public function sendEmail(Request $request)
     {
         $validate = Validator::make($request->all(), [
+            'first-name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'topic' => 'required|string|max:255',
+            'message' => 'required|string',
             'g-recaptcha-response' => 'required|captcha'
         ]);
 
-        $to = 'kurytplagain@gmail.com';
+//        $to = 'kurytplagain@gmail.com';
+        $to = 'kontakt@serwis-elektroniki-bartlomiej-biernat.pl';
 
         Mail::to($to)->send(new InformationContact([
             'first-name' => $request->get('first-name'),
@@ -145,6 +150,8 @@ class HomeController extends Controller
             'topic' => $request->get('topic'),
             'message' => $request->get('message')
         ]));
-        return redirect()->back()->with('message', 'Email sent successfully');
+
+
+        return response()->json(['success' => true]);
     }
 }

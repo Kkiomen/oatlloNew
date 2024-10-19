@@ -29,6 +29,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'image/upload',
         ]);
+        $middleware->validateCsrfTokens(except: [
+            'send/email',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
