@@ -56,7 +56,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('Wyloguj się') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -91,9 +91,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
+
 
                 <x-responsive-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
                     {{ __('Zarządzanie artykułami') }}
@@ -107,6 +105,9 @@
                     </x-responsive-nav-link>
                 @endforeach
 
+                <x-responsive-nav-link :href="route('profile.edit')">
+                    {{ __('Profil') }}
+                </x-responsive-nav-link>
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -114,7 +115,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Wyloguj się') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

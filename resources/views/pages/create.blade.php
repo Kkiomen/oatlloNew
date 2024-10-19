@@ -34,7 +34,7 @@
             </nav>
         </div>
 
-        <div class="flex justify-end">
+        <div class="flex justify-end mx-5 mt-4">
             <a href="{{ $article->getRoute() }}">
                 <button type="button" class="inline-flex items-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-800">Podgląd</button>
             </a>

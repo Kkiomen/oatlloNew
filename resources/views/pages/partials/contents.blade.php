@@ -1,4 +1,4 @@
-<div x-data="articleEditor({{ json_encode($article->contents ?? []) }})" class="p-6">
+<div x-data="articleEditor({{ json_encode($article->contents ?? []) }})" class="px-1 md:p-6">
     <!-- Display Existing Sections -->
     <div id="sections content-articles-list" class="space-y-4">
         <template x-for="(section, index) in sections" :key="section.id">
