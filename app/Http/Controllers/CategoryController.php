@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required',
-            'slug' => 'required|unique',
+            'slug' => 'required',
         ]);
 
         Category::create([
