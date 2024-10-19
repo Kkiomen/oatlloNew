@@ -56,6 +56,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/create-article', [PageController::class, 'createArticle'])->name('pages.createArticle');
     Route::post('/generate-basic-info', [PageController::class, 'generateBasicInfo'])->name('pages.generateBasicInfo');
     Route::post('/generate-content', [PageController::class, 'generateContent'])->name('pages.generateContent');
+    Route::get('/to-generate-content/{article}', [PageController::class, 'getToGenerateContent'])->name('pages.toGenerateContent');
+    Route::get('/generate-article-content/{article}/{schemaId}', [PageController::class, 'generateContentByIdSchema'])->name('pages.generateContentByIdSchema');
 
     // ======== Categories =========
 

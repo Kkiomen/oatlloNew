@@ -56,8 +56,10 @@
                                     <textarea id="about" name="about" rows="3" x-ref="about" class="block w-full p-5 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"></textarea>
                                 </div>
                                 <p class="mt-3 text-sm leading-6 text-gray-600">Pamiętaj, że AI zrobi dokładnie to, co napiszesz dlatego, warto wypunktować co ma zostać uwzględnione</p>
-                            </div>
 
+                                <img src="{{ asset('/assets/images/diagram_ai.svg') }}" class="w-full/50 mt-10 no-select"/>
+
+                            </div>
                         </div>
                     </div>
 
@@ -81,6 +83,9 @@
                             </li>
                             <li :class="{'font-bold text-green-600': step >= 3}">
                                 3. Generowanie treści <span x-show="step === 3 && isProcessing">(w trakcie...)</span> <span x-show="step > 3">✓</span>
+                                    <div class="ml-10" x-show="isGenerateContent">
+                                        <ul class="list-schema-generate"></ul>
+                                    </div>
                             </li>
                         </ul>
                     </div>
@@ -88,100 +93,7 @@
             </form>
         </div>
 
-
-        <!-- AlpineJS component -->
-        <script>
-            function articleGenerator() {
-                return {
-                    isGenerating: false,
-                    isProcessing: false,
-                    step: 0,
-                    startGenerating() {
-                        this.isGenerating = true;
-                        this.isProcessing = true;
-                        this.step = 1;
-
-                        this.createArticle()
-                            .then(() => {
-                                this.step = 2;
-                                return this.generateBasicInfo();
-                            })
-                            .then(() => {
-                                this.step = 3;
-                                return this.generateContent();
-                            })
-                            .then(() => {
-                                this.isProcessing = false;
-                                // Optional: Redirect or refresh the page
-                                // window.location.href = '/your-redirect-url';
-                            })
-                            .catch(error => {
-                                this.isProcessing = false;
-                                console.error(error);
-                                alert('Wystąpił błąd podczas generowania artykułu.');
-                            });
-                    },
-                    createArticle() {
-                        // Make an AJAX POST request to the server
-                        return fetch('{{ route('pages.createArticle') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            },
-                            body: JSON.stringify({
-                                about: this.$refs.about.value,
-                            }),
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                // Handle response data if needed
-                                if (data.status !== 'success') {
-                                    return Promise.reject('Error in createArticle');
-                                }
-                            });
-                    },
-                    generateBasicInfo() {
-                        // Make an AJAX POST request to the server
-                        return fetch('{{ route('pages.generateBasicInfo') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            },
-                            body: JSON.stringify({
-                                // Pass necessary data
-                            }),
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.status !== 'success') {
-                                    return Promise.reject('Error in generateBasicInfo');
-                                }
-                            });
-                    },
-                    generateContent() {
-                        // Make an AJAX POST request to the server
-                        return fetch('{{ route('pages.generateContent') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            },
-                            body: JSON.stringify({
-                                // Pass necessary data
-                            }),
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.status !== 'success') {
-                                    return Promise.reject('Error in generateContent');
-                                }
-                            });
-                    },
-                }
-            }
-        </script>
+        @include('pages.partials.script_generate')
 
     </div>
 </x-app-layout>

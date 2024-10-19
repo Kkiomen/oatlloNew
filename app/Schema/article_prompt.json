@@ -1,0 +1,16 @@
+[
+    {
+        "basic_article_information_title": "Tytuł artykułu (wyświetlany na stronie)",
+        "basic_article_information_description": "Krótki opis artykułu (wyświetlany na stronie)",
+        "basic_article_information_slug": "Slug",
+        "basic_article_information_category": "Kategoria",
+        "basic_website_structure_is_published": "Opublikowany",
+        "basic_website_structure_image": "Zdjęcie artykułu",
+        "basic_website_structure_title": "Tytuł strony (meta title)",
+        "basic_website_structure_description": "Opis strony (meta description)",
+        "basic_website_structure_keywords": "Słowa kluczowe (meta keywords)",
+        "basic_website_structure_op_title": "Tytuł (Open Graph)"
+
+    }
+]
+

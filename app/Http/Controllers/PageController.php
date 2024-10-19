@@ -7,9 +7,13 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\CmsPage;
 use App\Prompts\Abstract\Enums\OpenApiResultType;
+use App\Prompts\GenerateArticleContentPrompt;
+use App\Prompts\GenerateArticleDecorateTextPrompt;
 use App\Prompts\GenerateArticlePropertiesPrompt;
 use App\Prompts\GenerateArticleQueryImagesPrompt;
+use App\Prompts\GenerateConspectusArticlePrompt;
 use App\Services\Article\ArticleService;
+use App\Services\Helper\GeneratorHelper;
 use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -154,6 +158,8 @@ class PageController extends Controller
     {
         $article = $articleService->getOrCreateArticleInModeAiGenerate();
         $article->ai_content = $request->input('about');
+        $article->contents = null;
+        $article->schema_ai = null;
         $article->save();
 
         return response()->json(['status' => 'success']);
@@ -182,7 +188,18 @@ class PageController extends Controller
             $articleService->updateKey($article, 'basic_website_structure_image'. '0001000file', $imagePath);
         }
 
-        return response()->json(['status' => 'success']);
+        $schemaResult = GenerateConspectusArticlePrompt::generateContent(userContent: $article->name, resultType: OpenApiResultType::JSON_OBJECT);
+        $schema = json_decode($schemaResult, true)['outline'];
+        foreach ($schema as &$element){
+            $element['isGenerated'] = false;
+            $element['id'] = '_'.GeneratorHelper::randomPassword(9);
+        }
+
+        $article->schema_ai = $schema;
+        $article->save();
+
+
+        return response()->json(['status' => 'success', 'articleId' => $article->id]);
     }
 
     public function generateContent(Request $request, ArticleService $articleService)
@@ -191,8 +208,58 @@ class PageController extends Controller
         $article->type = 'normal';
         $article->save();
 
+        $synopsisResult = GenerateConspectusArticlePrompt::generateContent(userContent: $article->name, resultType: OpenApiResultType::JSON_OBJECT);
+        $synopsis = json_decode($synopsisResult, true)['outline'];
 
-        // TODO: Implement the logic to generate content
+
+        $countOfArticleParts = count($synopsis);
+        $contentArticle = [];
+        $i = 1;
+        foreach ($synopsis as $element){
+            $prompt = '- Tytuł artykułu: "'. $article->name .'"\n';
+            if($i > 1){
+                $prompt .= '- Ostatnie 40 znaków ostatnio wygenerowanej części: "'.  substr($contentArticle[$i-2], -40) .'"\n';
+            }
+            $prompt = '- O czym napisać: "'. $element['heading'] .'" ('. $element['content'] .') \n';
+            $prompt .= '- Aktualna część: '. $i . ' z ' . $countOfArticleParts;
+
+            $content = GenerateArticleContentPrompt::generateContent($prompt);
+            $content = GenerateArticleDecorateTextPrompt::generateContent($content);
+            $content = str_replace(['```html','```','``', '` `html', '``html', '`html', '`'], '', $content);
+
+            $contentArticle[] = $content;
+            $i++;
+        }
+
+        $contents = [];
+        foreach ($contentArticle as $item){
+            $contents[] = [
+                'type' => 'text',
+                'content' => $item,
+                'id' => GeneratorHelper::randomPassword(15)
+            ];
+        }
+
+        $article->contents = $contents;
+        $article->save();
+
         return response()->json(['status' => 'success']);
+    }
+
+    public function getToGenerateContent(Request $request, Article $article): JsonResponse
+    {
+        $type = 'ai_generator';
+        if($article->type === $type){
+            return response()->json(['status' => 'success', 'contents' => $article->schema_ai]);
+        }
+
+        return response()->json(['status' => 'success', 'contents' => null]);
+    }
+
+    public function generateContentByIdSchema(Request $request, Article $article, string $schemaId, ArticleService $articleService): JsonResponse
+    {
+        $result = $articleService->generateContentByKey($article->id, $schemaId);
+
+        return response()->json(['status' => 'success', 'generatedKey' => $schemaId, 'nextKey' => $result['nextKey']]);
     }
 }
