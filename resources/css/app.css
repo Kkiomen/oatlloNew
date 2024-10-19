@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Ensure the CKEditor container fits within its parent */
+.ck-editor {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure the editable area is responsive */
+.ck-editor__editable_inline {
+    min-height: 150px; /* Adjust as needed */
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Optional: Adjust toolbar responsiveness */
+.ck-toolbar {
+    flex-wrap: wrap;
+}
