@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Api\UnsplashApi;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\CmsPage;
+use App\Prompts\Abstract\Enums\OpenApiResultType;
+use App\Prompts\GenerateArticlePropertiesPrompt;
+use App\Prompts\GenerateArticleQueryImagesPrompt;
 use App\Services\Article\ArticleService;
 use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
@@ -12,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class PageController extends Controller
 {
@@ -137,5 +142,57 @@ class PageController extends Controller
             return response()->json(['url' => asset($url)]);
         }
         return response()->json(['error' => 'No image uploaded'], 400);
+    }
+
+    // =============== GENEROWANIE AI ================
+    public function createAi(Request $request): View
+    {
+        return view('pages.create-ai');
+    }
+
+    public function createArticle(Request $request, ArticleService $articleService): JsonResponse
+    {
+        $article = $articleService->getOrCreateArticleInModeAiGenerate();
+        $article->ai_content = $request->input('about');
+        $article->save();
+
+        return response()->json(['status' => 'success']);
+    }
+
+    public function generateBasicInfo(Request $request, ArticleService $articleService, ImageService $imageService): JsonResponse
+    {
+        // Get or create article
+        $article = $articleService->getOrCreateArticleInModeAiGenerate();
+
+        // Generate basic info
+        $content = GenerateArticlePropertiesPrompt::generateContent(
+            userContent: $article->ai_content,
+            resultType: OpenApiResultType::JSON_OBJECT
+        );
+
+        $content = json_decode($content, true);
+        foreach ($content as $key => $value) {
+            $result = $articleService->updateKey($article, $key .'0001000', $value);
+        }
+
+        // Generate image
+        $queryImage = GenerateArticleQueryImagesPrompt::generateContent(userContent: $article->name);
+        $imagePath = $imageService->generateImageByQuery($queryImage);
+        if(!empty($imagePath)){
+            $articleService->updateKey($article, 'basic_website_structure_image'. '0001000file', $imagePath);
+        }
+
+        return response()->json(['status' => 'success']);
+    }
+
+    public function generateContent(Request $request, ArticleService $articleService)
+    {
+        $article = $articleService->getOrCreateArticleInModeAiGenerate();
+        $article->type = 'normal';
+        $article->save();
+
+
+        // TODO: Implement the logic to generate content
+        return response()->json(['status' => 'success']);
     }
 }

@@ -9,12 +9,13 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'is_published', 'json_content', 'type', 'view_content', 'contents'];
+    protected $fillable = ['name', 'slug', 'is_published', 'json_content', 'type', 'view_content', 'contents', 'ai_content', 'short_description', 'image'];
 
     protected $casts = [
         'json_content' => 'array',
         'view_content' => 'array',
         'contents' => 'array',
+        'is_published' => 'boolean',
     ];
 
     public function sections()
@@ -35,5 +36,33 @@ class Article extends Model
         }
 
         return $categoryName;
+    }
+
+    public function getShortDescriptionToBlogList(): string
+    {
+        if(empty($this->short_description)){
+            return '';
+        }
+
+        if(strlen($this->short_description) > 109){
+            return substr($this->short_description, 0, 109) . '...';
+        }
+
+        return $this->short_description;
+    }
+
+    public function getRoute(bool $absolute = true): string
+    {
+        if(!empty($category_id)){
+            $category = Category::find($this->category_id);
+            if($category){
+                return route('home.article_with_category', [
+                    'categorySlug' => $category->slug,
+                    'articleSlug' => $this->slug
+                ]);
+            }
+        }
+
+        return route('home.article', ['articleSlug' => $this->slug], $absolute);
     }
 }

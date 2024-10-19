@@ -6,6 +6,7 @@ namespace App\Services\Article;
 
 use App\Models\Article;
 use App\Services\CmsPageService;
+use App\Services\SitemapService;
 use Illuminate\Support\Str;
 
 class ArticleService
@@ -20,7 +21,8 @@ class ArticleService
      */
     public function getOrCreateArticleInModeCreate(): Article
     {
-        $article = Article::where('type', 'create')->first();
+        $type = 'create';
+        $article = Article::where('type', $type)->first();
 
         if($article === null) {
             $article = Article::create([
@@ -28,7 +30,26 @@ class ArticleService
                 'slug' => 'nowy-artykul',
                 'is_published' => false,
                 'json_content' => ArticleContentBuilder::getCreateContent(),
-                'type' => 'create',
+                'type' => $type,
+                'view_content' => null
+            ]);
+        }
+
+        return $article;
+    }
+
+    public function getOrCreateArticleInModeAiGenerate(): Article
+    {
+        $type = 'ai_generator';
+        $article = Article::where('type', $type)->first();
+
+        if($article === null) {
+            $article = Article::create([
+                'name' => 'Artykuł wygenerowany przy pomocy AI',
+                'slug' => 'new-ai-article',
+                'is_published' => false,
+                'json_content' => ArticleContentBuilder::getCreateContent(),
+                'type' => $type,
                 'view_content' => null
             ]);
         }
@@ -71,8 +92,19 @@ class ArticleService
             if(!empty($article->view_content['basic_article_information_slug'])){
                 $article->slug = Str::slug($article->view_content['basic_article_information_slug']);
             }
+            if(!empty($article->view_content['basic_website_structure_image_img_file'])){
+                $article->image = $article->view_content['basic_website_structure_image_img_file'];
+            }
+            if(!empty($article->view_content['basic_article_information_description'])){
+                $article->short_description = $article->view_content['basic_article_information_description'];
+            }
+            if(isset($article->view_content['basic_website_structure_is_published'])){
+                $article->is_published = boolval($article->view_content['basic_website_structure_is_published']);
+            }
             $article->save();
         }
+
+        SitemapService::generateSitemap();
 
         return $info;
     }
@@ -162,7 +194,6 @@ class ArticleService
             }
 
             if($element['type'] == 'image'){
-
                 $currentImage = empty($element['file']) ? 'storage/uploads/empty_image.jpg' : $element['file'];
                 $pattern = "/asset\('(.+?)'\)/";
                 if (preg_match($pattern, $currentImage, $matches)) {
@@ -170,10 +201,10 @@ class ArticleService
                 }
                 $currentImage = str_contains($currentImage, 'http') ? $currentImage : asset($currentImage);
 
-                $listData[$element['key'].'_img_file'] = $currentImage;
-                $listData[$element['key'].'_img_alt'] = !empty($element['alt']) ? $element['alt'] : '';
-                $listData[$element['key'].'_img_has_link'] = !empty($element['hasLink']) ? $element['hasLink'] : '';
-                $listData[$element['key'].'_img_link_redirect'] = !empty($element['linkRedirect']) ? $element['linkRedirect'] : '';
+                $result[$element['key'].'_img_file'] = $currentImage;
+                $result[$element['key'].'_img_alt'] = !empty($element['alt']) ? $element['alt'] : '';
+                $result[$element['key'].'_img_has_link'] = !empty($element['hasLink']) ? $element['hasLink'] : '';
+                $result[$element['key'].'_img_link_redirect'] = !empty($element['linkRedirect']) ? $element['linkRedirect'] : '';
             }
 
             if($element['type'] == 'button'){
@@ -184,10 +215,10 @@ class ArticleService
                     $url = route($matches[1]);
                 }
 
-                $listData[$element['key'].'_btn_link'] = $url;
-                $listData[$element['key'].'_btn_text'] = $element['text'];
-                $listData[$element['key'].'_btn_has_link'] = !empty($element['hasLink']) ? $element['hasLink'] : '';
-                $listData[$element['key'].'_btn_link_redirect'] = !empty($element['linkRedirect']) ? $element['linkRedirect'] : '';
+                $result[$element['key'].'_btn_link'] = $url;
+                $result[$element['key'].'_btn_text'] = $element['text'];
+                $result[$element['key'].'_btn_has_link'] = !empty($element['hasLink']) ? $element['hasLink'] : '';
+                $result[$element['key'].'_btn_link_redirect'] = !empty($element['linkRedirect']) ? $element['linkRedirect'] : '';
             }
 
             if($element['type'] == 'link'){
@@ -198,7 +229,7 @@ class ArticleService
                     $url = route($matches[1]);
                 }
 
-                $listData[$element['key'].'_link'] = $url;
+                $result[$element['key'].'_link'] = $url;
             }
         }
     }

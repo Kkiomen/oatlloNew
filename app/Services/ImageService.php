@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Api\UnsplashApi;
 use Illuminate\Http\UploadedFile;
 
 class ImageService
@@ -61,6 +62,37 @@ class ImageService
             unlink($originalFilePath);
 
             return 'storage/' . $webpFilePath;
+        }
+
+        return null;
+    }
+
+    public function generateImageByQuery(string $queryImage): ?string
+    {
+        $images = UnsplashApi::getImages($queryImage);
+
+        if(!empty($images)) {
+            $image = $images[rand(0, count($images) - 1)];
+            $fileContents = file_get_contents($image['url']);
+
+            // Ścieżka, gdzie zapiszemy plik tymczasowo
+            $tempFilePath = storage_path('app/temp_image.jpg');
+
+            // Zapisanie pliku w systemie plików
+            file_put_contents($tempFilePath, $fileContents);
+
+            // Utworzenie obiektu UploadedFile
+            $uploadedFile = new UploadedFile(
+                $tempFilePath,
+                'image.jpg', // Nazwa pliku
+                mime_content_type($tempFilePath), // Typ MIME pliku
+                null, // Rozmiar pliku - można pominąć, jeśli nie jest wymagane
+                true // Czy plik był przesłany przez HTTP (ustawiamy na true)
+            );
+            $filePath = $this->uploadImage($uploadedFile);
+            unlink($tempFilePath);
+
+            return $filePath;
         }
 
         return null;

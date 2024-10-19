@@ -54,7 +54,14 @@
 
             // Dodaj dane do obiektu formData (tylko jedno pole)
             const key = input.name; // name jako klucz
-            const value = input.value; // wartość wpisana przez użytkownika
+            let value;
+
+            // Sprawdź, czy pole to checkbox
+            if (input.type === 'checkbox') {
+                value = input.checked ? 1 : 0; // Zapisz 1 jeśli zaznaczone, 0 jeśli nie
+            } else {
+                value = input.value; // Wartość wpisana przez użytkownika (dla input i textarea)
+            }
 
             if (key) {
                 formData[key] = value;
@@ -82,7 +89,7 @@
         }
 
         // Nasłuchiwanie eventów blur na input[type="text"] i textarea
-        const inputs = document.querySelectorAll('input[type="text"], textarea');
+        const inputs = document.querySelectorAll('input[type="text"],input[type="checkbox"], textarea');
         inputs.forEach(input => {
             input.addEventListener('blur', saveFormData); // Event na opuszczenie pola
         });

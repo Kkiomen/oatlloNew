@@ -10,17 +10,18 @@ use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CmsPageController;
 
+
+
+
 Route::get('/p/{slug}', [\App\Http\Controllers\HomeController::class, 'page'])->name('home.page');
+Route::get('/blog', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
+Route::get('/blog/lista/{slug}', [\App\Http\Controllers\HomeController::class, 'blogListCategory'])->name('blog.list.category');
+Route::post('send/email', [\App\Http\Controllers\HomeController::class, 'sendEmail'])->name('send.email');
+//Route::get('/blog/', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
-
-Route::get('/fotowoltaika/serwis-i-naprawa-falownikow-do-fotowoltaiki', function () {
-    return view('article');
-})->name('article');
-
-Route::get('/blog', function () {
-    return view('blog');
-})->name('blog');
+Route::get('/kontakt', [HomeController::class, 'contact'])->name('contact');
+Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about.us');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -49,6 +50,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/articles/{id}/contents', [PageController::class, 'saveContents'])->name('article.saveContents');
     Route::post('/articles/{article}', [PageController::class, 'saveContents'])->name('articles.saveContents');
     Route::post('/image/upload', [PageController::class, 'saveContentsImage'])->name('articles.saveContentsImage');
+
+
+    Route::get('/pages/create/ai', [PageController::class, 'createAi'])->name('pages.createAi');
+    Route::post('/create-article', [PageController::class, 'createArticle'])->name('pages.createArticle');
+    Route::post('/generate-basic-info', [PageController::class, 'generateBasicInfo'])->name('pages.generateBasicInfo');
+    Route::post('/generate-content', [PageController::class, 'generateContent'])->name('pages.generateContent');
 
     // ======== Categories =========
 
@@ -86,3 +93,7 @@ Route::middleware('auth')->group(function () {
 
 });
 require __DIR__.'/auth.php';
+
+
+Route::get('/{categorySlug}/{articleSlug}', [\App\Http\Controllers\HomeController::class, 'articleWithCategory'])->name('home.article_with_category');
+Route::get('/{articleSlug}', [\App\Http\Controllers\HomeController::class, 'article'])->name('home.article');

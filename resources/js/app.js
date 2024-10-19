@@ -256,10 +256,10 @@ function adjustEditorToMobile() {
         document.querySelector('.ck-editor__editable').style.maxWidth = '375px';
         document.querySelector('.ck-editor__editable').style.width = '100%';
         document.querySelector('.ck-editor__editable').style.maxWidth = '375px';
-    } else {
-        document.querySelector('.ck-editor__editable').style.width = 'auto';
     }
 }
 
 window.addEventListener('resize', adjustEditorToMobile);
 adjustEditorToMobile();
+
+

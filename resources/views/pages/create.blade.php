@@ -34,6 +34,12 @@
             </nav>
         </div>
 
+        <div class="flex justify-end">
+            <a href="{{ $article->getRoute() }}">
+                <button type="button" class="inline-flex items-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-800">Podgląd</button>
+            </a>
+        </div>
+
         @include('pages.partials.default_article_form_builder', ['content' => $contents, 'article' => $article])
 
 

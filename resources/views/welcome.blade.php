@@ -11,13 +11,14 @@
 
     <link rel="icon" href="{{ $basic_website_structure_favicon_img_file }}" type="image/x-icon">
 
-    <link rel="canonical" href="{{ $basic_website_structure_canonical }}">
+    <link rel="canonical" href="{{ route('index') }}">
     <meta name="keywords" content="{{ $basic_website_structure_keywords }}">
 
     <meta property="og:title" content="{{ $basic_website_structure_op_title }}">
     <meta property="og:description" content="{{ $basic_website_structure_op_description }}">
     <meta property="og:image" content="{{ $basic_website_structure_op_image_img_file }}">
     <meta property="og:url" content="{{ $basic_website_structure_op_url }}">
+    {!! NoCaptcha::renderJs('pl', true, 'recaptchaCallback') !!}
 
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -202,7 +203,7 @@
     </div>
 </div>
 
-
+@if($randomArticles->count() > 0)
 <div class="bg-white py-24 sm:py-32" id="articles">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl text-center">
@@ -210,60 +211,27 @@
             <p class="mt-2 text-lg leading-8 text-gray-600">{{ $element_article_paragraph }}</p>
         </div>
         <div class="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-
+            @foreach($randomArticles as $currentArticle)
             <article class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80" >
-                <img src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
+                <img src="{{ $currentArticle->image }}" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
                 <div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
                 <div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
 
                 <div class="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
-                    <time datetime="2020-03-16" class="mr-8">Mar 16, 20204</time>
+                    <time datetime="{{ $currentArticle->created_at->format('Y-m-d') }}" class="mr-8">{{ $currentArticle->created_at->format('Y-m-d') }}</time>
                 </div>
                 <h3 class="mt-3 text-lg font-semibold leading-6 text-white">
-                    <a href="{{route('article')}}">
+                    <a href="{{ $currentArticle->getRoute() }}">
                         <span class="absolute inset-0"></span>
-                        Naprawa inwerterów solarnych Fronius
+                        {{ $currentArticle->name }}
                     </a>
                 </h3>
             </article>
-
-            <article class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80">
-                <img src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
-                <div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-                <div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
-
-                <div class="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
-                    <time datetime="2020-03-16" class="mr-8">Mar 16, 20204</time>
-                </div>
-                <h3 class="mt-3 text-lg font-semibold leading-6 text-white">
-                    <a href="{{route('article')}}">
-                        <span class="absolute inset-0"></span>
-                        Naprawa softstarterów ABB
-                    </a>
-                </h3>
-            </article>
-
-
-            <article class="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80">
-                <img src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
-                <div class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"></div>
-                <div class="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
-
-                <div class="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
-                    <time datetime="2020-03-16" class="mr-8">Mar 16, 2024</time>
-                </div>
-                <h3 class="mt-3 text-lg font-semibold leading-6 text-white">
-                    <a href="{{route('article')}}">
-                        <span class="absolute inset-0"></span>
-                        Naprawa sterownika silnika
-                    </a>
-                </h3>
-            </article>
-
-
+            @endforeach
         </div>
     </div>
 </div>
+@endif
 
 <div class="relative isolate bg-gray-900" id="contact">
     <div class="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
@@ -318,7 +286,8 @@
                 </dl>
             </div>
         </div>
-        <form action="#" method="POST" class="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48">
+        <form action="{{ route('send.email') }}" method="POST" class="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48">
+            @csrf
             <div class="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
                 <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div>
@@ -350,6 +319,9 @@
                         <div class="mt-2.5">
                             <textarea name="message" id="message" rows="4" class="block w-full rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"></textarea>
                         </div>
+                    </div>
+                    <div class="sm:col-span-2">
+                        {!! NoCaptcha::display(['data-theme' => 'dark']) !!}
                     </div>
                 </div>
                 <div class="mt-8 flex justify-end">

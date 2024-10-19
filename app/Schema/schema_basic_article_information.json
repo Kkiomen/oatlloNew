@@ -30,7 +30,7 @@
                 "type": "category"
             },
             {
-                "label": "Opublikowany",
+                "label": "Czy artykuł jest dostępny publicznie?",
                 "key": "basic_website_structure_is_published",
                 "small": "Czy artykuł jest opublikowany?",
                 "type": "boolean"
@@ -74,12 +74,6 @@
                 "key": "basic_website_structure_keywords",
                 "small": "<meta name=\"keywords\" content=\"\">",
                 "type": "text"
-            },
-            {
-                "label": "Canonical (adres URL)",
-                "key": "basic_website_structure_canonical",
-                "small": "<link rel=\"canonical\" href=\"\">",
-                "type": "text"
             }
         ]
     },
@@ -105,12 +99,6 @@
                 "key": "basic_website_structure_op_image",
                 "small": null,
                 "type": "image"
-            },
-            {
-                "label": "Url",
-                "key": "basic_website_structure_op_url",
-                "small": "https://example.com/adres-strony",
-                "type": "text"
             }
         ]
     },

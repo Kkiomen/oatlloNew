@@ -41,7 +41,7 @@
 
 
                     <div class="overflow-hidden rounded-lg bg-white shadow w-full md:w-1/2 select-none cursor-pointer hover:shadow-2xl md:max-h-96">
-                        <a href="{{ route('pages.create') }}">
+                        <a href="{{ route('pages.createAi') }}">
                             <div class="relative bg-white">
                                 <img class="h-32 w-full bg-gray-50 object-cover lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-1/2" src="{{ asset('/assets/images/generate_ai_article.webp') }}" alt="">
                                 <div class="mx-auto grid max-w-7xl lg:grid-cols-2">

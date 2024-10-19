@@ -19,8 +19,8 @@
     <header class="absolute inset-x-0 top-0 z-50" x-data="{ open: true }">
         <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
             <div class="flex lg:flex-1">
-                <div class="text-white uppercase" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
-                    Bartłomiej Biernat
+                <div class="text-white uppercase" id="logo_header" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
+                    {{ $header_title }}
                 </div>
             </div>
             <div class="flex lg:hidden">
@@ -31,10 +31,10 @@
                     </svg>
                 </button>
             </div>
-            <div class="hidden lg:flex lg:gap-x-12">
-                <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-white">Strona główna</a>
-                <a href="{{ route('blog') }}" class="text-sm font-semibold leading-6 text-white">Blog</a>
-                <a href="{{ route('index') }}#contact" class="text-sm font-semibold leading-6 text-white">Kontakt</a>
+            <div class="hidden lg:flex lg:gap-x-12" id="navbar_desktop">
+                <a href="{{ $navbar_1_btn_href }}" class="text-sm font-semibold leading-6 text-white">{{ $navbar_1_btn_text }}</a>
+                <a href="{{ $navbar_2_btn_href }}" class="text-sm font-semibold leading-6 text-white">{{ $navbar_2_btn_text }}</a>
+                <a href="{{ $navbar_3_btn_href }}" class="text-sm font-semibold leading-6 text-white">{{ $navbar_3_btn_text }}</a>
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
 
@@ -59,29 +59,29 @@
                 </div>
                 <div class="mt-6 flow-root">
                     <div class="-my-6 divide-y divide-gray-500/25">
-                        <div class="space-y-2 py-6">
-                            <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Strona główna</a>
-                            <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Blog</a>
-                            <a href="{{ route('index') }}#contact" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">Kontakt</a>
+                        <div class="space-y-2 py-6" id="navbar_mobile">
+                            <a href="{{ $navbar_1_btn_href }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">{{ $navbar_1_btn_text }}</a>
+                            <a href="{{ $navbar_2_btn_href }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">{{ $navbar_2_btn_text }}</a>
+                            <a href="{{ $navbar_3_btn_href }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-gray-800">{{ $navbar_3_btn_text }}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </header>
-    <div class="relative isolate overflow-hidden pt-14">
-        <img src="{{ asset('assets/images/header.webp') }}" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover">
+    <div class="relative isolate overflow-hidden pt-14" id="header_main">
+        <img src="{{ $header_image_full_img_file  }}" alt="{{ $header_image_full_img_alt }}" class="absolute inset-0 -z-10 h-full w-full object-cover">
         <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
             <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
         </div>
         <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
 
             <div class="text-center px-3 sm:px-0">
-                <h1 class="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl">Naprawa i serwis automatyki przemysłowej</h1>
-                <p class="mt-6 text-lg leading-8 text-gray-300">Profesjonalna naprawa i serwis automatyki przemysłowej. Szybkie usuwanie usterek, modernizacja systemów i wsparcie techniczne. Gwarancja jakości!</p>
+                <h1 class="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl">{{ $header_head_1 }}</h1>
+                <p class="mt-6 text-lg leading-8 text-gray-300">{{ $header_head_2 }}</p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="#" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">Sprawdź szczegóły</a>
-                    <a href="#" class="text-sm font-semibold leading-6 text-white">Czytaj więcej <span aria-hidden="true">→</span></a>
+                    <a href="{{ $header_button_1_btn_href }}" class="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400">{{ $header_button_1_btn_text }}</a>
+                    <a href="{{ $header_button_2_btn_href }}" class="text-sm font-semibold leading-6 text-white">{{ $header_button_2_btn_text }} <span aria-hidden="true">→</span></a>
                 </div>
             </div>
         </div>
@@ -99,106 +99,53 @@
 
         <div class="absolute inset-x-0 top-0 -z-10 bg-white pt-16 shadow-lg ring-1 ring-gray-900/5">
             <div class="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-6 py-10 lg:grid-cols-[1fr_2fr] lg:px-8">
-                <div class="grid grid-cols-1 gap-x-4 sm:gap-x-8">
-                    <div>
-                        <h3 class="text-sm font-medium leading-6 text-gray-500">Kategorie</h3>
-                        <div class="mt-6 flow-root">
-                            <div class="-my-2">
-                                <a href="#" class="flex gap-x-4 py-2 text-sm font-semibold leading-6 text-gray-900">
-                                    Fotowoltaika
-                                </a>
-                                <a href="#" class="flex gap-x-4 py-2 text-sm font-semibold leading-6 text-gray-900">
-                                    Naprawa elektrycznych wózków widłowych
-                                </a>
-                                <a href="#" class="flex gap-x-4 py-2 text-sm font-semibold leading-6 text-gray-900">
-                                    Naprawa podzespołów elektronicznych
-                                </a>
-                                <a href="#" class="flex gap-x-4 py-2 text-sm font-semibold leading-6 text-gray-900">
-                                    Naprawa zasilaczy awaryjnych UPS
-                                </a>
-                                <!-- Add more links as needed -->
+                @if($categories->count() > 0)
+                    <div class="grid grid-cols-1 gap-x-4 sm:gap-x-8">
+                        <div>
+                            <h3 class="text-sm font-medium leading-6 text-gray-500">Kategorie</h3>
+                            <div class="mt-6 flow-root">
+                                <div class="-my-2">
+                                    <!-- Tu wyświetlać kategorie -->
+                                    @foreach($categories as $category)
+                                        <a href="{{ route('blog.list.category', ['slug' => $category->slug]) }}" class="flex gap-x-4 py-2 text-sm font-semibold leading-6 text-gray-900">
+
+                                            @if(!empty($currentCategory) && $currentCategory == $category->name)
+                                                <strong>{{ $category->name }}</strong>
+                                            @else
+                                                {{ $category->name }}
+                                            @endif
+                                        </a>
+                                    @endforeach
+                                    <!-- Tu wyświetlać kategorie -->
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 <div class="grid grid-cols-1 gap-10 sm:gap-8 lg:grid-cols-2">
-                    <h3 class="sr-only">Recent posts</h3>
-                    <article class="relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch">
-                        <div class="relative flex-none">
-                            <img class="aspect-[2/1] w-full rounded-lg bg-gray-100 object-cover sm:aspect-[16/9] sm:h-32 lg:h-auto" src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="">
-                            <div class="absolute inset-0 rounded-lg ring-1 ring-inset ring-gray-900/10"></div>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-x-4">
-                                <time datetime="2023-03-16" class="text-sm leading-6 text-gray-600">Mar 16, 2023</time>
 
+                    @foreach($articles as $article)
+                        <article class="relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch">
+                            <div class="relative flex-none">
+                                <img class="aspect-[2/1] w-full rounded-lg bg-gray-100 object-cover sm:aspect-[16/9] sm:h-32 lg:h-auto" src="{{ $article->image }}" alt="{{ !empty($article->view_content['basic_website_structure_image_img_alt']) ? $article->view_content['basic_website_structure_image_img_alt'] : $article->name }}">
+                                <div class="absolute inset-0 rounded-lg ring-1 ring-inset ring-gray-900/10"></div>
                             </div>
-                            <h4 class="mt-2 text-sm font-semibold leading-6 text-gray-900">
-                                <a href="{{route('article')}}">
-                                    <span class="absolute inset-0"></span>
-                                    Boost your conversion rate
-                                </a>
-                            </h4>
-                            <p class="mt-2 text-sm leading-6 text-gray-600">Et et dolore officia quis nostrud esse aute cillum irure do esse. Eiusmod ad deserunt cupidatat est magna Lorem.</p>
-                        </div>
-                    </article>
-                    <article class="relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch">
-                        <div class="relative flex-none">
-                            <img class="aspect-[2/1] w-full rounded-lg bg-gray-100 object-cover sm:aspect-[16/9] sm:h-32 lg:h-auto" src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="">
-                            <div class="absolute inset-0 rounded-lg ring-1 ring-inset ring-gray-900/10"></div>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-x-4">
-                                <time datetime="2023-03-16" class="text-sm leading-6 text-gray-600">Mar 16, 2023</time>
+                            <div>
+                                <div class="flex items-center gap-x-4">
+                                    <time datetime="{{ $article->created_at->format('Y-m-d') }}" class="text-sm leading-6 text-gray-600">{{ $article->created_at->format('Y-m-d') }}</time>
 
+                                </div>
+                                <h4 class="mt-2 text-sm font-semibold leading-6 text-gray-900">
+                                    <a href="{{ $article->getRoute() }}">
+                                        <span class="absolute inset-0"></span>
+                                        {{ $article->name }}
+                                    </a>
+                                </h4>
+                                <p class="mt-2 text-sm leading-6 text-gray-600">{{ $article->getShortDescriptionToBlogList() }}</p>
                             </div>
-                            <h4 class="mt-2 text-sm font-semibold leading-6 text-gray-900">
-                                <a href="{{route('article')}}">
-                                    <span class="absolute inset-0"></span>
-                                    Boost your conversion rate
-                                </a>
-                            </h4>
-                            <p class="mt-2 text-sm leading-6 text-gray-600">Et et dolore officia quis nostrud esse aute cillum irure do esse. Eiusmod ad deserunt cupidatat est magna Lorem.</p>
-                        </div>
-                    </article>
-                    <article class="relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch">
-                        <div class="relative flex-none">
-                            <img class="aspect-[2/1] w-full rounded-lg bg-gray-100 object-cover sm:aspect-[16/9] sm:h-32 lg:h-auto" src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="">
-                            <div class="absolute inset-0 rounded-lg ring-1 ring-inset ring-gray-900/10"></div>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-x-4">
-                                <time datetime="2023-03-16" class="text-sm leading-6 text-gray-600">Mar 16, 2023</time>
-                            </div>
-                            <h4 class="mt-2 text-sm font-semibold leading-6 text-gray-900">
-                                <a href="{{route('article')}}">
-                                    <span class="absolute inset-0"></span>
-                                    Boost your conversion rate
-                                </a>
-                            </h4>
-                            <p class="mt-2 text-sm leading-6 text-gray-600">Et et dolore officia quis nostrud esse aute cillum irure do esse. Eiusmod ad deserunt cupidatat est magna Lorem.</p>
-                        </div>
-                    </article>
-                    <article class="relative isolate flex max-w-2xl flex-col gap-x-8 gap-y-6 sm:flex-row sm:items-start lg:flex-col lg:items-stretch">
-                        <div class="relative flex-none">
-                            <img class="aspect-[2/1] w-full rounded-lg bg-gray-100 object-cover sm:aspect-[16/9] sm:h-32 lg:h-auto" src="https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80" alt="">
-                            <div class="absolute inset-0 rounded-lg ring-1 ring-inset ring-gray-900/10"></div>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-x-4">
-                                <time datetime="2023-03-16" class="text-sm leading-6 text-gray-600">Mar 16, 2023</time>
-
-                            </div>
-                            <h4 class="mt-2 text-sm font-semibold leading-6 text-gray-900">
-                                <a href="{{route('article')}}">
-                                    <span class="absolute inset-0"></span>
-                                    Boost your conversion rate
-                                </a>
-                            </h4>
-                            <p class="mt-2 text-sm leading-6 text-gray-600">Et et dolore officia quis nostrud esse aute cillum irure do esse. Eiusmod ad deserunt cupidatat est magna Lorem.</p>
-                        </div>
-                    </article>
+                        </article>
+                    @endforeach
                     <!-- Add more articles as needed -->
 
 

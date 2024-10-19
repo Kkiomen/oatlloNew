@@ -7,6 +7,8 @@
         @include('cms_page.partials.type.button', ['element' => $content, 'type' => $content['type']])
     @elseif($content['type'] == 'link')
         @include('cms_page.partials.type.link', ['element' => $content, 'type' => $content['type']])
+    @elseif($content['type'] == 'boolean')
+        @include('cms_page.partials.type.boolean', ['element' => $content, 'type' => $content['type']])
     @elseif($content['type'] == 'category')
         @include('cms_page.partials.type.category', ['element' => $content, 'type' => $content['type']])
     @endif
