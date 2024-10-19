@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InformationContact;
 use App\Models\Category;
 use App\Models\CmsPage;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -135,23 +137,14 @@ class HomeController extends Controller
         ]);
 
         $to = 'kurytplagain@gmail.com';
-        $subject = "Email Subject";
 
-        $message = "Imię: ". $request->get('first-name')." <br/>";
-        $message .= "Nazwisko: ". $request->get('last-name')." <br/>";
-        $message .= "Email: ". $request->get('email')." <br/>";
-        $message .= "Temat: ". $request->get('topic')." <br/>";
-        $message .= "Wiadomość: ". $request->get('message')." <br/>";
-
-        // Always set content-type when sending HTML email
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-
-        // More headers
-        $headers .= 'From: <enquiry@example.com>' . "\r\n";
-        $headers .= 'Cc: myboss@example.com' . "\r\n";
-
-        mail($to,$subject,$message,$headers);
+        Mail::to($to)->send(new InformationContact([
+            'first-name' => $request->get('first-name'),
+            'last-name' => $request->get('last-name'),
+            'email' => $request->get('email'),
+            'topic' => $request->get('topic'),
+            'message' => $request->get('message')
+        ]));
         return redirect()->back()->with('message', 'Email sent successfully');
     }
 }
