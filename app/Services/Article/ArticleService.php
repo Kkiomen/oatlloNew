@@ -300,6 +300,7 @@ class ArticleService
 
                         $article->contents = $currentContents;
                         $article->schema_ai = $schemaContents;
+                        $article->type = 'normal';
                         $article->save();
                     }
                 }
