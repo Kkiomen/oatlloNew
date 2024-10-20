@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Api\UnsplashApi;
 use App\Models\Article;
-use App\Models\Category;
-use App\Models\CmsPage;
 use App\Prompts\Abstract\Enums\OpenApiResultType;
 use App\Prompts\GenerateArticleContentPrompt;
 use App\Prompts\GenerateArticleDecorateTextPrompt;
-use App\Prompts\GenerateArticlePropertiesPrompt;
-use App\Prompts\GenerateArticleQueryImagesPrompt;
 use App\Prompts\GenerateConspectusArticlePrompt;
 use App\Services\Article\ArticleService;
+use App\Services\Generator\GeneratorArticleService;
 use App\Services\Helper\GeneratorHelper;
 use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
@@ -154,52 +150,18 @@ class PageController extends Controller
         return view('pages.create-ai');
     }
 
-    public function createArticle(Request $request, ArticleService $articleService): JsonResponse
+    public function createArticle(Request $request, GeneratorArticleService $generatorArticleService): JsonResponse
     {
-        $article = $articleService->getOrCreateArticleInModeAiGenerate();
-        $article->ai_content = $request->input('about');
-        $article->contents = null;
-        $article->schema_ai = null;
-        $article->save();
+        $generatorArticleService->createArticle($request->input('topicArticle'));
 
         return response()->json(['status' => 'success']);
     }
 
-    public function generateBasicInfo(Request $request, ArticleService $articleService, ImageService $imageService): JsonResponse
+    public function generateBasicInfo(Request $request, GeneratorArticleService $generatorArticleService): JsonResponse
     {
-        // Get or create article
-        $article = $articleService->getOrCreateArticleInModeAiGenerate();
+        $articleId = $generatorArticleService->generateBasicInformation();
 
-        // Generate basic info
-        $content = GenerateArticlePropertiesPrompt::generateContent(
-            userContent: $article->ai_content,
-            resultType: OpenApiResultType::JSON_OBJECT
-        );
-
-        $content = json_decode($content, true);
-        foreach ($content as $key => $value) {
-            $result = $articleService->updateKey($article, $key .'0001000', $value);
-        }
-
-        // Generate image
-        $queryImage = GenerateArticleQueryImagesPrompt::generateContent(userContent: $article->name);
-        $imagePath = $imageService->generateImageByQuery($queryImage);
-        if(!empty($imagePath)){
-            $articleService->updateKey($article, 'basic_website_structure_image'. '0001000file', $imagePath);
-        }
-
-        $schemaResult = GenerateConspectusArticlePrompt::generateContent(userContent: $article->name, resultType: OpenApiResultType::JSON_OBJECT);
-        $schema = json_decode($schemaResult, true)['outline'];
-        foreach ($schema as &$element){
-            $element['isGenerated'] = false;
-            $element['id'] = '_'.GeneratorHelper::randomPassword(9);
-        }
-
-        $article->schema_ai = $schema;
-        $article->save();
-
-
-        return response()->json(['status' => 'success', 'articleId' => $article->id]);
+        return response()->json(['status' => 'success', 'articleId' => $articleId]);
     }
 
     public function generateContent(Request $request, ArticleService $articleService)
@@ -256,9 +218,9 @@ class PageController extends Controller
         return response()->json(['status' => 'success', 'contents' => null]);
     }
 
-    public function generateContentByIdSchema(Request $request, Article $article, string $schemaId, ArticleService $articleService): JsonResponse
+    public function generateContentByIdSchema(Request $request, Article $article, string $schemaId, GeneratorArticleService $generatorArticleService): JsonResponse
     {
-        $result = $articleService->generateContentByKey($article->id, $schemaId);
+        $result = $generatorArticleService->generateContentByKey($article->id, $schemaId);
 
         return response()->json(['status' => 'success', 'generatedKey' => $schemaId, 'nextKey' => $result['nextKey']]);
     }
