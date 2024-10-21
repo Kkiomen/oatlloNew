@@ -8,7 +8,22 @@
                     <div class="w-full h-full">
                         <!-- Text Section -->
                         <template class="h-full" x-if="section.type === 'text'">
-                            <div class="h-full">
+                            <div class="h-full" x-if="section.content">
+                                <div class="flex items-center">
+                                    <button
+                                        x-show="!section.isGenerated"
+                                        @click="generateText(section.id, index)"
+                                        class="bg-black text-white px-3 py-1 rounded mr-3"
+                                        :disabled="section.isGenerating"
+                                        :class="{ 'opacity-50 cursor-not-allowed': section.isGenerating }"
+                                    >
+                                        <i
+                                            class="fa-solid fa-fan text-white"
+                                            :class="{ 'fa-spin-reverse': section.isGenerating }"> <!-- Add the class conditionally here -->
+                                        </i>
+                                        Dogeneruj tekst
+                                    </button>
+                                </div>
                                 <textarea :data-id="section.id" rows="10" x-model="section.content" class="w-full h-full border contents-textarea p-3 rounded" placeholder="Wpisz treść..."></textarea>
                             </div>
                         </template>
@@ -252,7 +267,10 @@
     let articleId = {{ $article->id }};
     let urlUpdateContents = '{{ route('articles.saveContents', $article) }}';
     let urlUploadImage = '{{ route('articles.saveContentsImage') }}';
+    let urlBasic = '{{ route('index') }}';
 </script>
+
+
 
 
 <script src="{{ asset('assets/js/article.js') }}" ></script>

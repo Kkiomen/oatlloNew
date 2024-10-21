@@ -90,7 +90,8 @@ class GeneratorArticleService
             $contents[] = [
                 'type' => 'text',
                 'content' => null,
-                'id' => $id
+                'id' => $id,
+                'isGenerated' => false
             ];
         }
         // ============ Generate schema content ============
@@ -107,6 +108,7 @@ class GeneratorArticleService
 
     public function generateContentByKey(int $articleId, string $currentContentId): array
     {
+        $currentContentId = str_replace([' '], '', $currentContentId);
         $article = Article::find($articleId);
         $contents = $article->contents;
         $listOfIds = $this->getListOfIds($contents);
@@ -133,10 +135,9 @@ class GeneratorArticleService
         $content = $this->generateContentByOpenAi($prompt);
 
 
-
-
         //  ==== Aktualizacja kontentu ====
         $contents[$currentIndex]['content'] = $content;
+        $contents[$currentIndex]['isGenerated'] = true;
 
         // ==== Aktualizacja schemy ====
         $schemaContents = $article->schema_ai;
@@ -156,6 +157,7 @@ class GeneratorArticleService
             'isCurrentGenerated' => true,
             'currentKey' => $currentContentId,
             'nextKey' => isset($contents[$currentIndex + 1]) ? $contents[$currentIndex + 1]['id'] : null,
+            'content' => $content
         ];
     }
 

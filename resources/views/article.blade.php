@@ -154,11 +154,11 @@
     <div class="mx-auto max-w-7xl text-base leading-7 bg-white p-0 md:p-10 text-gray-700 rounded-xl article-content-theme">
 
         @foreach($article->contents as $content)
-            @if($content['type'] == 'text')
+            @if($content['type'] == 'text' && !empty($content['content']))
                 {!! $content['content'] !!}
             @endif
 
-            @if($content['type'] == 'image')
+            @if($content['type'] == 'image' && !empty($content['content']))
                 <figure class="mt-16">
                     <img class="aspect-video rounded-xl bg-gray-50 object-cover" src="{{ $content['content'] }}" alt="">
                 </figure>

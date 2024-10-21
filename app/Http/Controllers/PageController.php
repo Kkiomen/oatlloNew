@@ -222,6 +222,6 @@ class PageController extends Controller
     {
         $result = $generatorArticleService->generateContentByKey($article->id, $schemaId);
 
-        return response()->json(['status' => 'success', 'generatedKey' => $schemaId, 'nextKey' => $result['nextKey']]);
+        return response()->json(['status' => 'success', 'generatedKey' => $schemaId, 'nextKey' => $result['nextKey'], 'content' => $result['content'] ]);
     }
 }

@@ -3,7 +3,11 @@
 function articleEditor(initialSections) {
     const generateId = () => '_' + Math.random().toString(36).substr(2, 9);
     return {
-        sections: initialSections.map(section => ({ ...section, id: generateId() })),
+        sections: initialSections.map(section => ({
+            ...section,
+            id: section.id || generateId(),
+            isGenerating: false
+        })),
         showSectionOptions: false,
         showSectionContentOptions: true,
         generateId,
@@ -63,6 +67,34 @@ function articleEditor(initialSections) {
                 sections.splice(index + 1, 0, temp);
                 this.sections = sections;
             }
+        },
+        generateText(sectionId, index) {
+            this.sections[index].isGenerating = true;
+
+            // Show a loading popup
+            var notyf = new Notyf();
+            notyf.success('Rozpoczęto generowanie...');
+            fetch(`${urlBasic}/pages/generate-article-content/${articleId}/${sectionId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success' && data.content) {
+                    // Update section content with generated text
+                    this.sections[index].content = data.content;
+                    // Mark the section as generated and hide the button
+                    this.sections[index].isGenerated = true;
+                }
+            })
+            .finally(() => {
+                // Close loading popup
+                notyf.success('Zakończono generowanie. Przeładuj stronę aby zobaczyć zmiany.');
+            });
+
         },
         dragStart(event, index) {
             event.dataTransfer.setData('text/plain', index);
