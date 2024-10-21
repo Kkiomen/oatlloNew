@@ -50,9 +50,12 @@ abstract class AbstractOpenApiGenerator
             ];
         }
 
+        $systemPrompt = mb_convert_encoding(static::getPrompt(), 'UTF-8', 'auto');
+        $userContent = mb_convert_encoding($userContent, 'UTF-8', 'auto');
+
         // Przygotowanie wiadomosci
         $messages = [
-            ['role' => 'system', 'content' => static::getPrompt()],
+            ['role' => 'system', 'content' => $systemPrompt],
             ['role' => 'user', 'content' => $userContent],
         ];
 

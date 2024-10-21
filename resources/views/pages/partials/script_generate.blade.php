@@ -74,7 +74,7 @@
             },
             async generateContent() { // Dodanie async
                 try {
-                    const response = await fetch('{{ route('index') }}/to-generate-content/' + this.articleId, {
+                    const response = await fetch('{{ route('index') }}/pages/to-generate-content/' + this.articleId, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -113,7 +113,7 @@
             async generateArticleContentById(schemaId) {
                 document.getElementById(schemaId).style.color = '#bea252';
 
-                const response = await fetch('{{ route('index') }}/generate-article-content/' + this.articleId + '/' + schemaId, {
+                const response = await fetch('{{ route('index') }}/pages/generate-article-content/' + this.articleId + '/' + schemaId, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

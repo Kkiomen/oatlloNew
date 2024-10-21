@@ -52,12 +52,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/image/upload', [PageController::class, 'saveContentsImage'])->name('articles.saveContentsImage');
 
 
+
     Route::get('/pages/create/ai', [PageController::class, 'createAi'])->name('pages.createAi');
-    Route::post('/create-article', [PageController::class, 'createArticle'])->name('pages.createArticle');
-    Route::post('/generate-basic-info', [PageController::class, 'generateBasicInfo'])->name('pages.generateBasicInfo');
-    Route::post('/generate-content', [PageController::class, 'generateContent'])->name('pages.generateContent');
-    Route::get('/to-generate-content/{article}', [PageController::class, 'getToGenerateContent'])->name('pages.toGenerateContent');
-    Route::get('/generate-article-content/{article}/{schemaId}', [PageController::class, 'generateContentByIdSchema'])->name('pages.generateContentByIdSchema');
+    Route::post('/pages/create-article', [PageController::class, 'createArticle'])->name('pages.createArticle');
+    Route::post('/pages/generate-basic-info', [PageController::class, 'generateBasicInfo'])->name('pages.generateBasicInfo');
+    Route::post('/pages/generate-content', [PageController::class, 'generateContent'])->name('pages.generateContent');
+    Route::get('/pages/to-generate-content/{article}', [PageController::class, 'getToGenerateContent'])->name('pages.toGenerateContent');
+    Route::get('/pages/generate-article-content/{article}/{schemaId}', [PageController::class, 'generateContentByIdSchema'])->name('pages.generateContentByIdSchema');
 
     // ======== Categories =========
 

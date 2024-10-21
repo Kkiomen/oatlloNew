@@ -32,6 +32,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'send/email',
         ]);
+        $middleware->validateCsrfTokens(except: [
+            'pages/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

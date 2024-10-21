@@ -152,7 +152,7 @@ class PageController extends Controller
 
     public function createArticle(Request $request, GeneratorArticleService $generatorArticleService): JsonResponse
     {
-        $generatorArticleService->createArticle($request->input('topicArticle'));
+        $generatorArticleService->createArticle($request->input('about'));
 
         return response()->json(['status' => 'success']);
     }
