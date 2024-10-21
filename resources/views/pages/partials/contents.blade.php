@@ -190,26 +190,26 @@
                     </li>
 
                     <!-- Section Option -->
-                    <li class="hover:bg-gray-200 cursor-pointer px-4" @click="onClickShowSectionOptions">
-                        <div class="group relative flex items-start space-x-3 py-4">
-                            <div class="flex-shrink-0">
-                                <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-500">
-                                    <i class="fa-solid fa-border-all text-white"></i>
-                                </span>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <div class="text-sm font-medium text-gray-900">
-                                    Sekcje
-                                </div>
-                                <p class="text-sm text-gray-500">Umożliwia podzielenie strony</p>
-                            </div>
-                            <div class="flex-shrink-0 self-center">
-                                <svg class="h-5 w-5 text-gray-400 group-hover:text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06L9.28 15.28a.75.75 0 01-1.06-1.06L11.44 10 8.22 6.78a.75.75 0 010-1.06z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </div>
-                    </li>
+{{--                    <li class="hover:bg-gray-200 cursor-pointer px-4" @click="onClickShowSectionOptions">--}}
+{{--                        <div class="group relative flex items-start space-x-3 py-4">--}}
+{{--                            <div class="flex-shrink-0">--}}
+{{--                                <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-500">--}}
+{{--                                    <i class="fa-solid fa-border-all text-white"></i>--}}
+{{--                                </span>--}}
+{{--                            </div>--}}
+{{--                            <div class="min-w-0 flex-1">--}}
+{{--                                <div class="text-sm font-medium text-gray-900">--}}
+{{--                                    Sekcje--}}
+{{--                                </div>--}}
+{{--                                <p class="text-sm text-gray-500">Umożliwia podzielenie strony</p>--}}
+{{--                            </div>--}}
+{{--                            <div class="flex-shrink-0 self-center">--}}
+{{--                                <svg class="h-5 w-5 text-gray-400 group-hover:text-gray-500" fill="currentColor" viewBox="0 0 20 20">--}}
+{{--                                    <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06L9.28 15.28a.75.75 0 01-1.06-1.06L11.44 10 8.22 6.78a.75.75 0 010-1.06z" clip-rule="evenodd" />--}}
+{{--                                </svg>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </li>--}}
                 </ul>
             </div>
         </div>

@@ -13,10 +13,10 @@ function articleEditor(initialSections) {
         generateId,
         // Upewnij się, że wszystkie metody są poprawnie zdefiniowane
         addTextSection() {
-            this.sections.push({ type: 'text', content: '', id: generateId() });
+            this.sections.push({ type: 'text', content: '', id: generateId(), isGenerated: true });
         },
         addImageSection() {
-            this.sections.push({ type: 'image', content: '', id: generateId()  });
+            this.sections.push({ type: 'image', content: '', id: generateId(), isGenerated: true  });
         },
         onClickShowSectionOptions() {
             this.showSectionContentOptions = false;
@@ -28,7 +28,7 @@ function articleEditor(initialSections) {
         },
         addFullWidthSection() {
             // Możesz dostosować tę sekcję do swoich potrzeb
-            this.sections.push({ type: 'full_width', content: '' });
+            this.sections.push({ type: 'full_width', content: '', isGenerated: true, id: generateId() });
             this.onCloseShowSectionOptions();
         },
         addTwoColumnsSection() {
