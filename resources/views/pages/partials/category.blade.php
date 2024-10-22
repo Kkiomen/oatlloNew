@@ -53,8 +53,8 @@
                         <template x-for="category in filteredCategories" :key="category.id">
                             <tr>
                                 <td class="px-4 py-2" x-text="category.name"></td>
-                                <td class="px-4 py-2 flex justify-end gap-3">
-                                    <i class="fa-solid fa-hand-pointer text-emerald-600 hover:text-emerald-900 cursor-pointer" @click="chooseCategory(category)"></i>
+                                <td class="px-4 py-2 flex justify-end gap-5">
+                                    <i class="fa-solid fa-thumbtack text-emerald-600 hover:text-emerald-900 cursor-pointer" @click="chooseCategory(category)"></i>
                                     <i class="fa-solid fa-pen-to-square text-indigo-600 hover:text-indigo-900 cursor-pointer" @click="editCategory(category)"></i>
                                     <i class="fa-solid fa-trash text-red-500 hover:text-red-900 cursor-pointer" @click="confirmDelete(category.id)"></i>
                                 </td>

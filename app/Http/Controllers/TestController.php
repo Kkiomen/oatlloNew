@@ -23,8 +23,15 @@ use OpenAI\Laravel\Facades\OpenAI;
 
 class TestController extends Controller
 {
-    public function test(Request $request, GeneratorArticleService $generatorArticleService)
+    public function test(Request $request, GeneratorArticleService $generatorArticleService, ImageService $imageService)
     {
+//        $generatorArticleService->generateContentByKey('32', '_Fn6bMuzmT');
+        $title = 'Dlaczego występują błędy podczas programowania?';
+        $queryImage = GenerateArticleQueryImagesPrompt::generateContent(userContent: $title);
+        $images = UnsplashApi::getImages($queryImage);
+
+        dd($queryImage, $images);
+        $imagePath = $imageService->generateImageByQuery($queryImage);
 //        $article = Article::find(16);
 //        $key = '_lwcWfE3Tx';
 //        $result = $generatorArticleService->generateContentByKey($article->id, $key);

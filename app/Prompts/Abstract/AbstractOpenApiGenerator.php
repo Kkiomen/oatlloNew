@@ -18,7 +18,7 @@ abstract class AbstractOpenApiGenerator
     public static function getPrompt(array $data = []): string
     {
         // Pobieranie, pierwotnego promptu
-        $prompt = static::preparePrompt($data);
+        $prompt = static::preparePrompt(empty($data) ? [] : $data);
 
         // Usuwanie nadmiarowych białych znaków (enterów, wielokrotnych spacji, tabulacji)
         $cleanedPrompt = preg_replace('/\s+/', ' ', $prompt);
@@ -39,7 +39,8 @@ abstract class AbstractOpenApiGenerator
         string $userContent,
         OpenAiModel $model = OpenAiModel::GPT4O_MINI,
         OpenApiResultType $resultType = OpenApiResultType::NORMAL,
-        bool $returnOnlyAssistantContent = true
+        bool $returnOnlyAssistantContent = true,
+        ?array $dataPrompt = []
     ): mixed
     {
         $settings = [];
@@ -50,8 +51,8 @@ abstract class AbstractOpenApiGenerator
             ];
         }
 
-        $systemPrompt = mb_convert_encoding(static::getPrompt(), 'UTF-8', 'auto');
-        $userContent = mb_convert_encoding($userContent, 'UTF-8', 'auto');
+        $systemPrompt = mb_convert_encoding(static::getPrompt($dataPrompt), 'UTF-8', 'auto');
+        $userContent = mb_convert_encoding(static::prepareUserPrompt($userContent, empty($dataPrompt) ? [] : $dataPrompt), 'UTF-8', 'auto');
 
         // Przygotowanie wiadomosci
         $messages = [
@@ -74,4 +75,15 @@ abstract class AbstractOpenApiGenerator
      * @return string
      */
     abstract protected static function preparePrompt(array $data = []): string;
+
+    /**
+     * Przygotowuje prompt dla użytkownika
+     * @param string $userContent
+     * @param array $dataPrompt
+     * @return string
+     */
+    protected static function prepareUserPrompt(string $userContent, array $dataPrompt): string
+    {
+        return $userContent;
+    }
 }

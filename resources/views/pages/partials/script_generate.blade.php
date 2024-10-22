@@ -7,6 +7,8 @@
             isGenerateContent: false,
             step: 0,
             articleId: null,
+            imageFiles: [], // Store the uploaded image files
+            imagePreviews: [], // Store the image previews
             async startGenerating() { // Dodanie async
                 this.isProcessing = true;
                 this.isGenerating = true;
@@ -26,20 +28,27 @@
                 } catch (error) {
                     this.isProcessing = false;
                     console.error(error);
-                    alert('Wystąpił błąd podczas generowania artykułu.');
+                    this.isGenerating = false;
+                    // alert('Wystąpił błąd podczas generowania artykułu.');
                 }
             },
             createArticle() {
-                // Make an AJAX POST request to the server
+                const formData = new FormData();
+                formData.append('about', this.$refs.about.value);
+                formData.append('options_count_letter', this.$refs.options_count_letter.value);
+
+                // Add images to formData
+                this.imageFiles.forEach((file, index) => {
+                    formData.append(`images[${index}]`, file);
+                });
+
+
                 return fetch('{{ route('pages.createArticle') }}', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     },
-                    body: JSON.stringify({
-                        about: this.$refs.about.value,
-                    }),
+                    body: formData,
                 })
                     .then(response => response.json())
                     .then(data => {
@@ -129,6 +138,26 @@
                 } else {
                     document.getElementById(data.generatedKey).style.color = 'red';
                 }
+            },
+            handleImageUpload(event) {
+                const files = event.target.files;
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    this.imageFiles.push(file);
+
+                    // Generate preview URL
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.imagePreviews.push(e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            },
+
+            // Remove an image
+            removeImage(index) {
+                this.imageFiles.splice(index, 1);
+                this.imagePreviews.splice(index, 1);
             },
         }
     }

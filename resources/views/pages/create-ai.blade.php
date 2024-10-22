@@ -43,7 +43,7 @@
 
         <div class="mx-auto max-w-10xl mt-4 mb-10">
             <form x-data="articleGenerator()" @submit.prevent="startGenerating">
-                <div class="space-y-12 bg-white shadow p-10">
+                <div class="space-y-8 bg-white shadow p-10">
                     <div class="border-b border-gray-900/10 pb-12">
                         <h2 class="text-base font-semibold leading-7 text-gray-900">Generowanie AI</h2>
                         <p class="mt-1 text-sm leading-6 text-gray-600">Pozwól zrozumieć asystentowi, o czym ma napisać artykuł.</p>
@@ -57,7 +57,49 @@
                                 </div>
                                 <p class="mt-3 text-sm leading-6 text-gray-600">Pamiętaj, że AI zrobi dokładnie to, co napiszesz dlatego, warto wypunktować co ma zostać uwzględnione</p>
 
-                                <img src="{{ asset('/assets/images/diagram_ai.svg') }}" class="w-full/50 mt-10 no-select"/>
+                                <hr class="mt-5 border-2 border-gray-200"/>
+
+                                <div class="mt-10">
+                                    <small>Opcje:</small>
+                                    <div>
+
+                                        <div class="mt-3">
+                                            <label for="options_count_letter" class="block text-xs font-medium leading-6 text-gray-900">Ilość znaków</label>
+                                            <div class="mt-2">
+                                                <input type="number" name="options_count_letter" x-ref="options_count_letter" id="options_count_letter" class="block w-full type-number rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value="1000" placeholder="1000" min="0" max="5000" required>
+                                            </div>
+                                            <p class="mt-3 text-sm leading-6 text-gray-600">Wartość <u><strong>0</strong></u> oznacza, że generator nie ma limitu znaków</p>
+                                        </div>
+                                        <hr class="mt-5"/>
+
+                                        <div class="mt-5">
+                                            <label for="options_count_letter" class="block text-xs font-medium leading-6 text-gray-900">Zdjęcia do artykułu</label>
+                                            <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
+                                                <template x-for="(image, index) in imagePreviews" :key="index">
+                                                    <div class="flex flex-col items-center">
+                                                        <img :src="image" class="h-full no-select rounded-tl-xl rounded-tr-xl object-cover"/>
+                                                        <div @click="removeImage(index)" class="bg-red-400 hover:bg-red-600 select-none cursor-pointer w-full text-center rounded-bl-xl rounded-br-xl py-1">
+                                                            <i class="fa-solid text-white fa-trash"></i>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+
+                                            <!-- Button to add images -->
+                                            <div class="mt-10 w-full">
+                                                <input type="file" id="imageInput" accept="image/*" @change="handleImageUpload" class="hidden" multiple>
+                                                <div @click="document.getElementById('imageInput').click()" class="text-center bg-black p-3 hover:bg-gray-700 cursor-pointer">
+                                                    <i class="fa-solid text-white fa-circle-plus"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+{{--                                <img src="{{ asset('/assets/images/diagram_ai.svg') }}" class="w-full/50 mt-10 no-select"/>--}}
 
                             </div>
                         </div>

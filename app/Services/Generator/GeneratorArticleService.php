@@ -28,12 +28,16 @@ class GeneratorArticleService
      * @param string $topicArticle
      * @return int
      */
-    public function createArticle(string $topicArticle): int
+    public function createArticle(string $topicArticle, array $options = []): int
     {
         $article = $this->articleService->getOrCreateArticleInModeAiGenerate();
         $article->ai_content = $topicArticle;
         $article->contents = null;
         $article->schema_ai = null;
+
+        $this->prepareOptions($article, $options);
+        $article->options_ai = $options;
+
         $article->save();
 
         return $article->id;
@@ -80,19 +84,34 @@ class GeneratorArticleService
 
 
         // ============ Generate schema content ============
-        $schemaResult = GenerateConspectusArticlePrompt::generateContent(userContent: $article->name, resultType: OpenApiResultType::JSON_OBJECT);
+        $schemaResult = GenerateConspectusArticlePrompt::generateContent(userContent: $article->name, resultType: OpenApiResultType::JSON_OBJECT, dataPrompt: $article->options_ai);
         $schema = json_decode($schemaResult, true)['outline'];
         $contents = [];
+        $imageIndex = 0;
         foreach ($schema as &$element){
             $id = '_'.GeneratorHelper::randomPassword(9);
             $element['isGenerated'] = false;
             $element['id'] = $id;
-            $contents[] = [
-                'type' => 'text',
-                'content' => null,
-                'id' => $id,
-                'isGenerated' => false
-            ];
+
+            if(array_key_exists('image', $element)){
+                $contents[] = [
+                    'type' => 'image',
+                    'content' => null,
+                    'alt' => $element['alt'],
+                    'id' => $id,
+                    'imageIndex' => $imageIndex,
+                    'isGenerated' => false
+                ];
+                $imageIndex++;
+            }else{
+                $contents[] = [
+                    'type' => 'text',
+                    'content' => null,
+                    'id' => $id,
+                    'isGenerated' => false
+                ];
+            }
+
         }
         // ============ Generate schema content ============
 
@@ -114,6 +133,7 @@ class GeneratorArticleService
         $listOfIds = $this->getListOfIds($contents);
         $currentIndex = $listOfIds[$currentContentId];
         $beforeIndex = isset($contents[$currentIndex - 1]) ? $currentIndex - 1 : null;
+        $currentSchemaIndexData = $this->findElementById($article->schema_ai, $currentContentId);
 
         // Check if all contents are generated
         $this->checkIfAllContentsAreGenerated($article);
@@ -128,11 +148,18 @@ class GeneratorArticleService
             ];
         }
 
-        // Generate prompt
-        $prompt = $this->createPrompt($contents, $beforeIndex, $currentContentId, $article->name, $article->schema_ai);
+        if($contents[$currentIndex]['type'] == 'text'){
+            // Generate prompt
+            $prompt = $this->createPrompt($contents, $beforeIndex, $currentContentId, $article->name, $article->schema_ai);
 
-        // Generate Content
-        $content = $this->generateContentByOpenAi($prompt);
+            // Generate Content
+            $content = $this->generateContentByOpenAi($prompt);
+        }else{
+            $image = $article->options_ai['images'][$contents[$currentIndex]['imageIndex']] ?? null;
+            $content = ImageService::prepareUrlImage($image);
+            $contents[$currentIndex]['alt'] = $currentSchemaIndexData['alt'] ?? null;
+        }
+
 
 
         //  ==== Aktualizacja kontentu ====
@@ -168,9 +195,21 @@ class GeneratorArticleService
      */
     protected function generateContentByOpenAi(string $prompt): string
     {
-        $content = GenerateArticleContentPrompt::generateContent($prompt);
-        $content = GenerateArticleDecorateTextPrompt::generateContent($content);
-        $content = str_replace(['```html', '```', '`html', '``', '`'], '', $content);
+        $errors = 0;
+        $success = false;
+        do{
+            try{
+                $content = GenerateArticleContentPrompt::generateContent($prompt);
+                $content = GenerateArticleDecorateTextPrompt::generateContent($content);
+                $content = str_replace(['```html','```','``', '` `html', '``html', '`html', '`'], '', $content);
+
+                $success = true;
+            }catch (\Exception $exception){
+                $errors++;
+                continue;
+            }
+
+        }while(!$success && $errors < 5);
 
         return $content;
     }
@@ -264,5 +303,33 @@ class GeneratorArticleService
             $article->type = 'normal';
             $article->save();
         }
+    }
+
+    /**
+     * Prepare options
+     * @param Article $article
+     * @param array $options
+     * @return void
+     */
+    protected function prepareOptions(Article $article, array &$options): void
+    {
+
+        if(array_key_exists('images', $options) && !empty($options['images'])){
+            $imagesResult = [];
+
+            foreach ($options['images'] as $image){
+                try{
+                    $pathImage = $this->imageService->uploadImage($image);
+                    if($pathImage !== null){
+                        $imagesResult[] = $pathImage;
+                    }
+                }catch (\Exception $exception){
+                    continue;
+                }
+            }
+
+            $options['images'] = $imagesResult;
+        }
+
     }
 }

@@ -152,7 +152,10 @@ class PageController extends Controller
 
     public function createArticle(Request $request, GeneratorArticleService $generatorArticleService): JsonResponse
     {
-        $generatorArticleService->createArticle($request->input('about'));
+        $options = $request->all();
+        unset($options['about']);
+
+        $generatorArticleService->createArticle($request->input('about'), $options ?? []);
 
         return response()->json(['status' => 'success']);
     }
@@ -212,7 +215,17 @@ class PageController extends Controller
     {
         $type = 'ai_generator';
         if($article->type === $type){
-            return response()->json(['status' => 'success', 'contents' => $article->schema_ai]);
+            $schemaList = [];
+            foreach ($article->schema_ai as $schema){
+                if(array_key_exists('image', $schema)){
+                    $schema['heading'] = 'Generowanie zdjęcia';
+                    $schema['content'] = 'Przygotowanie obrazu';
+                }
+
+                $schemaList[] = $schema;
+            }
+
+            return response()->json(['status' => 'success', 'contents' => $schemaList]);
         }
 
         return response()->json(['status' => 'success', 'contents' => null]);
@@ -222,6 +235,6 @@ class PageController extends Controller
     {
         $result = $generatorArticleService->generateContentByKey($article->id, $schemaId);
 
-        return response()->json(['status' => 'success', 'generatedKey' => $schemaId, 'nextKey' => $result['nextKey'], 'content' => $result['content'] ]);
+        return response()->json(['status' => 'success', 'generatedKey' => $schemaId, 'nextKey' => $result['nextKey'], 'content' => $result['content'] ?? '' ]);
     }
 }

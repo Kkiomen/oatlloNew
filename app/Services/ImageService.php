@@ -97,4 +97,14 @@ class ImageService
 
         return null;
     }
+
+    public static function prepareUrlImage(?string $path): string
+    {
+        $currentImage = empty($path) ? 'storage/uploads/empty_image.jpg' : $path;
+        $pattern = "/asset\('(.+?)'\)/";
+        if (preg_match($pattern, $currentImage, $matches)) {
+            $currentImage = $matches[1];
+        }
+        return str_contains($currentImage, 'http') ? $currentImage : asset($currentImage);
+    }
 }
