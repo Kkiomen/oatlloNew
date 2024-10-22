@@ -160,7 +160,7 @@
 
             @if($content['type'] == 'image' && !empty($content['content']))
                 <figure class="mt-16">
-                    <img class="aspect-video rounded-xl bg-gray-50 object-cover" src="{{ $content['content'] }}" alt="">
+                    <img class="aspect-video rounded-xl bg-gray-50 object-cover" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? '' }}">
                 </figure>
             @endif
 
