@@ -149,9 +149,9 @@
 </div>
 
 
-<div class="bg-gray-100 px-6 py-16 lg:px-8" id="article-content">
+<div class="bg-gray-100 px-0 md:px-6 md:py-16 lg:px-8" id="article-content">
 
-    <div class="mx-auto max-w-7xl text-base leading-7 bg-white p-0 md:p-10 text-gray-700 rounded-xl article-content-theme">
+    <div class="mx-auto max-w-full md:max-w-7xl text-base leading-7 bg-white p-5 md:p-10 text-gray-700 rounded-xl article-content-theme">
 
         @foreach($article->contents as $content)
             @if($content['type'] == 'text' && !empty($content['content']))
