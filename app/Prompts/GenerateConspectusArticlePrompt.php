@@ -97,11 +97,13 @@ class GenerateConspectusArticlePrompt extends AbstractOpenApiGenerator
      */
     protected static function prepareUserPrompt(string $userContent, array $dataPrompt): string
     {
-        $promptCountCharacter = '';
         $promptImages = '';
 
         if(!empty($dataPrompt['options_count_letter'])){
-            $promptCountCharacter = ' It is supposed to have ' . $dataPrompt['options_count_letter'] . ' characters';
+            $countCharacters = intval($dataPrompt['options_count_letter']) == '0' ? '1000-4000' : $dataPrompt['options_count_letter'];
+            $promptCountCharacter = ' It is supposed to have ' . $countCharacters . ' characters';
+        }else{
+            $promptCountCharacter = ' It is supposed to have 1000-3000 characters';
         }
 
         if(!empty($dataPrompt['images'])){
