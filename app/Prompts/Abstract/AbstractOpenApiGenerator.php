@@ -6,6 +6,7 @@ namespace App\Prompts\Abstract;
 
 use App\Enums\OpenAiModel;
 use App\Prompts\Abstract\Enums\OpenApiResultType;
+use App\Services\Helper\GeneratorHelper;
 use OpenAI\Laravel\Facades\OpenAI;
 
 abstract class AbstractOpenApiGenerator
@@ -20,11 +21,7 @@ abstract class AbstractOpenApiGenerator
         // Pobieranie, pierwotnego promptu
         $prompt = static::preparePrompt(empty($data) ? [] : $data);
 
-        // Usuwanie nadmiarowych białych znaków (enterów, wielokrotnych spacji, tabulacji)
-        $cleanedPrompt = preg_replace('/\s+/', ' ', $prompt);
-
-        // Usuwanie nadmiarowych spacji na początku i końcu ciągu
-        return trim($cleanedPrompt);
+        return GeneratorHelper::preparePromptForApi($prompt);
     }
 
     /**

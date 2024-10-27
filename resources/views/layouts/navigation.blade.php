@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
                         {{ __('Zarządzanie artykułami ') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('content_generators.index')" :active="request()->routeIs('content_generators.index')">
+                        {{ __('Generowanie treści ') }}
+                    </x-nav-link>
 
                     @php $cmsPages = \App\Models\CmsPage::get(); @endphp
                     @foreach($cmsPages as $cmsPage)
@@ -95,6 +98,10 @@
 
                 <x-responsive-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
                     {{ __('Zarządzanie artykułami') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('content_generators.index')" :active="request()->routeIs('content_generators.index')">
+                    {{ __('Generowanie treści') }}
                 </x-responsive-nav-link>
 
                 @php $cmsPages = \App\Models\CmsPage::get(); @endphp

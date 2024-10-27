@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContentGeneratorController;
+use App\Http\Controllers\GeneratedContentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -28,6 +30,20 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/test', [\App\Http\Controllers\TestController::class, 'test'])->name('test');
+
+
+Route::get('/content-generators', [ContentGeneratorController::class, 'index'])->name('content_generators.index');
+Route::post('/content-generators', [ContentGeneratorController::class, 'store'])->name('content_generators.store');
+Route::get('/content-generators/{id}/edit', [ContentGeneratorController::class, 'edit'])->name('content_generators.edit');
+Route::put('/content-generators/{id}', [ContentGeneratorController::class, 'update'])->name('content_generators.update');
+Route::delete('/content-generators/{id}', [ContentGeneratorController::class, 'destroy'])->name('content_generators.destroy');
+
+Route::get('/content-generators/{id}/generated-contents', [GeneratedContentController::class, 'index'])->name('generated_contents.index');
+Route::post('/generated-contents', [GeneratedContentController::class, 'store'])->name('generated_contents.store');
+Route::get('/generated-contents/{id}', [GeneratedContentController::class, 'show'])->name('generated_contents.show');
+Route::delete('/generated-contents/{id}', [GeneratedContentController::class, 'destroy'])->name('generated_contents.destroy');
+Route::post('/generated-contents/{id}/regenerate', [GeneratedContentController::class, 'regenerate'])->name('generated_contents.regenerate');
+
 
 
 

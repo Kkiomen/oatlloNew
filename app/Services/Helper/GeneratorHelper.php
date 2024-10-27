@@ -11,4 +11,11 @@ class GeneratorHelper
         $password = substr( str_shuffle( $chars ), 0, $length );
         return $password;
     }
+
+    public static function preparePromptForApi(string $prompt): string
+    {
+        $prompt = preg_replace('/\s+/', ' ', $prompt);
+
+        return trim($prompt);
+    }
 }
