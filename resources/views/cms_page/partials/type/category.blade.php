@@ -8,7 +8,8 @@
     </div>
 
     <div class="mt-5">
-        <button @click="openCategoryPanel = true" type="button" id="buttonCategory" class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <button @click="openCategoryPanel = true" type="button" id="buttonCategory"
+                class="relative block w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             @if($element['value'] === null)
                 <span class="mt-2 block text-sm font-semibold text-gray-900 underline">Wybierz kategorie</span>
             @else
@@ -19,6 +20,6 @@
     </div>
 
 
-    @include('pages.partials.category', ['article' => $article])
+    @include('pages.partials.category', ['views_basic.article' => $article])
 
 </div>

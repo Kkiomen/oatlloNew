@@ -20,7 +20,7 @@ class HomeController extends Controller
         $randomArticles = Article::where('is_published', true)->where('type', 'normal')->inRandomOrder()->take(3)->get();
 
 
-        return view('welcome', array_merge(
+        return view('views_basic.welcome', array_merge(
             $info->to_view,
             [
                 'randomArticles' => $randomArticles
@@ -49,7 +49,7 @@ class HomeController extends Controller
         $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->where('type', 'normal')->inRandomOrder()->take(3)->get();
         $category = Category::where('slug', $categorySlug)->first();
 
-        return view('article', [
+        return view('views_basic.article', [
             'article' => $article,
             'category' => $category,
             'randomArticles' => $randomArticles
@@ -64,7 +64,7 @@ class HomeController extends Controller
 
         $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->where('type', 'normal')->inRandomOrder()->take(3)->get();
 
-        return view('article', [
+        return view('views_basic.article', [
             'article' => $article,
             'category' => null,
             'randomArticles' => $randomArticles
@@ -86,7 +86,7 @@ class HomeController extends Controller
         $articles = Article::where('type', 'normal')->where('is_published', true)->orderBy('created_at', 'desc')->paginate(10);
         $info = CmsPage::find(1);
 
-        return view('blog',array_merge(
+        return view('views_basic.blog',array_merge(
             $info->to_view,
             [
                 'categories' => $categories,
@@ -120,7 +120,7 @@ class HomeController extends Controller
         $info = CmsPage::find(1);
 
 
-        return view('blog', array_merge(
+        return view('views_basic.blog', array_merge(
             $info->to_view,
             [
                 'categories' => $categories,
