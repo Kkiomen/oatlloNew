@@ -46,17 +46,75 @@
             </nav>
         </div>
 
-        <div class="flex justify-end mx-5 mt-4">
-            <a href="{{ $article->getRoute() }}">
-                <button type="button"
-                        class="inline-flex items-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-800">
-                    Podgląd
-                </button>
-            </a>
+        <div class="container mx-auto py-4">
+            <div class="md:mx-auto max-w-7xl px-3 py-3">
+                <div class="flex justify-end mt-4 gap-3">
+                    <a href="{{ $article->getRoute() }}">
+                        <button type="button"
+                                class="inline-flex items-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-800">
+                            Podgląd
+                        </button>
+                    </a>
+
+
+                    <div x-data="languageActions()">
+                        @if($languages !== null)
+                            @foreach($languages as $language)
+                                <button type="button"
+                                        @click="handleLanguageAction('{{ $language['method'] }}', '{{ $language['name'] }}', '{{ $language['url'] }}')"
+                                        class="inline-flex items-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 @if($language['method'] === 'toGenerate') underline @endif">
+                                    <i class="fa-solid fa-language mr-3"></i> {{ $language['name'] }}
+                                </button>
+                            @endforeach
+                        @endif
+
+                        <div x-show="loading" class="mt-4 text-gray-500">Generating content, please wait...</div>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
+
 
         @include('pages.partials.default_article_form_builder', ['content' => $contents, 'views_basic.article' => $article])
 
 
     </div>
+
+    <script>
+        let articleIdd = {{ $article->id }};
+        function languageActions() {
+            return {
+                loading: false,
+                handleLanguageAction(method, name, url) {
+                    if (method === 'toGenerate') {
+                        this.loading = true;
+                        try {
+                            fetch("{{ route('generate.contentInOtherLanguage') }}", {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ name, articleIdd })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+                                if (data.url) {
+                                    window.location.href = data.url;
+                                }
+                            })
+                        } catch (error) {
+                            console.error('Error generating content:', error);
+                        } finally {
+                            this.loading = false;
+                        }
+                    } else if (method === 'redirectToUrl' && url) {
+                        window.location.href = url;
+                    }
+                }
+            }
+        }
+    </script>
 </x-app-layout>

@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Services\Article;
 
 use App\Models\Article;
+use App\Prompts\Abstract\Enums\OpenApiResultType;
+use App\Prompts\GenerateArticleBasicInformationToOtherLanguagePrompt;
 use App\Prompts\GenerateArticleContentPrompt;
+use App\Prompts\GenerateArticleContentToOtherLanguagePrompt;
 use App\Prompts\GenerateArticleDecorateTextPrompt;
 use App\Services\CmsPageService;
 use App\Services\Helper\GeneratorHelper;
+use App\Services\Helper\LanguageHelper;
 use App\Services\SitemapService;
 use Illuminate\Support\Str;
 
@@ -157,7 +161,7 @@ class ArticleService
      * @param array $jsonData
      * @return array
      */
-    protected function prepareViewContentForArticle(array $jsonData): array
+    public function prepareViewContentForArticle(array $jsonData): array
     {
         $result = [];
         foreach ($jsonData as $element) {
@@ -235,5 +239,79 @@ class ArticleService
                 $result[$element['key'].'_link'] = $url;
             }
         }
+    }
+
+    public function generateArticleInOtherLanguage(int $articleId, string $language): Article
+    {
+        $article = Article::findOrFail($articleId);
+        $articleNewLanguage = new Article();
+        $incorrect = true;
+        $errors = 0;
+        do{
+            try{
+
+                $jsonContent = GenerateArticleBasicInformationToOtherLanguagePrompt::generateContent(userContent: json_encode($article->json_content),
+                    resultType: OpenApiResultType::JSON_OBJECT, dataPrompt: ['language' => $language]);
+                $jsonContent = json_decode($jsonContent, true);
+                if(!isset($jsonContent[0]) || count($jsonContent) === 1){
+                    foreach ($jsonContent as $key => $value){
+                        $jsonContent = $value;
+                        break;
+                    }
+                }
+                $viewContent = $this->prepareViewContentForArticle($jsonContent);
+                $incorrect = false;
+
+            }catch (\Exception $exception){
+                $errors++;
+            }
+
+        }while($incorrect && $errors < 3);
+
+
+        $articleNewLanguage->json_content = $jsonContent;
+        $articleNewLanguage->language = LanguageHelper::getShortFromName($language);
+        $articleNewLanguage->is_published = false;
+        $articleNewLanguage->options_ai = $article->options_ai;
+        $articleNewLanguage->image = $article->image;
+        $articleNewLanguage->ai_content = $article->ai_content;
+        $articleNewLanguage->category_id = $article->category_id;
+        $articleNewLanguage->type = $article->type;
+        $articleNewLanguage->view_content = $viewContent;
+
+        if (!empty($articleNewLanguage->view_content['basic_article_information_title'])) {
+            $articleNewLanguage->name = $articleNewLanguage->view_content['basic_article_information_title'];
+        }
+        if (!empty($articleNewLanguage->view_content['basic_article_information_slug'])) {
+            $articleNewLanguage->slug = Str::slug($articleNewLanguage->view_content['basic_article_information_slug']);
+        }
+        if (!empty($articleNewLanguage->view_content['basic_website_structure_image_img_file'])) {
+            $articleNewLanguage->image = $articleNewLanguage->view_content['basic_website_structure_image_img_file'];
+        }
+        if (!empty($articleNewLanguage->view_content['basic_article_information_description'])) {
+            $articleNewLanguage->short_description = $articleNewLanguage->view_content['basic_article_information_description'];
+        }
+
+        $contents = [];
+        foreach ($article->contents as $key => $content) {
+            if ($content['type'] === 'text') {
+                $currentTranslatedContent = GenerateArticleContentToOtherLanguagePrompt::generateContent(userContent: $content['content'], dataPrompt: ['language' => $language]);
+                $currentTranslatedContent = str_replace(['```html','```','``', '` `html', '``html', '`html', '`'], '', $currentTranslatedContent);
+
+                $content['content'] = $currentTranslatedContent;
+                $contents[$key] = $content;
+            }else if($content['type'] === 'image'){
+                $currentTranslatedContent = GenerateArticleContentToOtherLanguagePrompt::generateContent(userContent: $content['alt'], dataPrompt: ['language' => $language]);
+                $content['alt'] = $currentTranslatedContent;
+                $contents[$key] = $content;
+            }
+        }
+
+        $articleNewLanguage->connection_article_id = $article->id;
+        $articleNewLanguage->contents = $contents;
+        $articleNewLanguage->save();
+
+
+        return $articleNewLanguage;
     }
 }

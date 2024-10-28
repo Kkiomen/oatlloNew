@@ -7,8 +7,8 @@
                 <div class="flex flex-col md:flex-row justify-between ">
                     <div class="w-full h-full">
                         <!-- Text Section -->
-                        <template class="h-full" x-if="section.type === 'text'">
-                            <div class="h-full" x-if="section.content">
+                        <template class="h-full" x-if="section.type === 'text' && section.content">
+                            <div class="h-full" >
                                 <div class="flex items-center">
                                     <button
                                         x-show="!section.isGenerated"
@@ -32,10 +32,13 @@
                         <template x-if="section.type === 'image'">
                             <div class="flex flex-col items-center">
 
-                                <div x-if="section.content" class="relative mt-2 flex justify-center w-full rounded-lg border border-dashed border-gray-900/25 px-6 py-10 text-center">
-                                    <!-- Image Preview -->
-                                    <img :src="section.content" class="max-w-full max-h-100 object-cover" >
-                                </div>
+                                <template x-if="section.content">
+                                    <div class="relative mt-2 flex justify-center w-full rounded-lg border border-dashed border-gray-900/25 px-6 py-10 text-center">
+                                        <!-- Image Preview -->
+                                        <img :src="section.content" class="max-w-full max-h-100 object-cover" >
+                                    </div>
+                                </template>
+
 
                                 <div class="relative mt-2 w-full">
                                     <input :id="'upload-image-' + index" type="file" @change="uploadImage($event, index)" accept="image/*" class="mb-4 hidden">

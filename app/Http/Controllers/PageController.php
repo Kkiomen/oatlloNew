@@ -10,6 +10,7 @@ use App\Prompts\GenerateConspectusArticlePrompt;
 use App\Services\Article\ArticleService;
 use App\Services\Generator\GeneratorArticleService;
 use App\Services\Helper\GeneratorHelper;
+use App\Services\Helper\LanguageHelper;
 use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,11 +25,22 @@ class PageController extends Controller
     {
         // Pobieranie wartości wyszukiwania z zapytania
         $search = $request->input('search');
+        $language = $request->input('language');
 
         // Filtracja artykułów na podstawie tytułu, jeśli pole wyszukiwania nie jest puste
         $articles = Article::when($search, function ($query, $search) {
-            return $query->where('name', 'like', '%' . $search . '%')->orWhere('slug', 'like', '%' . $search . '%');
-        })->orderBy('created_at', 'desc')->whereIn('type', ['normal', 'ai_generator'])->paginate(10);
+                                return $query->where('name', 'like', '%' . $search . '%')->orWhere('slug', 'like', '%' . $search . '%');
+                             })
+                            ->when($language, function ($query, $language) {
+                                if($language === 'all'){
+                                    return $query;
+                                }
+
+                                return $query->where('language', 'like', '%' . $language . '%');
+                            })
+                            ->orderBy('created_at', 'desc')
+                            ->whereIn('type', ['normal', 'ai_generator'])
+                            ->paginate(10);
 
         return view('pages.index', [
             'pages' => $articles,
@@ -48,6 +60,7 @@ class PageController extends Controller
         return view('pages.create', [
             'contents' => $article->json_content,
             'article' => $article,
+            'languages' => null
         ]);
     }
 
@@ -64,10 +77,13 @@ class PageController extends Controller
     public function edit(int $page)
     {
         $article = Article::findOrFail($page);
+        $languages = LanguageHelper::prepareLanguagesForArticle($article);
+        $languages = $languages === [] ? null : $languages;
 
         return view('pages.create', [
             'contents' => $article->json_content,
             'article' => $article,
+            'languages' => $languages,
         ]);
     }
 
@@ -236,5 +252,18 @@ class PageController extends Controller
         $result = $generatorArticleService->generateContentByKey($article->id, $schemaId);
 
         return response()->json(['status' => 'success', 'generatedKey' => $schemaId, 'nextKey' => $result['nextKey'], 'content' => $result['content'] ?? '' ]);
+    }
+
+    public function generateContentInOtherLanguage(Request $request, ArticleService $articleService)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'articleIdd' => 'required|integer',
+        ]);
+
+        $article = $articleService->generateArticleInOtherLanguage(intval($request->input('articleIdd')), $request->input('name'));
+
+//        return response()->json(['url' => 'http://localhost/automatyka/public/pages/39/edit']);
+        return response()->json(['url' => route('pages.edit', $article)]);
     }
 }

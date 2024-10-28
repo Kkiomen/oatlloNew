@@ -9,7 +9,22 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'is_published', 'json_content', 'type', 'view_content', 'contents', 'ai_content', 'short_description', 'image', 'schema_ai', 'options_ai'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'is_published',
+        'json_content',
+        'type',
+        'view_content',
+        'contents',
+        'ai_content',
+        'short_description',
+        'image',
+        'schema_ai',
+        'options_ai',
+        'language',
+        'connection_article_id'
+    ];
 
     protected $casts = [
         'json_content' => 'array',
