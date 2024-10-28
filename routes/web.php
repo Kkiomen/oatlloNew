@@ -44,6 +44,7 @@ Route::get('/generated-contents/{id}', [GeneratedContentController::class, 'show
 Route::delete('/generated-contents/{id}', [GeneratedContentController::class, 'destroy'])->name('generated_contents.destroy');
 Route::post('/generated-contents/{id}/regenerate', [GeneratedContentController::class, 'regenerate'])->name('generated_contents.regenerate');
 
+Route::post('/pages/generate-article/other-language', [PageController::class, 'generateContentInOtherLanguage'])->name('generate.contentInOtherLanguage');
 
 
 
@@ -75,6 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pages/generate-content', [PageController::class, 'generateContent'])->name('pages.generateContent');
     Route::get('/pages/to-generate-content/{article}', [PageController::class, 'getToGenerateContent'])->name('pages.toGenerateContent');
     Route::get('/pages/generate-article-content/{article}/{schemaId}', [PageController::class, 'generateContentByIdSchema'])->name('pages.generateContentByIdSchema');
+
 
     // ======== Categories =========
 

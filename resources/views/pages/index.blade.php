@@ -103,9 +103,18 @@
 
                 <!-- Formularz wyszukiwania -->
                 <form method="GET" action="{{ route('pages.index') }}" class="mt-4">
-                    <div class="flex items-center">
+                    <div class="flex items-center gap-2 items-center">
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Szukaj artykułu..."
                                class="block w-full sm:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <div>
+                            <select name="language" class="block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm/6">
+                                <option value="all">Wszystkie</option>
+                                @foreach(\App\Services\Helper\LanguageHelper::getLanguagesConfiguration() as $language)
+                                    <option value="{{ $language['short'] }}" @if((!isset($_GET['language']) && $language['short'] == 'pl') || (isset($_GET['language']) && $_GET['language'] === $language['short'])) selected @endif>{{ $language['name'] }}</option>
+
+                                @endforeach
+                            </select>
+                        </div>
                         <button type="submit"
                                 class="ml-2 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                             Szukaj
@@ -128,6 +137,10 @@
                                     </th>
                                     <th scope="col"
                                         class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 text-center">
+                                        Język
+                                    </th>
+                                    <th scope="col"
+                                        class="px-3 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500 text-center">
                                         Opublikowana
                                     </th>
                                     <th scope="col" class="relative py-3 pl-3 pr-4 sm:pr-0">
@@ -140,6 +153,7 @@
                                     <tr>
                                         <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $page->name }}</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $page->slug }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ \App\Services\Helper\LanguageHelper::getNameFromShort($page->language) ?? 'Polski' }}</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">{{ $page->is_published ? 'Tak' : 'Nie' }}</td>
                                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                                             <a href="{{ route('pages.edit', $page) }}"

@@ -15,7 +15,8 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('pages.index')" :active="request()->routeIs('pages.index')">
+                    @php $articlesUrl = route('pages.index') . '?language=pl'; @endphp
+                    <x-nav-link :href="$articlesUrl" :active="request()->routeIs('pages.index')">
                         {{ __('Zarządzanie artykułami ') }}
                     </x-nav-link>
                     <x-nav-link :href="route('content_generators.index')" :active="request()->routeIs('content_generators.index')">
