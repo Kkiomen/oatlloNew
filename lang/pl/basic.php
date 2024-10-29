@@ -1,0 +1,23 @@
+<?php
+return [
+    'back_homepage' => 'Wróć na stronę główną',
+    'by' => 'Przez',
+    'on' => 'dnia',
+    'home' => 'Strona główna',
+    'see_other_posts' => 'Losowe 3 artykuły',
+    'blog_header' => 'Przewodnik po świecie programowani',
+    'blog_subheader' => 'Poznaj wskazówki, artykuły i zasoby dla pasjonatów programowania. Rozwijaj swoje umiejętności i odkrywaj nowe technologie.',
+    'index_main' => 'Chcesz poznać więcej ciekawostek?',
+    'index_submain' => 'Programowanie to pasja, która wymaga ciągłego rozwoju. Skorzystaj z treści, które dla Ciebie przygotowałem.',
+    'calendar' => 'Kalendarz',
+    'meta_description' => 'Oatllo to miejsce dla pasjonatów programowania, gdzie znajdziesz artykuły, projekty, kursy i wskazówki. Rozwijaj swoje umiejętności i poznaj nowoczesne technologie',
+    'meta_keywords' => 'programowanie, blog o programowaniu, artykuły o programowaniu, wskazówki programistyczne, projekty programistyczne, kursy programowania, PHP, JavaScript, Symfony, poradniki dla programistów, rozwój umiejętności programistycznych, zasoby edukacyjne, nowości technologiczne, podstawy programowania, nauka kodowania, dla programistów',
+    'more' => 'Czytaj więcej',
+    'header_blog' => 'Blog',
+    'header_sub_blog' => 'Od podstawowych zagadnień, przez wskazówki dla zaawansowanych, po nowości ze świata technologii.',
+    'meta_title' => 'Oatllo – blog o programowaniu, projekty, kursy, wskazówki.',
+    'meta_title_blog' => 'Oatllo.pl - Blog o programowaniu. Porady, tutoriale, analizy',
+    'meta_description_blog' => 'Blog - Odkryj fascynujący świat programowania z naszym blogiem. Znajdziesz tu profesjonalne porady, poradniki i analizy',
+    'about_me_description' => 'Programista PHP, Pasjonat programowania',
+    'about_me_content' => 'Jestem pasjonatem programowania, który od lat zgłębia tajniki nowoczesnych technologii. Na tej stronie znajdziesz wartościowe artykuły, poradniki i wskazówki dotyczące najnowszych trendów oraz dobrych praktyk programistycznych. To miejsce stworzone dla osób, które chcą rozwijać swoje umiejętności i poznawać praktyczne aspekty programowania.',
+];

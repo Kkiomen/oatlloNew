@@ -27,6 +27,9 @@ Podczas tworzenia artykułu kieruj się poniższymi wytycznymi:
 - Liczba akapitów ma być różna aby było widać jakby człowiek przygotowywał tekst
 - nie używaj markdown a tylko html
 - część podsumowania nie może posiadać słowa "podsumowanie", "zakończenie" itd. ma to być płynne zakończenie
+- Kod zawsze musi być umieszczony między znacznikami <pre><code class="language-php">  </code></pre>
+- Pisząc kod i o kodzie opieraj się na języku PHP
+- Komentarze w kodzie jak i kod pisz w języku angielskim
 
 Każda część powinna mieścić się w przynajmniej 2000 znaków, a pierwsza oraz ostatnia obejmują odpowiednio wprowadzenie i zakończenie bez chamskiego podsumowania.
 

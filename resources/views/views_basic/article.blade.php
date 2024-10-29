@@ -6,6 +6,7 @@
     <meta name="description" content="{{ $article->view_content['basic_website_structure_description'] }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="{{ $article->getRoute() }}" />
+    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
     <meta name="keywords" content="{{ $article->view_content['basic_website_structure_keywords'] }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -14,13 +15,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
     <meta property="og:title" content="{{ $article->view_content['basic_website_structure_op_title'] }}" />
     <meta property="og:description" content="{{ $article->view_content['basic_website_structure_op_description'] }}" />
     <meta property="og:url" content="{{ $article->getRoute() }}" />
     <meta property="og:image" content="{{ $article->view_content['basic_website_structure_op_image_img_file'] }}" />
     <meta property=”og:type” content=”article” />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+
 </head>
 <body>
 
@@ -28,13 +34,13 @@
 
 
 
-<div class="bg-white">
+<div class="jetbrains_bg_color">
     <header class="absolute inset-x-0 top-0 z-50" x-data="{ open: true }">
         <div class="mx-auto max-w-7xl">
             <div class="px-6 pt-6 lg:max-w-2xl lg:pl-8 lg:pr-0">
                 <nav class="flex items-center justify-between lg:justify-start" aria-label="Global">
-                    <div class="text-black uppercase" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
-                        Bartłomiej Biernat
+                    <div class="logo_oatllo">
+                        oatllo
                     </div>
                     <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700 lg:hidden"  @click="open = !open">
                         <span class="sr-only">Open main menu</span>
@@ -82,7 +88,7 @@
     <div class="relative">
         <div class="mx-auto max-w-7xl">
             <div class="relative z-10 pt-14 lg:w-full lg:max-w-2xl">
-                <svg class="absolute inset-y-0 right-8 hidden h-full w-80 translate-x-1/2 transform fill-white lg:block" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <svg class="absolute inset-y-0 right-8 hidden h-full w-80 translate-x-1/2 transform jetbrains_fill_color lg:block" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="fill: #1e1f22;">
                     <polygon points="0,0 90,0 50,100 0,100" />
                 </svg>
 
@@ -93,7 +99,7 @@
                             <ol role="list" class="flex items-center space-x-4">
                                 <li>
                                     <div>
-                                        <a href="#" class="text-gray-400 hover:text-gray-500">
+                                        <a href="{{ route('index') }}" class="text-gray-300">
                                             <svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                                 <path fill-rule="evenodd" d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z" clip-rule="evenodd" />
                                             </svg>
@@ -106,7 +112,7 @@
                                         <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                             <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                         </svg>
-                                        <a href="{{ route('blog') }}" class="ml-4 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700">Blog</a>
+                                        <a href="{{ route('blog') }}" class="ml-4 text-xs sm:text-sm font-medium text-gray-300 hover:text-gray-200">Blog</a>
                                     </div>
                                 </li>
                                 @if($category)
@@ -115,7 +121,7 @@
                                             <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                                 <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                             </svg>
-                                            <a href="{{ route('blog.list.category', ['slug' => $category->slug]) }}" class="ml-4 text-xs sm:text-sm  font-medium text-gray-500 hover:text-gray-700">{{ $category->name }}</a>
+                                            <a href="{{ route('blog.list.category', ['slug' => $category->slug]) }}" class="ml-4 text-xs sm:text-sm font-medium text-gray-300 hover:text-gray-200">{{ $category->name }}</a>
                                         </div>
                                     </li>
                                 @endif
@@ -124,7 +130,7 @@
                                         <svg class="h-5 w-5 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                             <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                         </svg>
-                                        <a href="#" class="ml-4 text-xs sm:text-sm font-medium text-gray-500 hover:text-gray-700" aria-current="page">{{ $article->name }}</a>
+                                        <a href="#" class="ml-4 text-xs sm:text-sm font-medium text-gray-300 hover:text-gray-200" aria-current="page">{{ $article->name }}</a>
                                     </div>
                                 </li>
                             </ol>
@@ -132,12 +138,8 @@
 
 
 
-                        <h1 class="text-3xl font-bold mt-3 sm:mt-0 tracking-tight text-gray-900 sm:text-5xl">{{ $article->name }}</h1>
-                        <p class="mt-6 text-lg leading-8 text-gray-600">{{ $article->short_description }}</p>
-                        <div class="mt-10 flex items-center gap-x-6">
-                            <a href="{{ route('index') }}#contact" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Skorzystaj z usług</a>
-                            <a href="#article-content" class="text-sm font-semibold leading-6 text-gray-900">Przeczytaj artykuł <span aria-hidden="true">→</span></a>
-                        </div>
+                        <h1 class="text-3xl font-bold mt-3 sm:mt-0 tracking-tight text-gray-300 sm:text-4xl">{{ $article->name }}</h1>
+                        <p class="mt-6 text-lg leading-8 text-gray-400">{{ $article->short_description }}</p>
                     </div>
                 </div>
             </div>
@@ -149,9 +151,9 @@
 </div>
 
 
-<div class="bg-gray-100 px-0 md:px-6 md:py-16 lg:px-8" id="article-content">
+<div class="jetbrains_bg_color px-0 md:px-6 md:py-16 lg:px-8" id="article-content">
 
-    <div class="mx-auto max-w-full md:max-w-7xl text-base leading-7 bg-white p-5 md:p-10 text-gray-700 rounded-xl article-content-theme">
+    <div class="mx-auto max-w-full md:max-w-7xl text-base leading-7 jetbrains_bg_color p-5 md:p-10 text-gray-300 rounded-xl article-content-theme">
 
         @foreach($article->contents as $content)
             @if($content['type'] == 'text' && !empty($content['content']))
@@ -160,22 +162,20 @@
 
             @if($content['type'] == 'image' && !empty($content['content']))
                 <figure class="mt-16">
-                    <img class="aspect-video rounded-xl bg-gray-50 object-cover" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? '' }}">
+                    <img class="rounded-xl bg-gray-50 object-cover" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? '' }}">
                 </figure>
             @endif
 
         @endforeach
-
     </div>
 </div>
 
 @if($randomArticles->count() > 0)
 
-    <div class="bg-white py-24 sm:py-32">
+    <div class="jetbrains_bg_color pb-10 pt-10 sm:pt-0">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Losowe 3 artykuły</h2>
-                <p class="mt-2 text-lg leading-8 text-gray-600">Sprawdź inne artykuły</p>
+                <h2 class="text-3xl font-bold tracking-tight text-gray-300 sm:text-4xl">{{ __('basic.see_other_posts') }}</h2>
             </div>
             <div class="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
 
@@ -203,15 +203,15 @@
 
 @endif
 
-<footer class="bg-gray-900">
+<footer class="jetbrains_bg_color">
     <div class="mx-auto max-w-7xl px-6 pb-8 lg:px-8 ">
         <div class="border-t border-white/10 pt-8 md:flex md:items-center md:justify-between">
-            <p class="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">&copy; {{ date('Y') }} Serwis elektroniki - Bartłomiej Biernat</p>
+            <p class="mt-8 text-xs leading-5 text-gray-400 md:order-1 md:mt-0">&copy; {{ date('Y') }} oattlo</p>
         </div>
     </div>
 </footer>
 
-
+<script>hljs.highlightAll();</script>
 <script src="{{ asset('/assets/js/script.js') }}"></script>
 </body>
 </html>

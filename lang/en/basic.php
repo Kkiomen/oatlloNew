@@ -1,0 +1,23 @@
+<?php
+return [
+    'back_homepage' => 'Back to homepage',
+    'by' => 'By',
+    'on' => 'on',
+    'home' => 'Home',
+    'see_other_posts' => 'Random 3 articles',
+    'blog_header' => 'Guide to the World of Programming',
+    'blog_subheader' => 'Discover tips, articles, and resources for programming enthusiasts. Improve your skills and explore new technologies.',
+    'index_main' => 'Want to learn more interesting facts?',
+    'index_submain' => 'Programming is a passion that requires constant development. Take advantage of the content I have prepared for you.',
+    'calendar' => 'Calendar',
+    'meta_description' => 'Oatllo is a place for programming enthusiasts where you will find articles, projects, courses, and tips. Enhance your skills and explore modern technologies.',
+    'meta_keywords' => 'programming, programming blog, programming articles, programming tips, programming projects, programming courses, PHP, JavaScript, Symfony, guides for programmers, programming skills development, educational resources, tech news, programming basics, coding learning, for programmers',
+    'more' => 'Read more',
+    'header_blog' => 'Blog',
+    'header_sub_blog' => 'From basic concepts and advanced tips to the latest technology news.',
+    'meta_title' => 'Oatllo – programming blog, projects, courses, tips.',
+    'meta_title_blog' => 'Oatllo.pl - Programming Blog. Tips, tutorials, analyses',
+    'meta_description_blog' => 'Blog - Discover the fascinating world of programming with our blog. You will find professional tips, guides, and analyses here.',
+    'about_me_description' => 'PHP Developer, Programming Enthusiast',
+    'about_me_content' => 'I am a programming enthusiast who has been exploring the intricacies of modern technologies for years. On this site, you will find valuable articles, guides, and tips on the latest trends and best programming practices. This place is created for those who want to develop their skills and discover practical aspects of programming.',
+];

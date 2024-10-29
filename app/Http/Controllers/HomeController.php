@@ -15,17 +15,17 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $info = CmsPage::find(1);
+        if(env('LANGUAGE_MODE') == 'strict'){
+            $defaultLangue = env('APP_LOCALE');
+            $randomArticles = Article::where('is_published', true)->where('language', $defaultLangue)->inRandomOrder()->take(3)->get();
+        }else{
+            $randomArticles = Article::where('is_published', true)->inRandomOrder()->take(3)->get();
+        }
 
-        $randomArticles = Article::where('is_published', true)->where('type', 'normal')->inRandomOrder()->take(3)->get();
 
-
-        return view('views_basic.welcome', array_merge(
-            $info->to_view,
-            [
-                'randomArticles' => $randomArticles
-            ]
-        ));
+        return view('views_basic.welcome', [
+            'randomArticles' => $randomArticles
+        ]);
     }
 
 
@@ -62,7 +62,13 @@ class HomeController extends Controller
             abort(404);
         }
 
-        $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->where('type', 'normal')->inRandomOrder()->take(3)->get();
+        if(env('LANGUAGE_MODE') == 'strict'){
+            $defaultLangue = env('APP_LOCALE');
+            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->where('language', $defaultLangue)->inRandomOrder()->take(3)->get();
+
+        }else{
+            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->inRandomOrder()->take(3)->get();
+        }
 
         return view('views_basic.article', [
             'article' => $article,
