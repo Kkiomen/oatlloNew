@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="{{ env('APP_LANG_HTML') }}">
 <head>
     <meta charset="UTF-8">
     <title>{{ $article->view_content['basic_website_structure_title'] }}</title>
@@ -49,9 +49,9 @@
                         </svg>
                     </button>
                     <div class="hidden lg:ml-12 lg:flex lg:gap-x-14">
-                        <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-gray-900">Strona główna</a>
-                        <a href="{{ route('blog') }}" class="text-sm font-semibold leading-6 text-gray-900">Blog</a>
-                        <a href="{{ route('index') }}#contact" class="text-sm font-semibold leading-6 text-gray-900">Kontakt</a>
+                        <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-gray-300">Strona główna</a>
+                        <a href="{{ route('blog') }}" class="text-sm font-semibold leading-6 text-gray-300">Blog</a>
+                        <a href="{{ route('index') }}#contact" class="text-sm font-semibold leading-6 text-gray-300">Kontakt</a>
                     </div>
                 </nav>
             </div>

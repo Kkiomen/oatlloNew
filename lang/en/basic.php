@@ -20,4 +20,7 @@ return [
     'meta_description_blog' => 'Blog - Discover the fascinating world of programming with our blog. You will find professional tips, guides, and analyses here.',
     'about_me_description' => 'PHP Developer, Programming Enthusiast',
     'about_me_content' => 'I am a programming enthusiast who has been exploring the intricacies of modern technologies for years. On this site, you will find valuable articles, guides, and tips on the latest trends and best programming practices. This place is created for those who want to develop their skills and discover practical aspects of programming.',
+    'blog_header_1' => 'Discover the world of',
+    'blog_header_2' => 'programming and technology',
+    'blog_header_3' => 'Here you will find inspiring articles, practical tips, and resources to help you grow in the field of programming.',
 ];
