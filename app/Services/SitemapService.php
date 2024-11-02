@@ -30,7 +30,12 @@ class SitemapService
         }
 
         // Add blog posts
-        $articles = Article::where('is_published', true)->get();
+        if(env('LANGUAGE_MODE') == 'strict'){
+             $articles = Article::where('is_published', true)->where('language', env('APP_LOCALE'))->get();
+        }else{
+            $articles = Article::where('is_published', true)->get();
+        }
+
         if($articles->count() > 0){
             foreach($articles as $article){
                 $sitemap->addItem(
