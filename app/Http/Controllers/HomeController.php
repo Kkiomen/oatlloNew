@@ -89,8 +89,14 @@ class HomeController extends Controller
 
         $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
 
-        $articles = Article::where('type', 'normal')->where('is_published', true)->orderBy('created_at', 'desc')->paginate(10);
-        $info = CmsPage::find(1);
+        if(env('LANGUAGE_MODE') == 'strict') {
+            $articles = Article::where('is_published', true)
+                ->where('language', env('APP_LOCALE'))
+                ->orderBy('created_at', 'desc')->paginate(10);
+        }else{
+            $articles = Article::where('is_published', true)
+                ->orderBy('created_at', 'desc')->paginate(10);
+        }
 
         return view('views_basic.blog',[
             'categories' => $categories,
@@ -107,10 +113,18 @@ class HomeController extends Controller
             abort(404);
         }
 
-        $articles = Article::where('type', 'normal')
-                            ->where('is_published', true)
-                            ->where('category_id', $currentCategory->id)
-                            ->orderBy('created_at', 'desc')->paginate(10);
+        if(env('LANGUAGE_MODE') == 'strict') {
+            $articles = Article::where('type', 'normal')
+                ->where('is_published', true)
+                ->where('category_id', $currentCategory->id)
+                ->where('language', env('APP_LOCALE'))
+                ->orderBy('created_at', 'desc')->paginate(10);
+        }else{
+            $articles = Article::where('type', 'normal')
+                ->where('is_published', true)
+                ->where('category_id', $currentCategory->id)
+                ->orderBy('created_at', 'desc')->paginate(10);
+        }
 
         $currentCategory = $currentCategory->name;
 
