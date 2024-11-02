@@ -51,7 +51,7 @@
                         </svg>
                     </button>
                     <div class="hidden lg:ml-12 lg:flex lg:gap-x-14">
-                        <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-gray-300">Strona główna</a>
+                        <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-gray-300">{{ __('basic.home') }}</a>
                         <a href="{{ route('blog') }}" class="text-sm font-semibold leading-6 text-gray-300">Blog</a>
                     </div>
                 </nav>
@@ -78,7 +78,7 @@
                 <div class="mt-6 flow-root">
                     <div class="-my-6 divide-y divide-gray-500/10">
                         <div class="space-y-2 py-6">
-                            <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Strona główna</a>
+                            <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('basic.home') }}</a>
                             <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Blog</a>
                         </div>
                     </div>
