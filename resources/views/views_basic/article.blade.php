@@ -39,9 +39,11 @@
         <div class="mx-auto max-w-7xl">
             <div class="px-6 pt-6 lg:max-w-2xl lg:pl-8 lg:pr-0">
                 <nav class="flex items-center justify-between lg:justify-start" aria-label="Global">
-                    <div class="logo_oatllo">
-                        oatllo
-                    </div>
+                    <a href="{{ route('index') }}">
+                        <div class="logo_oatllo">
+                            oatllo
+                        </div>
+                    </a>
                     <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700 lg:hidden"  @click="open = !open">
                         <span class="sr-only">Open main menu</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
@@ -51,7 +53,6 @@
                     <div class="hidden lg:ml-12 lg:flex lg:gap-x-14">
                         <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-gray-300">Strona główna</a>
                         <a href="{{ route('blog') }}" class="text-sm font-semibold leading-6 text-gray-300">Blog</a>
-                        <a href="{{ route('index') }}#contact" class="text-sm font-semibold leading-6 text-gray-300">Kontakt</a>
                     </div>
                 </nav>
             </div>
@@ -62,9 +63,11 @@
             <div class="fixed inset-0 z-50"></div>
             <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                 <div class="flex items-center justify-between">
-                    <div class="text-black uppercase" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
-                        Bartłomiej Biernat
-                    </div>
+                    <a href="{{ route('index') }}">
+                        <div class="logo_oatllo text-black" style="font-family: 'Montserrat', sans-serif; font-weight: 800">
+                            oatllo
+                        </div>
+                    </a>
                     <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" @click="open = !open">
                         <span class="sr-only">Close menu</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
@@ -77,7 +80,6 @@
                         <div class="space-y-2 py-6">
                             <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Strona główna</a>
                             <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Blog</a>
-                            <a href="{{ route('index') }}#contact" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Kontakt</a>
                         </div>
                     </div>
                 </div>
