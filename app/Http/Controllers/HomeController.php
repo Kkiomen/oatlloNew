@@ -92,14 +92,11 @@ class HomeController extends Controller
         $articles = Article::where('type', 'normal')->where('is_published', true)->orderBy('created_at', 'desc')->paginate(10);
         $info = CmsPage::find(1);
 
-        return view('views_basic.blog',array_merge(
-            $info->to_view,
-            [
-                'categories' => $categories,
-                'articles' => $articles,
-                'currentCategory' => null
-            ]
-        ));
+        return view('views_basic.blog',[
+            'categories' => $categories,
+            'articles' => $articles,
+            'currentCategory' => null
+        ]);
     }
 
 
@@ -126,14 +123,11 @@ class HomeController extends Controller
         $info = CmsPage::find(1);
 
 
-        return view('views_basic.blog', array_merge(
-            $info->to_view,
-            [
-                'categories' => $categories,
-                'articles' => $articles,
-                'currentCategory' => $currentCategory
-            ]
-        ));
+        return view('views_basic.blog', [
+            'categories' => $categories,
+            'articles' => $articles,
+            'currentCategory' => $currentCategory
+        ]);
     }
 
     public function sendEmail(Request $request)
