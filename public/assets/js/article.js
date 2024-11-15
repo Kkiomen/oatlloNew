@@ -150,6 +150,22 @@ function articleEditor(initialSections) {
         },
         save() {
             var notyf = new Notyf();
+
+            // Aktualizuj this.sections najnowszą zawartością z CKEditor
+            document.querySelectorAll('textarea.contents-textarea').forEach(textarea => {
+                const id = textarea.getAttribute('data-id');
+                const editorInstance = textarea.editorInstance;
+                if (editorInstance) {
+                    const content = editorInstance.getData();
+                    // Znajdź sekcję o danym id i zaktualizuj jej zawartość
+                    const section = this.sections.find(sec => sec.id === id);
+                    if (section) {
+                        section.content = content;
+                    }
+                }
+            });
+
+            // Zapisanie danych
             fetch(`${urlUpdateContents}`, {
                 method: 'POST',
                 headers: {

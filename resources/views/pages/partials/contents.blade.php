@@ -275,6 +275,5 @@
 
 
 
-
 <script src="{{ asset('assets/js/article.js') }}" ></script>
 
