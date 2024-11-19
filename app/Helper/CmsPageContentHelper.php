@@ -55,9 +55,16 @@ class CmsPageContentHelper
         if($content['type'] == 'button'){
 
             $url = !empty($content['href']) ? $content['href'] : '#';
-            $pattern = "/ route\('(.+?)'\)/";
+
+            $pattern = "/route\('(.+?)'\)/";
+
             if (preg_match($pattern, $url, $matches)) {
-                $url = route($matches[1]);
+                // Wygeneruj adres URL dla trasy
+                $baseRoute = route($matches[1]);
+
+                // Zamień `route('nazwa_trasy')` na rzeczywisty URL
+                $url = preg_replace($pattern, $baseRoute, $url);
+                $url = str_replace(['{{', '}}', ' '], '', trim($url));
             }
 
             $listData[$content['key'].'_btn_href'] = $url;
