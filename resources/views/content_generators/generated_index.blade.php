@@ -94,11 +94,11 @@
                                 <div class="flex justify-between mt-10 flex-col gap-3 md:flex-row">
                                     <div class="flex flex-row justify-center gap-3">
                                         <div @click="showInformation(content, 'user')"
-                                             class="text-white bg-gray-400 text-sm text-center p-1 px-3 rounded">Prompt
+                                             class="text-white bg-gray-400 text-sm text-center select-none cursor-pointer p-1 px-3 rounded">Prompt
                                             użytkownika
                                         </div>
                                         <div @click="showInformation(content, 'system')"
-                                             class="text-white bg-gray-400 text-sm text-center p-1 px-3 rounded">Prompt
+                                             class="text-white bg-gray-400 text-sm text-center select-none cursor-pointer p-1 px-3 rounded">Prompt
                                             Systemowy
                                         </div>
                                     </div>
