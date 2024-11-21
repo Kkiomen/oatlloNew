@@ -7,7 +7,7 @@
                 <div class="flex flex-col md:flex-row justify-between ">
                     <div class="w-full h-full">
                         <!-- Text Section -->
-                        <template class="h-full" x-if="section.type === 'text' && section.content">
+                        <template class="h-full" x-if="section.type === 'text'">
                             <div class="h-full" >
                                 <div class="flex items-center">
                                     <button
@@ -271,6 +271,7 @@
     let urlUpdateContents = '{{ route('articles.saveContents', $article) }}';
     let urlUploadImage = '{{ route('articles.saveContentsImage') }}';
     let urlBasic = '{{ route('index') }}';
+    let routeNamed = '{{ Route::currentRouteName() }}';
 </script>
 
 

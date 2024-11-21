@@ -13,6 +13,10 @@ class LanguageHelper
         $languagesName = env('LANGUAGES');
         $languagesShort = env('LANGUAGES_SHORT');
 
+        if(empty($languagesName) || empty($languagesShort)){
+            return [];
+        }
+
         $languagesName = explode('|', $languagesName);
         $languagesShort = explode('|', $languagesShort);
 
