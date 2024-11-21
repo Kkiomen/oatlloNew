@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div x-data="generatedContentCrud({{ $contentGenerator->id }}, '{{ $contentGenerator->systemPrompt }}')">
+    <div x-data="generatedContentCrud({{ $contentGenerator->id }}, `{{ $contentGenerator->systemPrompt }}`)">
         <div class="bg-gray-200 py-5 h-full">
             <!-- Back Button -->
             <div class="mb-4 flex justify-end mx-5">
