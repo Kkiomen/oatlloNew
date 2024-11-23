@@ -23,7 +23,8 @@ class Article extends Model
         'schema_ai',
         'options_ai',
         'language',
-        'connection_article_id'
+        'connection_article_id',
+        'structure_data_google'
     ];
 
     protected $casts = [

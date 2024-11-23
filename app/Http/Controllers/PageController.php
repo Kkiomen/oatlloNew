@@ -12,6 +12,7 @@ use App\Services\Generator\GeneratorArticleService;
 use App\Services\Helper\GeneratorHelper;
 use App\Services\Helper\LanguageHelper;
 use App\Services\ImageService;
+use App\Services\StructureDataGoogleSearchService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -140,11 +141,15 @@ class PageController extends Controller
         return response()->json(['status' => 'error']);
     }
 
-    public function saveContents(Request $request, Article $article)
+    public function saveContents(Request $request, Article $article): JsonResponse
     {
         $contents = $request->input('contents');
         $article->contents = $contents;
         $article->type = 'normal';
+        $article->save();
+
+        $schemaGoogle = StructureDataGoogleSearchService::generateStructureData($article);
+        $article->structure_data_google = $schemaGoogle;
         $article->save();
 
         return response()->json(['status' => 'success']);
