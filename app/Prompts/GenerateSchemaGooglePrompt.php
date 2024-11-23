@@ -194,8 +194,8 @@ Skopiuj kod
   {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "Litera \'I\' w SOLID: Zasada Inwersji Zależności - Przewodnik",
-    "description": "Zgłębiaj zasadę Inwersji Zależności z SOLID. Praktyczne przykłady w PHP i szczegółowe omówienie. Naucz się więcej!",
+    "headline": "(title article)",
+    "description": "(description article)",
     "image": [
       "https://oatllo.com/storage/uploads/1732361998.webp"
     ],
