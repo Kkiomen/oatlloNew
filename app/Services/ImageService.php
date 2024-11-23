@@ -55,7 +55,7 @@ class ImageService
             }
 
             // Save the image as WebP
-            imagewebp($image, $webpFullPath, 80); // Quality set to 80 (adjust as needed)
+            imagewebp($image, $webpFullPath, 90); // Quality set to 80 (adjust as needed)
             imagedestroy($image); // Free up memory
 
             // Delete the original file as it’s no longer needed
