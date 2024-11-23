@@ -19,13 +19,13 @@ class SitemapService
         $date = now()->toIso8601String();
 
         $sitemap->addItem('/', '1.0', 'daily', $date);
-        $sitemap->addItem(route('blog', [], false), '0.8', 'daily', $date);
+        $sitemap->addItem(route('blog', [], false), '0.8', 'weekly', $date);
 
         // Add different category posts
         $categories = static::prepareCategoriesBlog();
         if($categories->count() > 0){
             foreach($categories as $category){
-                $sitemap->addItem(route('blog.list.category', ['slug' => $category->slug], false), '0.7', 'daily', 'Today');
+                $sitemap->addItem(route('blog.list.category', ['slug' => $category->slug], false), '0.7', 'weekly', 'Today');
             }
         }
 
@@ -41,7 +41,7 @@ class SitemapService
                 $sitemap->addItem(
                     loc: $article->getRoute(false) ,
                     priority: '0.7',
-                    changefreq: 'daily',
+                    changefreq: 'weekly',
                     lastmod: $article->updated_at->toIso8601String()
                 );
 
