@@ -143,7 +143,8 @@ Skopiuj kod
           "@type": "Answer",
           "text": "Przykłady w PHP obejmują podział dużego interfejsu na mniejsze, takie jak Drivable i Flyable, gdzie klasa Car implementuje tylko Drivable, a Plane Flyable."
         }
-      }
+      },
+      ***
     ]
   },
   {
