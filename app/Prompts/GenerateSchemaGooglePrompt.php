@@ -136,6 +136,7 @@ Skopiuj kod
           "text": "Segregacja interfejsów zwiększa elastyczność systemu, ułatwia jego utrzymanie oraz sprawia, że kod jest bardziej czytelny i łatwiejszy w rozwijaniu."
         }
       },
+      ...,
       {
         "@type": "Question",
         "name": "Jakie są przykłady zasady \'I\' w PHP?",
@@ -143,8 +144,7 @@ Skopiuj kod
           "@type": "Answer",
           "text": "Przykłady w PHP obejmują podział dużego interfejsu na mniejsze, takie jak Drivable i Flyable, gdzie klasa Car implementuje tylko Drivable, a Plane Flyable."
         }
-      },
-      ***
+      }
     ]
   },
   {
@@ -225,6 +225,8 @@ Skopiuj kod
 ### Informacje zwróć w języku: '. env('APP_LOCALE') .'
 
 ### Zwróć tylko json ld bez dodatkowych komentarzy
+### Notatki
+- Zwróć uwagę na sekcje "FAQPage" aby zawierał jak najwięcej  pytań i odpowiedzi na podstawie treści artykułu min 5 ale powinno być więcej
         ';
     }
 }
