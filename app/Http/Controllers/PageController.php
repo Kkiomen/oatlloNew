@@ -40,6 +40,7 @@ class PageController extends Controller
                                 return $query->where('language', 'like', '%' . $language . '%');
                             })
                             ->orderBy('created_at', 'desc')
+                            ->orderBy('is_published', 'asc')
                             ->whereIn('type', ['normal', 'ai_generator'])
                             ->paginate(10);
 
