@@ -108,6 +108,10 @@ class ArticleService
             if(isset($article->view_content['basic_website_structure_is_published'])){
                 $article->is_published = boolval($article->view_content['basic_website_structure_is_published']);
             }
+
+            if(str_contains(haystack: $key,needle: 'structure_is_published')){
+                $article->created_at = now();
+            }
             $article->save();
         }
 
