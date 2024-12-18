@@ -23,5 +23,11 @@ return [
     'blog_header_1' => 'Odkryj świat',
     'blog_header_2' => 'programowania i technologii',
     'blog_header_3' => 'Znajdziesz tu inspirujące artykuły, praktyczne porady i zasoby, które pomogą Ci rozwijać się w dziedzinie programowania.',
+    'courses' => 'Kursy',
+    'courses_header' => 'Kursy programowania, które otworzą Ci drzwi do kariery IT',
+    'courses_header_h1' => 'Zostań programistą od podstaw lub rozwijaj swoje umiejętności!',
+    'courses_header_h2' => 'Kursy programowania dostosowane do Twoich potrzeb',
+    'go_to_course' => 'Przejdź do kursu',
+
 
 ];

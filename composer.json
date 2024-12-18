@@ -8,10 +8,15 @@
         "php": "^8.2",
         "ext-gd": "*",
         "ext-xmlwriter": "*",
+        "algolia/algoliasearch-client-php": "4.0",
         "anhskohbo/no-captcha": "^3.6",
+        "hkulekci/qdrant": "^0.5.7",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
+        "mozex/anthropic-php": "^1.0",
         "openai-php/laravel": "^0.10.2",
+        "react/event-loop": "1.5.0",
+        "react/promise": "3.2.0",
         "symfony/filesystem": "^7.1"
     },
     "require-dev": {

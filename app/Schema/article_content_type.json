@@ -39,6 +39,14 @@
         "category": {
             "type": "category",
             "value": null
+        },
+        "date": {
+            "type": "string",
+            "value": null
+        },
+        "datetime": {
+            "type": "string",
+            "value": null
         }
     }
 ]

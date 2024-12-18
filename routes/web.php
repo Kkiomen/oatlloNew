@@ -11,6 +11,7 @@ use App\Http\Controllers\SectionContentController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CmsPageController;
+use App\Http\Controllers\CourseController;
 
 
 
@@ -22,6 +23,10 @@ Route::post('/send/email', [\App\Http\Controllers\HomeController::class, 'sendEm
 //Route::get('/blog/', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('/kursy', [HomeController::class, 'courses'])->name('courses');
+Route::get('/kurs/{courseName}', [HomeController::class, 'course'])->name('course_pl');
+Route::get('/course/{courseName}', [HomeController::class, 'course'])->name('course_en');
+Route::get('/kursy/lessons', [HomeController::class, 'coursesLessons'])->name('courses_lessons');
 Route::get('/kontakt', [HomeController::class, 'contact'])->name('contact');
 Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about.us');
 
@@ -110,6 +115,20 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/cmspage/update', [CmsPageController::class, 'update'])->name('cmspage.update');
 
+    // Courses
+
+    Route::get('/courses', [CourseController::class, 'list'])->name('courses.list');
+    Route::get('/courses/add', [CourseController::class, 'add'])->name('courses.add');
+    Route::get('/courses/add/category/{course}', [CourseController::class, 'addCategory'])->name('courses.category.add');
+    Route::post('/courses/edit/category/short', [CourseController::class, 'editCategoryShort'])->name('courses.category.edit.short');
+    Route::post('/courses/edit/category/{category}', [CourseController::class, 'editCategory'])->name('courses.category.edit');
+    Route::get('/courses/edit/category/{category}/lesson-to-choose', [CourseController::class, 'fetchLessonToChoose'])->name('courses.category.lesson_to_choose_list');
+    Route::post('/courses/edit/category/lessons/choose', [CourseController::class, 'chooseLesson'])->name('courses.category.lesson_to_choose_add');
+    Route::post('/courses/store', [CourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/edit/{id}', [CourseController::class, 'edit'])->name('courses.edit');
+
+    Route::post('/courses/edit/category/lessons/edit/positions', [CourseController::class, 'editCategoryLessonsPositions'])->name('courses.category.lessons.edit.positions');
+    Route::get('/courses/edit/category/lessons/edit/remove/{id}', [CourseController::class, 'removeCategoryLessonsPositions'])->name('courses.category.lessons.remove.position');
 
 
 });

@@ -6,6 +6,8 @@ use App\Mail\InformationContact;
 use App\Models\Category;
 use App\Models\CmsPage;
 use App\Models\Article;
+use App\Models\Course;
+use App\Models\CourseCategoryLesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +19,12 @@ class HomeController extends Controller
     {
         if(env('LANGUAGE_MODE') == 'strict'){
             $defaultLangue = env('APP_LOCALE');
-            $randomArticles = Article::where('is_published', true)->where('language', $defaultLangue)->inRandomOrder()->take(3)->get();
+            $lessonsNotIn = [];
+            foreach (CourseCategoryLesson::get() as $lesson){
+                $lessonsNotIn[] = $lesson->lesson_id;
+            }
+
+            $randomArticles = Article::where('is_published', true)->where('language', $defaultLangue)->whereNotIn('id', $lessonsNotIn)->inRandomOrder()->take(3)->get();
         }else{
             $randomArticles = Article::where('is_published', true)->inRandomOrder()->take(3)->get();
         }
@@ -36,6 +43,38 @@ class HomeController extends Controller
         return view('home.index', compact('page'));
     }
 
+    public function courses(): View
+    {
+        $defaultLangue = env('APP_LOCALE');
+        $courses = Course::where('is_published', true)->where('lang', $defaultLangue)->get();
+
+        return view('home.courses', [
+            'courses' => $courses,
+            'defaultLangue' => $defaultLangue,
+        ]);
+    }
+
+
+    public function course(Request $request, string $courseName): View
+    {
+        $defaultLangue = env('APP_LOCALE');
+        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+
+        if(!$course){
+            abort(404);
+        }
+
+        if($defaultLangue == 'pl'){
+            $urlToCourse = route('course_pl', ['courseName' => $course->slug ]);
+        }else{
+            $urlToCourse = route('course_en', ['courseName' => $course->slug ]);
+        }
+
+        return view('home.course', [
+            'course' => $course,
+            'urlToCourse' => $urlToCourse
+        ]);
+    }
 
 
     // ============== ARTICLE ==============
@@ -90,8 +129,14 @@ class HomeController extends Controller
         $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
 
         if(env('LANGUAGE_MODE') == 'strict') {
+            $lessonsNotIn = [];
+            foreach (CourseCategoryLesson::get() as $lesson){
+                $lessonsNotIn[] = $lesson->lesson_id;
+            }
+
             $articles = Article::where('is_published', true)
                 ->where('language', env('APP_LOCALE'))
+                ->whereNotIn('id', $lessonsNotIn)
                 ->orderBy('created_at', 'desc')->paginate(10);
         }else{
             $articles = Article::where('is_published', true)

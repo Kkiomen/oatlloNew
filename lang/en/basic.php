@@ -23,4 +23,10 @@ return [
     'blog_header_1' => 'Discover the world of',
     'blog_header_2' => 'programming and technology',
     'blog_header_3' => 'Here you will find inspiring articles, practical tips, and resources to help you grow in the field of programming.',
+    'courses' => 'Courses',
+    'courses_header' => 'Programming courses that will open the door to your IT career',
+    'courses_header_h1' => 'Become a programmer from scratch or develop your skills!',
+    'courses_header_h2' => 'Programming courses tailored to your needs',
+    'go_to_course' => 'Go to course',
+
 ];

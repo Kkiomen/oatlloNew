@@ -73,7 +73,7 @@
                 }
 
                 // Nasłuchiwanie eventów blur na input[type="text"] i textarea
-                const inputs = document.querySelectorAll('input[type="text"], textarea');
+                const inputs = document.querySelectorAll('input[type="text"],input[type="date"],input[type="datetime"], textarea');
                 inputs.forEach(input => {
                     input.addEventListener('blur', saveFormData); // Event na opuszczenie pola
                 });

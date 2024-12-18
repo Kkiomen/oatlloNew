@@ -19,17 +19,20 @@
                     <x-nav-link :href="$articlesUrl" :active="request()->routeIs('pages.index')">
                         {{ __('Zarządzanie artykułami ') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('courses.list')" :active="request()->routeIs('courses.list')">
+                        {{ __('Zarządzanie kursami ') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('content_generators.index')" :active="request()->routeIs('content_generators.index')">
                         {{ __('Generowanie treści ') }}
                     </x-nav-link>
 
-                    @php $cmsPages = \App\Models\CmsPage::get(); @endphp
-                    @foreach($cmsPages as $cmsPage)
-                        @php $slug = \Illuminate\Support\Str::slug(strtolower($cmsPage->name)); @endphp
-                        <x-nav-link :href="route('cmspage.edit', $slug)" :active="request()->routeIs('cmspage.edit')">
-                            {{ $cmsPage->name }}
-                        </x-nav-link>
-                    @endforeach
+{{--                    @php $cmsPages = \App\Models\CmsPage::get(); @endphp--}}
+{{--                    @foreach($cmsPages as $cmsPage)--}}
+{{--                        @php $slug = \Illuminate\Support\Str::slug(strtolower($cmsPage->name)); @endphp--}}
+{{--                        <x-nav-link :href="route('cmspage.edit', $slug)" :active="request()->routeIs('cmspage.edit')">--}}
+{{--                            {{ $cmsPage->name }}--}}
+{{--                        </x-nav-link>--}}
+{{--                    @endforeach--}}
                 </div>
             </div>
 

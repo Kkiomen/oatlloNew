@@ -35,7 +35,7 @@ class CmsPageContentHelper
 
     protected static function addSingleElement(array $content, array &$listData): void
     {
-        if($content['type'] == 'text' || $content['type'] == 'textarea' || $content['type'] == 'boolean'){
+        if($content['type'] == 'text' || $content['type'] == 'textarea' || $content['type'] == 'boolean' || $content['type'] == 'date'){
             $listData[$content['key']] = empty($content['value']) ? '' : $content['value'];
         }
 

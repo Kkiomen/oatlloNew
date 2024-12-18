@@ -36,6 +36,12 @@
                 "type": "boolean"
             },
             {
+                "label": "Data publikacji",
+                "key": "basic_website_structure_published_date",
+                "small": "Data publikacji",
+                "type": "date"
+            },
+            {
                 "label": "Zdjęcie artykułu",
                 "key": "basic_website_structure_image",
                 "small": null,
