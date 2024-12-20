@@ -387,7 +387,7 @@
                                     </select>
 
                                     <div class="mt-3">
-                                        <button type="submit" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2">Dodaj produkt</button>
+                                        <button type="submit" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2">Dodaj lekcje</button>
                                     </div>
 
                                 </form>
@@ -427,6 +427,7 @@
                                                 </td>
 
                                                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                                                    <a target="_blank" href="{{ route('pages.edit', ['page' => $lesson['lesson_id']]) }}"><button type="button" class="bg-blue-500 text-white px-2 py-1 rounded">Edytuj</button></a>
                                                     <a href="{{ route('courses.category.lessons.remove.position', ['id' => $lesson['id']]) }}"><button type="button" data-id="{{ $lesson['id'] }}" class="bg-red-500 text-white px-2 py-1 rounded">Usuń</button></a>
                                                 </td>
                                             </tr>

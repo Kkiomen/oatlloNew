@@ -48,6 +48,7 @@ class CourseCategory extends Model
                 'id' => $categoryLesson->id,
                 'name' => $article->name,
                 'sort' => $categoryLesson->sort,
+                'lesson_id' => $article->id
             ];
 
         }
