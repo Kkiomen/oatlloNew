@@ -15,8 +15,9 @@ class CourseController extends Controller
 {
     public function list(Request $request): View
     {
+        $courses = Course::get();
         return view('courses.list', [
-
+            'courses' => $courses,  
         ]);
     }
 

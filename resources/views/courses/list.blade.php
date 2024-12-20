@@ -46,15 +46,15 @@
                                 </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 bg-white">
-{{--                                @foreach($pages as $page)--}}
-{{--                                    <tr>--}}
-{{--                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $page->name }}</td>--}}
-{{--                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $page->slug }}</td>--}}
-{{--                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ \App\Services\Helper\LanguageHelper::getNameFromShort($page->language) ?? 'Polski' }}</td>--}}
-{{--                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">{{ $page->is_published ? 'Tak' : 'Nie' }}</td>--}}
-{{--                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">--}}
-{{--                                            <a href="{{ route('pages.edit', $page) }}"--}}
-{{--                                               class="bg-green-500 text-white px-2 py-1 rounded">Edytuj</a>--}}
+                                @foreach($courses as $page)
+                                    <tr>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $page->name }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $page->slug }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ \App\Services\Helper\LanguageHelper::getNameFromShort($page->lang) ?? 'Polski' }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center">{{ $page->is_published ? 'Tak' : 'Nie' }}</td>
+                                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                                            <a href="{{ route('courses.edit', $page) }}"
+                                               class="bg-green-500 text-white px-2 py-1 rounded">Edytuj</a>
 {{--                                            <form x-data @submit.prevent="confirmDelete($el)" action="{{ route('pages.destroy', $page) }}" method="POST"--}}
 {{--                                                  class="inline-block">--}}
 {{--                                                @csrf--}}
@@ -62,10 +62,10 @@
 {{--                                                <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">--}}
 {{--                                                    Usuń--}}
 {{--                                                </button>--}}
-{{--                                            </form>--}}
-{{--                                        </td>--}}
-{{--                                    </tr>--}}
-{{--                                @endforeach--}}
+{{--                                            </form> --}}
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 <!-- More people... -->
                                 </tbody>
                             </table>
