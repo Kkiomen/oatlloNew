@@ -147,13 +147,13 @@
                                                         <div class="text-sm/8 text-gray-500">
                                                             <div class="mr-0.5">
                                                                 <h3>
-                                                                    <a href="#" class="font-medium text-lg text-gray-900">{{ $category->category_name }}</a>
+                                                                    <a href="{{ $category->getRoute() }}" class="font-medium text-lg text-gray-900 hover:text-gray-700 hover:underline">{{ $category->category_name }}</a>
                                                                     <span class="ml-2">
-                                                                    <a href="#" class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium text-gray-900 ring-1 ring-gray-200 ring-inset">
+                                                                    <a href="{{ $category->getRoute() }}" class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium text-gray-900 ring-1 ring-gray-200 ring-inset">
                                                                       <svg class="size-1.5 fill-indigo-500" viewBox="0 0 6 6" aria-hidden="true">
                                                                         <circle cx="3" cy="3" r="3" />
                                                                       </svg>
-                                                                      Rozdział
+                                                                      {{ __('basic.chapter') }}
                                                                     </a>
                                                                 </span>
                                                                 </h3>
@@ -163,7 +163,7 @@
                                                             <div class="mt-4">
                                                                 @foreach($category->lessons as $lesson)
                                                                     <div class="py-1">
-                                                                        <h4><a href="#" class="font-medium text-gray-900">{{ $lesson->name }}</a></h4>
+                                                                        <h4><a href="#" class="font-medium text-gray-900 hover:text-blue-600">{{ $lesson->name }}</a></h4>
                                                                         {{ $lesson->short_description }}
                                                                     </div>
 

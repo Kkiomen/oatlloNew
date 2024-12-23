@@ -28,5 +28,6 @@ return [
     'courses_header_h1' => 'Become a programmer from scratch or develop your skills!',
     'courses_header_h2' => 'Programming courses tailored to your needs',
     'go_to_course' => 'Go to course',
+    'chapter' => 'Chapter',
 
 ];

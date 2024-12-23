@@ -28,6 +28,7 @@ return [
     'courses_header_h1' => 'Zostań programistą od podstaw lub rozwijaj swoje umiejętności!',
     'courses_header_h2' => 'Kursy programowania dostosowane do Twoich potrzeb',
     'go_to_course' => 'Przejdź do kursu',
+    'chapter' => 'Rozdział',
 
 
 ];

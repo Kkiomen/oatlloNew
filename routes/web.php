@@ -25,7 +25,9 @@ Route::post('/send/email', [\App\Http\Controllers\HomeController::class, 'sendEm
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/kursy', [HomeController::class, 'courses'])->name('courses');
 Route::get('/kurs/{courseName}', [HomeController::class, 'course'])->name('course_pl');
+Route::get('/kurs/{courseName}/{chapter}', [HomeController::class, 'chapterPl'])->name('course_chapter_pl');
 Route::get('/course/{courseName}', [HomeController::class, 'course'])->name('course_en');
+Route::get('/course/{courseName}/{chapter}', [HomeController::class, 'chapterEn'])->name('course_chapter_en');
 Route::get('/kursy/lessons', [HomeController::class, 'coursesLessons'])->name('courses_lessons');
 Route::get('/kontakt', [HomeController::class, 'contact'])->name('contact');
 Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about.us');

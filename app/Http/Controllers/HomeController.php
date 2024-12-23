@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\CmsPage;
 use App\Models\Article;
 use App\Models\Course;
+use App\Models\CourseCategory;
 use App\Models\CourseCategoryLesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -53,29 +54,6 @@ class HomeController extends Controller
             'defaultLangue' => $defaultLangue,
         ]);
     }
-
-
-    public function course(Request $request, string $courseName): View
-    {
-        $defaultLangue = env('APP_LOCALE');
-        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
-
-        if(!$course){
-            abort(404);
-        }
-
-        if($defaultLangue == 'pl'){
-            $urlToCourse = route('course_pl', ['courseName' => $course->slug ]);
-        }else{
-            $urlToCourse = route('course_en', ['courseName' => $course->slug ]);
-        }
-
-        return view('home.course', [
-            'course' => $course,
-            'urlToCourse' => $urlToCourse
-        ]);
-    }
-
 
     // ============== ARTICLE ==============
 
@@ -212,5 +190,78 @@ class HomeController extends Controller
 
 
         return response()->json(['success' => true]);
+    }
+
+    // ============== COURSES ==============
+
+    public function course(Request $request, string $courseName): View
+    {
+        $defaultLangue = env('APP_LOCALE');
+        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+
+        if(!$course){
+            abort(404);
+        }
+
+        if($defaultLangue == 'pl'){
+            $urlToCourse = route('course_pl', ['courseName' => $course->slug ]);
+        }else{
+            $urlToCourse = route('course_en', ['courseName' => $course->slug ]);
+        }
+
+        return view('home.course', [
+            'course' => $course,
+            'urlToCourse' => $urlToCourse
+        ]);
+    }
+
+
+
+    public function chapterPl(Request $request, string $courseName, string $chapter): View
+    {
+        $defaultLangue = env('APP_LOCALE');
+        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+
+        if(!$course){
+            abort(404);
+        }
+
+        $courseCategory = CourseCategory::where('slug', $chapter)->where('lang', $defaultLangue)->where('course_id', $course->id)->first();
+
+        if(!$courseCategory){
+            abort(404);
+        }
+
+        return view('home.chapter', [
+            'courseName' => $courseName,
+            'chapter' => $chapter,
+            'course' => $course,
+            'courseCategory' => $courseCategory,
+            'category' => $courseCategory,
+        ]);
+    }
+
+    public function chapterEn(Request $request, string $courseName, string $chapter): View
+    {
+        $defaultLangue = env('APP_LOCALE');
+        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+
+        if(!$course){
+            abort(404);
+        }
+
+        $courseCategory = CourseCategory::where('slug', $chapter)->where('lang', $defaultLangue)->where('course_id', $course->id)->first();
+
+        if(!$courseCategory){
+            abort(404);
+        }
+
+        return view('home.chapter', [
+            'courseName' => $courseName,
+            'chapter' => $chapter,
+            'course' => $course,
+            'courseCategory' => $courseCategory,
+            'category' => $courseCategory,
+        ]);
     }
 }

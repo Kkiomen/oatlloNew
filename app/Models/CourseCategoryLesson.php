@@ -14,4 +14,16 @@ class CourseCategoryLesson extends Model
         'lesson_id',
         'sort',
     ];
+
+    public function lesson()
+    {
+        return $this->belongsTo(Article::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(CourseCategory::class);
+    }
+
+
 }
