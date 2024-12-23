@@ -25,5 +25,14 @@ class CourseCategoryLesson extends Model
         return $this->belongsTo(CourseCategory::class);
     }
 
+    public function getRoute(): string
+    {
+        $language = env('APP_LOCALE');
+        if($language === 'pl'){
+            return route('course_lesson_pl', ['courseName' => $this->category->course->slug, 'chapter' => $this->category->slug, 'lesson' => $this->lesson->slug]);
+        }else{
+            return route('course_lesson_en', ['courseName' => $this->category->course->slug, 'chapter' => $this->category->slug, 'lesson' => $this->lesson->slug]);
+        }
+    }
 
 }

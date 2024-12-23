@@ -111,7 +111,7 @@
 
 
                 <div class="relative overflow-hidden pt-16">
-                    <a href="#">
+                    <a href="{{ $firstLessonRoute }}">
                         <div class="text-white text-center p-3 shadow-2xl rounded-xl " style="background-color: #2d9a53">
                             {{ __('basic.go_to_course') }}
                         </div>
@@ -163,7 +163,7 @@
                                                             <div class="mt-4">
                                                                 @foreach($category->lessons as $lesson)
                                                                     <div class="py-1">
-                                                                        <h4><a href="#" class="font-medium text-gray-900 hover:text-blue-600">{{ $lesson->name }}</a></h4>
+                                                                        <h4><a href="{{ $lesson->getRouteCourse($category) }}" class="font-medium text-gray-900 hover:text-blue-600">{{ $lesson->name }}</a></h4>
                                                                         {{ $lesson->short_description }}
                                                                     </div>
 
@@ -195,7 +195,7 @@
 
 
                 <div class="relative overflow-hidden pt-16">
-                    <a href="#">
+                    <a href="{{ $firstLessonRoute }}">
                         <div class="text-white text-center p-3 shadow-2xl rounded-xl " style="background-color: #2d9a53">
                             {{ __('basic.go_to_course') }}
                         </div>
@@ -229,7 +229,7 @@
 
 
 {{--                <div class="relative overflow-hidden pt-16">--}}
-{{--                    <a href="#">--}}
+{{--                    <a href="{{ $firstLessonRoute }}">--}}
 {{--                        <div class="text-white text-center p-3 shadow-2xl rounded-xl " style="background-color: #2d9a53">--}}
 {{--                            {{ __('basic.go_to_course') }}--}}
 {{--                        </div>--}}
@@ -251,4 +251,5 @@
 
 
 </div>
+
 </body>

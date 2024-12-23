@@ -140,7 +140,7 @@
                                                         <div class="mt-4">
                                                             @foreach($category->lessons as $lesson)
                                                                 <div class="py-1">
-                                                                    <h4><a href="#" class="font-medium text-gray-900 hover:text-blue-600">{{ $lesson->name }}</a></h4>
+                                                                    <h4><a href="{{ $lesson->getRouteCourse($category) }}" class="font-medium text-gray-900 hover:text-blue-600">{{ $lesson->name }}</a></h4>
                                                                     {{ $lesson->short_description }}
                                                                 </div>
 

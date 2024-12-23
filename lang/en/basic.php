@@ -29,5 +29,7 @@ return [
     'courses_header_h2' => 'Programming courses tailored to your needs',
     'go_to_course' => 'Go to course',
     'chapter' => 'Chapter',
+    'go_to_next_lesson' => 'Next lesson',
+    'go_to_back_lesson' => 'Previous lesson',
 
 ];

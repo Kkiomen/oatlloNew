@@ -9,6 +9,7 @@ use App\Models\Article;
 use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\CourseCategoryLesson;
+use App\Services\Course\CourseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -209,9 +210,23 @@ class HomeController extends Controller
             $urlToCourse = route('course_en', ['courseName' => $course->slug ]);
         }
 
+        $firstLesson = null;
+
+        foreach ($course->categories as $category) {
+            foreach ($category->lessons as $lesson) {
+                $firstLesson = $lesson->getRouteCourse($category);
+                break;
+            }
+
+            if($firstLesson !== null){
+                break;
+            }
+        }
+
         return view('home.course', [
             'course' => $course,
-            'urlToCourse' => $urlToCourse
+            'urlToCourse' => $urlToCourse,
+            'firstLessonRoute' => $firstLesson
         ]);
     }
 
@@ -238,6 +253,80 @@ class HomeController extends Controller
             'course' => $course,
             'courseCategory' => $courseCategory,
             'category' => $courseCategory,
+        ]);
+    }
+
+    public function courseLessonPl(Request $request, string $courseName, string $chapter, string $lesson): View
+    {
+        $defaultLangue = env('APP_LOCALE');
+        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+
+        if(!$course){
+            abort(404);
+        }
+
+        $courseCategory = CourseCategory::where('slug', $chapter)->where('lang', $defaultLangue)->where('course_id', $course->id)->first();
+
+        if(!$courseCategory){
+            abort(404);
+        }
+
+        $currentLesson = null;
+        foreach ($courseCategory->lessons as $categoryLesson){
+            if($categoryLesson->slug == $lesson){
+                $currentLesson = $categoryLesson;
+            }
+        }
+
+        if(!$currentLesson){
+            abort(404);
+        }
+
+        return view('home.lesson', [
+            'courseName' => $courseName,
+            'chapter' => $chapter,
+            'course' => $course,
+            'courseCategory' => $courseCategory,
+            'category' => $courseCategory,
+            'article' => $currentLesson,
+            'lessonSkip' => CourseHelper::lessonGo($course, $currentLesson)
+        ]);
+    }
+
+    public function courseLessonEn(Request $request, string $courseName, string $chapter, string $lesson): View
+    {
+        $defaultLangue = env('APP_LOCALE');
+        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+
+        if(!$course){
+            abort(404);
+        }
+
+        $courseCategory = CourseCategory::where('slug', $chapter)->where('lang', $defaultLangue)->where('course_id', $course->id)->first();
+
+        if(!$courseCategory){
+            abort(404);
+        }
+
+        $currentLesson = null;
+        foreach ($courseCategory->lessons as $categoryLesson){
+            if($categoryLesson->slug == $lesson){
+                $currentLesson = $categoryLesson;
+            }
+        }
+
+        if(!$currentLesson){
+            abort(404);
+        }
+
+        return view('home.lesson', [
+            'courseName' => $courseName,
+            'chapter' => $chapter,
+            'course' => $course,
+            'courseCategory' => $courseCategory,
+            'category' => $courseCategory,
+            'article' => $currentLesson,
+            'lessonSkip' => CourseHelper::lessonGo($course, $currentLesson)
         ]);
     }
 

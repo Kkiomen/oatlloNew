@@ -29,6 +29,8 @@ return [
     'courses_header_h2' => 'Kursy programowania dostosowane do Twoich potrzeb',
     'go_to_course' => 'Przejdź do kursu',
     'chapter' => 'Rozdział',
+    'go_to_next_lesson' => 'Przejdź do kolejnej lekcji',
+    'go_to_back_lesson' => 'Przejdź do poprzedniej lekcji',
 
 
 ];

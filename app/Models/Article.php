@@ -41,6 +41,12 @@ class Article extends Model
         return $this->hasMany(ArticleSection::class)->orderBy('order');
     }
 
+    public function lesson()
+    {
+        return $this->hasMany(CourseCategoryLesson::class, 'lesson_id');
+    }
+
+
     /**
      * Zwraca nazwę kategorii
      * @return string|null
@@ -82,5 +88,16 @@ class Article extends Model
         }
 
         return route('home.article', ['articleSlug' => $this->slug], $absolute);
+    }
+
+    public function getRouteCourse(CourseCategory $category): string
+    {
+        $language = env('APP_LOCALE');
+
+        if($language === 'pl'){
+            return route('course_lesson_pl', ['courseName' => $category->course->slug, 'chapter' => $category->slug, 'lesson' => $this->slug]);
+        }else{
+            return route('course_lesson_en', ['courseName' => $category->course->slug, 'chapter' => $category->slug, 'lesson' => $this->slug]);
+        }
     }
 }
