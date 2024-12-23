@@ -30,13 +30,13 @@ class Course extends Model
         return $this->hasMany(CourseCategory::class)->where('is_published', true)->orderBy('sort');
     }
 
-    public function getRoute()
+    public function getRoute(bool $absolute = true)
     {
         $language = env('APP_LOCALE');
         if($language === 'pl'){
-            return route('course_pl', ['courseName' => $this->slug]);
+            return route('course_pl', ['courseName' => $this->slug], $absolute);
         }else{
-            return route('course_en', ['courseName' => $this->slug]);
+            return route('course_en', ['courseName' => $this->slug], $absolute);
         }
     }
 }

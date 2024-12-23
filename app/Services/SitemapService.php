@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Course;
 use App\Services\Library\SitemapGenerator;
 
 class SitemapService
@@ -48,6 +49,34 @@ class SitemapService
             }
         }
 
+        $defaultLangue = env('APP_LOCALE');
+        $courses = Course::where('lang', $defaultLangue)->where('is_published', 1)->get();
+        foreach ($courses as $course){
+            $sitemap->addItem(
+                loc: $course->getRoute(false) ,
+                priority: '0.7',
+                changefreq: 'weekly',
+                lastmod: $article->updated_at->toIso8601String()
+            );
+
+            foreach ($course->categories as $category) {
+                $sitemap->addItem(
+                    loc: $category->getRoute(false),
+                    priority: '0.7',
+                    changefreq: 'weekly',
+                    lastmod: $article->updated_at->toIso8601String()
+                );
+
+                foreach ($category->lessons as $lesson) {
+                    $sitemap->addItem(
+                        loc: $lesson->getRouteCourse($category, false),
+                        priority: '0.7',
+                        changefreq: 'weekly',
+                        lastmod: $article->updated_at->toIso8601String()
+                    );
+                }
+            }
+        }
 
         $sitemap->createSitemapIndex(route('index').'/', 'Today');
     }

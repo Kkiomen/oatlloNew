@@ -90,14 +90,14 @@ class Article extends Model
         return route('home.article', ['articleSlug' => $this->slug], $absolute);
     }
 
-    public function getRouteCourse(CourseCategory $category): string
+    public function getRouteCourse(CourseCategory $category, bool $absolute = true): string
     {
         $language = env('APP_LOCALE');
 
         if($language === 'pl'){
-            return route('course_lesson_pl', ['courseName' => $category->course->slug, 'chapter' => $category->slug, 'lesson' => $this->slug]);
+            return route('course_lesson_pl', ['courseName' => $category->course->slug, 'chapter' => $category->slug, 'lesson' => $this->slug], $absolute);
         }else{
-            return route('course_lesson_en', ['courseName' => $category->course->slug, 'chapter' => $category->slug, 'lesson' => $this->slug]);
+            return route('course_lesson_en', ['courseName' => $category->course->slug, 'chapter' => $category->slug, 'lesson' => $this->slug], $absolute);
         }
     }
 }

@@ -56,13 +56,13 @@ class CourseCategory extends Model
         return $lessons;
     }
 
-    public function getRoute(): string
+    public function getRoute(bool $absolute = true): string
     {
         $language = env('APP_LOCALE');
         if($language === 'pl'){
-            return route('course_chapter_pl', ['courseName' => $this->course->slug, 'chapter' => $this->slug]);
+            return route('course_chapter_pl', ['courseName' => $this->course->slug, 'chapter' => $this->slug], $absolute);
         }
 
-        return route('course_chapter_en', ['courseName' => $this->course->slug, 'chapter' => $this->slug]);
+        return route('course_chapter_en', ['courseName' => $this->course->slug, 'chapter' => $this->slug], $absolute);
     }
 }
