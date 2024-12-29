@@ -17,7 +17,7 @@ use App\Services\ImageService;
 
 class GeneratorArticleService
 {
-    protected const AI_GENERATE_TYPE = 'ai_generator';
+    public const AI_GENERATE_TYPE = 'ai_generator';
     public function __construct(
         private readonly ArticleService $articleService,
         private readonly ImageService $imageService
@@ -30,7 +30,7 @@ class GeneratorArticleService
      */
     public function createArticle(string $topicArticle, array $options = []): int
     {
-        $article = $this->articleService->getOrCreateArticleInModeAiGenerate();
+        $article = $this->articleService->createArticleInModeAiGenerate();
         $article->ai_content = $topicArticle;
         $article->contents = null;
         $article->schema_ai = null;
@@ -48,10 +48,14 @@ class GeneratorArticleService
      * Subject, seo, openGraph image, schema
      * @return int
      */
-    public function generateBasicInformation(): int
+    public function generateBasicInformation(?int $articleId): int
     {
         // Get article
-        $article = $this->articleService->getOrCreateArticleInModeAiGenerate();
+        if(!empty($articleId)){
+            $article = Article::find($articleId);
+        }else{
+            $article = $this->articleService->createArticleInModeAiGenerate();
+        }
 
         // Break when article was generated basic information
         if(!empty($article->contents) && !empty($article->schema_ai)){
@@ -197,10 +201,11 @@ class GeneratorArticleService
     {
         $errors = 0;
         $success = false;
+        $content = '';
         do{
             try{
-                $content = GenerateArticleContentPrompt::generateContent($prompt);
-                $content = GenerateArticleDecorateTextPrompt::generateContent($content);
+                $content = GenerateArticleContentPrompt::generateContentTextErrorsLoop($prompt);
+                $content = GenerateArticleDecorateTextPrompt::generateContentTextErrorsLoop($content);
                 $content = str_replace(['```html','```','``', '` `html', '``html', '`html', '`'], '', $content);
 
                 $success = true;
@@ -209,7 +214,7 @@ class GeneratorArticleService
                 continue;
             }
 
-        }while(!$success && $errors < 5);
+        }while(!$success && $errors < 2);
 
         return $content;
     }

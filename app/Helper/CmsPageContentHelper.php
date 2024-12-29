@@ -60,7 +60,12 @@ class CmsPageContentHelper
 
             if (preg_match($pattern, $url, $matches)) {
                 // Wygeneruj adres URL dla trasy
-                $baseRoute = route($matches[1]);
+                try{
+                    $baseRoute = route($matches[1]);
+                }catch (\Exception $e){
+                    $baseRoute = '';
+                }
+
 
                 // Zamień `route('nazwa_trasy')` na rzeczywisty URL
                 $url = preg_replace($pattern, $baseRoute, $url);

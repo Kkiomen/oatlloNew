@@ -11,6 +11,7 @@ use App\Prompts\GenerateArticleContentPrompt;
 use App\Prompts\GenerateArticleContentToOtherLanguagePrompt;
 use App\Prompts\GenerateArticleDecorateTextPrompt;
 use App\Services\CmsPageService;
+use App\Services\Generator\GeneratorArticleService;
 use App\Services\Helper\GeneratorHelper;
 use App\Services\Helper\LanguageHelper;
 use App\Services\SitemapService;
@@ -51,17 +52,22 @@ class ArticleService
         $article = Article::where('type', $type)->first();
 
         if($article === null) {
-            $article = Article::create([
-                'name' => 'Artykuł wygenerowany przy pomocy AI',
-                'slug' => 'new-ai-article',
-                'is_published' => false,
-                'json_content' => ArticleContentBuilder::getCreateContent(),
-                'type' => $type,
-                'view_content' => null
-            ]);
+            $article = $this->createArticleInModeAiGenerate();
         }
 
         return $article;
+    }
+
+    public function createArticleInModeAiGenerate(): Article
+    {
+        return Article::create([
+            'name' => 'Artykuł wygenerowany przy pomocy AI',
+            'slug' => 'new-ai-article',
+            'is_published' => false,
+            'json_content' => ArticleContentBuilder::getCreateContent(),
+            'type' => GeneratorArticleService::AI_GENERATE_TYPE,
+            'view_content' => null
+        ]);
     }
 
     public function updateKey(Article $article, string $key, string $value, bool $saveArticleOnFinish = true): ?array

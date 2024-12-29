@@ -171,14 +171,14 @@ class PageController extends Controller
         $options = $request->all();
         unset($options['about']);
 
-        $generatorArticleService->createArticle($request->input('about'), $options ?? []);
+        $articleId = $generatorArticleService->createArticle($request->input('about'), $options ?? []);
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['status' => 'success', 'articleId' => $articleId]);
     }
 
     public function generateBasicInfo(Request $request, GeneratorArticleService $generatorArticleService): JsonResponse
     {
-        $articleId = $generatorArticleService->generateBasicInformation();
+        $articleId = $generatorArticleService->generateBasicInformation($request->query->getInt('articleId'));
 
         return response()->json(['status' => 'success', 'articleId' => $articleId]);
     }
