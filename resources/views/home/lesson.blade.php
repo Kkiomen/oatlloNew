@@ -11,7 +11,7 @@
 
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
 
-    <link rel="canonical" href="{{ $courseCategory->getRoute() }}">
+    <link rel="canonical" href="{{ $article->getRouteCourse($courseCategory) }}">
     <meta name="keywords" content="{{ __('basic.meta_keywords') }}">
 
     <meta property="og:title" content="{{ $courseCategory->title_seo }}">
