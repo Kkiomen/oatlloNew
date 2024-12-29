@@ -2,8 +2,8 @@
 <html lang="{{ env('APP_LANG_HTML') }}">
 <head>
     <meta charset="UTF-8">
-    <title>{{ $article->title_seo }}</title>
-    <meta name="description" content="{{ $article->description_seo }}">
+    <title>{{ $article->view_content['basic_website_structure_title'] }}</title>
+    <meta name="description" content="{{ $article->view_content['basic_website_structure_description'] }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="robots" content="index, follow">
