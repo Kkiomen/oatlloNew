@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\CourseCategoryLesson;
 use App\Services\Library\SitemapGenerator;
 
 class SitemapService
@@ -30,11 +31,16 @@ class SitemapService
             }
         }
 
+        $lessonsNotIn = [];
+        foreach (CourseCategoryLesson::get() as $lesson){
+            $lessonsNotIn[] = $lesson->lesson_id;
+        }
+
         // Add blog posts
         if(env('LANGUAGE_MODE') == 'strict'){
-             $articles = Article::where('is_published', true)->where('language', env('APP_LOCALE'))->get();
+             $articles = Article::where('is_published', true)->whereNotIn('id', $lessonsNotIn)->where('language', env('APP_LOCALE'))->get();
         }else{
-            $articles = Article::where('is_published', true)->get();
+            $articles = Article::where('is_published', true)->whereNotIn('id', $lessonsNotIn)->get();
         }
 
         if($articles->count() > 0){
