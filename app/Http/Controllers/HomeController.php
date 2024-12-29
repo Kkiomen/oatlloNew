@@ -56,17 +56,6 @@ class HomeController extends Controller
         ]);
     }
 
-    public function coursesEn(): View
-    {
-        $defaultLangue = env('APP_LOCALE');
-        $courses = Course::where('is_published', true)->where('lang', $defaultLangue)->get();
-
-        return view('home.courses', [
-            'courses' => $courses,
-            'defaultLangue' => $defaultLangue,
-        ]);
-    }
-
     // ============== ARTICLE ==============
 
     public function articleWithCategory(Request $request, string $categorySlug, string $articleSlug): View

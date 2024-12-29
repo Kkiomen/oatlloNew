@@ -27,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-900">
 <div>
     <div class="bg-gray-900" x-data="{ open: true }">
         <header class="absolute inset-x-0 top-0 z-50">
@@ -75,7 +75,7 @@
                             <div class="space-y-2 py-6">
                                 <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">{{ __('basic.home') }}</a>
                                 <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">Blog</a>
-                                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">{{ __('basic.courses') }}</a>
+                                <a href="{{ route('courses') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">{{ __('basic.courses') }}</a>
                             </div>
                             {{--                            <div class="py-6">--}}
                             {{--                                <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-gray-800">Log in</a>--}}
