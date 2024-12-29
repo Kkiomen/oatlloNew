@@ -50,6 +50,24 @@ class SitemapService
         }
 
         $defaultLangue = env('APP_LOCALE');
+        if($defaultLangue == 'pl'){
+            $sitemap->addItem(
+                loc: route('courses', [],false),
+                priority: '0.7',
+                changefreq: 'weekly',
+                lastmod: $date
+            );
+        }else{
+            $sitemap->addItem(
+                loc: route('course_en', [],false),
+                priority: '0.7',
+                changefreq: 'weekly',
+                lastmod: $date
+            );
+        }
+
+
+        $defaultLangue = env('APP_LOCALE');
         $courses = Course::where('lang', $defaultLangue)->where('is_published', 1)->get();
         foreach ($courses as $course){
             $sitemap->addItem(
