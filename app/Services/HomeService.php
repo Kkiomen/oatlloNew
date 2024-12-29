@@ -11,9 +11,9 @@ class HomeService
     {
         $defaultLangue = env('APP_LOCALE');
         if($defaultLangue == 'pl'){
-            return route('courses', [],false);
+            return route('courses');
         }
 
-        return route('courses_en', [],false);
+        return route('courses.en');
     }
 }

@@ -6,7 +6,6 @@ use App\Http\Controllers\GeneratedContentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\SectionContentController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +23,7 @@ Route::post('/send/email', [\App\Http\Controllers\HomeController::class, 'sendEm
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/kursy', [HomeController::class, 'courses'])->name('courses');
-Route::get('/courses', [HomeController::class, 'courses'])->name('courses_en');
+Route::get('/courses', [HomeController::class, 'coursesEn'])->name('courses.en');
 Route::get('/kurs/{courseName}', [HomeController::class, 'course'])->name('course_pl');
 Route::get('/kurs/{courseName}/{chapter}', [HomeController::class, 'chapterPl'])->name('course_chapter_pl');
 Route::get('/kurs/{courseName}/{chapter}/{lesson}', [HomeController::class, 'courseLessonPl'])->name('course_lesson_pl');
@@ -122,7 +121,7 @@ Route::middleware('auth')->group(function () {
 
     // Courses
 
-    Route::get('/courses', [CourseController::class, 'list'])->name('courses.list');
+    Route::get('/courses/list', [CourseController::class, 'list'])->name('courses.list');
     Route::get('/courses/add', [CourseController::class, 'add'])->name('courses.add');
     Route::get('/courses/add/category/{course}', [CourseController::class, 'addCategory'])->name('courses.category.add');
     Route::post('/courses/edit/category/short', [CourseController::class, 'editCategoryShort'])->name('courses.category.edit.short');
