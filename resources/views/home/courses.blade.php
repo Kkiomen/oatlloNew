@@ -48,7 +48,7 @@
                 <div class="hidden lg:flex lg:gap-x-12">
                     <a href="{{ route('index') }}" class="text-sm/6 font-semibold text-white">{{ __('basic.home') }}</a>
                     <a href="{{ route('blog') }}" class="text-sm/6 font-semibold text-white">Blog</a>
-                    <a href="{{ route('courses') }}" class="text-sm/6 font-semibold text-white">{{ __('basic.courses') }}</a>
+                    <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm/6 font-semibold text-white">{{ __('basic.courses') }}</a>
                 </div>
                 {{--                <div class="hidden lg:flex lg:flex-1 lg:justify-end">--}}
                 {{--                    <a href="#" class="text-sm/6 font-semibold text-white">Log in <span aria-hidden="true">&rarr;</span></a>--}}

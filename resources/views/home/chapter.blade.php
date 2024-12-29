@@ -48,7 +48,7 @@
                 <div class="hidden lg:flex lg:gap-x-12">
                     <a href="{{ route('index') }}" class="text-sm/6 font-semibold text-white">{{ __('basic.home') }}</a>
                     <a href="{{ route('blog') }}" class="text-sm/6 font-semibold text-white">Blog</a>
-                    <a href="{{ route('courses') }}" class="text-sm/6 font-semibold text-white">{{ __('basic.courses') }}</a>
+                    <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm/6 font-semibold text-white">{{ __('basic.courses') }}</a>
                 </div>
                 {{--                <div class="hidden lg:flex lg:flex-1 lg:justify-end">--}}
                 {{--                    <a href="#" class="text-sm/6 font-semibold text-white">Log in <span aria-hidden="true">&rarr;</span></a>--}}
@@ -75,7 +75,7 @@
                             <div class="space-y-2 py-6">
                                 <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">{{ __('basic.home') }}</a>
                                 <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">Blog</a>
-                                <a href="{{ route('courses') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">{{ __('basic.courses') }}</a>
+                                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">{{ __('basic.courses') }}</a>
                             </div>
                             {{--                            <div class="py-6">--}}
                             {{--                                <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-gray-800">Log in</a>--}}
