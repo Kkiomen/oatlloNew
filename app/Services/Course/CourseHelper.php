@@ -43,8 +43,8 @@ class CourseHelper
 
 
         $results = [
-            'previous' => $lastTwoElements[0],
-            'next' => $lastTwoElements[1]
+            'previous' => $lastTwoElements[0] ?? null,
+            'next' => $lastTwoElements[1] ?? null
         ];
 
         return $results;

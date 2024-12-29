@@ -190,6 +190,7 @@
 
 
         <div class="flex flex-col lg:flex-row lg:space-x-4 bg-gray-900">
+            @if(!empty($lessonSkip['previous']))
             <div class="lg:basis-1/2 w-full">
                 <a href="{{ $lessonSkip['previous']['route'] }}">
                     <div class="p-3 border-l-2 border-gray-500" style="background-color: #99dafa">
@@ -198,6 +199,8 @@
                     </div>
                 </a>
             </div>
+            @endif
+            @if(!empty($lessonSkip['next']))
             <div class="lg:basis-1/2 w-full" style="background-color:  #59fc62">
                 <a href="{{ $lessonSkip['next']['route'] }}">
                     <div class="p-3 text-right">
@@ -206,6 +209,7 @@
                     </div>
                 </a>
             </div>
+            @endif
         </div>
 
     </div>
