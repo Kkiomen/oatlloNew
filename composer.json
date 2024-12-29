@@ -11,6 +11,7 @@
         "algolia/algoliasearch-client-php": "4.0",
         "anhskohbo/no-captcha": "^3.6",
         "hkulekci/qdrant": "^0.5.7",
+        "gumlet/php-image-resize": "^2.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "mozex/anthropic-php": "^1.0",

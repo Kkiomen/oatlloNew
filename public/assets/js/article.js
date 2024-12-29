@@ -176,9 +176,13 @@ function articleEditor(initialSections) {
                     contents: this.sections
                 })
             })
-            .then(response => response.json())
+                .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
+                        if(routeNamed  == 'pages.create') {
+                            window.location.href = `${urlBasic}/pages/${articleId}/edit`;
+                        }
+
                         notyf.success('Zapisano zmiany treści artykułu');
                     } else {
                         notyf.warning('Wystąpił problem podczas zapisywania');

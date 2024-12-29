@@ -56,11 +56,13 @@
                         if (data.status !== 'success') {
                             return Promise.reject('Error in createArticle');
                         }
+
+                        this.articleId = data.articleId;
                     });
             },
             generateBasicInfo() {
                 // Make an AJAX POST request to the server
-                return fetch('{{ route('pages.generateBasicInfo') }}', {
+                return fetch('{{ route('pages.generateBasicInfo') }}?articleId=' + this.articleId, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

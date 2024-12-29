@@ -24,7 +24,7 @@
                                         </a>
                                     </p>
                                     <p class="mt-1 flex text-xs leading-5 text-gray-500">
-                                        <a :href="generator.enterUrl" class="relative truncate hover:underline" x-text="generator.systemPrompt">leslie.alexander@example.com</a>
+                                        <a :href="generator.enterUrl" class="relative hover:underline" x-text="generator.systemPrompt"></a>
                                     </p>
                                 </div>
                             </div>
