@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Api\UnsplashApi;
+use Gumlet\ImageResize;
 use Illuminate\Http\UploadedFile;
 
 class ImageService
@@ -38,25 +39,20 @@ class ImageService
             $webpFilePath = 'uploads/' . time() . '.webp';
             $webpFullPath = storage_path('app/public/' . $webpFilePath);
 
-            // Convert the image to WebP based on its format
-            switch ($originalExtension) {
-                case 'jpeg':
-                case 'jpg':
-                    $image = imagecreatefromjpeg($originalFilePath);
-                    break;
-                case 'png':
-                    $image = imagecreatefrompng($originalFilePath);
-                    break;
-                case 'gif':
-                    $image = imagecreatefromgif($originalFilePath);
-                    break;
-                default:
-                    return null;
+            try{
+                $filename = explode('/', $originalFilePath);
+                $filename = end($filename);
+
+                $image = new ImageResize($originalFilePath);
+                $image->resizeToWidth(1280);
+
+                // Zapisz obraz w oryginalnym formacie tymczasowo
+                $image->save($webpFullPath, IMAGETYPE_WEBP);
+
+            }catch (\Exception $e){
+                return null;
             }
 
-            // Save the image as WebP
-            imagewebp($image, $webpFullPath, 80); // Quality set to 80 (adjust as needed)
-            imagedestroy($image); // Free up memory
 
             // Delete the original file as it’s no longer needed
             unlink($originalFilePath);

@@ -9,6 +9,7 @@
         "ext-gd": "*",
         "ext-xmlwriter": "*",
         "anhskohbo/no-captcha": "^3.6",
+        "gumlet/php-image-resize": "^2.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "openai-php/laravel": "^0.10.2",
