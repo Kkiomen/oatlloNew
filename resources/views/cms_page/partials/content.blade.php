@@ -11,8 +11,6 @@
         @include('cms_page.partials.type.boolean', ['element' => $content, 'type' => $content['type']])
     @elseif($content['type'] == 'category')
         @include('cms_page.partials.type.category', ['element' => $content, 'type' => $content['type']])
-    @elseif($content['type'] == 'date')
-        @include('cms_page.partials.type.date', ['element' => $content, 'type' => $content['type']])
     @endif
 
     @if(!empty($content['content']))
