@@ -59,7 +59,7 @@ class SitemapService
             );
         }else{
             $sitemap->addItem(
-                loc: route('course_en', [],false),
+                loc: route('courses_en', [],false),
                 priority: '0.7',
                 changefreq: 'weekly',
                 lastmod: $date

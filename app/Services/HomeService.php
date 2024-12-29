@@ -14,6 +14,6 @@ class HomeService
             return route('courses', [],false);
         }
 
-        return route('course_en', [],false);
+        return route('courses_en', [],false);
     }
 }
