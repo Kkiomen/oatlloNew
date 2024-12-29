@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    {!! \App\Services\HomeService::getTagManagerHEAD() !!}
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
@@ -19,6 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js" integrity="sha512-6sSYJqDreZRZGkJ3b+YfdhB3MzmuP9R7X1QZ6g5aIXhRvR1Y/N/P47jmnkENm7YL3oqsmI6AK+V6AD99uWDnIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body class="font-sans antialiased">
+{!! \App\Services\HomeService::getTagManagerBODY() !!}
 <div class="bg-white px-6 py-32 lg:px-8">
     <div class="mx-auto max-w-3xl text-base leading-7 text-gray-700">
         <p class="text-base font-semibold leading-7 text-indigo-600">Blog</p>

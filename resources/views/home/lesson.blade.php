@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="robots" content="index, follow">
 
+    {!! \App\Services\HomeService::getTagManagerHEAD() !!}
+
 
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
 
@@ -33,6 +35,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
 </head>
 <body>
+{!! \App\Services\HomeService::getTagManagerBODY() !!}
     <div>
         <div class="bg-gray-900" x-data="{ open: true }">
             <header class="absolute inset-x-0 top-0 z-50">

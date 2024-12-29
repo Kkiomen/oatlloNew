@@ -11,6 +11,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    {!! \App\Services\HomeService::getTagManagerHEAD() !!}
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -36,7 +38,7 @@
 
 </head>
 <body>
-
+{!! \App\Services\HomeService::getTagManagerBODY() !!}
 
 
 
