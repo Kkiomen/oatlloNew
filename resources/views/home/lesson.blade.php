@@ -29,9 +29,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('/assets/libs/highlight/default.min.css') }}">
+    <script src="{{ asset('/assets/libs/highlight/highlight.min.js') }}"></script>
+    <script src="{{ asset('/assets/libs/highlight/php.min.js') }}"></script>
 
     @if(!empty($article->structure_data_google))
         <script type="application/ld+json">
@@ -169,6 +169,8 @@
                             @endif
 
                         @endforeach
+
+
                     </div>
                 </div>
 
