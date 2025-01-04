@@ -10,7 +10,6 @@
 
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
 
-
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
 
     <link rel="canonical" href="{{ $article->getRouteCourse($courseCategory) }}">
@@ -101,14 +100,17 @@
 
 
 
-            <div class="relative isolate bg-gray-800 pt-24 pb-10 sm:pt-32">
-                <div class="mx-auto max-w-2xl px-6 lg:max-w-7xl pt-14 md:pt-0 lg:px-8">
-                    <nav class="flex mb-8" aria-label="Breadcrumb">
+            <div class="relative isolate bg-gray-800 pt-14 pb-10 sm:pt-32">
+                <div class="px-7 pt-14 md:pt-0 lg:px-8">
+                    <h1 class="mt-2 max-w-3/4 text-3xl font-semibold tracking-tight text-pretty text-white sm:text-3xl">{!! $article->name !!}</h1>
+                    <h2 class=" font-semibold text-white mt-3">{{ $course->name }}</h2>
+
+                    <nav class="flex mt-10" aria-label="Breadcrumb">
                         <ol role="list" class="flex items-center space-x-4">
                             <li>
                                 <div>
-                                    <a href="#" class="text-gray-400 hover:text-gray-500">
-                                        <svg class="size-5 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                    <a href="{{ $course->getRoute() }}" class="text-gray-400 hover:text-gray-500">
+                                        <svg class="size-4 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                             <path fill-rule="evenodd" d="M9.293 2.293a1 1 0 0 1 1.414 0l7 7A1 1 0 0 1 17 11h-1v6a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6H3a1 1 0 0 1-.707-1.707l7-7Z" clip-rule="evenodd" />
                                         </svg>
                                         <span class="sr-only">Home</span>
@@ -117,33 +119,23 @@
                             </li>
                             <li>
                                 <div class="flex items-center">
-                                    <svg class="size-5 shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                    <svg class="size-4 shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                         <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                     </svg>
-                                    <a href="{{ $course->getRoute() }}" class="ml-4 text-sm font-medium text-gray-300 hover:text-gray-700">{{ $course->name }}</a>
+                                    <a href="{{ $category->getRoute() }}" class="ml-4 text-xs font-medium text-gray-300 hover:text-gray-700" aria-current="page">{{ $category->category_name }}</a>
                                 </div>
                             </li>
                             <li>
                                 <div class="flex items-center">
-                                    <svg class="size-5 shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                                    <svg class="size-4 shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                         <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                                     </svg>
-                                    <a href="{{ $category->getRoute() }}" class="ml-4 text-sm font-medium text-gray-300 hover:text-gray-700" aria-current="page">{{ $category->category_name }}</a>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center">
-                                    <svg class="size-5 shrink-0 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                                    </svg>
-                                    <a href="#" class="ml-4 text-sm font-medium text-gray-300 hover:text-gray-700" aria-current="page">{{ $article->name }}</a>
+                                    <a href="#" class="ml-4 text-xs font-medium text-gray-300 hover:text-gray-700" aria-current="page">{{ $article->name }}</a>
                                 </div>
                             </li>
                         </ol>
                     </nav>
 
-                    <h1 class="mt-2 max-w-3/4 text-3xl font-semibold tracking-tight text-pretty text-white sm:text-3xl">{!! $article->name !!}</h1>
-                    <h2 class=" font-semibold text-white mt-3">{{ $course->name }}</h2>
                 </div>
             </div>
 
@@ -199,11 +191,11 @@
         </div>
 
 
-        <div class="flex flex-col lg:flex-row lg:space-x-4 bg-gray-900">
+        <div class="flex flex-col lg:flex-row lg:space-x-4 pt-10 sm:pt-0 bg-gray-900">
             @if(!empty($lessonSkip['previous']))
             <div class="lg:basis-1/2 w-full">
                 <a href="{{ $lessonSkip['previous']['route'] }}">
-                    <div class="p-3 border-l-2 border-gray-500" style="background-color: #99dafa">
+                    <div class="p-3" style="background-color: #99dafa">
                         <div class="font-bold">{{ $lessonSkip['previous']['name'] }}</div>
                         <div class="text-xs">{{ __('basic.go_to_back_lesson') }}</div>
                     </div>
