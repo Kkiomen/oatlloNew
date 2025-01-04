@@ -19,7 +19,7 @@ class TagForArticleGenerator
     public static function generate(): void
     {
         $currentLanguage = env('APP_LOCALE');
-        $articles = Article::where('language', $currentLanguage)->where('is_published', true)->get();
+        $articles = Article::where('language', $currentLanguage)->where('is_published', true)->inRandomOrder()->get();
         $tagsArticles = TagArticle::whereIn('article_id', $articles->pluck('id'))->get();
 
 
