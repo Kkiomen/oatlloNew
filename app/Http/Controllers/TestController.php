@@ -17,9 +17,19 @@ use Illuminate\Support\Str;
 
 class TestController extends Controller
 {
-    public function test(Request $request, ArticleService $articleService, ImageService $imageService)
-    {
+    const TASK = 'photos';
+    const API_KEY = '6982ce64-7d13-4d2e-a23a-ba07ba2c8f45';
 
+    const URL_POLIGON_VERIFY = 'https://poligon.aidevs.pl/verify';
+
+
+    public function test(Request $request, SitemapService $sitemapService)
+    {
+//        $tags = Tag::where('title_seo', null)->inRandomOrder()->get();
+//
+//        foreach ($tags as $tag) {
+//            TagForArticleGenerator::createSeoInformation($tag);
+//        }
         $sitemapService->generateSitemap();
     }
 
