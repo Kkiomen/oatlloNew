@@ -64,10 +64,6 @@ class TagForArticleGenerator
      */
     protected static function generateTagForArticle(Article $article): void
     {
-
-
-        dump(empty($article->contents),  TagArticle::where('article_id', $article->id)->exists());
-
         if(empty($article->contents) || TagArticle::where('article_id', $article->id)->exists()){
             return;
         }
