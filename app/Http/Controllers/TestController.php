@@ -25,12 +25,12 @@ class TestController extends Controller
 
     public function test(Request $request, SitemapService $sitemapService)
     {
-//        $tags = Tag::where('title_seo', null)->inRandomOrder()->get();
-//
-//        foreach ($tags as $tag) {
-//            TagForArticleGenerator::createSeoInformation($tag);
-//        }
-        $sitemapService->generateSitemap();
+        $tags = Tag::where('title_seo', null)->inRandomOrder()->get();
+
+        foreach ($tags as $tag) {
+            TagForArticleGenerator::createSeoInformation($tag);
+        }
+//        $sitemapService->generateSitemap();
     }
 
 }

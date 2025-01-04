@@ -17,7 +17,7 @@ class TagsForArticlePrompt extends AbstractOpenApiGenerator
         Jesteś specjalistą SEO. Twoim zadaniem jest przygotowanie listy tagów pod artykuł. Muszą one zawierać słówa kluczowe, które pozwolą się wyświetlać w pierwszych wynikach wyszukiwarki.
 Zwroc uwagę na język programowania abyś nie podawał nic związanego z innego języka.
 ### Tagi mają być w języku: '.$currentLanguage.'
-### Maksymalnie wymień od 10-15 tagów
+### Maksymalnie wymień od 2-7 tagów
 ### Wynikiem mają być tagi oddzielone od siebie przecinkiem';
     }
 }
