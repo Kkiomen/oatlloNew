@@ -22,7 +22,6 @@
     <meta property="og:url" content="{{ route('index') }}">
 
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
