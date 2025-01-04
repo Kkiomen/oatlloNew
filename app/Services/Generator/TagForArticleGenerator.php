@@ -24,6 +24,7 @@ class TagForArticleGenerator
         $articles = Article::where('language', $currentLanguage)->where('is_published', true)->inRandomOrder()->get();
         $tagsArticles = TagArticle::whereIn('article_id', $articles->pluck('id'))->get();
 
+        dump($articles, $tagsArticles);
 
         // Pobranie ID artykułów, dla których znaleziono TagArticle
         $taggedArticleIds = $tagsArticles->pluck('article_id');
@@ -32,6 +33,8 @@ class TagForArticleGenerator
         $articlesWithoutTags = $articles->reject(function ($article) use ($taggedArticleIds) {
             return $taggedArticleIds->contains($article->id);
         });
+
+        dd($articlesWithoutTags);
 
         // Jeśli potrzebujesz zwykłej kolekcji po usunięciu:
         $articlesWithoutTags = $articlesWithoutTags->values();
