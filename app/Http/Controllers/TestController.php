@@ -20,11 +20,7 @@ class TestController extends Controller
     public function test(Request $request, ArticleService $articleService, ImageService $imageService)
     {
 
-        $tags = Tag::where('title_seo', null)->inRandomOrder()->get();
-
-        foreach ($tags as $tag) {
-            TagForArticleGenerator::createSeoInformation($tag);
-        }
+        $sitemapService->generateSitemap();
     }
 
 }

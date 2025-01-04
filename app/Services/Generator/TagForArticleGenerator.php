@@ -110,6 +110,8 @@ class TagForArticleGenerator
             $tag->save();
         }
 
+        static::createSeoInformation($tag);
+
         return $tag;
     }
 }

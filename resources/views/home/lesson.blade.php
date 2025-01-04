@@ -163,6 +163,20 @@
                         @endforeach
 
 
+                        @if(!$article->tags->isEmpty())
+                            <div class="mt-20">
+                                <div class="font-bold text-lg">{{ __('basic.tags') }}:</div>
+
+                                <div class="mt-3">
+                                    @foreach($article->tags as $tag)
+                                        <a href="{{ route('blogTag', ['tag' => Str::slug($tag->name)]) }}" class="inline-block px-4 py-1 hover:bg-indigo-600 border border-indigo-600 mx-2 my-2 rounded-2xl">
+                                            {{ $tag->name }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
                 </div>
 
