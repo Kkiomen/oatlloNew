@@ -34,8 +34,6 @@ class TagForArticleGenerator
             return $taggedArticleIds->contains($article->id);
         });
 
-        dd($articlesWithoutTags);
-
         // Jeśli potrzebujesz zwykłej kolekcji po usunięciu:
         $articlesWithoutTags = $articlesWithoutTags->values();
 
