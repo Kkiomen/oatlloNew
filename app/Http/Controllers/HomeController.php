@@ -78,7 +78,8 @@ class HomeController extends Controller
     }
     public function article(Request $request, string $articleSlug): View
     {
-        $article = Article::where('slug', $articleSlug)->first();
+        $defaultLangue = env('APP_LOCALE');
+        $article = Article::where('slug', $articleSlug)->where('language', $defaultLangue)->first();
         if(!$article || $article->contents == null){
             abort(404);
         }
@@ -90,7 +91,6 @@ class HomeController extends Controller
 
 
         if(env('LANGUAGE_MODE') == 'strict'){
-            $defaultLangue = env('APP_LOCALE');
             $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->whereNotIn('id', $lessonsNotIn)->where('language', $defaultLangue)->inRandomOrder()->take(3)->get();
 
         }else{
