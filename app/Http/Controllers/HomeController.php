@@ -83,12 +83,18 @@ class HomeController extends Controller
             abort(404);
         }
 
+        $lessonsNotIn = [];
+        foreach (CourseCategoryLesson::get() as $lesson){
+            $lessonsNotIn[] = $lesson->lesson_id;
+        }
+
+
         if(env('LANGUAGE_MODE') == 'strict'){
             $defaultLangue = env('APP_LOCALE');
-            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->where('language', $defaultLangue)->inRandomOrder()->take(3)->get();
+            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->whereNotIn('id', $lessonsNotIn)->where('language', $defaultLangue)->inRandomOrder()->take(3)->get();
 
         }else{
-            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->inRandomOrder()->take(3)->get();
+            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->whereNotIn('id', $lessonsNotIn)->inRandomOrder()->take(3)->get();
         }
 
         return view('views_basic.article', [
