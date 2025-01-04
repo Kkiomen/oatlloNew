@@ -9,10 +9,13 @@ use App\Models\Article;
 use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\CourseCategoryLesson;
+use App\Models\Tag;
+use App\Models\TagArticle;
 use App\Services\Course\CourseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -126,6 +129,79 @@ class HomeController extends Controller
             'categories' => $categories,
             'articles' => $articles,
             'currentCategory' => null
+        ]);
+    }
+
+    public function blogTag(string $slug): View
+    {
+        $tag = Tag::where('slug', $slug)->where('language', env('APP_LOCALE'))->first();
+
+        if(!$tag){
+            $tags = Tag::where('language', env('APP_LOCALE'))->get();
+
+            foreach ($tags as $currentTag){
+                if(Str::slug($currentTag->name) == $slug){
+                    $currentTag->slug = $slug;
+                    $currentTag->save();
+
+                    $tag = $currentTag;
+                    break;
+                }
+            }
+
+        }
+
+        if(!$tag){
+            abort(404);
+        }
+
+
+
+        $articleTagIds = TagArticle::where('tag_id', $tag->id)->pluck('article_id');
+
+        $uniqueCategoryIds = Article::whereNotNull('category_id')->whereIn('id', $articleTagIds->toArray())->where('is_published', true)
+            ->distinct()
+            ->pluck('category_id');
+
+
+        $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
+        $coursesLesson = [];
+        $normalArticles = [];
+
+        if(env('LANGUAGE_MODE') == 'strict') {
+            $articles = Article::where('is_published', true)
+                ->where('language', env('APP_LOCALE'))
+                ->whereIn('id', $articleTagIds->toArray())
+                ->orderBy('created_at', 'desc')->paginate(10);
+
+            $lessonsNotIn = [];
+            foreach (CourseCategoryLesson::get() as $lesson){
+                $lessonsNotIn[] = $lesson->lesson_id;
+            }
+
+            foreach ($articles as $article){
+                if(in_array($article->id, $lessonsNotIn)){
+                    $coursesLesson[] = $article;
+                }else{
+                    $normalArticles[] = $article;
+                }
+            }
+
+
+
+
+        }else{
+            $articles = Article::where('is_published', true)
+                ->whereIn('id', $articleTagIds->toArray())
+                ->orderBy('created_at', 'desc')->paginate(10);
+        }
+
+        return view('views_basic.blog_tag',[
+            'categories' => $categories,
+            'articles' => $normalArticles,
+            'coursesLesson' => $coursesLesson,
+            'currentCategory' => null,
+            'tag' => $tag
         ]);
     }
 

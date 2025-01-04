@@ -31,6 +31,9 @@ return [
     'chapter' => 'Rozdział',
     'go_to_next_lesson' => 'Przejdź do kolejnej lekcji',
     'go_to_back_lesson' => 'Przejdź do poprzedniej lekcji',
+    'tags' => 'Tagi',
+    'lessons_from_courses' => 'Lekcje z kursów',
+    'articles' => 'Artykuły',
 
 
 ];

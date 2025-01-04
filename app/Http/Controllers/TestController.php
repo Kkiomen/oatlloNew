@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Tag;
 use App\Prompts\Abstract\Enums\OpenApiResultType;
 use App\Prompts\GenerateArticleBasicInformationToOtherLanguagePrompt;
 use App\Prompts\GenerateArticleContentToOtherLanguagePrompt;
@@ -18,7 +19,12 @@ class TestController extends Controller
 {
     public function test(Request $request, ArticleService $articleService, ImageService $imageService)
     {
-        TagForArticleGenerator::generate();
+
+        $tags = Tag::where('title_seo', null)->inRandomOrder()->get();
+
+        foreach ($tags as $tag) {
+            TagForArticleGenerator::createSeoInformation($tag);
+        }
     }
 
 }

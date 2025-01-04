@@ -8,7 +8,9 @@ use App\Models\Article;
 use App\Models\Tag;
 use App\Models\TagArticle;
 use App\Prompts\TagDescriptionPrompt;
+use App\Prompts\TagDescriptionSeoPrompt;
 use App\Prompts\TagsForArticlePrompt;
+use App\Prompts\TagTitleSeoPrompt;
 
 class TagForArticleGenerator
 {
@@ -40,6 +42,24 @@ class TagForArticleGenerator
     }
 
     /**
+     * Tworzy informacje SEO dla tagu
+     * @param Tag $tag
+     * @return void
+     */
+    public static function createSeoInformation(Tag $tag): void
+    {
+        if($tag->title_seo === null){
+            $tag->title_seo = str_replace(['"'], '', TagTitleSeoPrompt::generateContentTextErrorsLoop('Nazwa tagu: '.$tag->name));
+            $tag->save();
+        }
+
+        if($tag->description_seo === null){
+            $tag->description_seo = str_replace(['"'], '', TagDescriptionSeoPrompt::generateContentTextErrorsLoop('Nazwa tagu: '.$tag->name));
+            $tag->save();
+        }
+    }
+
+    /**
      * Generuje tagi dla artykułu
      * @param mixed $article
      * @return void
@@ -63,6 +83,11 @@ class TagForArticleGenerator
         }
     }
 
+    /**
+     * Pobiera lub tworzy tag
+     * @param string $tagName
+     * @return Tag
+     */
     protected static function getOrCreateTag(string $tagName): Tag
     {
         $tagName = ucfirst(trim($tagName));

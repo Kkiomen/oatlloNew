@@ -10,4 +10,9 @@ class Tag extends Model
         'name',
         'language',
     ];
+
+    public function articles()
+    {
+        return $this->belongsToMany(Article::class, 'tag_article');
+    }
 }

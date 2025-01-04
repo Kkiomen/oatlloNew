@@ -31,5 +31,8 @@ return [
     'chapter' => 'Chapter',
     'go_to_next_lesson' => 'Next lesson',
     'go_to_back_lesson' => 'Previous lesson',
+    'tags' => 'Tagi',
+    'lessons_from_courses' => 'Lessons from courses',
+    'articles' => 'Articles',
 
 ];

@@ -46,6 +46,11 @@ class Article extends Model
         return $this->hasMany(CourseCategoryLesson::class, 'lesson_id');
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tag_articles');
+    }
+
 
     /**
      * Zwraca nazwę kategorii
@@ -90,8 +95,13 @@ class Article extends Model
         return route('home.article', ['articleSlug' => $this->slug], $absolute);
     }
 
-    public function getRouteCourse(CourseCategory $category, bool $absolute = true): string
+    public function getRouteCourse(?CourseCategory $category = null, bool $absolute = true): string
     {
+        if($category === null){
+            $categoryLesson = $this->lesson->first();
+            $category = CourseCategory::find($categoryLesson->course_category_id);
+        }
+
         $language = env('APP_LOCALE');
 
         if($language === 'pl'){
