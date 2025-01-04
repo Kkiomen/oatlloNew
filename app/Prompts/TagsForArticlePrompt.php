@@ -11,7 +11,7 @@ class TagsForArticlePrompt extends AbstractOpenApiGenerator
 
     protected static function preparePrompt(array $data = []): string
     {
-        $currentLanguage = env('APP_LOCALE');
+        $currentLanguage = env('APP_LANG_HTML');
 
         return '
         Jesteś specjalistą SEO. Twoim zadaniem jest przygotowanie listy tagów pod artykuł. Muszą one zawierać słówa kluczowe, które pozwolą się wyświetlać w pierwszych wynikach wyszukiwarki.
