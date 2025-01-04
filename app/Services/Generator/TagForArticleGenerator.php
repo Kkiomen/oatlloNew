@@ -49,7 +49,7 @@ class TagForArticleGenerator
     public static function createSeoInformation(Tag $tag): void
     {
         if($tag->title_seo === null){
-            $tag->title_seo = str_replace(['"'], '', TagTitleSeoPrompt::generateContentTextErrorsLoop('Nazwa tagu: '.$tag->name));
+            $tag->title_seo = str_replace(['"', 'Tytuł SEO:', 'Tytuł:', 'Tytuł SEO: ', 'Tytuł SEO: '], '', TagTitleSeoPrompt::generateContentTextErrorsLoop('Nazwa tagu: '.$tag->name));
             $tag->save();
         }
 
