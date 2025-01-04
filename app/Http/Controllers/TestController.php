@@ -17,10 +17,6 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-        $tags = Tag::where('title_seo', null)->inRandomOrder()->get();
-
-        foreach ($tags as $tag) {
-            TagForArticleGenerator::createSeoInformation($tag);
-        }
+        TagForArticleGenerator::generate();
     }
 }
