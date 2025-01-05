@@ -99,6 +99,16 @@ class InternalUrlsGenerator
 
             $updatedContents = $content['content'];
 
+
+            if(str_contains($updatedContents, '<a href=\"https://oatllo.pl/abstrakcja-programowanie-php\">PHP</a>')){
+                $updatedContents = str_replace('<a href=\"https://oatllo.pl/abstrakcja-programowanie-php\">PHP</a>', 'PHP', $updatedContents);
+                $hasChanges = true;
+            }
+            if(str_contains($updatedContents, '<a href="https://oatllo.pl/abstrakcja-programowanie-php">PHP</a>')){
+                $updatedContents = str_replace('<a href="https://oatllo.pl/abstrakcja-programowanie-php">PHP</a>', 'PHP', $updatedContents);
+                $hasChanges = true;
+            }
+
             // Wyrażenie regularne do znalezienia wszystkich sekcji <pre><code>
             preg_match_all('/<pre><code.*?>.*?<\/code><\/pre>/s', $updatedContents, $codeBlocks);
 
@@ -127,7 +137,7 @@ class InternalUrlsGenerator
 
 
             foreach ($urlKeysList as $key => $url) {
-                if($article->getRoute() === $url){
+                if($article->getRoute() === $url || in_array($key, ['PHP'])){
                     continue;
                 }
 
