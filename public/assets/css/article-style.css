@@ -124,9 +124,16 @@
     }
 
 
-    a {
-        color: rgb(251 191 36) !important;
+    a:not(.tags_list) {
+        color: rgb(251 191 36);
         font-weight: bold;
+    }
+
+    .tags_list {
+        a {
+            color: white;
+            font-weight: bold;
+        }
     }
 }
 

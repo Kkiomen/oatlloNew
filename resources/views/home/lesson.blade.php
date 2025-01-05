@@ -172,7 +172,7 @@
 
 
                         @if(!$article->tags->isEmpty())
-                            <div class="mt-20">
+                            <div class="mt-20 tags_list">
                                 <div class="font-bold text-lg">{{ __('basic.tags') }}:</div>
 
                                 <div class="mt-3">
