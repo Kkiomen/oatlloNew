@@ -1,5 +1,13 @@
 <!doctype html>
 <html lang="{{ env('APP_LANG_HTML') }}">
+@php
+    $currentImage = empty($course->image) ? 'storage/uploads/empty_image.jpg' : $course->image;
+    $pattern = "/asset\('(.+?)'\)/";
+    if (preg_match($pattern, $currentImage, $matches)) {
+        $currentImage = $matches[1];
+    }
+    $currentImage = str_contains($currentImage, 'http') ? $currentImage : asset($currentImage);
+@endphp
 <head>
     <meta charset="UTF-8">
     <title>{{ $course->title_seo }}</title>
@@ -18,8 +26,8 @@
 
     <meta property="og:title" content="{{ $course->title_seo }}">
     <meta property="og:description" content="{{ $course->description_seo }}">
-    {{--    <meta property="og:image" content="{{ $basic_website_structure_op_image_img_file }}">--}}
-    <meta property="og:url" content="{{ route('index') }}">
+    <meta property="og:image" content="{{ $currentImage }}">
+    <meta property="og:url" content="{{ $urlToCourse }}">
 
 
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -96,14 +104,6 @@
 
                 <div class="relative overflow-hidden pt-16">
                     <div class="mx-auto max-w-7xl px-6 lg:px-8">
-                        @php
-                            $currentImage = empty($course->image) ? 'storage/uploads/empty_image.jpg' : $course->image;
-                            $pattern = "/asset\('(.+?)'\)/";
-                            if (preg_match($pattern, $currentImage, $matches)) {
-                                $currentImage = $matches[1];
-                            }
-                            $currentImage = str_contains($currentImage, 'http') ? $currentImage : asset($currentImage);
-                        @endphp
                         <img src="{{ $currentImage }}" alt="App screenshot" class="rounded-xl ring-1 shadow-2xl object-cover object-center ring-white/10" width="2432" height="1442">
                         <div class="relative" aria-hidden="true">
                             <div class="absolute -inset-x-20 bottom-0 bg-linear-to-t from-gray-900 pt-[7%]"></div>

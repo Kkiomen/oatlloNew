@@ -1,5 +1,13 @@
 <!doctype html>
 <html lang="{{ env('APP_LANG_HTML') }}">
+@php
+    $currentImage = empty($course->image) ? 'storage/uploads/empty_image.jpg' : $course->image;
+    $pattern = "/asset\('(.+?)'\)/";
+    if (preg_match($pattern, $currentImage, $matches)) {
+        $currentImage = $matches[1];
+    }
+    $currentImage = str_contains($currentImage, 'http') ? $currentImage : asset($currentImage);
+@endphp
 <head>
     <meta charset="UTF-8">
     <title>{{ $article->view_content['basic_website_structure_title'] }}</title>
@@ -17,8 +25,8 @@
 
     <meta property="og:title" content="{{ $courseCategory->title_seo }}">
     <meta property="og:description" content="{{ $courseCategory->description_seo }}">
-    {{--    <meta property="og:image" content="{{ $basic_website_structure_op_image_img_file }}">--}}
-    <meta property="og:url" content="{{ route('index') }}">
+    <meta property="og:image" content="{{ $currentImage }}">
+    <meta property="og:url" content="{{ $article->getRouteCourse($courseCategory) }}">
 
 
     <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
