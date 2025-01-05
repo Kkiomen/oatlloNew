@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Tag;
+use App\Services\Generator\InternalUrlsGenerator;
 use App\Services\Generator\TagForArticleGenerator;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,6 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-        TagForArticleGenerator::generate();
+        InternalUrlsGenerator::generate();
     }
 }

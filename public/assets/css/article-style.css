@@ -122,6 +122,12 @@
         margin-top: 2.5rem; !important;
         margin-bottom: 2.0rem; !important;
     }
+
+
+    a {
+        color: rgb(251 191 36) !important;
+        font-weight: bold;
+    }
 }
 
 .tag-description-theme{
