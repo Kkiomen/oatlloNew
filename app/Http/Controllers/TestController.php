@@ -18,6 +18,6 @@ class TestController extends Controller
 
     public function test(Request $request)
     {
-//        InternalUrlsGenerator::generate();
+        InternalUrlsGenerator::generate();
     }
 }

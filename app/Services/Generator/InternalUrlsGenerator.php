@@ -30,7 +30,10 @@ class InternalUrlsGenerator
             }
 
             $contents = implode(' ', array_column($article->contents, 'content'));
-            $generatedKeys = ArticleUrlKeyPrompt::generateContentTextErrorsLoop('Nazwa artykułu: '.$article->name . '\n Treść: \n' .$contents);
+            $generatedKeys = ArticleUrlKeyPrompt::generateContentTextErrorsLoop(
+                userContent: 'Nazwa artykułu: '.$article->name . '\n Treść: \n' .$contents,
+                dataPrompt: ['language' => $article->language]
+            );
             $generatedKeys = str_replace(['"', 'Linki wewnętrzne:', 'Klucze do linków wewnętrznych', '**Klucze do podlinkowania:**', 'Klucze do podlinkowania:', '**Klucze:**', '**Klucze do podlinkowania:**', 'klucze', 'Klucze', ':'], '', $generatedKeys);
 
 
@@ -74,7 +77,12 @@ class InternalUrlsGenerator
         }
     }
 
-
+    /**
+     * Aktualizuje linki wewnętrzne w artykule
+     * @param Article $article
+     * @param $urlKeysList
+     * @return void
+     */
     public static function updateInternalLinks(Article $article, $urlKeysList): void
     {
         if($article->contents === null){
