@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
-    <meta property="og:title" content="{{ $course->title_seo }}">
-    <meta property="og:description" content="{{ $course->description_seo }}">
+    <meta property="og:title" content="{{ $tag->title_seo }}">
+    <meta property="og:description" content="{{ $tag->description_seo }}">
     {{--    <meta property="og:image" content="{{ $basic_website_structure_op_image_img_file }}">--}}
     <meta property="og:url" content="{{ route('blogTag', ['tag' => Str::slug($tag->name)]) }}">
 
