@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ env('APP_LANG_HTML') }}"l>
+<html lang="{{ env('APP_LANG_HTML') }}">
 <head>
     <meta charset="UTF-8">
     <title>{{ $tag->title_seo  }}</title>
