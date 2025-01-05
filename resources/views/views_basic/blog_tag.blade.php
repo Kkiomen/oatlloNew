@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+    <meta property="og:title" content="{{ $course->title_seo }}">
+    <meta property="og:description" content="{{ $course->description_seo }}">
+    {{--    <meta property="og:image" content="{{ $basic_website_structure_op_image_img_file }}">--}}
+    <meta property="og:url" content="{{ route('blogTag', ['tag' => Str::slug($tag->name)]) }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
