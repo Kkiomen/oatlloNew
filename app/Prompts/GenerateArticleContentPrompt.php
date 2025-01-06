@@ -30,6 +30,7 @@ Podczas tworzenia artykułu kieruj się poniższymi wytycznymi:
 - Kod zawsze musi być umieszczony między znacznikami <pre><code class="language-php">  </code></pre>
 - Pisząc kod i o kodzie opieraj się na języku PHP
 - Komentarze w kodzie jak i kod pisz w języku angielskim
+- Pamiętaj o nagłówkach <h2> oraz <h3> dla lepszego SEO
 
 Każda część powinna mieścić się w przynajmniej 2000 znaków, a pierwsza oraz ostatnia obejmują odpowiednio wprowadzenie i zakończenie bez chamskiego podsumowania.
 
