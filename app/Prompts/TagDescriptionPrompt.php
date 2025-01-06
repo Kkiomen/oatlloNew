@@ -24,9 +24,6 @@ Utwórz długi opis pełny słów kluczowych dla konkretnego tagu aby tag wysoko
 - Utwórz min trzy tagi jednak zalecane jest więcej <h2> (chciałbym aby opis był wartościowy w słowa kluczowe)
 - Pamiętaj, że możesz używać <strong> oraz <em> do podkreślania kluczowych słów
 - Opis napisz w języku: '.$currentLanguage.'
-
-### O czym jest blog:
-Blog Oattlo jest o programowaniu w PHP
 ';
 
 
