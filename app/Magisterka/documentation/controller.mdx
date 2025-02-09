@@ -1,0 +1,418 @@
+# Dokumentacja Kontrolerów
+
+## Spis treści
+1. [Wprowadzenie](#wprowadzenie)
+2. [Organizacja Katalogów](#organizacja-katalogów)
+3. [Struktura Kontrolera](#struktura-kontrolera)
+4. [Typy Kontrolerów](#typy-kontrolerów)
+4. [Konfiguracja Routingu](#konfiguracja-routingu)
+5. [Atrybuty OpenAPI](#atrybuty-openapi)
+6. [Rozszerzanie Funkcjonalności](#rozszerzanie-funkcjonalności)
+7. [Przykłady Implementacji](#przykłady-implementacji)
+8. [Tworzenie kontrolera krok po kroku ](#tworzenie-kontrolera---krok-po-kroku)
+
+## Wprowadzenie
+
+Kontrolery w systemie Wise pełnią kluczową rolę jako pierwszy punkt kontaktu dla żądań API. Każdy kontroler jest odpowiedzialny za obsługę określonego zestawu operacji związanych z danymi. Dokumentacja ta przedstawia strukturę kontrolerów, ich funkcje oraz zasady ich implementacji w systemie Wise.
+
+## Organizacja Katalogów
+
+### Struktura Modułów
+
+W systemie Wise kontrolery należy umieszczać według następującej struktury katalogów:
+
+```
+ModułProjektu/
+├── ApiUi/                  # Dla endpointów UI API
+│   └── Controller/         # Kontrolery UI API
+│       ├── Feature1/       # Grupowanie kontrolerów według funkcjonalności
+│       └── Feature2/
+└── ApiAdmin/              # Dla endpointów Admin API
+    └── Controller/        # Kontrolery Admin API
+        ├── Feature1/      # Grupowanie kontrolerów według funkcjonalności
+        └── Feature2/
+```
+
+### Zasady Organizacji
+
+1. W zależności od typu endpointu, należy utworzyć odpowiedni katalog główny:
+   - `ApiUi` - dla endpointów interfejsu użytkownika (frontend B2B)
+   - `ApiAdmin` - dla endpointów administracyjnych (integracja z ERP)
+
+2. W każdym z tych katalogów należy utworzyć podkatalog `Controller`
+
+3. Kontrolery można dodatkowo grupować w podkatalogi według funkcjonalności
+
+### Przykładowa Struktura
+
+```
+Agreement/
+├── ApiUi/
+│   └── Controller/
+│       ├── Contract/
+│       │   ├── GetContractsController.php
+│       │   └── UpdateContractController.php
+│       └── Terms/
+│           ├── GetTermsController.php
+│           └── AcceptTermsController.php
+└── ApiAdmin/
+    └── Controller/
+        └── ContractManagement/
+            ├── PutContractController.php
+            └── GetContractListController.php
+```
+
+ pierwszy punkt kontaktu, od którego rozpoczyna się droga zwrócenia/wykonania operacji za pomocą endpointów. System Wise rozróżnia dwa główne typy API:
+
+- **UI API** - endpointy wykonywane na froncie aplikacji (witryny B2B). Wszystko co jest widoczne i funkcjonalne na witrynie to właśnie UI API.
+- **Admin API** - endpointy służące do integracji danych (np. z systemu ERP do systemu B2B). Są to głównie operacje CRUD na encjach.
+
+## Struktura Kontrolera
+
+### Podstawowe Wymagania
+
+Każdy kontroler w systemie Wise musi spełniać następujące wymagania:
+
+1. **Dziedziczenie** - każdy kontroler musi dziedziczyć po odpowiednim Abstract (szczegóły w sekcji Typy Kontrolerów)
+2. **Konstruktor** musi zawierać dwie kluczowe zależności:
+   - `ControllerShareMethodsHelperInterface` - serwis udostępniający dodatkowe funkcjonalności we wszystkich kontrolerach bez potrzeby modyfikacji wszystkich endpointów
+   - Serwis prezentacji specyficzny dla danego endpointu
+
+### Dlaczego Dziedziczenie jest Ważne?
+
+Dziedziczenie po odpowiednich klasach abstrakcyjnych jest kluczowe z następujących powodów:
+
+1. Automatyczna detekcja typu API (Admin API vs UI API)
+2. Odpowiednia obsługa uwierzytelnienia i błędów w zależności od typu API
+3. Standaryzacja przekazywania danych do serwisów prezentacji
+4. Zapewnienie poprawnej obsługi DTO dla odpowiedzi zgodnie z dokumentacją OpenAPI
+
+## Typy Kontrolerów
+
+### UI API Kontrolery
+
+| Operacja | Klasa Bazowa |
+|----------|--------------|
+| GET (lista) | `Wise\Core\ApiUi\Controller\AbstractGetListController` |
+| GET (szczegóły) | `Wise\Core\ApiUi\Controller\AbstractGetDetailsController` |
+| POST | `Wise\Core\ApiUi\Controller\AbstractPostController` |
+| PUT | `Wise\Core\ApiUi\Controller\AbstractPutController` |
+| DELETE | `Wise\Core\ApiUi\Controller\AbstractDeleteController` |
+
+### Admin API Kontrolery
+
+| Operacja | Klasa Bazowa |
+|----------|--------------|
+| GET (lista) | `Wise\Core\ApiAdmin\Controller\AbstractGetListAdminApiController` |
+| GET (szczegóły) | `Wise\Core\ApiAdmin\Controller\AbstractGetDetailsAdminApiController` |
+| PATCH | `Wise\Core\ApiAdmin\Controller\AbstractPatchAdminApiController` |
+| PUT | `Wise\Core\ApiAdmin\Controller\AbstractPutAdminApiController` |
+| DELETE | `Wise\Core\ApiAdmin\Controller\AbstractDeleteAdminApiController` |
+
+### Różnica między GET List a GET Details
+
+Kluczowa różnica między tymi dwoma typami endpointów GET polega na strukturze zwracanych danych:
+
+#### GET List Response
+Automatycznie zwraca dane w formacie obsługiwanym przez paginację:
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "isActive": true,
+      "requirement": 1,
+      "impact": 1,
+      "contexts": "HOME_PAGE;CHECKOUT",
+      "symbol": "RULES_2024_11_12",
+      // inne pola
+    }
+  ],
+  "page": 1,
+  "totalCount": 10,
+  "totalPages": 2
+}
+```
+
+#### GET Details Response
+Zwraca szczegółowe dane pojedynczego elementu bez struktury paginacji:
+```json
+{
+  "id": 1,
+  "isActive": true,
+  "requirement": 1,
+  "impact": 1,
+  "contexts": "HOME_PAGE;CHECKOUT",
+  "symbol": "RULES_2024_11_12",
+  "type": "RULES",
+  // inne pola
+}
+```
+
+## Konfiguracja Routingu
+
+### 1. Atrybut Route w Kontrolerze
+
+Każdy kontroler musi posiadać atrybut Route:
+```php
+#[Route(path: '/', methods: Request::METHOD_GET)]
+```
+
+### 2. Konfiguracja w routes.yaml
+
+UWAGA! Sama deklaracja atrybutu Route nie wystarczy. Konieczna jest odpowiednia konfiguracja w pliku routes.yaml danego modułu:
+
+```yaml
+wise_agreement_contract_api_ui_v2:
+  trailing_slash_on_root: false
+  resource: ../../ApiUi/Controller/Contract/
+  prefix: api/ui/contract
+  type: annotation
+```
+
+Gdzie:
+- `resource` - ścieżka do katalogu z kontrolerami
+- `prefix` - prefiks dla wszystkich routingów z tego katalogu
+- `type` - typ konfiguracji (annotation)
+
+### 3. Rejestracja w Symfony
+
+WAŻNE! Po utworzeniu nowego pliku routes.yaml w Resources swojego modułu, należy go zarejestrować w głównej konfiguracji Symfony, w katalogu `/config/routes.yaml`.
+
+## Atrybuty OpenAPI
+
+### UI API Atrybuty
+
+| Metoda HTTP | Atrybut | Namespace |
+|------------|---------|-----------|
+| GET | `OAGet` | `Wise\Core\ApiUi\Attributes\OpenApi\EndpointType\OAGet` |
+| POST | `OAPost` | `Wise\Core\ApiUi\Attributes\OpenApi\EndpointType\OAPost` |
+| PUT | `OAPut` | `Wise\Core\ApiUi\Attributes\OpenApi\EndpointType\OAPut` |
+| DELETE | `OADelete` | `Wise\Core\ApiUi\Attributes\OpenApi\EndpointType\OADelete` |
+
+### Admin API Atrybuty
+
+| Metoda HTTP | Atrybut | Namespace |
+|------------|---------|-----------|
+| GET | `OAGet` | `Wise\Core\ApiAdmin\Attributes\OpenApi\EndpointType\OAGet` |
+| PATCH | `OAPatch` | `Wise\Core\ApiAdmin\Attributes\OpenApi\EndpointType\OAPatch` |
+| PUT | `OAPut` | `Wise\Core\ApiAdmin\Attributes\OpenApi\EndpointType\OAPut` |
+| DELETE | `OADelete` | `Wise\Core\ApiAdmin\Attributes\OpenApi\EndpointType\OADelete` |
+
+### Konfiguracja DTO
+
+Atrybuty OpenAPI wymagają odpowiedniej konfiguracji:
+
+```php
+#[OAGet(
+    description: 'Opis endpointu',
+    tags: ['NazwaGrupy'],
+    responseDto: new OA\JsonContent(ref: "#/components/schemas/DtoAlias", type: "object")
+)]
+```
+
+Gdzie:
+- `description` - opis funkcjonalności endpointu
+- `tags` - grupowanie endpointów w dokumentacji OpenAPI (widoczne w Nelmio)
+- `responseDto/requestDto/parametersDto` - definicja struktury danych:
+  - responseDto - struktura odpowiedzi
+  - requestDto - struktura body żądania
+  - parametersDto - struktura parametrów
+
+#### Konfiguracja Aliasów DTO
+
+WAŻNE! Każdy alias DTO musi być zdefiniowany w konfiguracji `config/packages/nelmio_api_doc.yaml`:
+
+```yaml
+- {
+    alias: DtoAlias,
+    type: Wise\Module\Path\To\Dto,
+    areas: [ 'api_ui_v2' ]
+  }
+```
+
+Gdzie:
+- `alias` - nazwa używana w atrybutach OpenAPI
+- `type` - pełna ścieżka do klasy DTO
+- `areas` - obszar dostępności (`api_ui_v2` lub `api_admin_v2`)
+
+## Rozszerzanie Funkcjonalności
+
+### Modyfikacja Response DTO
+
+Jeśli wdrożenie wymaga modyfikacji standardowej odpowiedzi (np. dodanie nowego pola), nie trzeba modyfikować kontrolera. Wystarczy:
+
+1. Utworzyć nową klasę DTO
+2. Podmienić konfigurację w `config/packages/nelmio_api_doc.yaml`:
+```yaml
+- {
+    alias: ExistingDtoAlias,
+    type: Your\New\DtoClass,
+    areas: [ 'api_ui_v2' ]
+  }
+```
+
+Ta konfiguracja nadpisze standardowe DTO, a system automatycznie użyje nowej definicji podczas budowania dokumentacji OpenAPI.
+
+## Przykłady Implementacji
+
+### Przykład Kontrolera GET List
+
+```php
+namespace App\Controller;
+
+use OpenApi\Attributes as OA;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Wise\Core\ApiUi\Controller\AbstractGetListController;
+use Wise\Core\ApiUi\Attributes\OpenApi\EndpointType\OAGet;
+
+class GetExampleListController extends AbstractGetListController
+{
+    public function __construct(
+        private readonly ControllerShareMethodsHelperInterface $helper,
+        private readonly ExampleServiceInterface $service
+    ) {
+        parent::__construct($helper, $service);
+    }
+
+    #[Route(path: '/', methods: Request::METHOD_GET)]
+    #[OAGet(
+        description: 'Zwraca listę przykładowych elementów z obsługą paginacji',
+        tags: ['Example'],
+        responseDto: new OA\JsonContent(ref: "#/components/schemas/ExampleListDto", type: "object")
+    )]
+    public function getAction(Request $request): JsonResponse
+    {
+        return parent::getAction($request);
+    }
+}
+```
+
+### Przykład Kontrolera GET Details
+
+```php
+class GetExampleDetailsController extends AbstractGetDetailsController
+{
+    public function __construct(
+        private readonly ControllerShareMethodsHelperInterface $helper,
+        private readonly ExampleDetailsServiceInterface $service
+    ) {
+        parent::__construct($helper, $service);
+    }
+
+    #[Route(path: '/{id}', methods: Request::METHOD_GET)]
+    #[OAGet(
+        description: 'Pobiera szczegółowe informacje o pojedynczym elemencie',
+        tags: ['Example'],
+        responseDto: new OA\JsonContent(ref: "#/components/schemas/ExampleDetailsDto", type: "object")
+    )]
+    public function getAction(Request $request): JsonResponse
+    {
+        return parent::getAction($request);
+    }
+}
+```
+
+
+## Tworzenie kontrolera - Krok po Kroku
+
+### 1. Wybór Typu API
+Najpierw zdecyduj, czy endpoint będzie należał do **UI API** (frontend B2B) czy **Admin API** (integracja np. z ERP).
+
+### 2. Utworzenie Kontrolera
+Wybierz odpowiedni katalog:
+- `ApiUi/Controller/FeatureX/` dla UI API
+- `ApiAdmin/Controller/FeatureX/` dla Admin API
+
+Następnie utwórz nowy plik kontrolera, np. `GetExampleListController.php`.
+
+### 3. Dziedziczenie po Klasie Abstrakcyjnej
+Wybierz odpowiedni typ kontrolera:
+
+#### Dla UI API:
+```php
+use Wise\Core\ApiUi\Controller\AbstractGetListController;
+```
+#### Dla Admin API:
+```php
+use Wise\Core\ApiAdmin\Controller\AbstractGetListAdminApiController;
+```
+
+Przykładowa klasa kontrolera:
+```php
+namespace App\Controller;
+
+use OpenApi\Attributes as OA;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Wise\Core\ApiUi\Controller\AbstractGetListController;
+use Wise\Core\ApiUi\Attributes\OpenApi\EndpointType\OAGet;
+
+class GetExampleListController extends AbstractGetListController
+{
+    public function __construct(
+        private readonly ControllerShareMethodsHelperInterface $helper,
+        private readonly ExampleServiceInterface $service
+    ) {
+        parent::__construct($helper, $service);
+    }
+
+    #[Route(path: '/', methods: Request::METHOD_GET)]
+    #[OAGet(
+        description: 'Zwraca listę przykładowych elementów z obsługą paginacji',
+        tags: ['Example'],
+        responseDto: new OA\JsonContent(ref: "#/components/schemas/ExampleListDto", type: "object")
+    )]
+    public function getAction(Request $request): JsonResponse
+    {
+        return parent::getAction($request);
+    }
+}
+```
+
+### 4. Dodanie Routingu w `routes.yaml`
+Upewnij się, że endpoint został poprawnie zarejestrowany w `routes.yaml` danego modułu:
+```yaml
+wise_example_list_api_ui_v2:
+  trailing_slash_on_root: false
+  resource: ../../ApiUi/Controller/Example/
+  prefix: api/ui/example
+  type: annotation
+```
+
+### 5. Deklaracja Aliasu DTO
+W pliku `config/packages/nelmio_api_doc.yaml` dodaj alias:
+```yaml
+- {
+    alias: ExampleListDto,
+    type: Wise\Module\Path\To\Dto,
+    areas: [ 'api_ui_v2' ]
+  }
+```
+
+Dzięki temu system poprawnie zarejestruje strukturę odpowiedzi w dokumentacji OpenAPI.
+
+### 6. Dodanie serwisu prezentacji
+Dodaj serwis prezentacji do konstruktora kontrolera:
+```php
+public function __construct(
+    private readonly ControllerShareMethodsHelperInterface $helper,
+    private readonly ExampleServiceInterface $service
+) {
+    parent::__construct($helper, $service);
+}
+```
+
+
+
+### 7. Testowanie Endpointu
+Po wdrożeniu nowego endpointu warto sprawdzić jego działanie:
+- Uruchomić aplikację i przetestować odpowiedź w **Postmanie** lub **Swagger UI**.
+- Sprawdzić poprawność DTO w dokumentacji OpenAPI.
+- Upewnić się, że endpoint zwraca poprawne dane.
+
+---
+To wszystko! Teraz Twój endpoint jest gotowy do użycia. 🚀

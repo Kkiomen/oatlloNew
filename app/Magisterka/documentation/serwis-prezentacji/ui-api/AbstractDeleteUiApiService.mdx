@@ -1,0 +1,188 @@
+# Serwis prezentacji UiApi - DELETE
+
+
+## Spis treści
+1. [Wprowadzenie](#wprowadzenie)
+2. [Cykl Życia Żądania](#cykl-życia-żądania)
+3. [Główna Logika - Metoda delete()](#główna-logika---metoda-delete)
+4. [Obsługa Błędów](#obsługa-błędów)
+5. [Możliwości Rozszerzania](#możliwości-rozszerzania)
+6. [Przykładowa implementacja](#przykładowa-implementacja)
+
+---
+
+## Wprowadzenie
+
+Serwis prezentacji DELETE w systemie Wise odpowiada za obsługę żądań usuwających zasoby. Jego głównym zadaniem jest zapewnienie spójnej obsługi operacji usuwania, separacja logiki prezentacji od warstwy biznesowej oraz jednolite zarządzanie wyjątkami.
+
+### Czym jest Serwis Prezentacji DELETE?
+
+Serwis DELETE działa jako "pośrednik" między kontrolerem a logiką biznesową. Jego główne zadania to:
+- Obsługa żądań DELETE i mapowanie ich do odpowiednich operacji w systemie
+- Weryfikacja poprawności usunięcia rekordu
+- Standaryzacja odpowiedzi zwracanych przez API
+
+### Dlaczego Potrzebujemy Serwisu Prezentacji?
+
+1. **Separacja Odpowiedzialności**
+   - Kontroler obsługuje tylko routing i podstawową walidację
+   - Serwis DELETE zarządza procesem usuwania oraz obsługą wyjątków
+   - Logika biznesowa pozostaje niezależna od sposobu przesyłania danych
+
+2. **Standaryzacja**
+   - Jednolita obsługa operacji usuwania
+   - Spójna obsługa wyjątków i błędów
+   - Możliwość łatwego rozszerzania
+
+---
+
+## Cykl Życia Żądania
+
+### 1. Wywołanie przez Kontroler
+
+Kontroler wywołuje metodę `process()` serwisu prezentacji. Jest to główny punkt wejścia do obsługi żądania DELETE.
+
+```php
+public function process(DeleteRequestDataDto|AbstractRequestDto $requestDataDto): JsonResponse
+{
+    // Przygotowanie DTO
+    $dto = $this->sharedActionService->prepareDto($requestDataDto->getAttributes(), $requestDataDto->getParametersClass(), []);
+
+    // Rozpoczęcie przetwarzania
+    $this->startProcessing();
+
+    try {
+        // Główna logika usunięcia rekordu
+        $this->delete($dto);
+        $this->setStatus(ResponseStatusEnum::OK);
+    } catch (CommonLogicException $exception) {
+        // Obsługa wyjątków
+        $this->interpretException($exception, Request::METHOD_DELETE);
+        $this->setStatus(ResponseStatusEnum::STOP);
+    }
+
+    // Zakończenie przetwarzania
+    $this->finishProcessing();
+
+    return $this->processJsonResponse();
+}
+```
+
+---
+
+## Główna Logika - Metoda `delete()`
+
+Metoda `delete()` odpowiada za obsługę usuwania rekordu.
+
+```php
+public function delete(CommonUiApiDeleteParametersDto|CommonParametersDto $dto): void
+{
+    $params = $this->prepareParams($dto);
+
+    $this->callApplicationService($this->applicationService, $params)->read();
+
+    $this->setParameters(message: $this->sharedActionService->translate($this->messageSuccessTranslation));
+}
+```
+
+### Szczegółowy opis działania `delete()`:
+
+1. **Przygotowanie parametrów usunięcia** – Utworzenie obiektu parametrów usunięcia na podstawie danych wejściowych.
+2. **Wywołanie serwisu aplikacji** – Przekazanie danych do warstwy biznesowej w celu usunięcia rekordu.
+3. **Potwierdzenie usunięcia** – Zweryfikowanie poprawności operacji i ustawienie wiadomości zwrotnej.
+
+### Przykład przygotowania parametrów do usunięcia:
+```php
+protected function prepareParams(CommonUiApiDeleteParametersDto|CommonParametersDto $dto): CommonRemoveParams
+{
+    $params = new CommonRemoveParams();
+    $params->setFilters([
+        new QueryFilter('id', $dto->getId())
+    ]);
+    return $params;
+}
+```
+
+---
+
+## Obsługa Błędów
+
+### Przykład obsługi wyjątków
+```php
+catch (CommonLogicException $exception){
+    $this->interpretException($exception, Request::METHOD_DELETE);
+    $this->setStatus(ResponseStatusEnum::STOP);
+}
+```
+
+---
+
+## Możliwości Rozszerzania
+
+### 1. Dodanie niestandardowych filtrów usuwania
+```php
+protected function prepareParams(CommonUiApiDeleteParametersDto|CommonParametersDto $dto): CommonRemoveParams
+{
+    $params = new CommonRemoveParams();
+    $params->setFilters([
+        new QueryFilter('id', $dto->getId()),
+        new QueryFilter('status', 'active') // Usuwanie tylko aktywnych rekordów
+    ]);
+    return $params;
+}
+```
+
+### 2. Obsługa dodatkowych operacji po usunięciu
+```php
+public function afterDeleteOperation(CommonUiApiDeleteParametersDto $dto): void
+{
+    // Rejestracja zdarzenia logowania usunięcia
+    $this->logDeleteAction($dto->getId());
+}
+```
+
+---
+
+## Przykładowa implementacja
+
+### DeleteClientService
+
+#### DTO
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Wise\Client\ApiUi\Dto\Clients;
+
+use Wise\Core\ApiUi\Dto\CommonUiApiDeleteParametersDto;
+
+class DeleteClientParametersDto extends CommonUiApiDeleteParametersDto
+{}
+```
+
+#### Serwis
+
+```php
+
+declare(strict_types=1);
+
+namespace Wise\Client\ApiUi\Service\Clients;
+
+use Wise\Client\ApiUi\Service\Clients\Interfaces\DeleteClientServiceInterface;
+use Wise\Client\Service\Client\Interfaces\RemoveClientServiceInterface;
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractDeleteUiApiService;
+
+class DeleteClientService extends AbstractDeleteUiApiService implements DeleteClientServiceInterface
+{
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly RemoveClientServiceInterface $removeClientService
+    ){
+        parent::__construct($sharedActionService, $removeClientService);
+    }
+}
+
+```

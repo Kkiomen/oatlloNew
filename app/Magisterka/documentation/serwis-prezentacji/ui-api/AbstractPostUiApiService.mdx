@@ -1,0 +1,595 @@
+# Serwis prezentacji UiApi - POST
+
+## Spis treści
+1. [Wprowadzenie](#wprowadzenie)
+2. [Cykl Życia Żądania](#cykl-życia-żądania)
+3. [Główna Logika - Metoda post()](#główna-logika---metoda-post)
+4. [Obsługa Błędów](#obsługa-błędów)
+5. [Możliwości Rozszerzania](#możliwości-rozszerzania)
+6. [Przykładowa implementacja](#przykładowa-implementacja)
+
+---
+
+## Wprowadzenie
+
+Serwis prezentacji POST w systemie Wise odpowiada za obsługę zapytań tworzących nowe zasoby. Jego głównym zadaniem jest separacja logiki prezentacji od warstwy biznesowej oraz zapewnienie spójnej obsługi walidacji i zapisu danych.
+
+### Czym jest Serwis Prezentacji POST?
+
+Serwis POST działa jako "pośrednik" między kontrolerem a logiką biznesową. Jego główne zadania to:
+- Przygotowanie i walidacja danych wejściowych
+- Mapowanie danych na format wymagany przez warstwę biznesową
+- Obsługa zapisów i ich skutków
+
+### Dlaczego Potrzebujemy Serwisu Prezentacji?
+
+1. **Separacja Odpowiedzialności**
+   - Kontroler obsługuje tylko routing i podstawową walidację
+   - Serwis POST zarządza transformacją danych i obsługą błędów
+   - Logika biznesowa pozostaje niezależna od sposobu przesyłania danych
+
+2. **Standaryzacja**
+   - Jednolite przetwarzanie danych wejściowych
+   - Spójna obsługa wyjątków i błędów
+   - Możliwość łatwego rozszerzania
+
+---
+
+## Cykl Życia Żądania
+
+### 1. Wywołanie przez Kontroler
+
+Kontroler wywołuje metodę `process()` serwisu prezentacji. Jest to główny punkt wejścia do obsługi żądania POST.
+
+```php
+public function process(PostRequestDataDto|PutRequestDataDto|AbstractRequestDto $requestDataDto): JsonResponse
+{
+    // Przygotowanie DTO
+    $dto = $this->prepareDto($requestDataDto);
+
+    // Aktualizacja właściwości serwisu
+    $this->updateProperties($requestDataDto);
+
+    // Rozpoczęcie przetwarzania
+    $this->startProcessing();
+
+    try {
+        // Główna logika zapisu
+        $this->post($dto);
+    } catch (CommonLogicException $exception) {
+        $this->interpretException($exception, Request::METHOD_POST);
+    } catch (UniqueConstraintViolationException $exception){
+        $logicException = new UniqueConstraintViolationLogicException();
+        $this->interpretException($logicException, Request::METHOD_POST);
+    }
+
+    // Zakończenie przetwarzania
+    $this->finishProcessing();
+
+    return $this->processJsonResponse();
+}
+```
+
+---
+
+## Główna Logika - Metoda `post()`
+
+Metoda `post()` jest kluczowym elementem serwisu POST. Odpowiada za walidację, mapowanie i zapis danych.
+
+```php
+public function post(AbstractDto $dto): void
+{
+    // 1. Walidacja danych
+    $this->validateDto($dto);
+
+    // 2. Przygotowanie danych przed zapisaniem
+    $this->prepareData($dto);
+
+    // 3. Mapowanie pól do encji
+    $this->fieldMapping = $this->prepareCustomFieldMapping($this->fieldMapping);
+
+    // 4. Przygotowanie parametrów do serwisu biznesowego
+    $params = $this->fillParams($dto);
+
+    // 5. Wywołanie serwisu aplikacji
+    $serviceDto = $this->callApplicationService($this->applicationService, $params);
+    $serviceDtoData = $serviceDto->read();
+
+    // 6. Operacje po wykonaniu zapisu
+    $this->afterExecuteService($serviceDtoData, $dto);
+
+    // 7. Przygotowanie odpowiedzi
+    $this->prepareResponse($dto, $serviceDtoData);
+}
+```
+
+### Szczegółowy opis działania `post()`:
+
+1. **Walidacja danych**
+   - Sprawdzenie poprawności pól i ich zgodności z wymaganiami.
+
+2. **Przygotowanie danych**
+   - Wykonanie dodatkowych operacji przed zapisaniem (np. formatowanie danych).
+
+3. **Mapowanie pól**
+   - Dopasowanie struktury DTO do encji w bazie danych.
+
+4. **Tworzenie parametrów**
+   - Tworzenie obiektu parametrów zawierającego dane gotowe do zapisu.
+
+5. **Zapis do bazy**
+   - Wywołanie metody serwisu biznesowego odpowiedzialnej za zapis.
+
+6. **Finalizacja**
+   - Możliwość wykonania dodatkowych operacji po zapisie.
+
+7. **Przygotowanie odpowiedzi**
+   - Uformowanie zwracanej odpowiedzi JSON.
+
+---
+
+## Obsługa Błędów
+
+### Przykład obsługi wyjątków dla kluczy unikalnych
+```php
+catch (UniqueConstraintViolationException $exception){
+    $logicException = new UniqueConstraintViolationLogicException();
+    $this->interpretException($logicException, Request::METHOD_POST);
+}
+```
+
+---
+
+## Możliwości Rozszerzania
+
+### 1. Niestandardowe Przetwarzanie Danych
+```php
+public function prepareData(AbstractDto $dto): void
+{
+    $dto->setCreatedAt(new \DateTime());
+}
+```
+
+### 2. Obsługa Niestandardowych Odpowiedzi
+```php
+public function prepareResponse(AbstractDto $dto, array $serviceDtoData): void
+{
+    $this->setData(["message" => "Obiekt został utworzony."]);
+}
+```
+
+---
+
+## Przykładowa implementacja
+
+### PostClientAcceptService
+
+#### Serwis
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Wise\Client\ApiUi\Service\Clients;
+
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Wise\Client\ApiUi\Service\Clients\Interfaces\PostClientAcceptServiceInterface;
+use Wise\Client\Service\Client\AcceptClientParams;
+use Wise\Client\Service\Client\Interfaces\AcceptClientServiceInterface;
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractPostUiApiService;
+use Wise\Core\Dto\AbstractDto;
+use Wise\Core\Dto\CommonModifyParams;
+
+class PostClientAcceptService extends AbstractPostUiApiService implements PostClientAcceptServiceInterface
+{
+    /**
+     * Klucz translacji — zwracany, gdy proces się powiedzie
+     * @var string
+     */
+    protected string $messageSuccessTranslation = 'client.status_changed';
+
+
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly TranslatorInterface $translator,
+        private readonly AcceptClientServiceInterface $acceptClientService,
+    ) {
+        parent::__construct($sharedActionService, $acceptClientService);
+    }
+
+    /**
+     * Metoda uzupełnia parametry dla serwisu
+     * @param AbstractDto $dto
+     * @return CommonModifyParams
+     */
+    protected function fillParams(AbstractDto $dto): CommonModifyParams
+    {
+        $params = new AcceptClientParams();
+        $params->setClientId($dto->getId());
+
+        return $params;
+    }
+}
+
+```
+
+
+
+### PostUserAgreeContractService
+
+#### DTO
+
+```php
+<?php
+
+namespace Wise\Agreement\ApiUi\Dto\ContractAgreement;
+
+use Wise\Core\Api\Attributes\OpenApi\EndpointElement as OA;
+use Wise\Core\ApiUi\Dto\CommonUiApiDto;
+
+class PostUserAgreeContractDto extends CommonUiApiDto
+{
+    #[OA\Property(
+        description: 'Identyfikator umowy',
+        example: 5,
+    )]
+    protected int $contractId;
+
+    #[OA\Property(
+        description: 'Miejsca z którego zgoda została wyrażona',
+        example: 'HOME_PAGE',
+    )]
+    protected string $contextAgreement;
+
+    public function getContractId(): int
+    {
+        return $this->contractId;
+    }
+
+    public function setContractId(int $contractId): self
+    {
+        $this->contractId = $contractId;
+
+        return $this;
+    }
+
+    public function getContextAgreement(): string
+    {
+        return $this->contextAgreement;
+    }
+
+    public function setContextAgreement(string $contextAgreement): self
+    {
+        $this->contextAgreement = $contextAgreement;
+
+        return $this;
+    }
+}
+```
+
+#### Serwis
+
+```php
+<?php
+
+namespace Wise\Agreement\ApiUi\Service\ContractAgreement;
+
+use Wise\Agreement\ApiUi\Dto\ContractAgreement\PostUserAgreeContractDto;
+use Wise\Agreement\ApiUi\Service\ContractAgreement\Interfaces\PostUserAgreeContractServiceInterface;
+use Wise\Agreement\Service\Contract\Interfaces\ChangeUserAgreementServiceInterface;
+use Wise\Agreement\Service\ContractAgreement\ChangeUserAgreementParams;
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractPostUiApiService;
+use Wise\Core\Dto\AbstractDto;
+use Wise\Security\Service\Interfaces\CurrentUserServiceInterface;
+
+class PostUserAgreeContractService extends AbstractPostUiApiService implements PostUserAgreeContractServiceInterface
+{
+    protected string $messageSuccessTranslation = 'contract_agreement.success_agree';
+
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly ChangeUserAgreementServiceInterface $changeUserAgreementService,
+        private readonly CurrentUserServiceInterface $currentUserService
+    ){
+        parent::__construct($sharedActionService, $changeUserAgreementService);
+    }
+
+    public function post(PostUserAgreeContractDto|AbstractDto $dto): void
+    {
+        $params = new ChangeUserAgreementParams();
+        $params
+            ->setUserId($this->currentUserService->getUserId())
+            ->setContractId($dto->getContractId())
+            ->setType(ChangeUserAgreementParams::TYPE_AGREE)
+            ->setContextAgreement($dto->getContextAgreement());
+
+        // Wywołanie serwisu aplikacji z przekazanymi parametrami
+        $serviceDto = ($this->changeUserAgreementService)($params);
+        $serviceDtoData = $serviceDto->read();
+
+        // Tworzenie rezultatu zwracanego przez serwis
+        $this->prepareResponse($dto, $serviceDtoData);
+    }
+
+}
+```
+
+
+### PostClientsService
+
+#### DTO
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Wise\Client\ApiUi\Dto;
+
+use Symfony\Component\Validator\Constraints as Assert;
+use Wise\Core\Api\Attributes\OpenApi\EndpointElement as OA;
+use Wise\Core\Api\Dto\Attributes\FieldEntityMapping;
+use Wise\Core\ApiUi\Dto\CommonPostUiApiDto;
+
+class PostClientsRequestDto extends CommonPostUiApiDto
+{
+    #[OA\Property(
+        description: 'Nazwa klienta',
+        example: 'Quattro Forum',
+    )]
+    protected string $name;
+
+    #[OA\Property(
+        description: 'Ulica, numer domu oraz numer mieszkania klienta',
+        example: 'Zdrojowa 21/4',
+    )]
+    protected string $street;
+
+    #[OA\Property(
+        description: 'Nr budynku klienta',
+        example: '54/59',
+    )]
+    protected string $building;
+
+    #[OA\Property(
+        description: 'Nr lokalu',
+        example: '18',
+    )]
+    protected string $apartment;
+
+    #[OA\Property(
+        description: 'Kod pocztowy klienta',
+        example: '63-456',
+    )]
+    protected string $postalCode;
+
+    #[OA\Property(
+        description: 'Miasto klienta',
+        example: 'Wrocław',
+    )]
+    protected string $city;
+
+    #[OA\Property(
+        description: 'Kraj klienta',
+        example: 'Polska',
+    )]
+    protected string $country;
+
+    #[OA\Property(
+        description: 'Kraj klienta - Wymagane',
+        example: 'PL',
+    )]
+    protected string $countryCode;
+
+    #[OA\Property(
+        description: 'Identyfikator podatkowy klienta',
+        example: '6462933516',
+    )]
+    #[FieldEntityMapping('taxNumber')]
+    protected string $nip;
+
+    #[OA\Property(
+        description: 'Imię kontrahenta',
+        example: 'Adam',
+    )]
+    protected ?string $firstName;
+
+    #[OA\Property(
+        description: 'Nazwisko kontrahenta',
+        example: 'Kowalski',
+    )]
+    protected ?string $lastName;
+
+    #[OA\Property(
+        description: 'Imię osoby do kontaktu',
+        example: 'Adam',
+    )]
+    protected string $contactPersonFirstName;
+
+    #[OA\Property(
+        description: 'Nazwisko osoby do kontaktu',
+        example: 'Kowalski',
+    )]
+    protected string $contactPersonLastName;
+
+    #[Assert\Email(
+        message: "Nieprawidłowy adres email."
+    )]
+    #[OA\Property(
+        description: 'Adres e-mail osoby do kontaktu',
+        example: 'dkowalczyk@sente.pl',
+    )]
+    protected string $email;
+
+    #[Assert\Length(
+        max: 60,
+        maxMessage: "Pole może zawierać maksymalnie {{ limit }} znaków."
+    )]
+    #[OA\Property(
+        description: 'Numer telefonu osoby do kontaktu',
+        example: '123456789',
+    )]
+    protected string $phone;
+
+    #[OA\Property(
+        description: 'Strona internetowa klienta',
+        example: 'https://example.com',
+    )]
+    protected ?string $website;
+
+    #[OA\Property(
+        description: 'Limit kupiecki całkowity przyznany',
+        example: 5.26,
+    )]
+    protected ?float $tradeCreditTotal;
+
+    #[OA\Property(
+        description: 'Limit kupiecki do wykorzystania',
+        example: 3.29,
+    )]
+    protected ?float $tradeCreditFree;
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    // other getters and setters
+}
+
+```
+
+#### Serwis
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Wise\Client\ApiUi\Service\Clients;
+
+use Wise\Client\ApiUi\Dto\AddressDto;
+use Wise\Client\ApiUi\Dto\ClientRepresentativeDto;
+use Wise\Client\ApiUi\Service\Clients\Interfaces\PostClientsServiceInterface;
+use Wise\Client\Service\Client\Interfaces\AddClientServiceInterface;
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractPostUiApiService;
+use Wise\Core\Dto\AbstractDto;
+use Wise\Core\Dto\CommonModifyParams;
+use Wise\Receiver\Service\Receiver\Interfaces\ReceiverHelperInterface;
+
+class PostClientsService extends AbstractPostUiApiService implements PostClientsServiceInterface
+{
+    protected string $messageSuccessTranslation = 'client.created';
+
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly AddClientServiceInterface $addClientService,
+        private readonly ReceiverHelperInterface $receiverHelper
+    ){
+        parent::__construct($sharedActionService, $addClientService);
+    }
+
+    /**
+     * Metoda uzupełnia parametry dla serwisu
+     * @param AbstractDto $dto
+     * @return CommonModifyParams
+     * @throws \Exception
+     */
+    protected function fillParams(AbstractDto $dto): CommonModifyParams
+    {
+        $serviceDTO = parent::fillParams($dto);
+        $data = $serviceDTO->read();
+        $this->mapClientAddressFields($data, $dto);
+        $this->mapClientRepresentativeFields($data, $dto);
+        $serviceDTO->writeAssociativeArray($data);
+
+        return $serviceDTO;
+    }
+
+    /**
+     * Uzupełnienie danych adresowych klienta
+     * @param array $data
+     * @param AbstractDto $dto
+     * @return void
+     * @throws \Exception
+     */
+    protected function mapClientAddressFields(array &$data, AbstractDto $dto): void
+    {
+        if(empty($data['building']) && empty($data['apartment']) && empty($data['countryCode']) && empty($data['country']) && empty($data['state'])) {
+            return;
+        }
+        $fields = (new AddressDto())->mergeWithMappedFields([]);
+        $data['building'] = (isset($data['building']) && !empty($data['building'])) ?  $data['building'] : '';
+        $data['apartment'] = (isset($data['apartment']) && !empty($data['apartment'])) ? $data['apartment'] : '';
+        $data['countryCode'] = (isset($data['countryCode']) && !empty($data['countryCode'])) ?  $data['countryCode'] : $data['country'];
+        $data['country'] = (isset($data['country']) && !empty($data['country'])) ?  $data['country'] : '';
+        $data['state'] = (isset($data['state']) && !empty($data['state'])) ?  $data['state'] : '';
+        $addressDto = $this->sharedActionService->prepareSingleObjectResponseDto(AddressDto::class, $data, $fields);
+
+        $this->receiverHelper->validateCountryCode($addressDto->getCountryCode() ?? $addressDto->getCountry());
+
+        // Umieszczam te dane w CommonModifyParams
+        $serviceDTO = new CommonModifyParams();
+        $serviceDTO->write($addressDto, [
+            'country' => 'countryCode',
+            'building' => 'houseNumber',
+            'apartment' => 'apartmentNumber',
+        ]);
+
+        // Uzupełniam o brakujący name
+        $serviceDTO->writeAssociativeArray(
+            array_merge(
+                $serviceDTO->read(),
+                [
+                    'name' => $dto->getName() ?? null,
+                ]
+            )
+        );
+
+        unset($data['building'], $data['apartment'], $data['city'], $data['postalCode'], $data['countryCode'], $data['country'], $data['state'], $data['street']);
+        $data['registerAddress'] = $serviceDTO->read();
+    }
+
+    /**
+     * Uzupełnienie danych reprezentujących klienta
+     * @param array $data
+     * @param AbstractDto $dto
+     * @return void
+     * @throws \Exception
+     */
+    protected function mapClientRepresentativeFields(array &$data, AbstractDto $dto): void
+    {
+        if(empty($data['contactPersonFirstName']) && empty($data['contactPersonLastName'])) {
+            return;
+        }
+
+        // Tworze DTO danych reprezentujących klienta i merguje z nim dane z requesta
+        // W związku, że pola z DTO nie zgadzają się z tymi z requesta wykorzystane zostało prepareSingleObjectResponseDto
+        $fields = (new ClientRepresentativeDto())->mergeWithMappedFields([
+            'personFirstname' => 'contactPersonFirstName',
+            'personLastname' => 'contactPersonLastName',
+        ]);
+
+        $clientRepresentativeDto = $this->sharedActionService->prepareSingleObjectResponseDto(ClientRepresentativeDto::class, $data, $fields);
+
+        // Umieszczam te dane w CommonModifyParams
+        $serviceDTO = new CommonModifyParams();
+        $serviceDTO->write($clientRepresentativeDto, []);
+
+        // Dodaje brakujące dane
+        unset($data['contactPersonFirstName'], $data['contactPersonLastName']);
+        $data['clientRepresentative'] = $serviceDTO->read();
+    }
+}
+```

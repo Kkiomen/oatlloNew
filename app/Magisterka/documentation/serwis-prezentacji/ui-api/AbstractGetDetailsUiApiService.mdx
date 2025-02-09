@@ -1,0 +1,695 @@
+# Serwis prezentacji UiApi - GET DETAILS
+
+## Spis treści
+1. [Wprowadzenie](#wprowadzenie)
+2. [Cykl Życia Żądania](#cykl-życia-żądania)
+3. [Główna Logika - Metoda get()](#główna-logika---metoda-get)
+4. [Możliwości Rozszerzania](#możliwości-rozszerzania)
+5. [Przykłady Implementacji](#przykłady-implementacji)
+7. [Przykładowa implementacja](#przykładowa-implementacja)
+
+---
+
+## Wprowadzenie
+
+Serwis prezentacji GET DETAILS w systemie Wise odpowiada za obsługę zapytań GET zwracających szczegóły pojedynczego obiektu. Jego głównym zadaniem jest oddzielenie warstwy prezentacji od logiki biznesowej, zapewnienie spójnej obsługi parametrów wejściowych oraz przygotowanie odpowiedzi w standardowym formacie API.
+
+### Czym jest Serwis Prezentacji GET DETAILS?
+
+Serwis GET DETAILS działa jako "pośrednik" między kontrolerem a logiką biznesową. Jego główne zadania to:
+- Przetworzenie parametrów wejściowych i ich konwersja na format zrozumiały dla systemu
+- Pobranie danych z warstwy biznesowej i ich interpretacja
+- Organizacja odpowiedzi zgodnie z wymaganiami interfejsu API
+
+### Dlaczego Potrzebujemy Serwisu Prezentacji?
+
+1. **Separacja Odpowiedzialności**
+   - Kontroler obsługuje routing i walidację podstawową
+   - Serwis GET DETAILS zarządza pobieraniem i formatowaniem danych
+   - Logika biznesowa pozostaje niezależna od warstwy prezentacji
+
+2. **Standaryzacja**
+   - Spójne przetwarzanie parametrów
+   - Jednolita obsługa wyjątków i błędów
+   - Standardowy format odpowiedzi API
+
+---
+
+## Cykl Życia Żądania
+
+### 1. Wywołanie przez Kontroler
+
+Kontroler wywołuje metodę `process()` serwisu prezentacji. Jest to główny punkt wejścia do obsługi żądania GET DETAILS.
+
+```php
+public function process(GetDetailsRequestDataDto|AbstractRequestDto $requestDataDto): JsonResponse
+{
+    // 1. Obsługa przełączania użytkownika
+    $this->supportSwitchUser($requestDataDto);
+
+    // 2. Przygotowanie parametrów wejściowych
+    $parameters = $this->prepareParameters($requestDataDto);
+
+    // 3. Aktualizacja wartości pól w serwisie
+    $this->updateProperties($requestDataDto);
+
+    try {
+        // 4. Pobranie danych
+        $resultObject = $this->get($parameters);
+    } catch (CommonLogicException $exception) {
+        // 5. Obsługa błędów
+        $this->interpretException($exception, Request::METHOD_GET);
+        return $this->processJsonResponse();
+    }
+
+    // 6. Przygotowanie odpowiedzi
+    return $this->prepareResponse($resultObject);
+}
+```
+
+---
+
+## Główna Logika - Metoda `get()`
+
+Metoda `get()` jest kluczowym elementem serwisu GET DETAILS. To tutaj odbywa się pobieranie i przetwarzanie szczegółowych danych dotyczących pojedynczego obiektu.
+
+```php
+public function get(InputBag $parameters): array
+{
+    // 1. Przygotowanie parametrów wejściowych
+    $this->beforeInterpretParameters($parameters);
+
+    // 2. Pobranie nazw klas DTO
+    $responseClass = $this->getResponseClassDtoName($this->responseDto);
+    $paramsClass = $this->getParamsClassDtoName($this->serviceParamsDto);
+
+    // 3. Interpretacja parametrów
+    $filters = $this->interpreterParameters($parameters);
+    $this->afterInterpretedParameters($filters, $parameters);
+
+    // 4. Pobranie danych z warstwy biznesowej
+    $params = new $paramsClass();
+    $this->fillParams($params);
+    $serviceDto = $this->callApplicationService($this->applicationService, $params);
+
+    // 5. Transformacja danych
+    $responseDtoObject = $this->sharedActionService->prepareSingleObjectResponseDto(
+        $responseClass,
+        $serviceDto->read(),
+        $this->fields
+    );
+
+    // 6. Uzupełnienie odpowiedzi o dodatkowe dane
+    $this->fillResponseDto($responseDtoObject, [], $serviceDto->read());
+
+    return $responseDtoObject->resolveArrayData();
+}
+```
+
+---
+
+## Możliwości Rozszerzania
+
+### 1. Dodanie Niestandardowych Filtrów
+```php
+protected function customInterpreterParameters(array &$filters, string $field, mixed $value): bool
+{
+    if ($field === 'customField') {
+        $filters[] = new QueryFilter('database_field', $value, QueryFilter::COMPARATOR_EQUAL);
+        return true;
+    }
+    return false;
+}
+```
+
+### 2. Modyfikacja Odpowiedzi
+```php
+protected function fillResponseDto(AbstractDto $responseDtoItem, array $cacheData, ?array $serviceDtoItem = null): void
+{
+    $responseDtoItem->additionalInfo = 'Dodatkowe informacje';
+}
+```
+
+---
+
+## Przykładowa implementacja
+
+### GetPanelManagementContractService
+
+#### Dto
+
+```php
+<?php
+
+namespace Wise\Agreement\ApiUi\Dto\PanelManagement;
+
+use DateTimeInterface;
+use Wise\Agreement\ApiAdmin\Dto\Contract\ContractTranslationDto;
+use Wise\Core\Api\Attributes\OpenApi\EndpointElement as OA;
+use Wise\Core\Api\Dto\Attributes\FieldEntityMapping;
+use Wise\Core\Api\Fields\FieldHandlingEnum;
+use Wise\Core\ApiUi\Dto\CommonUiApiDto;
+
+class GetPanelManagementContractDto extends CommonUiApiDto
+{
+    #[OA\Property(
+        description: 'Identyfikator umowy',
+        example: 1,
+    )]
+    protected ?int $id = null;
+
+    #[OA\Property(
+        description: 'Czy umowa jest aktywna',
+        example: true,
+    )]
+    protected ?bool $isActive;
+
+    #[OA\Property(
+        description: 'Stopień wymagalności: 1 - Do korzystania z witryny, 2 - Do złożenia zamówienia, 3 - Dobrowolna',
+        example: 1,
+    )]
+    protected ?int $requirement = null;
+
+    #[OA\Property(
+        description: 'Na kogo oddziałowuje umowa: 1 - Klient, 2 - Użytkownik, 3 - Zamówienie',
+        example: 1,
+    )]
+    protected ?int $impact = null;
+
+    #[OA\Property(
+        description: 'Kontekst prośby (gdzie ma zostać wyświetlona prośba) ',
+        example: 'HOME_PAGE;CHECKOUT',
+    )]
+    protected ?string $contexts = null;
+
+    #[OA\Property(
+        description: 'Symbol - unikalny identyfikator, aby można było odwołać się do konkretnej umowy w kodzie',
+        example: 'RULES_2024_11_12',
+    )]
+    protected ?string $symbol = null;
+
+    #[OA\Property(
+        description: 'Typ umowy: RULES - Regulamin, PRIVACY_POLICY - Polityka prywatności, RODO - rodo, NEWSLETTER - Newsletter, MARKETING - Marketing',
+        example: 'RULES',
+    )]
+    protected ?string $type = null;
+
+    #[OA\Property(
+        description: 'Role użytkowników, których dotyczy umowa',
+        example: 'ROLE_USER_MAIN;ROLE_USER',
+    )]
+    protected ?string $roles = null;
+
+    #[OA\Property(
+        description: 'Status: 1 - W trakcie edycji, 2 - aktywne, 3 - (deprecated) umowa aktywna ale nie można przypisać nowych użytkownik, 4 - nieaktywna',
+        example: 1,
+    )]
+    protected ?int $status = null;
+
+    #[OA\Property(
+        description: ' W trakcie edycji',
+        example: 1,
+    )]
+    protected ?string $statusFormatted = null;
+
+    /** @var ContractTranslationDto[] */
+    protected ?array $name = null;
+
+    /** @var ContractTranslationDto[] */
+    protected ?array $content = null;
+
+    /** @var ContractTranslationDto[] */
+    protected ?array $testimony = null;
+
+    #[OA\Property(
+        description: 'Regulamin',
+        example: 'Regulamin 20.11.2023',
+    )]
+    #[FieldEntityMapping(FieldHandlingEnum::HANDLE_BY_TRANSFER_AND_RETURN_IN_RESPONSE)]
+    protected ?string $nameFormatted = null;
+
+    #[OA\Property(
+        description: 'Zawartość umowy w formacie HTML',
+        example: 'Lorem ipsum',
+    )]
+    #[FieldEntityMapping(FieldHandlingEnum::HANDLE_BY_TRANSFER_AND_RETURN_IN_RESPONSE)]
+    protected ?string $contentFormatted = null;
+
+    #[OA\Property(
+        description: 'Data obowiązywania umowy od',
+        example: '2023-01-01 00:00:01',
+    )]
+    protected ?DateTimeInterface $fromDate = null;
+
+    #[OA\Property(
+        description: 'Data obowiązywania umowy do',
+        example: '2028-01-01 00:00:01',
+    )]
+    protected ?DateTimeInterface $toDate = null;
+
+    #[OA\Property(
+        description: 'Data ustawienia umowy na status "deprecated"',
+        example: null,
+    )]
+    protected ?DateTimeInterface $deprecatedDate = null;
+
+    #[OA\Property(
+        description: 'Data ustawienia umowy na status "inActive"',
+        example: null,
+    )]
+    protected ?DateTimeInterface $inActiveDate = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    // other Getters and Setters
+}
+
+```
+
+#### Serwis
+
+```php
+<?php
+
+namespace Wise\Agreement\ApiUi\Service\PanelManagement;
+
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Wise\Agreement\ApiUi\Service\PanelManagement\Interfaces\GetPanelManagementContractServiceInterface;
+use Wise\Agreement\Service\Agreement\Interfaces\CanUserAccessToAgreementServiceInterface;
+use Wise\Agreement\Service\Contract\Interfaces\GetContractDetailsServiceInterface;
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractGetDetailsUiApiService;
+use Wise\Core\Dto\AbstractDto;
+use Wise\Core\Service\TranslationService;
+use Wise\Core\ServiceInterface\Locale\LocaleServiceInterface;
+use Wise\Security\Service\Interfaces\CurrentUserServiceInterface;
+
+class GetPanelManagementContractService extends AbstractGetDetailsUiApiService implements GetPanelManagementContractServiceInterface
+{
+
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly GetContractDetailsServiceInterface $getContractDetailsService,
+        private readonly TranslatorInterface $translator,
+        private readonly TranslationService $translationService,
+        private readonly LocaleServiceInterface $localeService,
+        private readonly CurrentUserServiceInterface $currentUserService,
+        private readonly CanUserAccessToAgreementServiceInterface $canUserAccessToAgreementService
+    ){
+        parent::__construct($sharedActionService, $getContractDetailsService);
+    }
+
+    /**
+     * Metoda umożliwiająca wykonanie pewnej czynności przed obsługą filtrów
+     * @param InputBag $parametersAdjusted
+     * @return void
+     */
+    protected function beforeInterpretParameters(InputBag $parametersAdjusted): void
+    {
+        $this->canUserAccessToAgreementService->check();
+    }
+
+    /**
+     * Metoda pozwala przekształcić poszczególne obiekty serviceDto przed transformacją do responseDto
+     * @param array|null $elementData
+     * @return void
+     * @throws ExceptionInterface
+     */
+    protected function prepareElementServiceDtoBeforeTransform(?array &$elementData): void
+    {
+        $elementData = [
+            ...$elementData,
+            'nameFormatted' => $this->translationService->getTranslationForField($elementData['name'], $this->localeService->getCurrentLanguage()),
+            'contentFormatted' => $this->translationService->getTranslationForField($elementData['content'], $this->localeService->getCurrentLanguage()),
+        ];
+    }
+
+    /**
+     * Metoda pozwala uzupełnić responseDto pojedyńczego elementu o dodatkowe informacje
+     * @param AbstractDto $responseDtoItem
+     * @param array $cacheData
+     * @param array|null $serviceDtoItem
+     * @return void
+     */
+    protected function fillResponseDto(AbstractDto $responseDtoItem, array $cacheData, ?array $serviceDtoItem = null): void
+    {
+        $responseDtoItem->setName($serviceDtoItem['name']);
+        $responseDtoItem->setContent($serviceDtoItem['content']);
+        $responseDtoItem->setTestimony($serviceDtoItem['testimony']);
+    }
+}
+
+```
+
+
+
+### GetPanelManagementDeliveryPaymentCostService
+
+Abstract obsługuję poprawnie pola o typach prostych i nie musimy ich dodatkowo przetwarzać
+
+#### Dto
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Wise\Pricing\ApiUi\Dto\PanelManagement\DeliveryPaymentCost;
+
+use Wise\Core\Api\Attributes\OpenApi\EndpointElement as OA;
+use Wise\Core\ApiUi\Dto\CommonUiApiDto;
+
+class GetPanelManagementDeliveryPaymentCostDto extends CommonUiApiDto
+{
+
+    #[OA\Property(
+        description: '',
+        example: 'example',
+    )]
+    protected ?string $idExternal = null;
+
+
+    #[OA\Property(
+        description: 'Identyfikator metody dostawy',
+        example: 1,
+    )]
+    protected ?int $deliveryMethodId = null;
+
+    #[OA\Property(
+        description: 'Nazwa sposobu dostawy - do wyświetlenia',
+        example: 1,
+    )]
+    protected ?string $deliveryMethodFormatted = null;
+
+
+    #[OA\Property(
+        description: 'Identyfikator metody płatności',
+        example: 1,
+    )]
+    protected ?int $paymentMethodId = null;
+
+
+    #[OA\Property(
+        description: 'Nazwa sposobu płatności - do wyświetlenia',
+        example: 1,
+    )]
+    protected ?string $paymentMethodFormatted = null;
+
+
+    #[OA\Property(
+        description: 'Identyfikator kraju',
+        example: 1,
+    )]
+    protected ?int $countryId = null;
+
+    #[OA\Property(
+        description: 'Nazwa kraju - do wyświetlenia',
+        example: 1,
+    )]
+    protected ?string $countryFormatted = null;
+
+
+    #[OA\Property(
+        description: 'Metoda obliczania kosztu dostawy',
+        example: 1,
+    )]
+    protected ?int $deliveryCalcMethod = null;
+
+
+    #[OA\Property(
+        description: 'Parametr metody obliczania kosztu dostawy',
+        example: 1.1,
+    )]
+    protected ?float $deliveryCalcParam = null;
+
+
+    #[OA\Property(
+        description: 'Limit darmowej dostawy',
+        example: 1.1,
+    )]
+    protected ?float $freeDeliveryLimit = null;
+
+
+    #[OA\Property(
+        description: 'Metoda obliczania kosztu płatności',
+        example: 1,
+    )]
+    protected ?int $paymentCalcMethod = null;
+
+
+    #[OA\Property(
+        description: 'Parametr metody obliczania kosztu płatności',
+        example: 1.1,
+    )]
+    protected ?float $paymentCalcParam = null;
+
+
+    #[OA\Property(
+        description: 'Waluta obliczeń',
+        example: 'example',
+    )]
+    protected ?string $currencyCalc = null;
+
+
+    #[OA\Property(
+        description: 'Czy dostawa cena dotyczy dropshippingu',
+        example: true,
+    )]
+    protected ?bool $forDropshipping = null;
+
+
+    #[OA\Property(
+        description: 'Identyfikator encji',
+        example: 1,
+    )]
+    protected ?int $id = null;
+
+
+    #[OA\Property(
+        description: 'Czy encja jest aktywna',
+        example: true,
+    )]
+    protected ?bool $isActive = null;
+
+
+    #[OA\Property(
+        description: '',
+        example: 'example',
+    )]
+    protected ?string $entityHash = null;
+
+
+    #[OA\Property(
+        description: 'Informacja, w jakiej kolejności mają zostać zwrócone dane',
+        example: 1,
+    )]
+    protected int $sortOrder;
+
+
+
+    public function getIdExternal(): ?string
+    {
+        return $this->idExternal;
+    }
+
+    public function setIdExternal(?string $idExternal): self
+    {
+        $this->idExternal = $idExternal;
+
+        return $this;
+    }
+
+
+    public function getDeliveryMethodId(): ?int
+    {
+        return $this->deliveryMethodId;
+    }
+
+    public function setDeliveryMethodId(?int $deliveryMethodId): self
+    {
+        $this->deliveryMethodId = $deliveryMethodId;
+
+        return $this;
+    }
+
+
+    public function getPaymentMethodId(): ?int
+    {
+        return $this->paymentMethodId;
+    }
+
+    public function setPaymentMethodId(?int $paymentMethodId): self
+    {
+        $this->paymentMethodId = $paymentMethodId;
+
+        return $this;
+    }
+
+
+    public function getCountryId(): ?int
+    {
+        return $this->countryId;
+    }
+
+    public function setCountryId(?int $countryId): self
+    {
+        $this->countryId = $countryId;
+
+        return $this;
+    }
+
+
+    public function getDeliveryCalcMethod(): ?int
+    {
+        return $this->deliveryCalcMethod;
+    }
+
+    public function setDeliveryCalcMethod(?int $deliveryCalcMethod): self
+    {
+        $this->deliveryCalcMethod = $deliveryCalcMethod;
+
+        return $this;
+    }
+
+
+    public function getDeliveryCalcParam(): ?float
+    {
+        return $this->deliveryCalcParam;
+    }
+
+    public function setDeliveryCalcParam(?float $deliveryCalcParam): self
+    {
+        $this->deliveryCalcParam = $deliveryCalcParam;
+
+        return $this;
+    }
+
+
+    public function getFreeDeliveryLimit(): ?float
+    {
+        return $this->freeDeliveryLimit;
+    }
+
+    public function setFreeDeliveryLimit(?float $freeDeliveryLimit): self
+    {
+        $this->freeDeliveryLimit = $freeDeliveryLimit;
+
+        return $this;
+    }
+
+
+    public function getPaymentCalcMethod(): ?int
+    {
+        return $this->paymentCalcMethod;
+    }
+
+    public function setPaymentCalcMethod(?int $paymentCalcMethod): self
+    {
+        $this->paymentCalcMethod = $paymentCalcMethod;
+
+        return $this;
+    }
+
+
+    public function getPaymentCalcParam(): ?float
+    {
+        return $this->paymentCalcParam;
+    }
+
+    public function setPaymentCalcParam(?float $paymentCalcParam): self
+    {
+        $this->paymentCalcParam = $paymentCalcParam;
+
+        return $this;
+    }
+
+
+    public function getCurrencyCalc(): ?string
+    {
+        return $this->currencyCalc;
+    }
+
+    public function setCurrencyCalc(?string $currencyCalc): self
+    {
+        $this->currencyCalc = $currencyCalc;
+
+        return $this;
+    }
+
+
+    public function getForDropshipping(): ?bool
+    {
+        return $this->forDropshipping;
+    }
+
+    public function setForDropshipping(?bool $forDropshipping): self
+    {
+        $this->forDropshipping = $forDropshipping;
+
+        return $this;
+    }
+
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+
+    // other Getters and Setters
+}
+
+
+```
+
+#### Serwis
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Wise\Pricing\ApiUi\Service\PanelManagement;
+
+use Wise\Core\ApiUi\Service\AbstractGetDetailsUiApiService;
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Pricing\ApiUi\Service\PanelManagement\Interfaces\GetPanelManagementDeliveryPaymentCostServiceInterface;
+use Wise\Pricing\Service\DeliveryPaymentCost\Interfaces\GetDeliveryPaymentCostDetailsServiceInterface;
+
+class GetPanelManagementDeliveryPaymentCostService extends AbstractGetDetailsUiApiService implements GetPanelManagementDeliveryPaymentCostServiceInterface
+{
+    /**
+     * Czy pobrać ilość wszystkich rekordów
+     */
+    protected bool $fetchTotal = true;
+
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly GetDeliveryPaymentCostDetailsServiceInterface $getDeliveryPaymentCostDetailsService,
+    ){
+        parent::__construct($sharedActionService, $getDeliveryPaymentCostDetailsService);
+    }
+
+}
+
+
+```

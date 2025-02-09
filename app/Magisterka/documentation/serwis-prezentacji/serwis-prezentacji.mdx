@@ -1,0 +1,201 @@
+# Dokumentacja Serwisów Prezentacji
+
+## Spis treści
+1. [Wprowadzenie](#wprowadzenie)
+2. [Organizacja Katalogów](#organizacja-katalogów)
+3. [Typy Serwisów](#typy-serwisów)
+4. [Dziedziczenie i Abstrakcje](#dziedziczenie-i-abstrakcje)
+5. [Przykłady Implementacji](#przykłady-implementacji)
+
+## Wprowadzenie
+
+Serwis prezentacji jest kluczowym elementem w architekturze systemu Wise, który odpowiada za obsługę działania endpointu. Jest to warstwa pośrednia między kontrolerem a logiką biznesową.
+
+### Główne Zasady
+
+1. **Brak Logiki Biznesowej**
+   - Serwis prezentacji NIE implementuje logiki biznesowej
+   - Służy jako "koordynator" lub "fasada" dla innych serwisów
+
+2. **Odpowiedzialności**
+   - Dla endpointów GET: pobieranie i przygotowanie danych do response
+   - Dla endpointów POST/PUT/PATCH/DELETE: wykonywanie określonych operacji
+
+### Analogia
+Można to porównać do uruchamiania samochodu:
+- Serwis prezentacji jest jak przekręcenie kluczyka w stacyjce
+- Nie interesuje nas co dokładnie dzieje się w silniku (logika biznesowa)
+- Znamy tylko oczekiwany rezultat (np. uruchomienie silnika)
+
+## Organizacja Katalogów
+
+### Struktura Podstawowa
+
+```
+ModułProjektu/
+├── ApiUi/
+│   └── Service/
+│       ├── Feature1/
+│       │   ├── GetFeature1Service.php
+│       │   └── PutFeature1Service.php
+│       └── Feature2/
+│           ├── GetFeature2Service.php
+│           └── PutFeature2Service.php
+└── ApiAdmin/
+    └── Service/
+        └── Feature1/
+            ├── GetFeature1Service.php
+            └── PutFeature1Service.php
+```
+
+### Przykładowa Struktura (Agreement)
+
+```
+Agreement/
+├── ApiUi/
+│   └── Service/
+│       ├── Contract/
+│       │   ├── GetContractService.php
+│       │   └── PutContractService.php
+│       └── Terms/
+│           ├── GetTermsService.php
+│           └── PutTermsService.php
+└── ApiAdmin/
+    └── Service/
+        └── Contract/
+            ├── GetContractService.php
+            └── PutContractService.php
+```
+
+## Typy Serwisów
+
+### UI API Serwisy
+
+| Operacja | Klasa Bazowa | Przeznaczenie |
+|----------|--------------|---------------|
+| GET (lista) | `Wise\Core\ApiUi\Service\AbstractGetListUiApiService` | Pobieranie list z paginacją |
+| GET (szczegóły) | `Wise\Core\ApiUi\Service\AbstractGetDetailsUiApiService` | Pobieranie szczegółów pojedynczego elementu |
+| POST | `Wise\Core\ApiUi\Service\AbstractPostUiApiService` | Tworzenie nowych zasobów lub wykonanie komendy |
+| PUT | `Wise\Core\ApiUi\Service\AbstractPutUiApiService` | Aktualizacja zasobów |
+| DELETE | `Wise\Core\ApiUi\Service\AbstractDeleteUiApiService` | Usuwanie zasobów |
+
+### Admin API Serwisy
+
+| Operacja | Klasa Bazowa | Przeznaczenie |
+|----------|--------------|---------------|
+| GET (lista) | `Wise\Core\ApiAdmin\Service\AbstractGetListAdminApiService` | Pobieranie list |
+| GET (szczegóły) | `Wise\Core\ApiAdmin\Service\AbstractGetDetailsAdminApiService` | Pobieranie szczegółów |
+| PUT/PATCH | `Wise\Core\ApiAdmin\Service\AbstractPutAdminApiService` | Aktualizacja (obsługuje również PATCH) |
+| DELETE | `Wise\Core\ApiAdmin\Service\AbstractDeleteAdminApiService` | Usuwanie |
+
+## Dziedziczenie i Abstrakcje
+
+### Funkcjonalności Klas Abstrakcyjnych
+
+Klasy abstrakcyjne zapewniają następujące funkcjonalności:
+
+1. **Konwersja Danych**
+   - Automatyczna konwersja JSON na obiekty DTO
+   - Walidacja danych wejściowych
+
+2. **Przygotowanie Rezultatów**
+   - Formatowanie odpowiedzi
+   - Obsługa standardowych struktur (np. paginacji)
+
+3. **Predefiniowana Logika**
+   - Gotowe metody dla typowych operacji
+   - Standaryzacja zachowań
+
+### Wymagane Zależności
+
+Każdy serwis prezentacji wymaga w konstruktorze:
+```php
+public function __construct(
+    private readonly UiApiShareMethodsHelper|AdminApiShareMethodsHelper $helper
+) {
+    parent::__construct($helper);
+}
+```
+
+## Przykłady Implementacji
+
+### Przykład Serwisu GET List (UI API)
+
+```php
+namespace Wise\YourModule\ApiUi\Service\YourFeature;
+
+use Wise\Core\ApiUi\Service\AbstractGetListUiApiService;
+use Wise\Core\Api\Helper\UiApiShareMethodsHelper;
+
+class GetExampleListService extends AbstractGetListUiApiService
+{
+    public function __construct(
+        private readonly UiApiShareMethodsHelper $helper,
+        private readonly YourBusinessLogicService $businessService
+    ) {
+        parent::__construct($helper);
+    }
+
+    public function getData(array $parameters = []): array
+    {
+        // Pobranie danych z serwisu biznesowego
+        $data = $this->businessService->getItems($parameters);
+
+        // Przygotowanie danych do odpowiedzi
+        return [
+            'items' => $data,
+            // Pozostałe pola zostaną dodane przez abstrakcję
+        ];
+    }
+}
+```
+
+### Przykład Serwisu PUT (Admin API)
+
+```php
+namespace Wise\YourModule\ApiAdmin\Service\YourFeature;
+
+use Wise\Core\ApiAdmin\Service\AbstractPutAdminApiService;
+use Wise\Core\Api\Helper\AdminApiShareMethodsHelper;
+
+class PutExampleService extends AbstractPutAdminApiService
+{
+    public function __construct(
+        private readonly AdminApiShareMethodsHelper $helper,
+        private readonly YourBusinessLogicService $businessService
+    ) {
+        parent::__construct($helper);
+    }
+
+    public function process(array $data): void
+    {
+        // Delegowanie operacji do serwisu biznesowego
+        $this->businessService->update($data);
+
+        // Nie zwracamy nic - abstrakcja zadba o odpowiedź
+    }
+}
+```
+
+## Czego nie można robić w serwisie prezentacji
+ - **Nie można wykonywać operacji na bazie danych**
+ - **Nie można implementować logiki biznesowej**
+ - **Nie możesz w konstruktorze korzystać z zależności do repozytoriów**
+
+## Wskazówki i Dobre Praktyki
+
+1. **Separacja Odpowiedzialności**
+   - Serwis prezentacji nie powinien zawierać logiki biznesowej
+   - Powinien delegować zadania do odpowiednich serwisów biznesowych
+
+2. **Nazewnictwo**
+   - Używaj jasnych, opisowych nazw
+   - Zachowaj spójność z nazwami kontrolerów
+
+3. **Obsługa Błędów**
+   - Pozwól abstrakcjom obsługiwać standardowe błędy
+   - Rzucaj własne wyjątki tylko dla specyficznych przypadków
+
+4. **Dokumentacja**
+   - Dodawaj komentarze PHPDoc
+   - Opisuj nietypowe zachowania lub wymagania

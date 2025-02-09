@@ -1,0 +1,73 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Wise\Document\ApiUi\Service;
+
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractGetService;
+use Wise\Core\Model\QueryFilter;
+use Wise\Core\Service\CommonListParams;
+use Wise\Document\ApiUi\Dto\Documents\DocumentResponseDto;
+use Wise\Document\ApiUi\Service\Interfaces\GetDocumentsServiceInterface;
+use Wise\Document\Service\Document\Interfaces\ListDocumentsForCurrentUserServiceInterface;
+
+/**
+ * Serwis api do pobierania listy dokumentów na podstawie typu dokumentu
+ */
+class GetDocumentsService extends AbstractGetService implements GetDocumentsServiceInterface
+{
+    public function __construct(
+        UiApiShareMethodsHelper $shareMethodsHelper,
+        private readonly ListDocumentsForCurrentUserServiceInterface $service
+
+    ) {
+        parent::__construct($shareMethodsHelper);
+    }
+
+    public function get(ParameterBag $parameters): array
+    {
+        $filters = [];
+
+        foreach ($parameters->all() as $field => $value) {
+            if ($field === 'contentLanguage') {
+                continue;
+            }
+
+            if ($field === 'documentType') {
+                $field = 'type';
+            }
+
+            $filters[] = new QueryFilter($field, $value);
+        }
+
+        $fields = [
+            'status' => 'isActive',
+            'paymentDatetime' => 'paymentDate',
+            'createDatetime' => 'createDate',
+            'hasDocumentFiles' => null
+        ];
+
+        $fields = (new DocumentResponseDto())->mergeWithMappedFields($fields);
+
+        //Przekazanie parametrów do serwisu
+        $params = new CommonListParams();
+
+        $params
+            ->setFilters($filters)
+            ->setFields($fields);
+
+        $serviceDtoData = ($this->service)($params)->read();
+
+        foreach ($serviceDtoData as &$document) {
+            $document['hasDocumentFiles'] = false;
+
+            if(!empty($document['files'])){
+                $document['hasDocumentFiles'] = true;
+            }
+        }
+
+        return (new DocumentResponseDto())->resolveMappedFields($serviceDtoData, $fields, true);
+    }
+}

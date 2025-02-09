@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Magisterka\CodeReviewAnalyzerService;
+use App\Magisterka\DocumentationFileLoader;
 use App\Models\Tag;
 use App\Services\Generator\InternalUrlsGenerator;
 use App\Services\Generator\TagForArticleGenerator;
+use App\Services\PracaMagisterska;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -16,8 +19,19 @@ class TestController extends Controller
     const URL_POLIGON_VERIFY = 'https://poligon.aidevs.pl/verify';
 
 
-    public function test(Request $request)
+    public function test(Request $reques, PracaMagisterska $pracaMagisterska)
     {
-        InternalUrlsGenerator::generate();
+        $pracaMagisterska->codeReviewCodeFromFileVersionOne();
+
+        $path = app_path('Magisterka/example_code_sa.txt');
+
+        $fileCode = file_get_contents($path);
+        $analyze = CodeReviewAnalyzerService::analyze($fileCode);
+
+        dd(DocumentationFileLoader::loadAllDocByAnalyze($analyze));
+        dd(DocumentationFileLoader::servicePresentationPut());
+//        $pracaMagisterska->test();
+
+//        InternalUrlsGenerator::generate();
     }
 }

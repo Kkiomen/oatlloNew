@@ -1,0 +1,837 @@
+# Serwis prezentacji UiApi - GET LIST
+
+# Dokumentacja Serwisu Prezentacji GET LIST w Systemie Wise
+
+## Spis treści
+1. [Wprowadzenie](#wprowadzenie)
+2. [Cykl Życia Żądania](#cykl-życia-żądania)
+3. [Główne Metody](#główne-metody)
+4. [Możliwości Rozszerzania](#możliwości-rozszerzania)
+5. [Przykładowa implementacja](#przykładowa-implementacja)
+
+## Wprowadzenie
+
+Serwis prezentacji GET LIST jest fundamentalnym elementem systemu Wise, odpowiadającym za obsługę endpointów zwracających listy danych. Jego głównym zadaniem jest oddzielenie warstwy prezentacji od logiki biznesowej oraz zapewnienie spójnego sposobu obsługi żądań GET dla list.
+
+### Czym jest Serwis Prezentacji?
+
+Serwis prezentacji działa jak "pośrednik" między kontrolerem a logiką biznesową. Jego główne zadania to:
+- Przetwarzanie parametrów żądania na zrozumiałe dla systemu filtry
+- Organizacja danych zwracanych przez warstwę biznesową
+- Przygotowanie spójnej odpowiedzi dla klienta
+
+### Dlaczego Potrzebujemy Serwisu Prezentacji?
+
+1. **Separacja Odpowiedzialności**
+   - Kontroler zajmuje się tylko routingiem i podstawową walidacją
+   - Serwis prezentacji obsługuje transformację danych
+   - Logika biznesowa pozostaje niezależna od sposobu prezentacji
+
+2. **Standaryzacja**
+   - Jednolity sposób obsługi filtrowania
+   - Spójna obsługa paginacji
+   - Standardowy format odpowiedzi
+
+## Cykl Życia Żądania
+
+### 1. Wywołanie przez Kontroler
+
+Kontroler wywołuje metodę `process()` serwisu prezentacji. Jest to punkt wejścia dla każdego żądania GET LIST.
+
+```php
+public function process(GetRequestDataDto|AbstractRequestDto $requestDataDto): JsonResponse
+{
+    // 1. Obsługa przełączania użytkownika
+    $this->supportSwitchUser($requestDataDto);
+
+    // 2. Przygotowanie parametrów
+    $parameters = $this->prepareParameters($requestDataDto);
+
+    // 3. Aktualizacja właściwości serwisu
+    $this->updateProperties($requestDataDto);
+
+    try {
+        // 4. Wywołanie głównej logiki
+        $resultObjects = $this->get($parameters);
+    } catch (CommonLogicException $exception) {
+        $this->interpretException($exception, Request::METHOD_GET);
+    }
+
+    // 5. Przygotowanie odpowiedzi
+    return $this->prepareResponse($resultObjects, $requestDataDto);
+}
+```
+
+#### Co się dzieje w `process()`?
+
+1. **Obsługa Użytkownika**
+   - Sprawdzenie i obsługa przełączania kontekstu użytkownika
+   - Ważne dla systemów z funkcją "zaloguj jako"
+
+2. **Parametry**
+   - Konwersja parametrów z formatu snake_case na camelCase
+   - Wstępne przygotowanie danych do dalszego przetwarzania
+
+3. **Właściwości**
+   - Aktualizacja wewnętrznych właściwości serwisu
+   - Ustawienie klas DTO dla odpowiedzi
+   - Przygotowanie mapowania pól
+
+4. **Główna Logika**
+   - Wywołanie metody `get()`, która zawiera główną logikę przetwarzania
+
+5. **Odpowiedź**
+   - Formatowanie końcowej odpowiedzi
+   - Dodanie informacji o paginacji
+   - Obsługa błędów
+
+### 2. Metoda `get()` - Serce Serwisu
+
+Metoda `get()` jest kluczowym elementem serwisu, zawierającym główną logikę przetwarzania żądania:
+
+```php
+public function get(InputBag $parameters): array
+{
+    // 1. Przygotowanie parametrów
+    $this->beforeInterpretParameters($parameters);
+
+    // 2. Pobranie klas DTO
+    $responseClass = $this->getResponseClassDtoName($this->responseDto);
+    $paramsClass = $this->getParamsClassDtoName($this->serviceParamsDto);
+
+    // 3. Interpretacja parametrów na filtry
+    $filters = $this->interpreterParameters($parameters);
+    $this->afterInterpretedParameters($filters, $parameters);
+
+    // 4. Przygotowanie mapowania pól
+    $this->fieldMapping = $this->prepareCustomFieldMapping($this->fieldMapping);
+
+    // 5. Pobranie danych
+    $serviceDto = $this->callApplicationService($this->applicationService, $params);
+
+    // 6. Transformacja danych
+    $responseDtoObjects = $this->transformData($serviceDto);
+
+    // 7. Cache i finalizacja
+    $this->fillAdditionalData($responseDtoObjects);
+
+    return $responseDtoObjects;
+}
+```
+
+#### Kluczowe Etapy w `get()`
+
+1. **Przygotowanie Parametrów**
+   ```php
+   $this->beforeInterpretParameters($parameters);
+   ```
+   - Możliwość modyfikacji parametrów przed ich interpretacją
+   - Dodanie domyślnych wartości
+   - Walidacja wstępna
+
+2. **Interpretacja Filtrów**
+   ```php
+   $filters = $this->interpreterParameters($parameters);
+   ```
+   - Konwersja parametrów URL na obiekty QueryFilter
+   - Obsługa specjalnych parametrów (sortowanie, wyszukiwanie)
+   - Możliwość dodania własnych filtrów
+
+3. **Mapowanie Pól**
+   ```php
+   $this->fieldMapping = $this->prepareCustomFieldMapping($this->fieldMapping);
+   ```
+   - Definicja jak pola z DTO mapują się na pola encji
+   - Możliwość dostosowania nazw pól
+   - Obsługa złożonych mapowań
+
+4. **Pobieranie Danych**
+   ```php
+   $serviceDto = $this->callApplicationService($this->applicationService, $params);
+   ```
+   - Wywołanie właściwego serwisu biznesowego
+   - Przekazanie przygotowanych parametrów
+   - Obsługa wyników
+
+## Możliwości Rozszerzania
+
+### 1. Własne Filtry
+```php
+protected function customInterpreterParameters(array &$filters, int|string $field, mixed $value): bool
+{
+    if ($field === 'dateRange') {
+        $dates = explode(',', $value);
+        $filters[] = new QueryFilter('createdAt', $dates[0], QueryFilter::COMPARATOR_GREATER_EQUAL);
+        $filters[] = new QueryFilter('createdAt', $dates[1], QueryFilter::COMPARATOR_LESS_EQUAL);
+        return true;
+    }
+    return false;
+}
+```
+
+**Kiedy używać?**
+- Potrzeba niestandardowej logiki filtrowania
+- Konwersja parametrów złożonych
+- Dodanie filtrów zależnych od kontekstu
+
+### 2. Przygotowanie Cache
+```php
+protected function prepareCacheData(array $responseDtoObjects, ?array $serviceDtoData): array
+{
+    $productIds = array_column($serviceDtoData, 'id');
+
+    return [
+        'prices' => $this->priceRepository->findCurrentPrices($productIds),
+        'stock' => $this->stockService->getStockLevels($productIds)
+    ];
+}
+
+protected function fillResponseDto(AbstractDto $responseDto, array $cacheData, ?array $serviceDtoItem): void
+{
+    if ($serviceDtoItem) {
+        $id = $serviceDtoItem['id'];
+        $responseDto->currentPrice = $cacheData['prices'][$id] ?? null;
+        $responseDto->stockLevel = $cacheData['stock'][$id] ?? 0;
+    }
+}
+```
+
+**Kiedy używać?**
+- Potrzeba dodatkowych danych dla każdego elementu
+- Optymalizacja wydajności przez unikanie wielu zapytań
+- Wzbogacanie odpowiedzi o dane z innych źródeł
+
+## Przykładowa implementacja
+
+### GetContractsService
+
+#### DTO
+
+```php
+<?php
+
+namespace Wise\Agreement\ApiAdmin\Dto\Contract;
+
+use Wise\Core\ApiAdmin\Dto\CommonListAdminApiResponseDto;
+
+class GetContractsDto extends CommonListAdminApiResponseDto
+{
+    /** @var GetContractDto[] $objects */
+    protected ?array $objects;
+
+}
+
+```
+```php
+<?php
+
+namespace Wise\Agreement\ApiAdmin\Dto\Contract;
+
+use DateTimeInterface;
+use Wise\Core\Api\Dto\Attributes\FieldEntityMapping;
+use Wise\Core\ApiAdmin\Dto\CommonAdminApiDto;
+use Wise\Core\Api\Attributes\OpenApi\EndpointElement as OA;
+use Wise\Core\ApiAdmin\Dto\CommonDateInsertUpdateDtoTrait;
+
+class GetContractDto extends CommonAdminApiDto
+{
+    use CommonDateInsertUpdateDtoTrait;
+
+    #[OA\Property(
+        description: 'Id klienta identyfikujące klienta w ERP',
+        example: 'CONTRACT-123',
+    )]
+    #[FieldEntityMapping('idExternal')]
+    protected ?string $id = null;
+
+    #[OA\Property(
+        description: 'ID wewnętrzne systemu B2B. Można używać zamiennie z id (o ile jest znane). Jeśli podane, ma priorytet względem id.',
+        example: 1,
+    )]
+    #[FieldEntityMapping('id')]
+    protected ?int $internalId = null;
+
+    #[OA\Property(
+        description: 'Stopień wymagalności: 1 - Do korzystania z witryny, 2 - Do złożenia zamówienia, 3 - Dobrowolna',
+        example: 1,
+    )]
+    protected ?int $requirement = null;
+
+    #[OA\Property(
+        description: 'Na kogo oddziałowuje umowa: 1 - Klient, 2 - Użytkownik, 3 - Zamówienie',
+        example: 1,
+    )]
+    protected ?int $impact = null;
+
+    #[OA\Property(
+        description: 'Kontekst prośby (gdzie ma zostać wyświetlona prośba) ',
+        example: 'HOME_PAGE;CHECKOUT',
+    )]
+    protected ?string $contexts = null;
+
+    #[OA\Property(
+        description: 'Symbol - unikalny identyfikator, aby można było odwołać się do konkretnej umowy w kodzie',
+        example: 'RULES_2024_11_12',
+    )]
+    protected ?string $symbol = null;
+
+    #[OA\Property(
+        description: 'Typ umowy: RULES - Regulamin, PRIVACY_POLICY - Polityka prywatności, RODO - rodo, NEWSLETTER - Newsletter, MARKETING - Marketing',
+        example: 'RULES',
+    )]
+    protected ?string $type = null;
+
+    #[OA\Property(
+        description: 'Role użytkowników, których dotyczy umowa',
+        example: 'ROLE_USER_MAIN;ROLE_USER',
+    )]
+    protected ?string $roles = null;
+
+    #[OA\Property(
+        description: 'Status: 1 - W trakcie edycji, 2 - aktywne, 3 - (deprecated) umowa aktywna ale nie można przypisać nowych użytkownik, 4 - nieaktywna',
+        example: 1,
+    )]
+    protected ?int $status = null;
+
+    /** @var ContractTranslationDto[] */
+    protected ?array $name = null;
+
+    /** @var ContractTranslationDto[] */
+    protected ?array $content = null;
+
+    /** @var ContractTranslationDto[] */
+    protected ?array $testimony = null;
+
+    #[OA\Property(
+        description: 'Data obowiązywania umowy od',
+        example: '2023-01-01 00:00:01',
+    )]
+    protected ?DateTimeInterface $fromDate = null;
+
+    #[OA\Property(
+        description: 'Data obowiązywania umowy do',
+        example: '2028-01-01 00:00:01',
+    )]
+    protected ?DateTimeInterface $toDate = null;
+
+    #[OA\Property(
+        description: 'Data ustawienia umowy na status "deprecated"',
+        example: null,
+    )]
+    protected ?DateTimeInterface $deprecatedDate = null;
+
+    #[OA\Property(
+        description: 'Data ustawienia umowy na status "inActive"',
+        example: null,
+    )]
+    protected ?DateTimeInterface $inActiveDate = null;
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function setId(?string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    // ... other getters and setters
+
+
+}
+```
+
+#### Serwis
+
+```php
+<?php
+
+namespace Wise\Agreement\ApiAdmin\Service\Contract;
+
+use Wise\Agreement\ApiAdmin\Service\Contract\Interfaces\GetContractsServiceInterface;
+use Wise\Agreement\Service\Contract\Interfaces\ListContractServiceInterface;
+use Wise\Core\ApiAdmin\Helper\AdminApiShareMethodsHelper;
+use Wise\Core\ApiAdmin\Service\AbstractGetListAdminApiService;
+
+class GetContractsService extends AbstractGetListAdminApiService implements GetContractsServiceInterface
+{
+    public function __construct(
+        AdminApiShareMethodsHelper $adminApiShareMethodsHelper,
+        private readonly ListContractServiceInterface $listContractService,
+    ){
+        parent::__construct($adminApiShareMethodsHelper, $listContractService);
+    }
+}
+
+```
+
+### GetPanelManagementContractsService
+
+#### DTO
+
+```php
+<?php
+
+namespace Wise\Agreement\ApiUi\Dto\PanelManagement;
+
+use Wise\Core\ApiUi\Dto\CommonUiApiListResponseDto;
+
+class GetPanelManagementContractsDto extends CommonUiApiListResponseDto
+{
+    /** @var GetPanelManagementContractDto[] */
+    protected ?array $items;
+}
+```
+
+```php
+<?php
+
+namespace Wise\Agreement\ApiUi\Dto\PanelManagement;
+
+use DateTimeInterface;
+use Wise\Agreement\ApiAdmin\Dto\Contract\ContractTranslationDto;
+use Wise\Core\Api\Attributes\OpenApi\EndpointElement as OA;
+use Wise\Core\Api\Dto\Attributes\FieldEntityMapping;
+use Wise\Core\Api\Fields\FieldHandlingEnum;
+use Wise\Core\ApiUi\Dto\CommonUiApiDto;
+
+class GetPanelManagementContractDto extends CommonUiApiDto
+{
+    #[OA\Property(
+        description: 'Identyfikator umowy',
+        example: 1,
+    )]
+    protected ?int $id = null;
+
+    #[OA\Property(
+        description: 'Czy umowa jest aktywna',
+        example: true,
+    )]
+    protected ?bool $isActive;
+
+    #[OA\Property(
+        description: 'Stopień wymagalności: 1 - Do korzystania z witryny, 2 - Do złożenia zamówienia, 3 - Dobrowolna',
+        example: 1,
+    )]
+    protected ?int $requirement = null;
+
+    #[OA\Property(
+        description: 'Na kogo oddziałowuje umowa: 1 - Klient, 2 - Użytkownik, 3 - Zamówienie',
+        example: 1,
+    )]
+    protected ?int $impact = null;
+
+    #[OA\Property(
+        description: 'Kontekst prośby (gdzie ma zostać wyświetlona prośba) ',
+        example: 'HOME_PAGE;CHECKOUT',
+    )]
+    protected ?string $contexts = null;
+
+    #[OA\Property(
+        description: 'Symbol - unikalny identyfikator, aby można było odwołać się do konkretnej umowy w kodzie',
+        example: 'RULES_2024_11_12',
+    )]
+    protected ?string $symbol = null;
+
+    #[OA\Property(
+        description: 'Typ umowy: RULES - Regulamin, PRIVACY_POLICY - Polityka prywatności, RODO - rodo, NEWSLETTER - Newsletter, MARKETING - Marketing',
+        example: 'RULES',
+    )]
+    protected ?string $type = null;
+
+    #[OA\Property(
+        description: 'Role użytkowników, których dotyczy umowa',
+        example: 'ROLE_USER_MAIN;ROLE_USER',
+    )]
+    protected ?string $roles = null;
+
+    #[OA\Property(
+        description: 'Status: 1 - W trakcie edycji, 2 - aktywne, 3 - (deprecated) umowa aktywna ale nie można przypisać nowych użytkownik, 4 - nieaktywna',
+        example: 1,
+    )]
+    protected ?int $status = null;
+
+    #[OA\Property(
+        description: ' W trakcie edycji',
+        example: 1,
+    )]
+    protected ?string $statusFormatted = null;
+
+    /** @var ContractTranslationDto[] */
+    protected ?array $name = null;
+
+    /** @var ContractTranslationDto[] */
+    protected ?array $content = null;
+
+    /** @var ContractTranslationDto[] */
+    protected ?array $testimony = null;
+
+    #[OA\Property(
+        description: 'Regulamin',
+        example: 'Regulamin 20.11.2023',
+    )]
+    #[FieldEntityMapping(FieldHandlingEnum::HANDLE_BY_TRANSFER_AND_RETURN_IN_RESPONSE)]
+    protected ?string $nameFormatted = null;
+
+    #[OA\Property(
+        description: 'Zawartość umowy w formacie HTML',
+        example: 'Lorem ipsum',
+    )]
+    #[FieldEntityMapping(FieldHandlingEnum::HANDLE_BY_TRANSFER_AND_RETURN_IN_RESPONSE)]
+    protected ?string $contentFormatted = null;
+
+    #[OA\Property(
+        description: 'Data obowiązywania umowy od',
+        example: '2023-01-01 00:00:01',
+    )]
+    protected ?DateTimeInterface $fromDate = null;
+
+    #[OA\Property(
+        description: 'Data obowiązywania umowy do',
+        example: '2028-01-01 00:00:01',
+    )]
+    protected ?DateTimeInterface $toDate = null;
+
+    #[OA\Property(
+        description: 'Data ustawienia umowy na status "deprecated"',
+        example: null,
+    )]
+    protected ?DateTimeInterface $deprecatedDate = null;
+
+    #[OA\Property(
+        description: 'Data ustawienia umowy na status "inActive"',
+        example: null,
+    )]
+    protected ?DateTimeInterface $inActiveDate = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    // ... other getters and setters
+
+}
+
+```
+
+#### Serwis
+
+```php
+<?php
+
+namespace Wise\Agreement\ApiUi\Service\PanelManagement;
+
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Wise\Agreement\ApiUi\Service\PanelManagement\Interfaces\GetPanelManagementContractsServiceInterface;
+use Wise\Agreement\Service\Agreement\Interfaces\CanUserAccessToAgreementServiceInterface;
+use Wise\Agreement\Service\Contract\Interfaces\ListContractServiceInterface;
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractGetListUiApiService;
+use Wise\Core\Service\TranslationService;
+use Wise\Core\ServiceInterface\Locale\LocaleServiceInterface;
+use Wise\Security\Service\Interfaces\CurrentUserServiceInterface;
+
+class GetPanelManagementContractsService extends AbstractGetListUiApiService implements GetPanelManagementContractsServiceInterface
+{
+    /**
+     * Czy pobrać ilość wszystkich rekordów
+     */
+    protected bool $fetchTotal = true;
+
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly ListContractServiceInterface $listContractService,
+        private readonly TranslatorInterface $translator,
+        private readonly TranslationService $translationService,
+        private readonly LocaleServiceInterface $localeService,
+        private readonly CurrentUserServiceInterface $currentUserService,
+        private readonly CanUserAccessToAgreementServiceInterface $canUserAccessToAgreementService,
+    ){
+        parent::__construct($sharedActionService, $listContractService);
+    }
+
+    /**
+     * Metoda umożliwiająca wykonanie pewnej czynności przed obsługą filtrów
+     * @param InputBag $parametersAdjusted
+     * @return void
+     */
+    protected function beforeInterpretParameters(InputBag $parametersAdjusted): void
+    {
+        $this->canUserAccessToAgreementService->check();
+    }
+
+    /**
+     * Metoda pozwala przekształcić poszczególne obiekty serviceDto przed transformacją do responseDto
+     * @param array|null $elementData
+     * @return void
+     * @throws ExceptionInterface
+     */
+    protected function prepareElementServiceDtoBeforeTransform(?array &$elementData): void
+    {
+        if(empty($elementData)){
+            return;
+        }
+
+        $elementData = [
+            ...$elementData,
+            'nameFormatted' => empty($elementData['name']) ? null : $this->translationService->getTranslationForField($elementData['name'], $this->localeService->getCurrentLanguage()),
+            'contentFormatted' => empty($elementData['content']) ? null :  $this->translationService->getTranslationForField($elementData['content'], $this->localeService->getCurrentLanguage()),
+        ];
+    }
+}
+
+```
+
+### GetUserContractService
+
+#### DTO
+
+```php
+<?php
+
+namespace Wise\User\ApiUi\Dto\Contract;
+
+use Wise\Core\ApiUi\Dto\CommonUiApiListResponseDto;
+
+class GetUserContractsDto extends CommonUiApiListResponseDto
+{
+    /** @var GetUserContractDto[] */
+    protected ?array $items;
+}
+
+```
+
+```php
+<?php
+
+namespace Wise\User\ApiUi\Dto\Contract;
+
+use DateTimeInterface;
+use Wise\Core\Api\Attributes\OpenApi\EndpointElement as OA;
+use Wise\Core\Api\Dto\Attributes\FieldEntityMapping;
+use Wise\Core\Api\Fields\FieldHandlingEnum;
+use Wise\Core\ApiUi\Dto\CommonUiApiDto;
+
+class GetUserContractDto extends CommonUiApiDto
+{
+    #[OA\Property(
+        description: 'Id wewnętrzne',
+        example: 1,
+    )]
+    protected ?int $id = null;
+
+    #[OA\Property(
+        description: 'Treść oświadczenia umowy',
+        example: 'Wyrażenie zgody na newsletter',
+    )]
+    protected ?string $testimony = null;
+
+    #[OA\Property(
+        description: 'Treść umowy',
+        example: 'Lorem ipsum...',
+    )]
+    protected ?string $content = null;
+
+    #[OA\Property(
+        description: 'Data akceptacji zgody',
+        example: '2023-01-01 00:00:01',
+    )]
+    #[FieldEntityMapping(FieldHandlingEnum::HANDLE_BY_TRANSFER_AND_RETURN_IN_RESPONSE)]
+    protected ?DateTimeInterface $agreeDate = null;
+
+    #[OA\Property(
+        description: 'Data rezygnacji ze zgody',
+        example: '2023-01-01 00:00:01',
+    )]
+    #[FieldEntityMapping(FieldHandlingEnum::HANDLE_BY_TRANSFER_AND_RETURN_IN_RESPONSE)]
+    protected ?DateTimeInterface $disagreeDate = null;
+
+    #[OA\Property(
+        description: 'Czy posiada aktywną akceptację (czyli sytuacje gdzie użytkownik zatwierdził zgodę i dodatkowo jest ona aktywna)',
+        example: false,
+    )]
+    #[FieldEntityMapping(FieldHandlingEnum::HANDLE_BY_TRANSFER_AND_RETURN_IN_RESPONSE)]
+    protected ?bool $hasActiveAgree = false;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    // ... other getters and setters
+
+}
+
+```
+
+#### Serwis
+
+```php
+<?php
+
+namespace Wise\User\ApiUi\Service\Contract;
+
+use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Wise\Agreement\Domain\Contract\Enum\ContractImpact;
+use Wise\Agreement\Domain\Contract\Enum\ContractStatus;
+use Wise\Agreement\Service\Contract\Interfaces\ListContractServiceInterface;
+use Wise\Agreement\Service\ContractAgreement\Interfaces\ListContractAgreementServiceInterface;
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractGetListUiApiService;
+use Wise\Core\Model\QueryFilter;
+use Wise\Core\Service\CommonListParams;
+use Wise\Core\Service\TranslationService;
+use Wise\Core\ServiceInterface\Locale\LocaleServiceInterface;
+use Wise\Security\Service\Interfaces\CurrentUserServiceInterface;
+use Wise\User\ApiUi\Service\Contract\Interfaces\GetUserContractServiceInterface;
+use Wise\User\Domain\User\UserRoleEnum;
+
+/**
+ * Serwis zwraca zgody, jakie są dostępne dla użytkownika (oraz zawiera informacje, czy już użytkownik ją zaakceptował)
+ */
+class GetUserContractService extends AbstractGetListUiApiService implements GetUserContractServiceInterface
+{
+    /**
+     * Czy pobrać ilość wszystkich rekordów
+     */
+    protected bool $fetchTotal = true;
+
+    /**
+     * Tablica ze zgodami użytkownika
+     * @var array
+     */
+    protected array $userAgreements = [];
+
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly ListContractServiceInterface $listContractService,
+        private readonly ListContractAgreementServiceInterface $listContractAgreementService,
+        private readonly TranslationService $translationService,
+        private readonly LocaleServiceInterface $localeService,
+        private readonly CurrentUserServiceInterface $currentUserService
+    ){
+        parent::__construct($sharedActionService, $listContractService);
+    }
+
+    /**
+     * Metoda umożliwiająca wykonanie pewnej czynności po obsłudze filtrów
+     * @param array $filters
+     * @param InputBag $parametersAdjusted
+     * @return void
+     */
+    protected function afterInterpretedParameters(array &$filters, InputBag $parametersAdjusted): void
+    {
+        if(in_array(UserRoleEnum::ROLE_ADMIN->value, $this->currentUserService->getRoles(), true)){
+            $filters[] = new QueryFilter('status', [ContractStatus::ACTIVE, ContractStatus::IN_EDIT], QueryFilter::COMPARATOR_IN);
+        }else{
+            $filters[] = new QueryFilter('status', ContractStatus::ACTIVE);
+        }
+
+        // Pomijamy te, które oddziałują na zamówienie
+        $filters[] = new QueryFilter('impact', [ContractImpact::ORDER], QueryFilter::COMPARATOR_NOT_IN);
+    }
+
+    /**
+     * Metoda pozwala przekształcić serviceDto przed transformacją do responseDto
+     * @param array|null $serviceDtoData
+     * @return void
+     */
+    protected function prepareServiceDtoBeforeTransform(?array &$serviceDtoData): void
+    {
+        $this->userAgreements = $this->listUserAgreements();
+        parent::prepareServiceDtoBeforeTransform($serviceDtoData);
+    }
+
+    /**
+     * Metoda pozwala przekształcić poszczególne obiekty serviceDto przed transformacją do responseDto
+     * @param array|null $elementData
+     * @return void
+     * @throws ExceptionInterface
+     */
+    protected function prepareElementServiceDtoBeforeTransform(?array &$elementData): void
+    {
+        $userAgreement = array_filter($this->userAgreements, function($agreement) use ($elementData){
+            return $agreement['contractId'] === $elementData['id'];
+        });
+
+        if(!empty($userAgreement)){
+            $userAgreement = reset($userAgreement);
+        }
+
+        $elementData = [
+            ...$elementData,
+            'content' => $this->translationService->getTranslationForField($elementData['content'], $this->localeService->getCurrentLanguage()),
+            'testimony' => $this->translationService->getTranslationForField($elementData['testimony'], $this->localeService->getCurrentLanguage()),
+            'agreeDate' => $userAgreement['agreeDate'] ?? null,
+            'disagreeDate' => $userAgreement['disagreeDate'] ?? null,
+            'hasActiveAgree' => !empty($userAgreement['isActive']),
+        ];
+    }
+
+    /**
+     * Zwraca listę zgód użytkownika
+     * @return array
+     */
+    protected function listUserAgreements(): array
+    {
+        $params = new CommonListParams();
+        $params
+            ->setFilters([
+                new QueryFilter('userId', $this->currentUserService->getUserId()),
+                new QueryFilter('isActive', true)
+            ])
+            ->setFields([]);
+
+        return ($this->listContractAgreementService)($params)->read();
+    }
+}
+
+```
+
+**Co robi ten serwis?**
+- Dostosowuje filtry statusów do formatu zrozumiałego dla systemu
+- Pobiera dodatkowe dane o płatnościach i wysyłkach
+- Formatuje dane do przyjaznego formatu dla frontendu
+
+## Dobre Praktyki
+
+1. **Wydajność**
+   - Używaj `prepareCacheData` do pobierania powiązanych danych
+   - Minimalizuj liczbę zapytań do bazy
+   - Wykorzystuj mapowanie pól zamiast transformacji w kodzie
+
+2. **Czytelność**
+   - Twórz dedykowane metody dla złożonej logiki
+   - Dokumentuj niestandardowe zachowania
+   - Używaj znaczących nazw dla metod i zmiennych
+
+3. **Bezpieczeństwo**
+   - Zawsze waliduj parametry wejściowe
+   - Używaj typów wszędzie gdzie to możliwe
+   - Obsługuj odpowiednio wyjątki
+
+4. **Rozszerzalność**
+   - Projektuj metody z myślą o możliwości ich nadpisania
+   - Używaj protected zamiast private dla metod, które mogą wymagać dostosowania
+   - Dokumentuj punkty rozszerzenia w kodzie

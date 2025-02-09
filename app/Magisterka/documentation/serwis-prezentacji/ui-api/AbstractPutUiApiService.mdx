@@ -1,0 +1,358 @@
+# Serwis prezentacji UiApi - PUT
+
+## Dokumentacja Serwisu Prezentacji PUT w Systemie Wise
+
+## Spis treści
+1. [Wprowadzenie](#wprowadzenie)
+2. [Cykl Życia Żądania](#cykl-życia-żądania)
+3. [Główna Logika - Metoda put()](#główna-logika---metoda-put)
+4. [Obsługa Błędów](#obsługa-błędów)
+5. [Możliwości Rozszerzania](#możliwości-rozszerzania)
+6. [Przykładowa implementacja](#przykładowa-implementacja)
+
+---
+
+## Wprowadzenie
+
+Serwis prezentacji PUT w systemie Wise odpowiada za obsługę zapytań aktualizujących istniejące zasoby. Jego głównym zadaniem jest separacja logiki prezentacji od warstwy biznesowej oraz zapewnienie spójnej obsługi walidacji i aktualizacji danych.
+
+### Czym jest Serwis Prezentacji PUT?
+
+Serwis PUT działa jako "pośrednik" między kontrolerem a logiką biznesową. Jego główne zadania to:
+- Walidacja danych wejściowych
+- Mapowanie danych na format wymagany przez warstwę biznesową
+- Obsługa aktualizacji zasobów
+
+### Dlaczego Potrzebujemy Serwisu Prezentacji?
+
+1. **Separacja Odpowiedzialności**
+   - Kontroler obsługuje tylko routing i podstawową walidację
+   - Serwis PUT zarządza transformacją danych i obsługą błędów
+   - Logika biznesowa pozostaje niezależna od sposobu przesyłania danych
+
+2. **Standaryzacja**
+   - Jednolite przetwarzanie danych wejściowych
+   - Spójna obsługa wyjątków i błędów
+   - Możliwość łatwego rozszerzania
+
+---
+
+## Cykl Życia Żądania
+
+### 1. Wywołanie przez Kontroler
+
+Kontroler wywołuje metodę `process()` serwisu prezentacji. Jest to główny punkt wejścia do obsługi żądania PUT.
+
+```php
+public function process(PutRequestDataDto|AbstractRequestDto $requestDataDto): JsonResponse
+{
+    // Przygotowanie DTO
+    $dto = $this->prepareDto($requestDataDto);
+
+    // Aktualizacja właściwości serwisu
+    $this->updateProperties($requestDataDto);
+
+    // Rozpoczęcie przetwarzania
+    $this->startProcessing();
+
+    try {
+        // Główna logika aktualizacji
+        $this->put($dto);
+    } catch (CommonLogicException $exception) {
+        $this->interpretException($exception, Request::METHOD_PUT);
+    }
+
+    // Zakończenie przetwarzania
+    $this->finishProcessing();
+
+    return $this->processJsonResponse();
+}
+```
+
+---
+
+## Główna Logika - Metoda `put()`
+
+Metoda `put()` jest kluczowym elementem serwisu PUT. Odpowiada za walidację, mapowanie i aktualizację danych.
+
+```php
+public function put(AbstractDto $dto): void
+{
+    // 1. Walidacja danych
+    $this->validateDto($dto);
+
+    // 2. Przygotowanie danych przed aktualizacją
+    $this->prepareData($dto);
+
+    // 3. Mapowanie pól do encji
+    $this->fieldMapping = $this->prepareCustomFieldMapping($this->fieldMapping);
+
+    // 4. Przygotowanie parametrów do serwisu biznesowego
+    $params = $this->fillParams($dto);
+
+    // 5. Wywołanie serwisu aplikacji
+    $serviceDto = $this->callApplicationService($this->applicationService, $params);
+    $serviceDtoData = $serviceDto->read();
+
+    // 6. Operacje po wykonaniu aktualizacji
+    $this->afterExecuteService($serviceDtoData, $dto);
+
+    // 7. Przygotowanie odpowiedzi
+    $this->prepareResponse($dto, $serviceDtoData);
+}
+```
+
+### Szczegółowy opis działania `put()`:
+
+1. **Walidacja danych** – Sprawdzenie poprawności pól i ich zgodności z wymaganiami.
+2. **Przygotowanie danych** – Wykonanie dodatkowych operacji przed aktualizacją.
+3. **Mapowanie pól** – Dopasowanie struktury DTO do encji w bazie danych.
+4. **Tworzenie parametrów** – Tworzenie obiektu parametrów zawierającego dane gotowe do aktualizacji.
+5. **Aktualizacja w bazie** – Wywołanie metody serwisu biznesowego odpowiedzialnej za zapis.
+6. **Finalizacja** – Możliwość wykonania dodatkowych operacji po aktualizacji.
+7. **Przygotowanie odpowiedzi** – Uformowanie zwracanej odpowiedzi JSON.
+
+---
+
+## Obsługa Błędów
+
+### Przykład obsługi wyjątków
+```php
+catch (CommonLogicException $exception){
+    $this->interpretException($exception, Request::METHOD_PUT);
+}
+```
+
+---
+
+## Możliwości Rozszerzania
+
+### 1. Niestandardowe Przetwarzanie Danych
+```php
+public function prepareData(AbstractDto $dto): void
+{
+    $dto->setUpdatedAt(new \DateTime());
+}
+```
+
+### 2. Obsługa Niestandardowych Odpowiedzi
+```php
+public function prepareResponse(AbstractDto $dto, array $serviceDtoData): void
+{
+    $this->setData(["message" => "Obiekt został zaktualizowany."]);
+}
+```
+
+---
+
+
+
+
+
+## Przykładowa implementacja
+
+### PutPanelManagementCategoriesFiltersService
+
+#### DTO
+
+```php
+<?php
+
+namespace Wise\Product\ApiUi\Dto\PanelManagement\Categories;
+
+use OpenApi\Attributes as OA;
+
+class PutPanelManagementCategoriesFiltersDto extends PostPanelManagementCategoriesFiltersDto
+{
+    #[OA\Property(
+        description: 'Identyfikator filtra',
+        example: 1,
+    )]
+    protected ?int $id = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+}
+
+```
+
+#### Serwis
+
+```php
+<?php
+
+namespace Wise\Product\ApiUi\Service\PanelManagement\Categories;
+
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractPutUiApiService;
+use Wise\Product\ApiUi\Service\PanelManagement\Categories\Interfaces\PutPanelManagementCategoriesFiltersServiceInterface;
+use Wise\Product\Service\CategoryFilter\Interfaces\ModifyCategoryFilterServiceInterface;
+
+class PutPanelManagementCategoriesFiltersService extends AbstractPutUiApiService implements PutPanelManagementCategoriesFiltersServiceInterface
+{
+    /**
+     * Klucz translacji — zwracany, gdy proces się powiedzie
+     * @var string
+     */
+    protected string $messageSuccessTranslation = 'category_filter.success_update';
+
+    /**
+     * Czy do wyniku ma zostać dołączony wynik serwisu
+     * @var bool
+     */
+    protected bool $attachServiceResultToResponse = true;
+
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly ModifyCategoryFilterServiceInterface $modifyCategoryFilterService,
+    ){
+        parent::__construct($sharedActionService, $modifyCategoryFilterService);
+    }
+
+}
+```
+
+
+### PutPanelManagementUserService
+
+#### DTO
+
+```php
+<?php
+
+namespace Wise\User\ApiUi\Dto\PanelManagement\Users;
+
+use OpenApi\Attributes as OA;
+
+class PutPanelManagementUserDto extends PostPanelManagementUserDto
+{
+    #[OA\Property(
+        description: 'Id użytkownika',
+        example: 4,
+    )]
+    protected int $id;
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+}
+```
+
+#### Serwis
+
+```php
+<?php
+
+namespace Wise\User\ApiUi\Service\PanelManagement\Users;
+
+use Wise\Core\ApiUi\Helper\UiApiShareMethodsHelper;
+use Wise\Core\ApiUi\Service\AbstractPutUiApiService;
+use Wise\Core\Dto\AbstractDto;
+use Wise\Core\Dto\CommonModifyParams;
+use Wise\User\ApiUi\Service\PanelManagement\Users\Interfaces\PutPanelManagementUserServiceInterface;
+use Wise\User\Service\User\Exceptions\PasswordException;
+use Wise\User\Service\User\Interfaces\ModifyUserServiceInterface;
+
+/**
+ * Klasa obsługująca proces aktualizacji użytkownika w panelu zarządzania
+ */
+class PutPanelManagementUserService extends AbstractPutUiApiService implements PutPanelManagementUserServiceInterface
+{
+    /**
+     * Klucz translacji — zwracany, gdy proces się powiedzie
+     * @var string
+     */
+    protected string $messageSuccessTranslation = 'user.success_update';
+
+    /**
+     * Czy do wyniku ma zostać dołączony wynik serwisu
+     * @var bool
+     */
+    protected bool $attachServiceResultToResponse = true;
+
+    public function __construct(
+        UiApiShareMethodsHelper $sharedActionService,
+        private readonly ModifyUserServiceInterface $modifyUserService,
+    ){
+        parent::__construct($sharedActionService, $modifyUserService);
+    }
+
+    /**
+     * Metoda uzupełnia parametry dla serwisu
+     * @param AbstractDto $dto
+     * @return CommonModifyParams
+     */
+    protected function fillParams(AbstractDto $dto): CommonModifyParams
+    {
+        $serviceDTO = new CommonModifyParams();
+        $serviceDTO->write($dto, $this->fieldMapping);
+        $serviceDTO->setMergeNestedObjects(true);
+
+        $data = $serviceDTO->read();
+
+        if(!empty($data['password']) || !empty($data['repeatPassword'])){
+            if(empty($data['password'])){
+                throw PasswordException::emptyPassword();
+            }
+
+            if(empty($data['repeatPassword'])){
+                throw PasswordException::emptyPasswordConfirm();
+            }
+
+            if($data['repeatPassword'] !== $data['password']){
+                throw PasswordException::notSame();
+            }
+
+            unset($data['repeatPassword']);
+        }else{
+            unset($data['password']);
+            unset($data['repeatPassword']);
+        }
+
+        if(
+            isset($data['street']) ||
+            isset($data['houseNumber']) ||
+            isset($data['apartmentNumber']) ||
+            isset($data['postalCode']) ||
+            isset($data['city']) ||
+            isset($data['countryCode']) ||
+            isset($data['state']) ||
+            isset($data['nameAddress'])
+        ){
+            $data['registerAddress'] = [
+                'street' => $data['street'] ?? null,
+                'houseNumber' => $data['houseNumber'] ?? null,
+                'apartmentNumber' => $data['apartmentNumber'] ?? null,
+                'postalCode' => $data['postalCode'] ?? null,
+                'city' => $data['city'] ?? null,
+                'countryCode' => $data['countryCode'] ?? null,
+                'state' => $data['state'] ?? null,
+                'name' => $data['nameAddress'] ?? null,
+            ];
+            unset($data['street'], $data['houseNumber'], $data['apartmentNumber'], $data['postalCode'], $data['city'], $data['countryCode'], $data['country'], $data['state'], $data['nameAddress']);
+        }
+
+        $serviceDTO->writeAssociativeArray($data);
+
+
+        return $serviceDTO;
+    }
+}
+```
