@@ -59,7 +59,7 @@ class OpenAiHelper
     {
         $response = OpenAI::embeddings()->create([
             'model' => 'text-embedding-3-large',
-            'input' => 'The food was delicious and the waiter...',
+            'input' => $text,
         ]);
 
         return $response->embeddings[0]->embedding;
