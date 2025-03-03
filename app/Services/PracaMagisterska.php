@@ -112,6 +112,27 @@ class PracaMagisterska
 
     }
 
+
+    /**
+     * Oblicza cenę końcową produktu z uwzględnieniem podatku.
+     *
+     * Funkcja przyjmuje cenę bazową produktu oraz stawkę podatku wyrażoną jako ułamek dziesiętny i zwraca cenę końcową,
+     * w której cena bazowa została powiększona o wartość podatku. Opis zawiera również jednostki miary oraz przykład użycia.
+     *
+     * @param float $price Cena bazowa produktu w złotych.
+     * @param float $taxRate Stawka podatku wyrażona jako ułamek dziesiętny (np. 0.23 oznacza 23%).
+     * @return float Cena końcowa produktu.
+     *
+     * Przykład użycia:
+     * <code>
+     * echo calculateTotal(100, 0.23); // Wynik: 123.0
+     * </code>
+     */
+    function calculateTotal($price, $taxRate) {
+        return $price * (1 + $taxRate);
+    }
+
+
     public function codeReviewCodeFromFileVersionOne(): string
     {
         $path = app_path('Magisterka/example_code_sa.txt');
@@ -124,7 +145,7 @@ class PracaMagisterska
         a następnie dostarczyć poprawioną lub ulepszoną wersję kodu.
 
         # Steps
-        1. Thinking - think out loud about the quality of the code, what elements need improvement
+        1. Thinking - think out loud about the qauality of the code, what elements need improvement
         1. **Code Analysis**: Examine the given code for violations or issues related to SOLID principles, KISS, DRY, and design patterns.
         2. **Problem Explanation**: Clearly articulate the issues found, ensuring the explanation is easily understandable.
         3. **Code Improvement**: Propose a solution or improved code that adheres to the best practices and principles.

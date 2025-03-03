@@ -19,6 +19,9 @@ class TestController extends Controller
 
     public function test(Request $reques, PracaMagisterska $pracaMagisterska)
     {
+//        $this->testMEssage();
+
+
         $documentationFile = storage_path('app/documentation_file.json');
 
 // Jeśli plik istnieje, ładujemy zawartość, w przeciwnym razie tworzymy pustą tablicę
@@ -40,7 +43,7 @@ class TestController extends Controller
             $files = scandir($directory);
             foreach ($files as $file) {
                 // Pomijamy '.' i '..'
-                if ($file === '.' || $file === '..') {
+                if ($file === '.' || $file === '..' || str_contains($file, 'json')) {
                     continue;
                 }
 
@@ -60,39 +63,39 @@ class TestController extends Controller
                     // Konwersja obrazu na base64
                     $base64 = base64_encode(file_get_contents($filePath));
 
-                    // Wywołanie API OpenAI
-//                    $result = OpenAI::chat()->create([
-//                        'model' => 'gpt-4o-mini',
-//                        'messages' => [
-//                            [
-//                                'role' => 'user',
-//                                'content' => [
-//                                    ['type' => 'text', 'text' => $promptDocumentation],
-//                                    [
-//                                        'type' => 'image_url',
-//                                        'image_url' => [
-//                                            'url' => 'data:image/jpeg;base64,' . $base64
-//                                        ]
-//                                    ],
-//                                ],
-//                            ]
-//                        ],
-//                        'max_tokens' => 900,
-//                    ]);
+//                     Wywołanie API OpenAI
+                    $result = OpenAI::chat()->create([
+                        'model' => 'gpt-4o-mini',
+                        'messages' => [
+                            [
+                                'role' => 'user',
+                                'content' => [
+                                    ['type' => 'text', 'text' => $promptDocumentation],
+                                    [
+                                        'type' => 'image_url',
+                                        'image_url' => [
+                                            'url' => 'data:image/jpeg;base64,' . $base64
+                                        ]
+                                    ],
+                                ],
+                            ]
+                        ],
+                        'max_tokens' => 900,
+                    ]);
 
                     $responseContent = $result->choices[0]->message->content;
                     $formattedResult = $responseContent .  ' \n #####Strona: ' . $page . "\n#### Dokumentacja:\n" ;
 
                     // Przygotowujemy wpis dla obecnie przetworzonego pliku
-//                    $newEntry = [
-//                        'page' => $page,
-//                        'result' => $formattedResult,
-//                        'embedding' => OpenAiHelper::embedding($formattedResult)
-//                    ];
-//
-//                    // Dodajemy nowy wpis do tablicy i aktualizujemy plik JSON
-//                    $pages[] = $newEntry;
-//                    file_put_contents($documentationFile, json_encode($pages, JSON_PRETTY_PRINT));
+                    $newEntry = [
+                        'page' => $page,
+                        'result' => $formattedResult,
+                        'embedding' => OpenAiHelper::embedding($formattedResult)
+                    ];
+
+                    // Dodajemy nowy wpis do tablicy i aktualizujemy plik JSON
+                    $pages[] = $newEntry;
+                    file_put_contents($documentationFile, json_encode($pages, JSON_PRETTY_PRINT));
 
                     // Możesz opcjonalnie wyświetlić wynik dla bieżącego pliku
                     // dd($result);
@@ -249,4 +252,70 @@ class TestController extends Controller
 
 //        InternalUrlsGenerator::generate();
     }
+
+
+    public function testMEssage()
+    {
+
+        $userMessage = 'owad';
+
+        $queryEmbedding = OpenAiHelper::embedding($userMessage);
+
+        $matches = $this->findSimilarEmbeddings($queryEmbedding);
+
+        $systemPrompt = 'Jesteś filozofem. Twoim zdaniem jest doradzenie użytkownikowi czy jego projekt jest etyczny/mornalny, zweryfikować czy jego projekt jest zgodny z planem rozwoju AI w polsce (informacje w bazie wiedzy). Nie możesz pisać o niczym innym. #### BAZA WIEDZY' . $matches;
+
+        $result = OpenAiHelper::getResult($userMessage, $systemPrompt);
+    }
+
+
+
+    function cosineSimilarity(array $vectorA, array $vectorB): float {
+        $dotProduct = 0;
+        $magnitudeA = 0;
+        $magnitudeB = 0;
+
+        for ($i = 0, $len = count($vectorA); $i < $len; $i++) {
+            $dotProduct += $vectorA[$i] * $vectorB[$i];
+            $magnitudeA += $vectorA[$i] ** 2;
+            $magnitudeB += $vectorB[$i] ** 2;
+        }
+
+        $magnitudeA = sqrt($magnitudeA);
+        $magnitudeB = sqrt($magnitudeB);
+
+        if ($magnitudeA == 0 || $magnitudeB == 0) {
+            return 0; // Jeśli jeden z wektorów jest zerowy, zwracamy 0
+        }
+
+        return $dotProduct / ($magnitudeA * $magnitudeB);
+    }
+
+    function findSimilarEmbeddings(array $targetEmbedding, float $threshold = 0.75): array {
+        $similarMessages = [];
+
+        $fileDictionary = base_path('app/Etyka/documentation_file.json');
+        $dictionary = json_decode(file_get_contents($fileDictionary), true);
+
+        foreach ($dictionary as $dictionaryElement) {
+            if (!isset($dictionaryElement['embedding']) || !is_array($dictionaryElement['embedding'])) {
+                continue; // Pomijamy wiadomości bez embeddingu
+            }
+
+            $similarity = cosineSimilarity($dictionaryElement['embedding'], $targetEmbedding);
+
+            if ($similarity >= $threshold) {
+                $dictionaryElement['similarity'] = $similarity; // Dodajemy wynik podobieństwa
+                $similarMessages[] = $dictionaryElement;
+            }
+        }
+
+        // Sortujemy wyniki według podobieństwa malejąco
+        usort($similarMessages, function ($a, $b) {
+            return $b['similarity'] <=> $a['similarity'];
+        });
+
+        return $similarMessages;
+    }
+
 }
