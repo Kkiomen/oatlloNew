@@ -22,6 +22,10 @@ Route::get('/blog/lista/{slug}', [\App\Http\Controllers\HomeController::class, '
 Route::post('/send/email', [\App\Http\Controllers\HomeController::class, 'sendEmail'])->name('send.email');
 //Route::get('/blog/', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 
+
+Route::get('/tmp/asystent-etyka', [\App\Http\Controllers\EtykaController::class, 'index'])->name('etic-index');
+Route::post('/tmp/asystent-etyka', [\App\Http\Controllers\EtykaController::class, 'post'])->name('post-etic-index');
+
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/kursy', [HomeController::class, 'courses'])->name('courses');
 Route::get('/courses', [HomeController::class, 'courses'])->name('courses.en');
