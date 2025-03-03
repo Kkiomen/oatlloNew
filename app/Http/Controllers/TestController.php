@@ -259,11 +259,13 @@ class TestController extends Controller
 
         $userMessage = 'owad';
 
-        $queryEmbedding = OpenAiHelper::embedding($userMessage);
 
+        $queryEmbedding = OpenAiHelper::embedding($userMessage);
         $matches = $this->findSimilarEmbeddings($queryEmbedding);
 
-        $systemPrompt = 'Jesteś filozofem. Twoim zdaniem jest doradzenie użytkownikowi czy jego projekt jest etyczny/mornalny, zweryfikować czy jego projekt jest zgodny z planem rozwoju AI w polsce (informacje w bazie wiedzy). Nie możesz pisać o niczym innym. #### BAZA WIEDZY' . $matches;
+        $systemPrompt = 'Jesteś filozofem. Twoim zdaniem jest doradzenie użytkownikowi czy jego projekt jest etyczny/mornalny, zweryfikować czy jego projekt jest zgodny z planem rozwoju AI w polsce (informacje w bazie wiedzy). Nie możesz pisać o niczym innym. #### BAZA WIEDZY' .
+            implode('### \n ', $matches);
+
 
         $result = OpenAiHelper::getResult($userMessage, $systemPrompt);
     }
@@ -302,7 +304,7 @@ class TestController extends Controller
                 continue; // Pomijamy wiadomości bez embeddingu
             }
 
-            $similarity = cosineSimilarity($dictionaryElement['embedding'], $targetEmbedding);
+            $similarity = $this->cosineSimilarity($dictionaryElement['embedding'], $targetEmbedding);
 
             if ($similarity >= $threshold) {
                 $dictionaryElement['similarity'] = $similarity; // Dodajemy wynik podobieństwa
