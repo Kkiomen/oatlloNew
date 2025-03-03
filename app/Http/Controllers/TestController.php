@@ -19,7 +19,7 @@ class TestController extends Controller
 
     public function test(Request $reques, PracaMagisterska $pracaMagisterska)
     {
-//        $this->testMEssage();
+        $this->testMEssage();
 
 
         $documentationFile = storage_path('app/documentation_file.json');
@@ -257,7 +257,7 @@ class TestController extends Controller
     public function testMEssage()
     {
 
-        $userMessage = 'owad';
+        $userMessage = 'rozwój AI';
 
 
         $queryEmbedding = OpenAiHelper::embedding($userMessage);
@@ -293,7 +293,7 @@ class TestController extends Controller
         return $dotProduct / ($magnitudeA * $magnitudeB);
     }
 
-    function findSimilarEmbeddings(array $targetEmbedding, float $threshold = 0.75): array {
+    function findSimilarEmbeddings(array $targetEmbedding, float $threshold = 0.6): array {
         $similarMessages = [];
 
         $fileDictionary = base_path('app/Etyka/documentation_file.json');
@@ -308,7 +308,7 @@ class TestController extends Controller
 
             if ($similarity >= $threshold) {
                 $dictionaryElement['similarity'] = $similarity; // Dodajemy wynik podobieństwa
-                $similarMessages[] = $dictionaryElement;
+                $similarMessages[] = $dictionaryElement['result'];
             }
         }
 
