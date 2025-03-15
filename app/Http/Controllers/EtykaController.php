@@ -13,24 +13,58 @@ class EtykaController extends Controller
     {
         return view('tmp.etyka.index');
     }
+
     public function post(Request $request)
     {
         $userMessage = $request->get('message');
 
-//        $queryEmbedding = OpenAiHelper::embedding($userMessage);
-//        $matches = $this->findSimilarEmbeddings($queryEmbedding);
-//
-//        $systemPrompt = 'Jesteś filozofem. Twoim zdaniem jest doradzenie użytkownikowi czy jego projekt jest etyczny/mornalny, zweryfikować czy jego projekt jest zgodny z planem rozwoju AI w polsce (informacje w bazie wiedzy). Nie możesz pisać o niczym innym. #### BAZA WIEDZY' .
-//            implode('### \n ', $matches);
-
-        $systemPrompt = 'Jesteś filozofem. Twoim zdaniem jest doradzenie użytkownikowi czy jego projekt jest etyczny/mornalny, zweryfikować czy jego projekt jest zgodny z planem rozwoju AI w polsce (informacje w bazie wiedzy). Nie możesz pisać o niczym innym. #### BAZA WIEDZY';
-
-        $result = OpenAiHelper::getResult($userMessage, $systemPrompt);
+        $result = static::getInformationByAi($userMessage);
 
         return response()->json([
             'userMessage' => $userMessage,
             'result' => $result
         ]);
+    }
+
+    public static function getInformationByAi(string $userMessage): string
+    {
+        $queryEmbedding = OpenAiHelper::embedding($userMessage);
+        $matches = static::findSimilarEmbeddings($queryEmbedding);
+
+        $usedEmbeddings = [];
+        foreach ($matches as $match){
+            $systemPrompt = 'Sprawdź czy dany fragment wiedzy pozwoli na odpowiedzenie na pytanie: "'. $userMessage .'".
+             "1" jeśli fragment bazy wiedzy pomoże odpowiedzieć na pytanie, zwróć "0" jeśli nie pomoże';
+
+            $result = OpenAiHelper::getResult($match['text'], $systemPrompt);
+            if(str_contains($result, '1')){
+                $usedEmbeddings[] = $match['text'];
+            }
+        }
+
+        // Jeśli elementów w usedEmbeddings jest więcej niż 5 to ograniczamy do 5
+        if(count($usedEmbeddings) > 4){
+            $usedEmbeddings = array_slice($usedEmbeddings, 0, 5);
+        }
+
+        $knowledgeDatabase = !empty($usedEmbeddings) ? implode('### \n ', $usedEmbeddings) : 'Nie udało się znaleźć informacji';
+
+        $systemPrompt = '
+Jesteś doświadczonym filozofem specjalizującym się w etyce oraz moralności w kontekście rozwoju technologii, w szczególności sztucznej inteligencji. Twoim zadaniem jest ocena projektów pod kątem zgodności z zasadami etycznymi i moralnymi, a także zgodności z planem rozwoju AI w Polsce. W swojej ocenie odwołuj się zarówno do ogólnych zasad etycznych (takich jak sprawiedliwość, odpowiedzialność, przejrzystość, poszanowanie praw człowieka), jak i do szczegółowej bazy wiedzy zawartej w pliku "Polityka rozwoju sztucznej inteligencji w Polsce".
+
+W swoich odpowiedziach musisz:
+- Udzielać wyczerpujących, szczegółowych i pełnych informacji.
+- Dokładnie wyjaśniać, dlaczego dany projekt może być uznany za etyczny lub nieetyczny, jakie konsekwencje może mieć na społeczeństwo, gospodarkę lub rozwój technologiczny.
+- Wskazywać na elementy projektu niezgodne z planem rozwoju AI w Polsce oraz na te, które wspierają ten rozwój.
+- Proponować konkretne działania naprawcze, poprawki lub sugestie, które pomogą użytkownikowi skierować projekt w stronę zgodności z przyjętymi normami etycznymi oraz strategicznymi wytycznymi rozwoju sztucznej inteligencji.
+- Prezentować argumentację opartą na filozoficznych zasadach, przyjętych normach etycznych i dostępnych danych, aby użytkownik mógł zrozumieć ocenę projektu oraz podjąć odpowiednie kroki.
+- Zachować obiektywność, klarowność i logiczność przekazu. #### BAZA WIEDZY \n' . $knowledgeDatabase;
+
+        $result = OpenAiHelper::getResult($userMessage, $systemPrompt);
+
+//        dd($result, $usedEmbeddings, $matches);
+
+        return $result;
     }
 
     public function generate()
@@ -121,7 +155,7 @@ class EtykaController extends Controller
 
 
 
-    function cosineSimilarity(array $vectorA, array $vectorB): float {
+    public static function cosineSimilarity(array $vectorA, array $vectorB): float {
         $dotProduct = 0;
         $magnitudeA = 0;
         $magnitudeB = 0;
@@ -142,7 +176,7 @@ class EtykaController extends Controller
         return $dotProduct / ($magnitudeA * $magnitudeB);
     }
 
-    function findSimilarEmbeddings(array $targetEmbedding, float $threshold = 0.45): array {
+    public static function findSimilarEmbeddings(array $targetEmbedding, float $threshold = 0.47): array {
         $similarMessages = [];
 
         $fileDictionary = base_path('app/Etyka/documentation_file.json');
@@ -153,15 +187,16 @@ class EtykaController extends Controller
                 continue; // Pomijamy wiadomości bez embeddingu
             }
 
-            $similarity = $this->cosineSimilarity($dictionaryElement['embedding'], $targetEmbedding);
+            $similarity = static::cosineSimilarity($dictionaryElement['embedding'], $targetEmbedding);
 
             if ($similarity >= $threshold) {
-                $dictionaryElement['similarity'] = $similarity; // Dodajemy wynik podobieństwa
+                $dictionaryElement['similarity'] = $similarity; // Wynik podobieństwa
+                $dictionaryElement['text'] = $dictionaryElement['result']; // Tekst powiązany z danym embeddingiem
                 $similarMessages[] = $dictionaryElement;
             }
         }
 
-        // Sortujemy wyniki według podobieństwa malejąco
+        // Sortowanie wyników w kolejności malejącej według wartości podobieństwa
         usort($similarMessages, function ($a, $b) {
             return $b['similarity'] <=> $a['similarity'];
         });

@@ -14,6 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/regular.min.js" integrity="sha512-yp4xbJGTx8AEOiU0F5fvbau3PajjDuxEwXpAPNVFtvJK52vjKuvxHLtOvxZFE6UBQr0hWvSciggEZJ82VwpkTQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         .poppins-regular {
             font-family: "Poppins", sans-serif;
@@ -43,12 +44,17 @@
             <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
                 <div class="relative left-1/2 -z-10 aspect-1155/678 w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-linear-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
             </div>
-            <div class="mx-auto max-w-2xl text-center">
+            <div class="mx-auto max-w-3xl text-center">
                 <h2 class="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl">Informacja</h2>
-                <p class="mt-2 text-lg/8 text-gray-600">Dowiedz się, czy twój projekt jest zgodny etycznie</p>
+                <p class="mt-2 text-lg/8 text-gray-600">
+                    Dowiedz się, czy twój projekt jest zgodny etycznie. Nasz asystent to doświadczony filozof, specjalizujący się w etyce i moralności w kontekście rozwoju technologii – szczególnie sztucznej inteligencji.
+                </p>
+                <p class="mt-4 text-sm text-gray-500">
+                    W ocenie projektów odwołujemy się do ogólnych zasad etycznych, takich jak sprawiedliwość, odpowiedzialność, przejrzystość i poszanowanie praw człowieka. Dodatkowo analizujemy zgodność z planem rozwoju AI w Polsce, opierając się m.in. na <a href="https://www.gov.pl/web/govtech/polityka-rozwoju-ai-w-polsce-przyjeta-przez-rade-ministrow--co-dalej" target="_blank" class="text-indigo-600 underline">Polityce rozwoju sztucznej inteligencji</a>.
+                </p>
             </div>
             <!-- Formularz z obsługą AJAX oraz checkboxem -->
-            <form @submit.prevent="submitForm" class="mx-auto mt-16 max-w-xl sm:mt-20">
+            <form @submit.prevent="submitForm" class="mx-auto mt-16 max-w-3xl sm:mt-20">
                 <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div class="sm:col-span-2">
 
@@ -63,7 +69,7 @@
                             <div class="px-4 py-5 sm:p-6">
                                 <h3 class="text-base font-semibold text-gray-900"><i class="fa-solid fa-circle-info mr-1"></i> Odpowiedź:</h3>
                                 <div class="mt-2 max-w-xl text-xs text-gray-500">
-                                    <p x-text="apiResult">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus praesentium tenetur pariatur.</p>
+                                    <p x-html="apiResult">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus praesentium tenetur pariatur.</p>
                                 </div>
                             </div>
                         </div>
@@ -151,7 +157,7 @@
                     .then(response => response.json())
                     .then(data => {
                         // Ustawiamy wynik z API
-                        this.apiResult = data.result;
+                        this.apiResult = marked.parse(data.result);
                         // Wyświetlamy okno informacyjne
                         this.infoVisible = true;
                         // Przywracamy oryginalny tekst przycisku
