@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 
 
 use App\Aidevs\OpenAiHelper;
+use App\Jobs\KnowledgeJob;
+use App\Magisterka\CodeReviewAnalyzerService;
+use App\Magisterka\DocumentationFileLoader;
+use App\Models\CodeKnowledge;
+use App\Services\Generator\InternalUrlsGenerator;
 use App\Services\PracaMagisterska;
 use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
@@ -19,91 +24,157 @@ class TestController extends Controller
 
     public function test(Request $reques, PracaMagisterska $pracaMagisterska)
     {
-        $this->testMEssage();
+        $userMessage = '';
+        $queryEmbedding = OpenAiHelper::embedding($userMessage);
+        $matches = $this->findSimilarEmbeddings($queryEmbedding);
 
 
-        $documentationFile = storage_path('app/documentation_file.json');
+//        $answer = $pracaMagisterska->getAnswerByKnowledge('Jak działa mechanizm providerów opartych na tagach?');
+//        echo $answer;
+//        dd($answer);
 
-// Jeśli plik istnieje, ładujemy zawartość, w przeciwnym razie tworzymy pustą tablicę
-        if (file_exists($documentationFile)) {
-            $pages = json_decode(file_get_contents($documentationFile), true);
-        } else {
-            $pages = [];
-        }
-
-// Wydzielamy numery stron już przetworzonych
-        $processedPages = array_map(function ($page) {
-            return $page['page'];
-        }, $pages);
-
-        $promptDocumentation = 'Jesteś specjalistą do spraw tworzenia dokumentacji. Twoim zadaniem jest na podstawie przesłanego zdjęcia (fragmentu dokumentu) przygotować najważniejsze informacje, które zostaną później wykorzystane jako baza wiedzy o danym dokumencie i informacji tam zawartych. Opisz najważniejsze informacje. Nie możesz pominąć szczegółów i musisz być precyzyjny. Na początku w dwóch zdaniach opisz w skrócie co znajdziemy na stronie. A następnie szczegółowo opisz informacje tam zawarte. Pamiętaj, że będzie to fragment bazy wiedze a użytkownik może zadać szczegółowe pytanie';
-        $directory = base_path('app/Etyka');
-
-        if (is_dir($directory)) {
-            $files = scandir($directory);
-            foreach ($files as $file) {
-                // Pomijamy '.' i '..'
-                if ($file === '.' || $file === '..' || str_contains($file, 'json')) {
-                    continue;
-                }
-
-                $filePath = $directory . '/' . $file;
-                if (is_file($filePath)) {
-                    // Wyciągamy numer strony na podstawie nazwy pliku
-                    $page = null;
-                    if (preg_match('/_page-0*([0-9]+)\.jpg$/', $file, $matches)) {
-                        $page = (int)$matches[1];
-                    }
-
-                    // Pomijamy przetwarzanie, jeśli strona została już obsłużona
-                    if ($page !== null && in_array($page, $processedPages)) {
-                        continue;
-                    }
-
-                    // Konwersja obrazu na base64
-                    $base64 = base64_encode(file_get_contents($filePath));
-
-//                     Wywołanie API OpenAI
-                    $result = OpenAI::chat()->create([
-                        'model' => 'gpt-4o-mini',
-                        'messages' => [
-                            [
-                                'role' => 'user',
-                                'content' => [
-                                    ['type' => 'text', 'text' => $promptDocumentation],
-                                    [
-                                        'type' => 'image_url',
-                                        'image_url' => [
-                                            'url' => 'data:image/jpeg;base64,' . $base64
-                                        ]
-                                    ],
-                                ],
-                            ]
-                        ],
-                        'max_tokens' => 900,
-                    ]);
-
-                    $responseContent = $result->choices[0]->message->content;
-                    $formattedResult = $responseContent .  ' \n #####Strona: ' . $page . "\n#### Dokumentacja:\n" ;
-
-                    // Przygotowujemy wpis dla obecnie przetworzonego pliku
-                    $newEntry = [
-                        'page' => $page,
-                        'result' => $formattedResult,
-                        'embedding' => OpenAiHelper::embedding($formattedResult)
-                    ];
-
-                    // Dodajemy nowy wpis do tablicy i aktualizujemy plik JSON
-                    $pages[] = $newEntry;
-                    file_put_contents($documentationFile, json_encode($pages, JSON_PRETTY_PRINT));
-
-                    // Możesz opcjonalnie wyświetlić wynik dla bieżącego pliku
-                    // dd($result);
+//        for($i = 1; $i <= 3000; $i++) {
+//            KnowledgeJob::dispatch();
+//        }
 
 
-                }
-            }
-        }
+//        // Pobieram losowy rekord modelu CodeKnowledge
+//        $codeKnowledge = CodeKnowledge::whereNull('embedding')->inRandomOrder()->first();
+//        // Robię embedding tekstu
+//        $embedding = OpenAiHelper::embedding($codeKnowledge->text, 'text-embedding-3-small');
+//
+//        // Zapisuję embedding do bazy danych
+//        $codeKnowledge->embedding = $embedding;
+//        $codeKnowledge->save();
+
+//        $pracaMagisterska->assistantDocumentationLoadKnowledge();
+
+
+
+
+
+
+
+
+
+//
+//        $pracaMagisterska->codeReviewCodeFromFileVersionOne();
+//
+//        $path = app_path('Magisterka/example_code_sa.txt');
+//
+//        $fileCode = file_get_contents($path);
+//        $analyze = CodeReviewAnalyzerService::analyze($fileCode);
+//
+//        dd(DocumentationFileLoader::loadAllDocByAnalyze($analyze));
+//        dd(DocumentationFileLoader::servicePresentationPut());
+//        $pracaMagisterska->test();
+//
+//        InternalUrlsGenerator::generate();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        $this->testMEssage();
+//
+//
+//        $documentationFile = storage_path('app/documentation_file.json');
+//
+//// Jeśli plik istnieje, ładujemy zawartość, w przeciwnym razie tworzymy pustą tablicę
+//        if (file_exists($documentationFile)) {
+//            $pages = json_decode(file_get_contents($documentationFile), true);
+//        } else {
+//            $pages = [];
+//        }
+//
+//// Wydzielamy numery stron już przetworzonych
+//        $processedPages = array_map(function ($page) {
+//            return $page['page'];
+//        }, $pages);
+//
+//        $promptDocumentation = 'Jesteś specjalistą do spraw tworzenia dokumentacji. Twoim zadaniem jest na podstawie przesłanego zdjęcia (fragmentu dokumentu) przygotować najważniejsze informacje, które zostaną później wykorzystane jako baza wiedzy o danym dokumencie i informacji tam zawartych. Opisz najważniejsze informacje. Nie możesz pominąć szczegółów i musisz być precyzyjny. Na początku w dwóch zdaniach opisz w skrócie co znajdziemy na stronie. A następnie szczegółowo opisz informacje tam zawarte. Pamiętaj, że będzie to fragment bazy wiedze a użytkownik może zadać szczegółowe pytanie';
+//        $directory = base_path('app/Etyka');
+//
+//        if (is_dir($directory)) {
+//            $files = scandir($directory);
+//            foreach ($files as $file) {
+//                // Pomijamy '.' i '..'
+//                if ($file === '.' || $file === '..' || str_contains($file, 'json')) {
+//                    continue;
+//                }
+//
+//                $filePath = $directory . '/' . $file;
+//                if (is_file($filePath)) {
+//                    // Wyciągamy numer strony na podstawie nazwy pliku
+//                    $page = null;
+//                    if (preg_match('/_page-0*([0-9]+)\.jpg$/', $file, $matches)) {
+//                        $page = (int)$matches[1];
+//                    }
+//
+//                    // Pomijamy przetwarzanie, jeśli strona została już obsłużona
+//                    if ($page !== null && in_array($page, $processedPages)) {
+//                        continue;
+//                    }
+//
+//                    // Konwersja obrazu na base64
+//                    $base64 = base64_encode(file_get_contents($filePath));
+//
+////                     Wywołanie API OpenAI
+//                    $result = OpenAI::chat()->create([
+//                        'model' => 'gpt-4o-mini',
+//                        'messages' => [
+//                            [
+//                                'role' => 'user',
+//                                'content' => [
+//                                    ['type' => 'text', 'text' => $promptDocumentation],
+//                                    [
+//                                        'type' => 'image_url',
+//                                        'image_url' => [
+//                                            'url' => 'data:image/jpeg;base64,' . $base64
+//                                        ]
+//                                    ],
+//                                ],
+//                            ]
+//                        ],
+//                        'max_tokens' => 900,
+//                    ]);
+//
+//                    $responseContent = $result->choices[0]->message->content;
+//                    $formattedResult = $responseContent .  ' \n #####Strona: ' . $page . "\n#### Dokumentacja:\n" ;
+//
+//                    // Przygotowujemy wpis dla obecnie przetworzonego pliku
+//                    $newEntry = [
+//                        'page' => $page,
+//                        'result' => $formattedResult,
+//                        'embedding' => OpenAiHelper::embedding($formattedResult)
+//                    ];
+//
+//                    // Dodajemy nowy wpis do tablicy i aktualizujemy plik JSON
+//                    $pages[] = $newEntry;
+//                    file_put_contents($documentationFile, json_encode($pages, JSON_PRETTY_PRINT));
+//
+//                    // Możesz opcjonalnie wyświetlić wynik dla bieżącego pliku
+//                    // dd($result);
+//
+//
+//                }
+//            }
+//        }
 
 
 //
@@ -239,18 +310,6 @@ class TestController extends Controller
 //
 //        dd($result);
 
-//        $pracaMagisterska->codeReviewCodeFromFileVersionOne();
-//
-//        $path = app_path('Magisterka/example_code_sa.txt');
-
-//        $fileCode = file_get_contents($path);
-//        $analyze = CodeReviewAnalyzerService::analyze($fileCode);
-//
-//        dd(DocumentationFileLoader::loadAllDocByAnalyze($analyze));
-//        dd(DocumentationFileLoader::servicePresentationPut());
-//        $pracaMagisterska->test();
-
-//        InternalUrlsGenerator::generate();
     }
 
 

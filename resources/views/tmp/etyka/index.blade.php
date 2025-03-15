@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Meta tag z tokenem CSRF -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="robots" content="noindex">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <!-- Podpięcie Alpine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.0/dist/cdn.min.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/regular.min.js" integrity="sha512-yp4xbJGTx8AEOiU0F5fvbau3PajjDuxEwXpAPNVFtvJK52vjKuvxHLtOvxZFE6UBQr0hWvSciggEZJ82VwpkTQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         .poppins-regular {
             font-family: "Poppins", sans-serif;
@@ -48,13 +51,24 @@
             <form @submit.prevent="submitForm" class="mx-auto mt-16 max-w-xl sm:mt-20">
                 <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div class="sm:col-span-2">
+
                         <label for="message" class="block text-sm/6 font-semibold text-gray-900">Opisz swój projekt/pomysł</label>
                         <div class="mt-2.5">
                             <textarea x-model="message" name="message" id="message" rows="4" class="block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"></textarea>
                             <p class="mt-4 text-sm/6 text-gray-500">Asystent nie zapisuje informacji o konwersacji!</p>
 
                         </div>
+
+                        <div x-show="infoVisible"  class="bg-gray-50 sm:rounded-lg shadow-sm border border-solid border-gray-500 my-5">
+                            <div class="px-4 py-5 sm:p-6">
+                                <h3 class="text-base font-semibold text-gray-900"><i class="fa-solid fa-circle-info mr-1"></i> Odpowiedź:</h3>
+                                <div class="mt-2 max-w-xl text-xs text-gray-500">
+                                    <p x-text="apiResult">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus praesentium tenetur pariatur.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="flex gap-x-4 sm:col-span-2 items-center">
                         <div class="flex h-6 items-center">
                             <button type="button"
@@ -73,7 +87,7 @@
                     </div>
                 </div>
                 <div class="mt-10">
-                    <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Let's talk</button>
+                    <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer" x-html="buttonText">Poznaj informacje</button>
                 </div>
                 <div class="mt-4 text-center text-red-600" x-text="response"></div>
             </form>
@@ -91,6 +105,9 @@
             message: '',
             accepted: false,
             response: '',
+            infoVisible: false,  // steruje widocznością okna informacyjnego
+            apiResult: '',       // wynik z API, który wyświetlimy w <p>
+            buttonText: "Poznaj informacje", // tekst przycisku
             init() {
                 // Sprawdzenie ciasteczka z informacją o dostępie
                 const cookie = document.cookie.split('; ').find(row => row.startsWith('accessGranted='));
@@ -113,6 +130,11 @@
                     this.response = 'Musisz zaakceptować warunki!';
                     return;
                 }
+
+                // Zmiana tekstu przycisku na informację o ładowaniu
+                this.buttonText = 'Weryfikuje informacje <i class="fa-solid fa-spinner fa-spin-pulse"></i>';
+                this.response = '';
+
                 let url = '{{ route("post-etic-index") }}';
                 // Pobranie tokena CSRF z meta tagu
                 let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -128,10 +150,17 @@
                 })
                     .then(response => response.json())
                     .then(data => {
+                        // Ustawiamy wynik z API
+                        this.apiResult = data.result;
+                        // Wyświetlamy okno informacyjne
+                        this.infoVisible = true;
+                        // Przywracamy oryginalny tekst przycisku
+                        this.buttonText = "Let's talk";
                         this.response = 'Formularz wysłany poprawnie!';
                     })
                     .catch(error => {
                         this.response = 'Wystąpił błąd: ' + error.message;
+                        this.buttonText = "Poznaj informacje";
                     });
             }
         };

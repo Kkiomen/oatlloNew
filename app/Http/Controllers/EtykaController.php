@@ -17,11 +17,13 @@ class EtykaController extends Controller
     {
         $userMessage = $request->get('message');
 
-        $queryEmbedding = OpenAiHelper::embedding($userMessage);
-        $matches = $this->findSimilarEmbeddings($queryEmbedding);
+//        $queryEmbedding = OpenAiHelper::embedding($userMessage);
+//        $matches = $this->findSimilarEmbeddings($queryEmbedding);
+//
+//        $systemPrompt = 'Jesteś filozofem. Twoim zdaniem jest doradzenie użytkownikowi czy jego projekt jest etyczny/mornalny, zweryfikować czy jego projekt jest zgodny z planem rozwoju AI w polsce (informacje w bazie wiedzy). Nie możesz pisać o niczym innym. #### BAZA WIEDZY' .
+//            implode('### \n ', $matches);
 
-        $systemPrompt = 'Jesteś filozofem. Twoim zdaniem jest doradzenie użytkownikowi czy jego projekt jest etyczny/mornalny, zweryfikować czy jego projekt jest zgodny z planem rozwoju AI w polsce (informacje w bazie wiedzy). Nie możesz pisać o niczym innym. #### BAZA WIEDZY' .
-            implode('### \n ', $matches);
+        $systemPrompt = 'Jesteś filozofem. Twoim zdaniem jest doradzenie użytkownikowi czy jego projekt jest etyczny/mornalny, zweryfikować czy jego projekt jest zgodny z planem rozwoju AI w polsce (informacje w bazie wiedzy). Nie możesz pisać o niczym innym. #### BAZA WIEDZY';
 
         $result = OpenAiHelper::getResult($userMessage, $systemPrompt);
 
@@ -140,7 +142,7 @@ class EtykaController extends Controller
         return $dotProduct / ($magnitudeA * $magnitudeB);
     }
 
-    function findSimilarEmbeddings(array $targetEmbedding, float $threshold = 0.75): array {
+    function findSimilarEmbeddings(array $targetEmbedding, float $threshold = 0.45): array {
         $similarMessages = [];
 
         $fileDictionary = base_path('app/Etyka/documentation_file.json');

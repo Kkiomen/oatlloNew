@@ -55,10 +55,10 @@ class OpenAiHelper
         return $result->choices[0]->message->content;
     }
 
-    public static function embedding(string $text): array
+    public static function embedding(string $text, string $model = 'text-embedding-3-large'): array
     {
         $response = OpenAI::embeddings()->create([
-            'model' => 'text-embedding-3-large',
+            'model' => $model,
             'input' => $text,
         ]);
 
