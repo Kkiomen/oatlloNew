@@ -169,7 +169,7 @@
                         // Wyświetlamy okno informacyjne
                         this.infoVisible = true;
                         // Przywracamy oryginalny tekst przycisku
-                        this.buttonText = "Let's talk";
+                        this.buttonText = "Poznaj informacje";
                         this.response = 'Formularz wysłany poprawnie!';
                     })
                     .catch(error => {
