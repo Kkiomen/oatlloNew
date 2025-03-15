@@ -93,7 +93,12 @@
                     </div>
                 </div>
                 <div class="mt-10">
-                    <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer" x-html="buttonText">Poznaj informacje</button>
+                    <button type="submit"
+                            :disabled="isSubmitting"
+                            class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer"
+                            x-html="buttonText">
+                        Poznaj informacje
+                    </button>
                 </div>
                 <div class="mt-4 text-center text-red-600" x-text="response"></div>
             </form>
@@ -114,6 +119,7 @@
             infoVisible: false,  // steruje widocznością okna informacyjnego
             apiResult: '',       // wynik z API, który wyświetlimy w <p>
             buttonText: "Poznaj informacje", // tekst przycisku
+            isSubmitting: false, // flaga informująca o wysyłaniu formularza
             init() {
                 // Sprawdzenie ciasteczka z informacją o dostępie
                 const cookie = document.cookie.split('; ').find(row => row.startsWith('accessGranted='));
@@ -132,11 +138,13 @@
                 }
             },
             submitForm() {
+                if (this.isSubmitting) return; // zapobiega wielokrotnemu kliknięciu
                 if (!this.accepted) {
                     this.response = 'Musisz zaakceptować warunki!';
                     return;
                 }
 
+                this.isSubmitting = true; // ustawiamy flagę wysyłania
                 // Zmiana tekstu przycisku na informację o ładowaniu
                 this.buttonText = 'Weryfikuje informacje <i class="fa-solid fa-spinner fa-spin-pulse"></i>';
                 this.response = '';
@@ -167,6 +175,9 @@
                     .catch(error => {
                         this.response = 'Wystąpił błąd: ' + error.message;
                         this.buttonText = "Poznaj informacje";
+                    })
+                    .finally(() => {
+                        this.isSubmitting = false; // przywracamy możliwość kliknięcia
                     });
             }
         };
