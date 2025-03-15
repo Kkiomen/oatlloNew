@@ -100,7 +100,7 @@
                         Poznaj informacje
                     </button>
                 </div>
-                <div class="mt-4 text-center text-red-600" x-text="response"></div>
+{{--                <div class="mt-4 text-center text-red-600" x-text="response"></div>--}}
             </form>
         </div>
     </div>
