@@ -122,7 +122,7 @@
                 }
             },
             checkPassword() {
-                if (this.passwordInput === 'test123') {
+                if (this.passwordInput === 'studia-etyka-2025') {
                     // Ustawienie ciasteczka – dostęp przyznany
                     document.cookie = 'accessGranted=true; path=/';
                     this.accessGranted = true;
