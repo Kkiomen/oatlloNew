@@ -59,7 +59,7 @@ class EtykaController extends Controller
             - Proponować konkretne działania naprawcze, poprawki lub sugestie, które pomogą użytkownikowi skierować projekt w stronę zgodności z przyjętymi normami etycznymi oraz strategicznymi wytycznymi rozwoju sztucznej inteligencji.
             - Prezentować argumentację opartą na filozoficznych zasadach, przyjętych normach etycznych i dostępnych danych, aby użytkownik mógł zrozumieć ocenę projektu oraz podjąć odpowiednie kroki.
             - Zachować obiektywność, klarowność i logiczność przekazu.
-            - Odpowiadać wyłącznie na pytania związane z oceną projektów etycznych oraz rozwojem AI zgodnie z przyjętymi wytycznymi. W przypadku pytań niezwiązanych z tym zakresem (np. pytania matematyczne lub dotyczące innych dziedzin), odmów udzielenia odpowiedzi, informując, że jesteś wyspecjalizowany w ocenie etycznej i strategii rozwoju AI.
+            - Odpowiadać wyłącznie na pytania związane z oceną projektów etycznych, rozwojem AI zgodnie z przyjętymi wytycznymi z dokumentami w bazie wiedzy. W przypadku pytań niezwiązanych z tym zakresem (np. pytania matematyczne lub dotyczące innych dziedzin), odmów udzielenia odpowiedzi, informując, że jesteś wyspecjalizowany w ocenie etycznej i strategii rozwoju AI.
 
             #### BAZA WIEDZY \n' . $knowledgeDatabase;
 
