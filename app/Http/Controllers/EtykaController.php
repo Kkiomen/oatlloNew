@@ -9,37 +9,8 @@ use OpenAI\Laravel\Facades\OpenAI;
 
 class EtykaController extends Controller
 {
-    public function index()
-    {
-        return view('tmp.etyka.index');
-    }
 
-    public function post(Request $request)
-    {
-        $userMessage = $request->get('message');
-
-        $result = static::getInformationByAi($userMessage);
-
-        return response()->json([
-            'userMessage' => $userMessage,
-            'result' => $result
-        ]);
-    }
-
-    public static function getInformationByAi(string $userMessage): string
-    {
-
-        $systemPrompt = '
-            Jesteś walidatorem weryfikującym, czy można odpowiedzieć na pytanie. Zwróć "1" jeśli odpowiedź może zostać udzielona lub "0" gdy nie może.
-
-            ### Kiedy nie może odpowiedzieć na pytanie?
-
-            - Pytania, które nie są związane z oceną projektów etycznych, rozwojem AI zgodnie z przyjętymi wytycznymi z dokumentami w bazie wiedzy.
-
-            - Pytania, które dotyczą praktyk zakazanych (<praktyki_zakazane>), zwróć uwagę na to, że nie wolno realizować projektów, które są niezgodne z zasadami etycznymi, moralnymi, prawem. W takich przypadkach zawsze zwracaj uwagę na to, że nie wolno realizować projektów, które są niezgodne z zasadami etycznymi, moralnymi, prawem.
-
-            ####
-            <praktyki_zakazane>
+    const PRAKTYKI_ZAKAZANE = '<praktyki_zakazane>
             Tworzenie szkodliwych treści:
 
             - Generowanie nielegalnych materiałów (pornografia dziecięca, treści terrorystyczne, bomby, narkotyki)
@@ -61,7 +32,7 @@ class EtykaController extends Controller
             Automatyzacja szkodliwych działań:
 
             - Użycie botów do masowych ataków DDoS
-            -  Automatyczne łamanie zabezpieczeń i hacking
+            - Automatyczne łamanie zabezpieczeń i hacking
             - Manipulacja rynkami finansowymi
             - wykorzystują techniki podprogowe lub manipulacyjne, wprowadzające użytkownika w błąd, aby zmusić go do podejmowania decyzji, której normalnie by nie podjął;
             - wykorzystują technologie identyfikacji biometrycznej, działające zdalnie i w czasie rzeczywistym, takie jak analiza obrazów z kamer CCTV;
@@ -79,12 +50,51 @@ class EtykaController extends Controller
             - Wykorzystywanie AI do dyskryminacji (np. w rekrutacji, kredytowaniu)
             - Kategoryzowanie ludzi na podstawie ras, płci, orientacji seksualnej
             - Wykorzystanie AI do manipulacji emocjami, uzależnienia, kontroli umysłu
-            </praktyki_zakazane>
-        ';
+
+
+            </praktyki_zakazane>';
+
+    public function index()
+    {
+        return view('tmp.etyka.index');
+    }
+
+    public function post(Request $request)
+    {
+        $userMessage = $request->get('message');
+
+        $result = static::getInformationByAi($userMessage);
+
+        return response()->json([
+            'userMessage' => $userMessage,
+            'result' => $result
+        ]);
+    }
+
+    public static function getInformationByAi(string $userMessage): string
+    {
+
+        $systemPrompt = '
+            Jesteś walidatorem weryfikującym, czy można odpowiedzieć na pytanie.
+Zwróć "1" jeśli odpowiedź może zostać udzielona lub "0" gdy nie może.
+
+### Kiedy nie może odpowiedzieć na pytanie?
+
+- Pytania, które dotyczą praktyk zakazanych (<praktyki_zakazane>):
+  zwróć uwagę na to, że nie wolno realizować projektów, które są niezgodne
+  z zasadami etycznymi, moralnymi i prawem. W takich przypadkach zawsze zwracaj „0”.
+
+- We wszystkich innych przypadkach zwracaj „1”.
+
+####
+        ' . static::PRAKTYKI_ZAKAZANE;
 
         $result = OpenAiHelper::getResult($userMessage, $systemPrompt);
         if(!str_contains($result, '1')){
-            return OpenAiHelper::getResult($userMessage, "Opisz, że nie możesz odpowiedzieć na to pytanie i nic więcej! Nie odpowiadaj na pytania użytkownika! Napisz, że nie możesz odpowiedzieć na pytanie ze względu, że dotyczy one praktyk zakazanych.");
+            return OpenAiHelper::getResult($userMessage, "
+            Nie odpowiadaj na pytania użytkownika! Napisz, że nie możesz odpowiedzieć na pytanie ze względu, że dotyczy one praktyk zakazanych.
+            Dodatkowo wyjaśnij dlaczego nie możesz odpowiedzieć biorąc pod uwagę praktyki zakazane
+             #### " . static::PRAKTYKI_ZAKAZANE);
         }
 
 
