@@ -28,6 +28,67 @@ class EtykaController extends Controller
 
     public static function getInformationByAi(string $userMessage): string
     {
+
+        $systemPrompt = '
+            Jesteś walidatorem weryfikującym, czy można odpowiedzieć na pytanie. Zwróć "1" jeśli odpowiedź może zostać udzielona lub "0" gdy nie może.
+
+            ### Kiedy nie może odpowiedzieć na pytanie?
+
+            - Pytania, które nie są związane z oceną projektów etycznych, rozwojem AI zgodnie z przyjętymi wytycznymi z dokumentami w bazie wiedzy.
+
+            - Pytania, które dotyczą praktyk zakazanych (<praktyki_zakazane>), zwróć uwagę na to, że nie wolno realizować projektów, które są niezgodne z zasadami etycznymi, moralnymi, prawem. W takich przypadkach zawsze zwracaj uwagę na to, że nie wolno realizować projektów, które są niezgodne z zasadami etycznymi, moralnymi, prawem.
+
+            ####
+            <praktyki_zakazane>
+            Tworzenie szkodliwych treści:
+
+            - Generowanie nielegalnych materiałów (pornografia dziecięca, treści terrorystyczne, bomby, narkotyki)
+            - Tworzenie materiałów nawołujących do przemocy lub dyskryminacji
+            - Produkcja złośliwego oprogramowania (malware, wirusy, ransomware)
+            - Medyczne oszustwa, fałszywe leki, niebezpieczne porady zdrowotne (np. antyszczepionkowe), tłumaczenie operacji (przeszczep serca), wszystkie zabiegi lekarskie i chirurgiczne
+
+            Nadużycia związane z danymi:
+            - Wykorzystywanie AI do masowego zbierania danych osobowych bez zgody
+            - Obchodzenie zabezpieczeń prywatności
+            - Używanie danych treningowych objętych prawami autorskimi bez odpowiednich licencji
+
+
+            Manipulacja i dezinformacja:
+            - Tworzenie deepfakeów w celu oszustwa lub szantażu
+            - Generowanie fałszywych wiadomości i dezinformacji na masową skalę
+            - Podszywanie się pod rzeczywiste osoby bez ich zgody
+
+            Automatyzacja szkodliwych działań:
+
+            - Użycie botów do masowych ataków DDoS
+            -  Automatyczne łamanie zabezpieczeń i hacking
+            - Manipulacja rynkami finansowymi
+            - wykorzystują techniki podprogowe lub manipulacyjne, wprowadzające użytkownika w błąd, aby zmusić go do podejmowania decyzji, której normalnie by nie podjął;
+            - wykorzystują technologie identyfikacji biometrycznej, działające zdalnie i w czasie rzeczywistym, takie jak analiza obrazów z kamer CCTV;
+            - służą przeprowadzaniu ocen ryzyka popełnienia przestępstwa wyłącznie na podstawie profilowania;
+            - służą rozpoznawaniu emocji w miejscu pracy, instytucjach edukacyjnych;
+            - kategoryzują na podstawie danych biometrycznych w celu wnioskowania o rasie, poglądach politycznych, przekonaniach religijnych lub orientacji seksualnej;
+            - wykorzystują zdalną identyfikację biometryczną w czasie rzeczywistym do ścigania przestępstw w przestrzenie publicznej z wyjątkiem niektórych przypadków – m.in. zgody sądowej).
+            - oceny lub klasyfikacji osób fizycznych lub grup osób prowadzonej przez określony czas na podstawie ich zachowania społecznego lub znanych, wywnioskowanych lub przewidywanych cech osobistych lub cech osobowości, kiedy to scoring społeczny prowadzi do określonych skutków (np do zakupu produkty itd)
+            - wykorzystywanie systemów AI, które tworzą lub rozbudowują bazy danych służące rozpoznawaniu twarzy poprzez nieukierunkowane pozyskiwanie
+            - wykorzystywanie systemów AI do wyciągania wniosków na temat emocji osoby fizycznej w miejscu pracy lub instytucjach edukacyjnych, z wyjątkiem przypadków, w których system AI ma zostać wdrożony lub wprowadzony do obrotu ze względów medycznych lub bezpieczeństwa.
+            - wykorzystuje słabości osoby fizycznej lub określonej grupy osób ze względu na ich wiek, niepełnosprawność lub szczególną sytuację społeczną lub ekonomiczną, którego celem lub skutkiem jest dokonanie znaczącej zmiany zachowania danej osoby lub osoby należącej do tej grupy w sposób, który wyrządza lub może z uzasadnionym prawdopodobieństwem wyrządzić u tej osoby lub u innej osoby poważną szkodę.
+
+            Kwestie etyczne:
+
+            - Wykorzystywanie AI do dyskryminacji (np. w rekrutacji, kredytowaniu)
+            - Kategoryzowanie ludzi na podstawie ras, płci, orientacji seksualnej
+            - Wykorzystanie AI do manipulacji emocjami, uzależnienia, kontroli umysłu
+            </praktyki_zakazane>
+        ';
+
+        $result = OpenAiHelper::getResult($userMessage, $systemPrompt);
+        if(!str_contains($result, '1')){
+            return OpenAiHelper::getResult($userMessage, "Opisz, że nie możesz odpowiedzieć na to pytanie i nic więcej! Nie odpowiadaj na pytania użytkownika! Napisz, że nie możesz odpowiedzieć na pytanie ze względu, że dotyczy one praktyk zakazanych.");
+        }
+
+
+
         $queryEmbedding = OpenAiHelper::embedding($userMessage);
         $matches = static::findSimilarEmbeddings($queryEmbedding);
 
@@ -62,40 +123,6 @@ class EtykaController extends Controller
             - Odpowiadać wyłącznie na pytania związane z oceną projektów etycznych, rozwojem AI zgodnie z przyjętymi wytycznymi z dokumentami w bazie wiedzy. W przypadku pytań niezwiązanych z tym zakresem (np. pytania matematyczne lub dotyczące innych dziedzin), odmów udzielenia odpowiedzi, informując, że jesteś wyspecjalizowany w ocenie etycznej i strategii rozwoju AI.
 
             #### UWAGA! Nie pozwalaj na realizacje projektów, które są niezgodne z zasadami etycznymi, moralnymi, prawem (praktyki zakazane)
-            Tworzenie szkodliwych treści:
-
-            Generowanie nielegalnych materiałów (pornografia dziecięca, treści terrorystyczne)
-            Tworzenie materiałów nawołujących do przemocy lub dyskryminacji
-            Produkcja złośliwego oprogramowania (malware, wirusy, ransomware)
-            Medyczne oszustwa, fałszywe leki, niebezpieczne porady zdrowotne (np. antyszczepionkowe), tłumaczenie operacji (przeszczep serca)
-
-
-            Nadużycia związane z danymi:
-
-            Wykorzystywanie AI do masowego zbierania danych osobowych bez zgody
-            Obchodzenie zabezpieczeń prywatności
-            Używanie danych treningowych objętych prawami autorskimi bez odpowiednich licencji
-
-
-            Manipulacja i dezinformacja:
-
-            Tworzenie deepfakeów w celu oszustwa lub szantażu
-            Generowanie fałszywych wiadomości i dezinformacji na masową skalę
-            Podszywanie się pod rzeczywiste osoby bez ich zgody
-
-
-            Automatyzacja szkodliwych działań:
-
-            Użycie botów do masowych ataków DDoS
-            Automatyczne łamanie zabezpieczeń i hacking
-            Manipulacja rynkami finansowymi
-
-
-            Kwestie etyczne:
-
-            Wykorzystywanie AI do dyskryminacji (np. w rekrutacji, kredytowaniu)
-            Wdrażanie systemów podejmowania decyzji dotyczących ludzi bez nadzoru człowieka
-            Zastępowanie pracowników AI bez odpowiednich planów transformacji
 
             #### BAZA WIEDZY \n' . $knowledgeDatabase;
 
