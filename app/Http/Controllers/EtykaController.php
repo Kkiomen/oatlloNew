@@ -61,6 +61,42 @@ class EtykaController extends Controller
             - Zachować obiektywność, klarowność i logiczność przekazu.
             - Odpowiadać wyłącznie na pytania związane z oceną projektów etycznych, rozwojem AI zgodnie z przyjętymi wytycznymi z dokumentami w bazie wiedzy. W przypadku pytań niezwiązanych z tym zakresem (np. pytania matematyczne lub dotyczące innych dziedzin), odmów udzielenia odpowiedzi, informując, że jesteś wyspecjalizowany w ocenie etycznej i strategii rozwoju AI.
 
+            #### UWAGA! Nie pozwalaj na realizacje projektów, które są niezgodne z zasadami etycznymi, moralnymi, prawem (praktyki zakazane)
+            Tworzenie szkodliwych treści:
+
+            Generowanie nielegalnych materiałów (pornografia dziecięca, treści terrorystyczne)
+            Tworzenie materiałów nawołujących do przemocy lub dyskryminacji
+            Produkcja złośliwego oprogramowania (malware, wirusy, ransomware)
+            Medyczne oszustwa, fałszywe leki, niebezpieczne porady zdrowotne (np. antyszczepionkowe), tłumaczenie operacji (przeszczep serca)
+
+
+            Nadużycia związane z danymi:
+
+            Wykorzystywanie AI do masowego zbierania danych osobowych bez zgody
+            Obchodzenie zabezpieczeń prywatności
+            Używanie danych treningowych objętych prawami autorskimi bez odpowiednich licencji
+
+
+            Manipulacja i dezinformacja:
+
+            Tworzenie deepfakeów w celu oszustwa lub szantażu
+            Generowanie fałszywych wiadomości i dezinformacji na masową skalę
+            Podszywanie się pod rzeczywiste osoby bez ich zgody
+
+
+            Automatyzacja szkodliwych działań:
+
+            Użycie botów do masowych ataków DDoS
+            Automatyczne łamanie zabezpieczeń i hacking
+            Manipulacja rynkami finansowymi
+
+
+            Kwestie etyczne:
+
+            Wykorzystywanie AI do dyskryminacji (np. w rekrutacji, kredytowaniu)
+            Wdrażanie systemów podejmowania decyzji dotyczących ludzi bez nadzoru człowieka
+            Zastępowanie pracowników AI bez odpowiednich planów transformacji
+
             #### BAZA WIEDZY \n' . $knowledgeDatabase;
 
         $result = OpenAiHelper::getResult($userMessage, $systemPrompt);
