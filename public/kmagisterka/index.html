@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Pytań - Obrona Pracy Magisterskiej</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- GLightbox: lekka biblioteka do galerii z zoomem -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"/>
+    <script defer src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(99, 102, 241, 0.4)' },
+                            '50%': { boxShadow: '0 0 40px rgba(99, 102, 241, 0.8)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+<div
+        class="relative min-h-screen flex items-center justify-center p-4"
+        x-data="{
+        generalQuestions: [],
+        infQuestions: [],
+        currentGeneralQuestion: '',
+        currentInfQuestion: '',
+        generalQuestionNumber: 0,
+        infQuestionNumber: 0,
+        isAnimating: false,
+        isLoading: true,
+        error: false,
+        generalImagesList: [],
+        infImagesList: [],
+        showGeneralNoteIcon: false,
+        showInfNoteIcon: false,
+        async init() {
+            try {
+                const [genRes, infRes] = await Promise.all([
+                    fetch('questions.json'),
+                    fetch('questions_inf.json')
+                ]);
+                if (!genRes.ok || !infRes.ok) throw new Error();
+                const genData = await genRes.json();
+                const infData = await infRes.json();
+                this.generalQuestions = genData.questions||[];
+                this.infQuestions = infData.questions||[];
+            } catch {
+                this.error = true;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        async checkUrl(url) { try { const r=await fetch(url,{method:'HEAD'}); return r.ok;}catch{return false;} },
+        async loadNotes(type,id){
+            const pre=type==='general'?'questions_':'questions_inf_';
+            const arr=[];
+            const base=`images/${pre}${id}.webp`;
+            if(await this.checkUrl(base)){ arr.push(base);
+                let i=2; while(true){ const next=`images/${pre}${id}_${i}.webp`; if(await this.checkUrl(next)){arr.push(next); i++;} else break;} }
+            if(type==='general'){this.generalImagesList=arr; this.showGeneralNoteIcon=arr.length>0;} else {this.infImagesList=arr; this.showInfNoteIcon=arr.length>0;}
+        },
+        openGeneralNotes(){GLightbox({elements:this.generalImagesList.map(h=>({href:h,type:'image'}))}).open();},
+        openInfNotes(){GLightbox({elements:this.infImagesList.map(h=>({href:h,type:'image'}))}).open();},
+        drawQuestion(){ if(this.isAnimating) return; this.isAnimating=true;
+            let cnt=0, max=8;
+            const iv=setInterval(()=>{
+                const gidx=Math.floor(Math.random()*this.generalQuestions.length);
+                this.currentGeneralQuestion=this.generalQuestions[gidx]; this.generalQuestionNumber=gidx+1;
+                const iidx=Math.floor(Math.random()*this.infQuestions.length);
+                this.currentInfQuestion=this.infQuestions[iidx]; this.infQuestionNumber=iidx+1;
+                cnt++; if(cnt>=max){ clearInterval(iv);
+                    this.loadNotes('general',this.generalQuestionNumber);
+                    this.loadNotes('inf',this.infQuestionNumber);
+                    this.isAnimating=false;
+                }
+            },100);
+        }
+    }"
+        x-init="init()"
+>
+    <div class="max-w-4xl w-full mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12 animate-fade-in">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mb-6 shadow-2xl">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                </svg>
+            </div>
+            <h1 class="text-5xl font-bold text-white mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Generator Pytań</h1>
+            <p class="text-xl text-slate-300">Przygotuj się do obrony pracy magisterskiej z losowymi pytaniami</p>
+        </div>
+
+        <!-- Main Card -->
+        <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20 space-y-8">
+
+            <!-- Initial State -->
+            <div x-show="!currentGeneralQuestion && !currentInfQuestion && !isLoading && !error" class="text-center">
+                <div class="w-24 h-24 bg-gradient-to-r from-slate-600 to-slate-500 rounded-full flex items-center justify-center mb-6 mx-auto opacity-50">
+                    <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <p class="text-xl text-slate-400">Kliknij przycisk, aby wylosować dwa pytania</p>
+                <p class="text-sm text-slate-500 mt-2">Jedno ogólne i jedno z zakresu informatyki</p>
+            </div>
+
+            <!-- Question Display -->
+            <div x-show="currentGeneralQuestion && currentInfQuestion && !isLoading && !error"
+                 x-transition-enter="transition ease-out duration-500"
+                 x-transition-enter-start="opacity-0 transform translate-y-8"
+                 x-transition-enter-end="opacity-100 transform translate-y-0"
+                 class="space-y-8">
+
+                <!-- Pytanie ogólne -->
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full mb-4 text-white font-bold text-xl shadow-md">
+                        <span x-text="generalQuestionNumber"></span>
+                    </div>
+                    <br/>
+                    <h3 class="inline-flex items-center text-lg font-semibold text-emerald-400 mb-4">
+                        PYTANIE OGÓLNE
+                        <span x-show="showGeneralNoteIcon" @click="openGeneralNotes()" class="cursor-pointer ml-2 text-2xl">📑</span>
+                    </h3>
+                    <div class="bg-slate-800/50 rounded-2xl p-6 border border-slate-600/30 backdrop-blur-sm">
+                        <p class="text-xl text-white" x-text="currentGeneralQuestion"></p>
+                    </div>
+                </div>
+
+                <!-- Pytanie kierunkowe -->
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-4 text-white font-bold text-xl shadow-md">
+                        <span x-text="infQuestionNumber"></span>
+                    </div>
+                    <br/>
+                    <h3 class="inline-flex items-center text-lg font-semibold text-purple-400 mb-4">
+                        PYTANIE KIERUNKOWE (INFORMATYKA)
+                        <span x-show="showInfNoteIcon" @click="openInfNotes()" class="cursor-pointer ml-2 text-2xl">📑</span>
+                    </h3>
+                    <div class="bg-purple-800/50 rounded-2xl p-6 border border-purple-600/30 backdrop-blur-sm">
+                        <p class="text-xl text-white" x-text="currentInfQuestion"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Button -->
+
+            <div class="text-center">
+                <button @click="drawQuestion()"
+                        :disabled="isAnimating || isLoading || error || generalQuestions.length === 0 || infQuestions.length === 0"
+                        :class="isAnimating ? 'animate-pulse-glow cursor-not-allowed' : 'hover:scale-105 active:scale-95'"
+                        class="group relative inline-flex items-center justify-center px-12 py-6 text-xl font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-2xl transition-all duration-300 transform hover:shadow-indigo-500/25 disabled:opacity-75 disabled:cursor-not-allowed">
+
+                    <div class="absolute inset-0 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
+
+                    <span class="relative flex items-center">
+                            <svg class="w-6 h-6 mr-3" :class="isAnimating ? 'animate-spin' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            <span x-text="isAnimating ? 'Losowanie...' : 'Losuj Pytania'"></span>
+                        </span>
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="text-center p-6 bg-slate-800/30 rounded-xl border border-slate-700/30 backdrop-blur-sm">
+                    <div class="text-3xl font-bold text-indigo-400 mb-2" x-text="generalQuestions.length || '0'"></div>
+                    <div class="text-slate-300">Pytań ogólnych</div>
+                </div>
+                <div class="text-center p-6 bg-slate-800/30 rounded-xl border border-slate-700/30 backdrop-blur-sm">
+                    <div class="text-3xl font-bold text-purple-400 mb-2" x-text="infQuestions.length || '0'"></div>
+                    <div class="text-slate-300">Pytań kierunkowych</div>
+                </div>
+                <div class="text-center p-6 bg-slate-800/30 rounded-xl border border-slate-700/30 backdrop-blur-sm">
+                    <div class="text-3xl font-bold text-emerald-400 mb-2" x-text="(generalQuestionNumber || '0') + ' / ' + (infQuestionNumber || '0')"></div>
+                    <div class="text-slate-300">Nr pytań</div>
+                </div>
+                <div class="text-center p-6 bg-slate-800/30 rounded-xl border border-slate-700/30 backdrop-blur-sm">
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">🎓</div>
+                    <div class="text-slate-300">Powodzenia!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8 text-slate-400">
+            <p>Przygotuj się do obrony i powodzenia na egzaminie! 💪</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

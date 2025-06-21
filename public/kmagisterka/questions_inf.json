@@ -1,0 +1,29 @@
+{
+  "questions": [
+    "Zarządzanie projektem informatycznym – istota, etapy, zadania.",
+    "Czynniki wyboru systemu informatycznego.",
+    "Interesariusze i ograniczenia w projektach informatycznych.",
+    "Metodyki zarządzania projektem informatycznym.",
+    "Znaczenie baz i hurtowni danych dla podejmowania decyzji.",
+    "Funkcje raportowania, analizy i eksploracji danych.",
+    "Narzędzia, metody wykorzystywane w obszarze Business Intelligence.",
+    "Zagrożenia i metody ochrony informacji i infrastruktury w przedsiębiorstwie.",
+    "Bezpieczeństwo informatyczne i identyfikacja zagrożeń w przedsiębiorstwie.",
+    "System zarządzania bezpieczeństwem.",
+    "Na czym polega złożoność obliczeniowa algorytmów.",
+    "Charakterystyka baz danych – cechy, przykłady.",
+    "Obiekty bazodanowe, pojęcie klucza, typy danych (przykłady).",
+    "Wykorzystanie systemów wspomagania decyzji w przedsiębiorstwie.",
+    "Systemy ekspertowe – budowa, znaczenie, wykorzystanie.",
+    "Internet rzeczy – istota działania, zalety, wady, wykorzystanie.",
+    "Zagrożenia w systemach Internetu rzeczy.",
+    "Uczenie maszynowe – analiza pojęcia, działanie, wykorzystanie.",
+    "Ograniczenia i problemy w uczeniu maszynowym.",
+    "Metody uczenia maszynowego.",
+    "Charakterystyka, bezpieczeństwo aplikacji internetowych i mobilnych.",
+    "Technologie backendowe i frontendowe – różnice, przykłady.",
+    "System operacyjny: rola, działanie, budowa, rodzaje.",
+    "Integracja systemów informatycznych.",
+    "Wymień i krótko omów wybrane zagrożenia cybernetyczne."
+  ]
+}
