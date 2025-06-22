@@ -72,13 +72,40 @@
             }
         },
         async checkUrl(url) { try { const r=await fetch(url,{method:'HEAD'}); return r.ok;}catch{return false;} },
-        async loadNotes(type,id){
-            const pre=type==='general'?'questions_':'questions_inf_';
-            const arr=[];
-            const base=`images/${pre}${id}.webp`;
-            if(await this.checkUrl(base)){ arr.push(base);
-                let i=2; while(true){ const next=`images/${pre}${id}_${i}.webp`; if(await this.checkUrl(next)){arr.push(next); i++;} else break;} }
-            if(type==='general'){this.generalImagesList=arr; this.showGeneralNoteIcon=arr.length>0;} else {this.infImagesList=arr; this.showInfNoteIcon=arr.length>0;}
+        async loadNotes(type, id) {
+            const pre = type === 'general' ? 'questions_' : 'questions_inf_';
+            const arr = [];
+            const base = `images/${pre}${id}.webp`;
+
+            // najpierw sprawdzamy, które pliki istnieją
+            if (await this.checkUrl(base)) {
+                arr.push(base);
+                let i = 2;
+                while (true) {
+                    const next = `images/${pre}${id}_${i}.webp`;
+                    if (await this.checkUrl(next)) {
+                        arr.push(next);
+                        i++;
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            // ustawiamy listę obrazków i ikonę notatki
+            if (type === 'general') {
+                this.generalImagesList = arr;
+                this.showGeneralNoteIcon = arr.length > 0;
+            } else {
+                this.infImagesList = arr;
+                this.showInfNoteIcon = arr.length > 0;
+            }
+
+            // teraz *pre–ładowanie* obrazków do cache przeglądarki
+            arr.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
         },
         openGeneralNotes(){GLightbox({elements:this.generalImagesList.map(h=>({href:h,type:'image'}))}).open();},
         openInfNotes(){GLightbox({elements:this.infImagesList.map(h=>({href:h,type:'image'}))}).open();},
