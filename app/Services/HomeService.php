@@ -14,7 +14,7 @@ class HomeService
             return route('courses');
         }
 
-        return route('courses.en');
+        return route('courses_en');
     }
 
     public static function getTagManagerHEAD(): string

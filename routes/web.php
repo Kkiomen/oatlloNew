@@ -28,7 +28,7 @@ Route::post('/tmp/asystent-etyka', [\App\Http\Controllers\EtykaController::class
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/kursy', [HomeController::class, 'courses'])->name('courses');
-Route::get('/courses', [HomeController::class, 'courses'])->name('courses.en');
+Route::get('/courses', [HomeController::class, 'courses'])->name('courses_en');
 Route::get('/kurs/{courseName}', [HomeController::class, 'course'])->name('course_pl');
 Route::get('/kurs/{courseName}/{chapter}', [HomeController::class, 'chapterPl'])->name('course_chapter_pl');
 Route::get('/kurs/{courseName}/{chapter}/{lesson}', [HomeController::class, 'courseLessonPl'])->name('course_lesson_pl');
