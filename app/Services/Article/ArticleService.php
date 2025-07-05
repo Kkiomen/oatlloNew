@@ -40,6 +40,7 @@ class ArticleService
                 'name' => 'Nazwa artykułu',
                 'slug' => 'nowy-artykul',
                 'is_published' => false,
+                'language' => $_ENV['APP_LOCALE'],
                 'json_content' => ArticleContentBuilder::getCreateContent(),
                 'type' => $type,
                 'view_content' => null
