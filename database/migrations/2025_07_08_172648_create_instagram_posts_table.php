@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('instagram_posts', function (Blueprint $table) {
             $table->id();
-            $table->text('image_link')->unique()->nullable();
+            $table->text('image_link')->nullable();
             $table->string('url')->nullable();
             $table->string('language')->nullable();
             $table->timestamps();
