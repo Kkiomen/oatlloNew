@@ -28,6 +28,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css" integrity="sha512-v8QQ0YQ3H4K6Ic3PJkym91KoeNT5S3PnDKvqnwqFD1oiqIl653crGZplPdU5KKtHjO0QKcQ2aUlQZYjHczkmGw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 {!! \App\Services\HomeService::getTagManagerBODY() !!}
@@ -184,9 +187,306 @@
     </div>
     @endif
 
+    @if(!empty($postInstagrams))
+        <div class="bg-dark-brown">
+            <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+                <h2 class="poppins-semibold text-xl font-bold text-gray-900 text-white ">Instagram posts</h2>
 
+                <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
 
+                    @foreach($postInstagrams as $post)
+                        <div>
+                            <div class="relative">
+                                <a href="{{ $post->url }}" target="_blank">
+                                    <div class="relative h-80 w-full overflow-hidden shadow rounded-lg">
+                                        <img src="{{ $post->getUrl()}}" alt="Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls." class="size-full object-cover object-top" />
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
+                    <!-- More products... -->
+                </div>
+            </div>
+        </div>
+    @endif
 
+    <div class="bg-dark-brown">
+    </div>
+
+    <section id="features" class="bg-neutral-900 py-20 lg:py-28" aria-label="Key features of our PHP programming course platform">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <!-- Section Heading -->
+            <header class="mb-12 text-center">
+                <h2 class="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+                    All-in-One <span class="text-rose-400">PHP Learning Features</span>
+                </h2>
+                <p class="mx-auto mt-4 max-w-2xl text-lg text-neutral-300">
+                    Master PHP, Database, MySQL and modern backend development with interactive tutorials, real-world projects and expert mentor support.
+                </p>
+            </header>
+
+            <!-- Feature List (schema.org ItemList) -->
+            <ul class="flex flex-wrap justify-center gap-4" itemscope itemtype="https://schema.org/ItemList">
+                <!-- 1. Interactive video lessons -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="1" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-rose-500/90 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-rose-500/60 backdrop-blur" title="Interactive PHP video tutorials">
+          <i class="fa-solid fa-play-circle" aria-hidden="true"></i>
+          <span itemprop="name">Interactive Video Lessons</span>
+        </span>
+                </li>
+                <!-- 2. Hands-on PHP coding projects -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="2" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-neutral-900 shadow" title="Hands-on PHP coding projects">
+          <i class="fa-solid fa-code" aria-hidden="true"></i>
+          <span itemprop="name">Hands-on PHP Projects</span>
+        </span>
+                </li>
+                <!-- 3. One-on-one mentor support -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="3" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-rose-500/90 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-rose-500/60" title="Personal mentor coaching and code review">
+          <i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i>
+          <span itemprop="name">1-on-1 Mentor Support</span>
+        </span>
+                </li>
+                <!-- 4. Knowledge tests & quizzes -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="4" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-neutral-900 shadow" title="PHP quizzes and knowledge checks">
+          <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+          <span itemprop="name">Quizzes &amp; Knowledge Tests</span>
+        </span>
+                </li>
+                <!-- 5. Step-by-step learning paths -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="5" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-rose-500/90 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-rose-500/60" title="Structured PHP learning paths for beginners and pros">
+          <i class="fa-solid fa-map-signs" aria-hidden="true"></i>
+          <span itemprop="name">Step-by-Step Learning Paths</span>
+        </span>
+                </li>
+                <!-- 6. Practical design patterns -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="6" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-neutral-900 shadow" title="Real-world PHP design patterns explained">
+          <i class="fa-solid fa-puzzle-piece" aria-hidden="true"></i>
+          <span itemprop="name">Practical Design Patterns</span>
+        </span>
+                </li>
+                <!-- 7. SOLID best practices -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="7" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-rose-500/90 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-rose-500/60" title="Master SOLID principles in PHP OOP">
+          <i class="fa-solid fa-cubes" aria-hidden="true"></i>
+          <span itemprop="name">SOLID Best Practices</span>
+        </span>
+                </li>
+                <!-- 8. GitHub source-code access -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="8" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-neutral-900 shadow" title="Access to full source code on GitHub">
+          <i class="fa-brands fa-github" aria-hidden="true"></i>
+          <span itemprop="name">GitHub Source Code</span>
+        </span>
+                </li>
+                <!-- 9. Developer community & forum -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="9" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-rose-500/90 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-rose-500/60" title="Active PHP developer community and forum">
+          <i class="fa-solid fa-comments" aria-hidden="true"></i>
+          <span itemprop="name">Community &amp; Forum</span>
+        </span>
+                </li>
+                <!-- 10. Completion certificate -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="10" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-neutral-900 shadow" title="Official course completion certificate">
+          <i class="fa-solid fa-certificate" aria-hidden="true"></i>
+          <span itemprop="name">Completion Certificate</span>
+        </span>
+                </li>
+                <!-- 11. Live coding sessions -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="11" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-rose-500/90 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-rose-500/60" title="Weekly live coding streams & workshops">
+          <i class="fa-solid fa-laptop-code" aria-hidden="true"></i>
+          <span itemprop="name">Live Coding Sessions</span>
+        </span>
+                </li>
+                <!-- 12. Weekly PHP newsletter -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="12" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-neutral-900 shadow" title="Weekly PHP and backend development newsletter">
+          <i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>
+          <span itemprop="name">Weekly PHP Newsletter</span>
+        </span>
+                </li>
+
+                <!-- 13. GitHub example projects -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="8" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-neutral-900 shadow" title="Open-source example projects on GitHub">
+          <i class="fa-brands fa-github" aria-hidden="true"></i>
+          <span itemprop="name">GitHub Example Projects</span>
+        </span>
+                </li>
+                <!-- 14. Dev community comments -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="9" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-rose-500/90 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-rose-500/60" title="Discuss and ask questions in comments">
+          <i class="fa-solid fa-comments" aria-hidden="true"></i>
+          <span itemprop="name">Community Q&A</span>
+        </span>
+                </li>
+                <!-- 15. Free PDF guides -->
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <meta itemprop="position" content="10" />
+                    <span class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-neutral-900 shadow" title="Free downloadable PDF reference guides">
+          <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+          <span itemprop="name">Free PDF Guides</span>
+        </span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="faq" class="bg-neutral-800 py-20 lg:py-28" aria-label="Frequently asked questions about my PHP learning blog">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <header class="mb-12 text-center">
+                <h2 class="text-3xl font-extrabold text-white md:text-4xl">
+                    Learning&nbsp;Hub <span class="text-rose-400">FAQ</span>
+                </h2>
+                <p class="mx-auto mt-3 max-w-3xl text-neutral-300">
+                    Answers to the most common questions about my articles, publishing schedule and how you can get involved.
+                </p>
+            </header>
+
+            <!-- FAQ accordion using <details> for accessibility -->
+            <div class="space-y-4" itemscope itemtype="https://schema.org/FAQPage">
+                <!-- Q1 -->
+                <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
+                    <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
+                        <span itemprop="name">What kind of content will I find here?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
+                    </summary>
+                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
+                        <p itemprop="text">
+                            You will find in-depth blog posts, practical tutorials, code snippets, cheat sheets and occasional live-coding sessions – all focused on modern PHP, MySQL and backend development techniques.
+                        </p>
+                    </div>
+                </details>
+                <!-- Q2 -->
+                <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
+                    <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
+                        <span itemprop="name">Do I need previous programming experience?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
+                    </summary>
+                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
+                        <p itemprop="text">
+                            Not at all. Many articles start from the basics and offer incremental challenges. Beginners and seasoned developers alike can benefit – just pick the level that suits you.
+                        </p>
+                    </div>
+                </details>
+                <!-- Q3 -->
+                <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
+                    <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
+                        <span itemprop="name">How often do you publish new articles?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
+                    </summary>
+                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
+                        <p itemprop="text">
+                            I aim to release a fresh tutorial or deep-dive every two weeks, plus a quick-tip newsletter every Friday. Follow me on Instagram or sign up for the email list so you never miss an update.
+                        </p>
+                    </div>
+                </details>
+                <!-- Q4 -->
+                <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
+                    <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
+                        <span itemprop="name">Can I request a topic or ask a question?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
+                    </summary>
+                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
+                        <p itemprop="text">
+                            Absolutely! Leave a comment under any article or tweet me your idea. I prioritise topics that help the community the most.
+                        </p>
+                    </div>
+                </details>
+                <!-- Q5 -->
+                <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
+                    <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
+                        <span itemprop="name">What's the best way to stay updated?</span>
+                        <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
+                    </summary>
+                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
+                        <p itemprop="text">
+                            Subscribe to the free PHP newsletter. I also post quick updates on LinkedIn and Mastodon.
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="bg-neutral-900 py-20 lg:py-28" aria-label="About the author – PHP developer and technical writer">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center" itemscope itemtype="https://schema.org/Person">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-3" itemprop="name">Jakub "oattlo" Owsianka</h2>
+{{--            <p class="text-neutral-300 mb-6 max-w-2xl" itemprop="description">--}}
+{{--                Senior PHP developer, open‑source contributor and tech writer. I share hands‑on tutorials and insider tips from <span class="font-semibold">15+ years</span> in backend development, DevOps and database optimisation.--}}
+{{--            </p>--}}
+
+{{--            <!-- Highlights -->--}}
+{{--            <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">--}}
+{{--                <li class="flex items-center gap-3 text-neutral-200"><i class="fa-solid fa-award text-rose-400"></i> Speaker at PHPers Summit &amp; SymfonyLive</li>--}}
+{{--                <li class="flex items-center gap-3 text-neutral-200"><i class="fa-brands fa-github text-rose-400"></i> 30k+ GitHub stars across projects</li>--}}
+{{--                <li class="flex items-center gap-3 text-neutral-200"><i class="fa-solid fa-briefcase text-rose-400"></i> Ex‑lead dev at SaaS scale‑ups</li>--}}
+{{--            </ul>--}}
+
+{{--            <!-- Social links -->--}}
+{{--            <div class="mt-8 flex gap-6">--}}
+{{--                <a href="https://twitter.com/{YOUR_HANDLE}" target="_blank" rel="noopener" class="text-neutral-400 hover:text-rose-400" aria-label="Follow on Twitter"><i class="fa-brands fa-x-twitter fa-lg"></i></a>--}}
+{{--                <a href="https://github.com/{YOUR_GITHUB}" target="_blank" rel="noopener" class="text-neutral-400 hover:text-rose-400" aria-label="GitHub profile"><i class="fa-brands fa-github fa-lg"></i></a>--}}
+{{--                <a href="https://linkedin.com/in/{YOUR_LINKEDIN}" target="_blank" rel="noopener" class="text-neutral-400 hover:text-rose-400" aria-label="LinkedIn profile"><i class="fa-brands fa-linkedin fa-lg"></i></a>--}}
+{{--            </div>--}}
+        </div>
+    </section>
+
+{{--    <!-- ===============================================--}}
+{{--      SECTION 4 – NEWSLETTER CTA--}}
+{{--      ================================================== -->--}}
+{{--    <section id="newsletter" class="relative bg-rose-600/10 py-20 lg:py-28 backdrop-blur-lg">--}}
+{{--        <div class="absolute inset-0 pointer-events-none select-none" aria-hidden="true">--}}
+{{--            <!-- decorative gradient / pattern -->--}}
+{{--            <div class="h-full w-full bg-gradient-to-br from-transparent via-rose-500/10 to-rose-600/20"></div>--}}
+{{--        </div>--}}
+{{--        <div class="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">--}}
+{{--            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">--}}
+{{--                Join <span class="text-rose-400">3,000+</span> developers getting free PHP tips every Friday--}}
+{{--            </h2>--}}
+{{--            <p class="text-neutral-200 mb-8 max-w-2xl mx-auto">--}}
+{{--                No spam — just practical articles, fresh code examples and hand‑picked links that will make you a better backend developer.--}}
+{{--            </p>--}}
+
+{{--            <!-- Subscribe form -->--}}
+{{--            <form class="mx-auto flex max-w-md flex-col sm:flex-row gap-3" action="#" method="post" aria-label="Subscribe to PHP newsletter" itemscope itemtype="https://schema.org/SubscribeAction">--}}
+{{--                <meta itemprop="name" content="Subscribe to weekly PHP newsletter" />--}}
+{{--                <input type="email" name="email" placeholder="you@example.com" required class="w-full rounded-xl border border-transparent bg-white/10 p-3 text-white placeholder-neutral-400 focus:border-rose-400 focus:outline-none" itemprop="participant" />--}}
+{{--                <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-rose-500 px-6 py-3 font-semibold text-white shadow-md shadow-rose-500/40 transition hover:bg-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-300">--}}
+{{--                    <i class="fa-solid fa-envelope-open-text mr-2" aria-hidden="true"></i> Subscribe--}}
+{{--                </button>--}}
+{{--            </form>--}}
+
+{{--            <!-- Benefit bullets -->--}}
+{{--            <ul class="mt-6 flex flex-col items-center gap-2 text-sm text-neutral-300 sm:flex-row sm:justify-center">--}}
+{{--                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400"></i> Actionable tips</li>--}}
+{{--                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400"></i> Curated resources</li>--}}
+{{--                <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-400"></i> Unsubscribe anytime</li>--}}
+{{--            </ul>--}}
+{{--        </div>--}}
+{{--    </section>--}}
 
 </div>
 

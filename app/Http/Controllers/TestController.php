@@ -9,8 +9,12 @@ use App\Jobs\KnowledgeJob;
 use App\Magisterka\CodeReviewAnalyzerService;
 use App\Magisterka\DocumentationFileLoader;
 use App\Models\CodeKnowledge;
+use App\Prompts\Abstract\Enums\OpenApiResultType;
 use App\Services\Generator\InternalUrlsGenerator;
+use App\Services\Posts\GeneratorImagePostService;
 use App\Services\PracaMagisterska;
+use DOMDocument;
+use Highlight\Highlighter;
 use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
 
@@ -22,11 +26,42 @@ class TestController extends Controller
     const URL_POLIGON_VERIFY = 'https://poligon.aidevs.pl/verify';
 
 
-    public function test(Request $reques, PracaMagisterska $pracaMagisterska)
+    public function test(Request $reques, PracaMagisterska $pracaMagisterska, GeneratorImagePostService $generatorImagePostService, OpenAiHelper $openAiHelper)
     {
-        $userMessage = '';
-        $queryEmbedding = OpenAiHelper::embedding($userMessage);
-        $matches = $this->findSimilarEmbeddings($queryEmbedding);
+
+//        $generatorImagePostService->generateNormalPost2();
+
+        dd('fd');
+//
+//        $r = OpenAiHelper::getResult(user: 'Wygeneruj ciekawy kod (krótki) w PHP do pokazania w Rolce na instragram jako ciekawostka', system: 'ZWRÓC JSON, { "code": "kod", "name": "Nazwa ciekawoski", "description": "Krótki opis pod header"} #### Pamietaj ze głównie czytelnikami są Seniorzy więc to musze być naprawde ciekawostki ', resultType: OpenApiResultType::JSON_OBJECT);
+//
+//        $result = json_decode($r, true);
+//
+//        dump($result);
+//
+//        $yourCode = <<<'CODE'
+//        $names = ['alice', 'bob', 'charlie'];
+//
+//        // Używamy funkcji anonimowej (closure), żeby przekształcić każdy element
+//        $capitalizedNames = array_map(function ($name) {
+//            return ucfirst($name);
+//        }, $names);
+//
+//        print_r($capitalizedNames);
+//        CODE;
+//
+//        $generatorImagePostService->generateNormalPostCustom($result['code']);
+
+
+
+
+
+
+
+
+//        $userMessage = '';
+//        $queryEmbedding = OpenAiHelper::embedding($userMessage);
+//        $matches = $this->findSimilarEmbeddings($queryEmbedding);
 
 
 //        $answer = $pracaMagisterska->getAnswerByKnowledge('Jak działa mechanizm providerów opartych na tagach?');

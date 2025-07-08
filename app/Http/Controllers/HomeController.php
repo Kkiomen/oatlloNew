@@ -9,6 +9,7 @@ use App\Models\Article;
 use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\CourseCategoryLesson;
+use App\Models\InstagramPost;
 use App\Models\Tag;
 use App\Models\TagArticle;
 use App\Services\Course\CourseHelper;
@@ -22,6 +23,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        $postInstagrams = [];
         if(env('LANGUAGE_MODE') == 'strict'){
             $defaultLangue = env('APP_LOCALE');
             $lessonsNotIn = [];
@@ -29,14 +31,17 @@ class HomeController extends Controller
                 $lessonsNotIn[] = $lesson->lesson_id;
             }
 
-            $randomArticles = Article::where('is_published', true)->where('language', $defaultLangue)->whereNotIn('id', $lessonsNotIn)->inRandomOrder()->take(3)->get();
+            $randomArticles = Article::where('is_published', true)->where('language', $defaultLangue)->whereNotIn('id', $lessonsNotIn)->orderBy('id', 'desc')->take(6)->get();
+            $postInstagrams = InstagramPost::where('language', $defaultLangue)->orderBy('created_at', 'desc')->take(8)->get();
+//            $randomArticles = Article::where('is_published', true)->where('language', $defaultLangue)->whereNotIn('id', $lessonsNotIn)->inRandomOrder()->take(6)->get();
         }else{
-            $randomArticles = Article::where('is_published', true)->inRandomOrder()->take(3)->get();
+            $randomArticles = Article::where('is_published', true)->inRandomOrder()->take(6)->get();
         }
 
 
         return view('views_basic.welcome', [
-            'randomArticles' => $randomArticles
+            'randomArticles' => $randomArticles,
+            'postInstagrams' => $postInstagrams
         ]);
     }
 

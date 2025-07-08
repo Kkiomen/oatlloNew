@@ -25,6 +25,9 @@
                     <x-nav-link :href="route('content_generators.index')" :active="request()->routeIs('content_generators.index')">
                         {{ __('Generowanie treści ') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('instagram_post.index')" :active="request()->routeIs('content_generators.index')">
+                        {{ __('Posty instagram') }}
+                    </x-nav-link>
 
 {{--                    @php $cmsPages = \App\Models\CmsPage::get(); @endphp--}}
 {{--                    @foreach($cmsPages as $cmsPage)--}}

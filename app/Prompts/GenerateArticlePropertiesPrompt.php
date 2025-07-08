@@ -11,7 +11,7 @@ class GenerateArticlePropertiesPrompt extends AbstractOpenApiGenerator
     protected static function preparePrompt(array $data = []): string
     {
         return '
-Przygotuj podstawowe informacje o artykule na podstawie jego opisu, które są zoptymalizowane pod kątem SEO i zwróć je w formacie JSON.
+Jesteś specjalistą SEO. Przygotuj podstawowe informacje o artykule na podstawie jego opisu, które są zoptymalizowane pod kątem SEO i zwróć je w formacie JSON.
 
 Użyj poniższej struktury JSON, zachowując wszystkie klucze bez zmian. Wprowadzone informacje powinny być zoptymalizowane pod kątem SEO, aby efektywnie zwiększały trafność i widoczność strony.
 

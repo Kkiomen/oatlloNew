@@ -91,6 +91,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/pages/to-generate-content/{article}', [PageController::class, 'getToGenerateContent'])->name('pages.toGenerateContent');
     Route::get('/pages/generate-article-content/{article}/{schemaId}', [PageController::class, 'generateContentByIdSchema'])->name('pages.generateContentByIdSchema');
 
+    Route::get('/pages/generate-seo-data/{article}', [PageController::class, 'generateSeoData'])->name('pages.generateSeoData');
+
 
     // ======== Categories =========
 
@@ -139,6 +141,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/courses/edit/category/lessons/edit/positions', [CourseController::class, 'editCategoryLessonsPositions'])->name('courses.category.lessons.edit.positions');
     Route::get('/courses/edit/category/lessons/edit/remove/{id}', [CourseController::class, 'removeCategoryLessonsPositions'])->name('courses.category.lessons.remove.position');
 
+
+    Route::get('/instagram-posts', [\App\Http\Controllers\InstagramPostController::class, 'index'])->name('instagram_post.index');
+    Route::post('/instagram-posts/add', [\App\Http\Controllers\InstagramPostController::class, 'add'])->name('instagram_post.add');
+    Route::delete('/instagram-posts/remove/{post}', [\App\Http\Controllers\InstagramPostController::class, 'remove'])->name('instagram_post.remove');
 
 });
 require __DIR__.'/auth.php';

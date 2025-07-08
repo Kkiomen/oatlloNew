@@ -56,6 +56,13 @@
                         </button>
                     </a>
 
+                    <a href="{{ route('pages.generateSeoData', ['article' => $article->id]) }}">
+                        <button type="button"
+                                class="inline-flex items-center rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-800">
+                            Generuj dane SEO
+                        </button>
+                    </a>
+
 
                     <div x-data="languageActions()">
                         @if($languages !== null)

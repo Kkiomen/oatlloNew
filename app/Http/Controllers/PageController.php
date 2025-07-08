@@ -6,6 +6,8 @@ use App\Models\Article;
 use App\Prompts\Abstract\Enums\OpenApiResultType;
 use App\Prompts\GenerateArticleContentPrompt;
 use App\Prompts\GenerateArticleDecorateTextPrompt;
+use App\Prompts\GenerateArticlePropertiesPrompt;
+use App\Prompts\GenerateArticleQueryImagesPrompt;
 use App\Prompts\GenerateConspectusArticlePrompt;
 use App\Services\Article\ArticleService;
 use App\Services\Generator\GeneratorArticleService;
@@ -271,5 +273,30 @@ class PageController extends Controller
 
 //        return response()->json(['url' => 'http://localhost/automatyka/public/pages/39/edit']);
         return response()->json(['url' => route('pages.edit', $article)]);
+    }
+
+    public function generateSeoData(Request $request, Article $article,  ArticleService $articleService, ImageService $imageService)
+    {
+        // ============ Generate basic info ============
+        $content = GenerateArticlePropertiesPrompt::generateContent(
+            userContent: $article->name . 'Generate data in language: ' . $article->language,
+            resultType: OpenApiResultType::JSON_OBJECT
+        );
+
+        // Update article
+        $content = json_decode($content, true);
+        foreach ($content as $key => $value) {
+            $articleService->updateKey($article, $key .'0001000', $value);
+        }
+
+        // ============ Generate image ============
+        $queryImage = GenerateArticleQueryImagesPrompt::generateContent(userContent: $article->name);
+        $imagePath = $imageService->generateImageByQuery($queryImage);
+        if(!empty($imagePath)){
+            $articleService->updateKey($article, 'basic_website_structure_image'. '0001000file', $imagePath);
+        }
+        // ============ Generate image ============
+
+        return Redirect::back();
     }
 }
