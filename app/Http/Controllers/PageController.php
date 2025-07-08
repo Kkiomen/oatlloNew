@@ -28,7 +28,7 @@ class PageController extends Controller
     {
         // Pobieranie wartości wyszukiwania z zapytania
         $search = $request->input('search');
-        $language = $request->input('language');
+        $language = $request->input('language', env('APP_LOCALE'));
 
         // Filtracja artykułów na podstawie tytułu, jeśli pole wyszukiwania nie jest puste
         $articles = Article::when($search, function ($query, $search) {
