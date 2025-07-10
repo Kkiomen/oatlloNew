@@ -19,8 +19,9 @@ class FeedController extends Controller
         $channel->addChild('language', 'en-EN');
         $channel->addChild('lastBuildDate', now()->toRfc2822String());
 
+        $defaultLangue = env('APP_LOCALE');
 
-        $articles = Article::where('is_published', true)
+        $articles = Article::where('is_published', true)->where('language', $defaultLangue)
             ->orderBy('created_at', 'desc')
             ->take(20)
             ->get();
