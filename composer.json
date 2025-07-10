@@ -19,7 +19,8 @@
         "react/event-loop": "1.5.0",
         "react/promise": "3.2.0",
         "scrivo/highlight.php": "^9.18",
-        "symfony/filesystem": "^7.1"
+        "symfony/filesystem": "^7.1",
+        "ext-simplexml": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
