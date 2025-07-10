@@ -9,23 +9,24 @@ class FeedController extends Controller
 {
     public function rss(Request $request)
     {
-        // Start with RSS 2.0 with Atom namespace
+        $feedUrl = url('/feed');
+        $siteUrl = url('/');
+
         $xml = new \SimpleXMLElement(
-            '<?xml version="1.0" encoding="UTF-8"?><rss></rss>'
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            . '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"></rss>'
         );
-        $xml->addAttribute('version', '2.0');
-        $xml->addAttribute('xmlns:atom', 'http://www.w3.org/2005/Atom');
 
         $channel = $xml->addChild('channel');
         $channel->addChild('title', 'Oatllo – programming blog, projects, courses, tips.');
-        $channel->addChild('link', url('/'));
+        $channel->addChild('link', $siteUrl);
         $channel->addChild('description', 'Oatllo is a place for programming enthusiasts where you will find articles, projects, courses, and tips. Enhance your skills and explore modern technologies.');
         $channel->addChild('language', 'en-US');
         $channel->addChild('lastBuildDate', now()->toRfc2822String());
 
-        // Add the recommended atom:link rel="self"
+        // Atom link element in correct namespace
         $atomLink = $channel->addChild('atom:link', null, 'http://www.w3.org/2005/Atom');
-        $atomLink->addAttribute('href', url('/feed'));
+        $atomLink->addAttribute('href', $feedUrl);
         $atomLink->addAttribute('rel', 'self');
         $atomLink->addAttribute('type', 'application/rss+xml');
 
