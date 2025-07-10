@@ -5,6 +5,7 @@
     <title>{{ __('basic.meta_title') }}</title>
     <meta name="description" content="{{ __('basic.meta_description') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="alternate" type="application/rss+xml" title="Oatllo RSS Feed" href="{{ route('feed') }}" />
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="robots" content="index, follow">
 

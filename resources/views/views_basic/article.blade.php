@@ -6,6 +6,7 @@
     <meta name="description" content="{{ $article->view_content['basic_website_structure_description'] }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="{{ $article->getRoute() }}" />
+    <link rel="alternate" type="application/rss+xml" title="Oatllo RSS Feed" href="{{ route('feed') }}" />
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
     <meta name="keywords" content="{{ $article->view_content['basic_website_structure_keywords'] }}">
     <script src="https://cdn.tailwindcss.com"></script>

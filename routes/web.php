@@ -21,7 +21,7 @@ Route::get('/blog/tag/{tag}', [\App\Http\Controllers\HomeController::class, 'blo
 Route::get('/blog/lista/{slug}', [\App\Http\Controllers\HomeController::class, 'blogListCategory'])->name('blog.list.category');
 Route::post('/send/email', [\App\Http\Controllers\HomeController::class, 'sendEmail'])->name('send.email');
 
-Route::get('/feed', [\App\Http\Controllers\FeedController::class, 'rss'])->name('rss');
+Route::get('/feed', [\App\Http\Controllers\FeedController::class, 'rss'])->name('feed');
 //Route::get('/blog/', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 
 
