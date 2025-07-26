@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('instagram_posts', function (Blueprint $table) {
-            $table->id();
-            $table->text('image_link')->nullable();
-            $table->string('url')->nullable();
-            $table->string('language')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('instagram_posts')) {
+            Schema::create('instagram_posts', function (Blueprint $table) {
+                $table->id();
+                $table->text('image_link')->nullable();
+                $table->string('url')->nullable();
+                $table->string('language')->nullable();
+                $table->timestamps();
+            });
+        }
+
     }
 
     /**
