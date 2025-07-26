@@ -26,6 +26,7 @@ class Article extends Model
         'connection_article_id',
         'structure_data_google',
         'keys_link',
+        'auto_publish_date',
     ];
 
     protected $casts = [
@@ -35,6 +36,7 @@ class Article extends Model
         'schema_ai' => 'array',
         'options_ai' => 'array',
         'is_published' => 'boolean',
+        'auto_publish_date' => 'datetime',
     ];
 
     public function sections()
