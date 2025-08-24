@@ -36,6 +36,8 @@
     <meta name="twitter:title" content="{{ $article->name }}">
     <meta name="twitter:description" content="{{ $article->view_content['basic_website_structure_op_description'] }}">
     <meta name="twitter:image" content="{{ $article->view_content['basic_website_structure_op_image_img_file'] }}">
+    <meta name="twitter:site" content="@Oatllo">
+    <meta name="twitter:creator" content="@Oatllo">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
