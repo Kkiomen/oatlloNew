@@ -2,15 +2,16 @@
 <html lang="{{ env('APP_LANG_HTML') }}">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="index, follow">
     <title>{{ $article->view_content['basic_website_structure_title'] }}</title>
     <meta name="description" content="{{ $article->view_content['basic_website_structure_description'] }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="{{ $article->getRoute() }}" />
+    <link rel="alternate" hreflang="en" href="{{ $article->getRoute() }}">
     <link rel="alternate" type="application/rss+xml" title="Oatllo RSS Feed" href="{{ route('feed') }}" />
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
