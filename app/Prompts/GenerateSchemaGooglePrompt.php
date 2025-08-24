@@ -89,7 +89,7 @@ Jesteś specjalistą SEO. Przygotuj uporządkowane dane w wyszukiwarce Google w 
 <example>
 {
       "@context": "https://schema.org",
-      "@type": "NewsArticle",
+      "@type": "Article",
       "headline": "Title of a News Article",
       "image": [
         "https://example.com/photos/1x1/photo.jpg",

@@ -8,7 +8,6 @@
     <link rel="canonical" href="{{ $article->getRoute() }}" />
     <link rel="alternate" type="application/rss+xml" title="Oatllo RSS Feed" href="{{ route('feed') }}" />
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
-    <meta name="keywords" content="{{ $article->view_content['basic_website_structure_keywords'] }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -20,11 +19,23 @@
     <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+    <meta property="og:site_name" content="Oatllo">
+    <meta property="og:locale" content="{{ env('APP_LANG_HTML') }}">
     <meta property="og:title" content="{{ $article->view_content['basic_website_structure_op_title'] }}" />
     <meta property="og:description" content="{{ $article->view_content['basic_website_structure_op_description'] }}" />
     <meta property="og:url" content="{{ $article->getRoute() }}" />
     <meta property="og:image" content="{{ $article->view_content['basic_website_structure_op_image_img_file'] }}" />
-    <meta property=”og:type” content=”article” />
+    <meta property="og:type" content="article">
+    <meta property="article:section" content="Programming">
+
+    <meta property="article:published_time" content="{{ $article->created_at }}">
+    <meta property="article:modified_time" content="{{ $article->updated_at }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $article->name }}">
+    <meta name="twitter:description" content="{{ $article->view_content['basic_website_structure_op_description'] }}">
+    <meta name="twitter:image" content="{{ $article->view_content['basic_website_structure_op_image_img_file'] }}">
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
