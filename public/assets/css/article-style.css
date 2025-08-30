@@ -1,49 +1,13 @@
-.article-content-theme {
-    p {
-        margin-top: 1.5rem;
-        text-align: justify;
-    }
-
-    strong{
-        color: #f3f0f0;
-    }
-
-    h2{
-        letter-spacing: -0.025em;
-        font-weight: 700;
-        font-size: 1.875rem;
-        line-height: 2.25rem;
-
-        @media (min-width: 640px) {
-            font-size: 2.15rem;
-            line-height: 2.5rem;
-        }
-    }
-
-    ul{
-        list-style-type: disc;
-        margin-left: 19px;
-
-        li{
-            margin-top: 0.8rem;
-        }
-    }
-
+.prose {
     pre code.hljs {
         display: block;
         overflow-x: auto;
-        padding: 1em
     }
 
-    code.hljs {
-        padding: 3px 5px
-    }
 
     .hljs {
         color: #eff;
-        background: #272c31;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
+        padding-left: 1rem;
     }
 
     .hljs ::selection, .hljs::selection {
@@ -113,32 +77,4 @@
         font-weight: 700
     }
 
-    @media (min-width: 640px) {
-        border: 1px solid #939393;
-    }
-
-
-    h2,h3,h4{
-        margin-top: 2.5rem; !important;
-        margin-bottom: 2.0rem; !important;
-    }
-
-
-    a:not(.tags_list) {
-        color: rgb(251 191 36);
-        font-weight: bold;
-    }
-
-    .tags_list {
-        a {
-            color: white;
-            font-weight: bold;
-        }
-    }
-}
-
-.tag-description-theme{
-    h2{
-        font-size: 1.5rem; !important;
-    }
 }

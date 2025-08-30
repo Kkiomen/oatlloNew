@@ -102,44 +102,81 @@ class HomeController extends Controller
             $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->whereNotIn('id', $lessonsNotIn)->inRandomOrder()->take(3)->get();
         }
 
-        return view('views_basic.article', [
+        if (!$article) {
+            abort(404, 'Artykuł nie został znaleziony');
+        }
+
+        // Pobieranie artykułów do nawigacji
+        $nextArticle = $article->getNextArticle();
+        $previousArticle = $article->getPreviousArticle();
+
+        // Pobieranie powiązanych artykułów
+        $relatedArticles = $article->getRelatedArticles(6);
+
+        // Pobieranie popularnych artykułów
+        $popularArticles = Article::getPopularArticles(4);
+
+        // Pobieranie artykułów z tej samej kategorii
+        $categoryArticles = $article->getCategoryArticles(6);
+
+        // Pobieranie najnowszych artykułów
+        $latestArticles = Article::getLatestArticles(6);
+
+        return view('views_basic.article',[
             'article' => $article,
-            'category' => null,
-            'randomArticles' => $randomArticles
+            'nextArticle' => $nextArticle,
+            'previousArticle' => $previousArticle,
+            'relatedArticles' => $relatedArticles,
+            'popularArticles' => $popularArticles,
+            'categoryArticles' => $categoryArticles,
+            'latestArticles' => $latestArticles
         ]);
+
     }
 
 
 
 
     // ============== BLOG ==============
-    public function blog(): View
+    public function blog(Request $request): View
     {
+        // Pobierz parametr wyszukiwania
+        $searchQuery = $request->get('q');
+
         $uniqueCategoryIds = Article::whereNotNull('category_id')->where('is_published', true)
             ->distinct()
             ->pluck('category_id');
 
         $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
 
+        // Buduj query dla artykułów
+        $articlesQuery = Article::with(['category', 'tags'])->where('is_published', true);
+
+        // Dodaj filtrowanie według języka jeśli jest włączone
         if(env('LANGUAGE_MODE') == 'strict') {
             $lessonsNotIn = [];
             foreach (CourseCategoryLesson::get() as $lesson){
                 $lessonsNotIn[] = $lesson->lesson_id;
             }
 
-            $articles = Article::where('is_published', true)
-                ->where('language', env('APP_LOCALE'))
-                ->whereNotIn('id', $lessonsNotIn)
-                ->orderBy('created_at', 'desc')->paginate(12);
-        }else{
-            $articles = Article::where('is_published', true)
-                ->orderBy('created_at', 'desc')->paginate(12);
+            $articlesQuery->where('language', env('APP_LOCALE'))
+                ->whereNotIn('id', $lessonsNotIn);
         }
 
-        return view('views_basic.blog',[
-            'categories' => $categories,
+        // Dodaj wyszukiwanie jeśli podano query
+        if ($searchQuery) {
+            $articlesQuery->where(function($query) use ($searchQuery) {
+                $query->where('name', 'like', '%' . $searchQuery . '%')
+                    ->orWhere('short_description', 'like', '%' . $searchQuery . '%');
+            });
+        }
+
+        $articles = $articlesQuery->orderBy('created_at', 'desc')->paginate(12);
+
+        return view('views_basic.blog', [
             'articles' => $articles,
-            'currentCategory' => null
+            'categories' => $categories,
+            'searchQuery' => $searchQuery
         ]);
     }
 

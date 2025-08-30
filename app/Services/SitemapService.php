@@ -63,7 +63,7 @@ class SitemapService
                     loc: $article->getRoute(false) ,
                     priority: '0.7',
                     changefreq: 'weekly',
-                    lastmod: $article->updated_at->toIso8601String()
+                    lastmod: $article->getPublishedDate()->toIso8601String()
                 );
 
             }

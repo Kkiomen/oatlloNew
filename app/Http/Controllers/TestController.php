@@ -41,7 +41,7 @@ class  TestController extends Controller
         $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
 
         // Buduj query dla artykułów
-        $articlesQuery = Article::where('is_published', true);
+        $articlesQuery = Article::with(['category', 'tags'])->where('is_published', true);
 
         // Dodaj filtrowanie według języka jeśli jest włączone
         if(env('LANGUAGE_MODE') == 'strict') {

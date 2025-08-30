@@ -173,7 +173,6 @@ use Illuminate\Support\Str;
         .prose pre {
             background-color: #171717; /* neutral-900 */
             color: #f5f5f5;
-            padding: 1rem;
             border-radius: 0.75rem;
             overflow-x: auto;
             font-size: 0.875rem;
@@ -355,54 +354,211 @@ use Illuminate\Support\Str;
 </section>
 
 <!-- ===========================================================
-  RELATED ARTICLES
+  MORE ARTICLES SECTION
 =========================================================== -->
-@if(isset($relatedArticles) && $relatedArticles->count() > 0)
 <section class="mx-auto mt-16 max-w-5xl px-4 sm:px-6 lg:px-8">
-    <h2 class="text-2xl font-bold text-white mb-8">Powiązane artykuły</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @foreach($relatedArticles as $relatedArticle)
-            <article class="bg-neutral-900 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                <a href="{{ $relatedArticle->getRoute() }}" class="block">
-                    <img src="{{ $relatedArticle->image }}" alt="{{ $relatedArticle->name }}" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold text-white mb-2 line-clamp-2">{{ $relatedArticle->name }}</h3>
-                        <p class="text-neutral-400 text-sm line-clamp-3">{{ $relatedArticle->short_description }}</p>
-                        <div class="mt-3 flex items-center text-xs text-neutral-500">
-                            <time datetime="{{ $relatedArticle->getPublishedDate()->format('Y-m-d') }}">{{ $relatedArticle->getPublishedDate()->format('M j, Y') }}</time>
-                            <span class="mx-2">•</span>
-                            <span>{{ $relatedArticle->getTimeRead() }} min read</span>
+    <!-- Related Articles -->
+    @if(isset($relatedArticles) && $relatedArticles->count() > 0)
+    <div class="mb-12">
+        <h2 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+            <i class="fa-solid fa-link text-rose-400"></i>
+            Related Articles
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($relatedArticles as $relatedArticle)
+                <article class="bg-neutral-900 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                    <a href="{{ $relatedArticle->getRoute() }}" class="block">
+                        <div class="relative overflow-hidden">
+                            <img src="{{ $relatedArticle->image }}" alt="{{ $relatedArticle->name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
-                    </div>
-                </a>
-            </article>
-        @endforeach
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-white mb-2 line-clamp-2 group-hover:text-rose-400 transition-colors duration-200">{{ $relatedArticle->name }}</h3>
+                            <p class="text-neutral-400 text-sm line-clamp-3">{{ $relatedArticle->short_description }}</p>
+                            <div class="mt-3 flex items-center text-xs text-neutral-500">
+                                <time datetime="{{ $relatedArticle->getPublishedDate()->format('Y-m-d') }}">{{ $relatedArticle->getPublishedDate()->format('M j, Y') }}</time>
+                                <span class="mx-2">•</span>
+                                <span>{{ $relatedArticle->getTimeRead() }} min read</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
+    <!-- Popular Articles -->
+    @if(isset($popularArticles) && $popularArticles->count() > 0)
+    <div class="mb-12">
+        <h2 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+            <i class="fa-solid fa-fire text-rose-400"></i>
+            Popular Articles
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            @foreach($popularArticles as $index => $popularArticle)
+                <article class="bg-neutral-900 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                    <a href="{{ $popularArticle->getRoute() }}" class="block">
+                        <div class="flex">
+                            <div class="w-24 h-24 bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center text-white font-bold text-lg">
+                                {{ $index + 1 }}
+                            </div>
+                            <div class="flex-1 p-4">
+                                <h3 class="text-lg font-semibold text-white mb-2 line-clamp-2 group-hover:text-rose-400 transition-colors duration-200">
+                                    {{ $popularArticle->name }}
+                                </h3>
+                                <p class="text-neutral-400 text-sm line-clamp-2">{{ $popularArticle->short_description }}</p>
+                                <div class="mt-2 flex items-center text-xs text-neutral-500">
+                                    <time datetime="{{ $popularArticle->getPublishedDate()->format('Y-m-d') }}">{{ $popularArticle->getPublishedDate()->format('M j, Y') }}</time>
+                                    <span class="mx-2">•</span>
+                                    <span>{{ $popularArticle->getTimeRead() }} min read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
+    <!-- Category Articles -->
+    @if(isset($categoryArticles) && $categoryArticles->count() > 0)
+    <div class="mb-12">
+        <h2 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+            <i class="fa-solid fa-folder text-rose-400"></i>
+            More from {{ $article->getCategoryName() }}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($categoryArticles as $categoryArticle)
+                <article class="bg-neutral-900 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                    <a href="{{ $categoryArticle->getRoute() }}" class="block">
+                        @if($categoryArticle->image)
+                            <img src="{{ $categoryArticle->image }}" alt="{{ $categoryArticle->name }}" class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
+                        @else
+                            <div class="w-full h-32 bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
+                                <i class="fa-solid fa-file-text text-white text-2xl"></i>
+                            </div>
+                        @endif
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-white mb-2 line-clamp-2 group-hover:text-rose-400 transition-colors duration-200">{{ $categoryArticle->name }}</h3>
+                            <p class="text-neutral-400 text-sm line-clamp-2">{{ $categoryArticle->short_description }}</p>
+                            <div class="mt-3 flex items-center text-xs text-neutral-500">
+                                <time datetime="{{ $categoryArticle->getPublishedDate()->format('Y-m-d') }}">{{ $categoryArticle->getPublishedDate()->format('M j, Y') }}</time>
+                                <span class="mx-2">•</span>
+                                <span>{{ $categoryArticle->getTimeRead() }} min read</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            @endforeach
+        </div>
+        <div class="mt-6 text-center">
+            <a href="{{ route('blog.list.category', ['slug' => $article->getCategoryName()]) }}" class="inline-flex items-center gap-2 bg-rose-500 hover:bg-rose-600 text-white px-6 py-3 rounded-lg transition-colors duration-200">
+                <i class="fa-solid fa-arrow-right"></i>
+                View all articles from {{ $article->getCategoryName() }}
+            </a>
+        </div>
+    </div>
+    @endif
+
+    <!-- Latest Articles -->
+    @if(isset($latestArticles) && $latestArticles->count() > 0)
+    <div class="mb-12">
+        <h2 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+            <i class="fa-solid fa-clock text-rose-400"></i>
+            Latest Articles
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($latestArticles as $latestArticle)
+                <article class="bg-neutral-900 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                    <a href="{{ $latestArticle->getRoute() }}" class="block">
+                        @if($latestArticle->image)
+                            <div class="relative overflow-hidden">
+                                <img src="{{ $latestArticle->image }}" alt="{{ $latestArticle->name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div class="absolute top-3 left-3 bg-rose-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                    NEW
+                                </div>
+                            </div>
+                        @else
+                            <div class="w-full h-48 bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center relative">
+                                <i class="fa-solid fa-file-text text-white text-3xl"></i>
+                                <div class="absolute top-3 left-3 bg-white text-rose-500 text-xs px-2 py-1 rounded-full font-semibold">
+                                    NEW
+                                </div>
+                            </div>
+                        @endif
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-white mb-2 line-clamp-2 group-hover:text-rose-400 transition-colors duration-200">{{ $latestArticle->name }}</h3>
+                            <p class="text-neutral-400 text-sm line-clamp-3">{{ $latestArticle->short_description }}</p>
+                            <div class="mt-3 flex items-center justify-between text-xs text-neutral-500">
+                                <time datetime="{{ $latestArticle->getPublishedDate()->format('Y-m-d') }}">{{ $latestArticle->getPublishedDate()->format('M j, Y') }}</time>
+                                <span>{{ $latestArticle->getTimeRead() }} min read</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+            @endforeach
+        </div>
+
+    </div>
+    @endif
+
+    <!-- Newsletter Signup -->
+    <div class="bg-gradient-to-r from-rose-500 to-pink-600 rounded-lg p-8 text-center">
+        <h2 class="text-2xl font-bold text-white mb-4">Don't miss new articles!</h2>
+        <p class="text-rose-100 mb-6">Subscribe to our newsletter and get notified about new programming articles.</p>
+        <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <input type="email" placeholder="Your email address" class="flex-1 px-4 py-3 rounded-lg text-neutral-900 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-white">
+            <button class="bg-white text-rose-600 px-6 py-3 rounded-lg font-semibold hover:bg-neutral-100 transition-colors duration-200">
+                Subscribe
+            </button>
+        </div>
+        <p class="text-rose-100 text-sm mt-4">You can unsubscribe at any time. We respect your privacy.</p>
     </div>
 </section>
-@endif
 
 <!-- ===========================================================
   NEXT / PREVIOUS NAVIGATION
 =========================================================== -->
 <nav class="mx-auto mt-24 flex max-w-5xl justify-between px-4 sm:px-6 lg:px-8 mb-10" aria-label="Article navigation">
     @if($previousArticle)
-        <a href="{{ $previousArticle->getRoute() }}" class="flex max-w-xs items-center gap-3 text-neutral-400 hover:text-rose-400">
-            <i class="fa-solid fa-angle-left"></i>
-            <span class="truncate">{{ $previousArticle->name }}</span>
+        <a href="{{ $previousArticle->getRoute() }}" class="group flex max-w-xs items-center gap-3 text-neutral-400 hover:text-rose-400 transition-colors duration-200">
+            <div class="flex items-center gap-3 p-4 rounded-lg bg-neutral-900 hover:bg-neutral-800 transition-colors duration-200">
+                <i class="fa-solid fa-angle-left group-hover:-translate-x-1 transition-transform duration-200"></i>
+                <div class="min-w-0">
+                    <div class="text-xs text-neutral-500 uppercase tracking-wide">Previous Article</div>
+                    <div class="truncate font-medium">{{ $previousArticle->name }}</div>
+                </div>
+            </div>
         </a>
     @else
         <div></div>
     @endif
 
     @if($nextArticle)
-        <a href="{{ $nextArticle->getRoute() }}" class="flex max-w-xs items-center gap-3 text-neutral-400 hover:text-rose-400">
-            <span class="truncate">{{ $nextArticle->name }}</span>
-            <i class="fa-solid fa-angle-right"></i>
+        <a href="{{ $nextArticle->getRoute() }}" class="group flex max-w-xs items-center gap-3 text-neutral-400 hover:text-rose-400 transition-colors duration-200">
+            <div class="flex items-center gap-3 p-4 rounded-lg bg-neutral-900 hover:bg-neutral-800 transition-colors duration-200">
+                <div class="min-w-0 text-right">
+                    <div class="text-xs text-neutral-500 uppercase tracking-wide">Next Article</div>
+                    <div class="truncate font-medium">{{ $nextArticle->name }}</div>
+                </div>
+                <i class="fa-solid fa-angle-right group-hover:translate-x-1 transition-transform duration-200"></i>
+            </div>
         </a>
     @else
         <div></div>
     @endif
 </nav>
+
+<!-- Back to Blog -->
+<div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 mb-10 text-center">
+    <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 text-white px-6 py-3 rounded-lg transition-colors duration-200">
+        <i class="fa-solid fa-arrow-left"></i>
+        <span>View all articles</span>
+    </a>
+</div>
 
 {{--<!-- ===========================================================--}}
 {{--  COMMENTS (placeholder)--}}
@@ -428,7 +584,7 @@ use Illuminate\Support\Str;
   "author": {
     "@type": "Person",
     "name": "Jakub Owsianka",
-    "url": "https://oatllo.com/"
+    "url": "https://oatllo.com/about"
   },
   "datePublished": "{{ $article->getPublishedDate()->format('Y-m-d') }}",
   "dateModified": "{{ $article->updated_at->format('Y-m-d') }}",
@@ -437,7 +593,7 @@ use Illuminate\Support\Str;
     "name": "Oatllo",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://oatllo.com/assets/images/logo-512.jpg"
+      "url": "https://oatllo.com/assets/images/logo-512.png"
     }
   },
   "mainEntityOfPage": "{{ $article->getRoute() }}",

@@ -116,9 +116,7 @@ class ArticleService
                 $article->short_description = $article->view_content['basic_article_information_description'];
             }
             if(isset($article->view_content['basic_website_structure_is_published'])){
-                $article->is_published = boolval($article->view_content['basic_website_structure_is_published']);
-                TagForArticleGenerator::generate();
-                InternalUrlsGenerator::generate();
+                Article::publish($article, boolval($article->view_content['basic_website_structure_is_published']));
             }
 
             if(str_contains(haystack: $key,needle: 'structure_is_published')){

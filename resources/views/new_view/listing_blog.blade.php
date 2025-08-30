@@ -8,8 +8,8 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <title>{{ __('basic.meta_title') }}</title>
-    <meta name="description" content="{{ __('basic.meta_description') }}">
+    <title>{{ $searchQuery ? 'Search Results for ' . $searchQuery . ' - ' . __('basic.meta_title') : __('basic.meta_title') }}</title>
+    <meta name="description" content="{{ $searchQuery ? 'Search results for ' . $searchQuery . '. ' . __('basic.meta_description') : __('basic.meta_description') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="robots" content="index, follow">
@@ -19,13 +19,24 @@
 
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
 
-    <link rel="canonical" href="{{ route('index') }}">
+    <link rel="canonical" href="{{ request()->fullUrl() }}">
     <meta name="keywords" content="{{ __('basic.meta_keywords') }}">
 
-    <meta property="og:title" content="{{ __('basic.meta_title') }}">
-    <meta property="og:description" content="{{ __('basic.meta_description') }}">
-    {{--    <meta property="og:image" content="{{ $basic_website_structure_op_image_img_file }}">--}}
-    <meta property="og:url" content="{{ route('index') }}">
+    <meta property="og:title" content="{{ $searchQuery ? 'Search Results for ' . $searchQuery . ' - ' . __('basic.meta_title') : __('basic.meta_title') }}">
+    <meta property="og:description" content="{{ $searchQuery ? 'Search results for ' . $searchQuery . '. ' . __('basic.meta_description') : __('basic.meta_description') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request()->fullUrl() }}">
+    <meta property="og:site_name" content="oatllo">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $searchQuery ? 'Search Results for ' . $searchQuery . ' - ' . __('basic.meta_title') : __('basic.meta_title') }}">
+    <meta name="twitter:description" content="{{ $searchQuery ? 'Search results for ' . $searchQuery . '. ' . __('basic.meta_description') : __('basic.meta_description') }}">
+    
+    @if(env('LANGUAGE_MODE') == 'strict')
+        <link rel="alternate" hreflang="pl" href="{{ request()->fullUrl() }}">
+        <link rel="alternate" hreflang="en" href="{{ str_replace('/pl/', '/en/', request()->fullUrl()) }}">
+        <link rel="alternate" hreflang="x-default" href="{{ str_replace('/pl/', '/en/', request()->fullUrl()) }}">
+    @endif
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
@@ -251,26 +262,462 @@
 </main>
 
 <!-- ===========================================================
-  STRUCTURED DATA – JSON-LD (ItemList of BlogPosting)
+  STRUCTURED DATA – JSON-LD (Blog + ItemList + BreadcrumbList)
 =========================================================== -->
 <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "{{ __('basic.meta_title') }}",
+  "description": "{{ __('basic.meta_description') }}",
+  "url": "{{ route('test') }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "oatllo",
+    "url": "{{ route('index') }}"
+  },
+  "blogPost": [
+    @foreach($articles as $index => $article)
     {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "url": "https://{YOUR_DOMAIN}/articles/optimise-php-performance"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "url": "https://{YOUR_DOMAIN}/articles/php-8-attributes-guide"
-        }
-        /* Add more items programmatically */
-      ]
+      "@type": "BlogPosting",
+      "headline": "{{ addslashes($article->name) }}",
+      "description": "{{ addslashes($article->short_description) }}",
+      "url": "{{ $article->getRoute() }}",
+      "datePublished": "{{ $article->getPublishedDate()->format('Y-m-d\TH:i:sP') }}",
+      "dateModified": "{{ $article->updated_at->format('Y-m-d\TH:i:sP') }}",
+      "wordCount": {{ str_word_count(strip_tags($article->content ?? '')) }},
+      "timeRequired": "PT{{ $article->getTimeRead() }}M",
+      "author": {
+        "@type": "Person",
+        "name": "Jakub Owsianka"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "oatllo",
+        "url": "{{ route('index') }}"
+      },
+      "image": {
+        "@type": "ImageObject",
+        "url": "{{ $article->image }}",
+        "width": 800,
+        "height": 600
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ $article->getRoute() }}"
+      }@if($article->category),@endif
+      @if($article->category)
+      "articleSection": "{{ addslashes($article->category->name) }}"
+      @endif
+      @if($article->tags && $article->tags->count() > 0),
+      "keywords": "{{ $article->tags->pluck('name')->implode(', ') }}"
+      @endif
+    }@if(!$loop->last),@endif
+    @endforeach
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "{{ $searchQuery ? 'Search Results for ' . $searchQuery : 'Latest PHP Articles' }}",
+  "description": "{{ $searchQuery ? 'Search results for ' . $searchQuery : 'Latest PHP articles and tutorials' }}",
+  "url": "{{ request()->fullUrl() }}",
+  "numberOfItems": {{ $articles->total() }},
+  "itemListElement": [
+    @foreach($articles as $index => $article)
+    {
+      "@type": "ListItem",
+      "position": {{ ($articles->currentPage() - 1) * $articles->perPage() + $loop->iteration }},
+      "url": "{{ $article->getRoute() }}",
+      "name": "{{ addslashes($article->name) }}",
+      "description": "{{ addslashes($article->short_description) }}"
+    }@if(!$loop->last),@endif
+    @endforeach
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ route('index') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ $searchQuery ? 'Search Results' : 'Blog' }}",
+      "item": "{{ request()->fullUrl() }}"
     }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ __('basic.meta_title') }}",
+  "url": "{{ route('index') }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ route('test') }}?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+@if($articles->hasPages())
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{{ $searchQuery ? 'Search Results for ' . $searchQuery : 'Latest PHP Articles' }}",
+  "description": "{{ $searchQuery ? 'Search results for ' . $searchQuery : 'Latest PHP articles and tutorials' }}",
+  "url": "{{ request()->fullUrl() }}",
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "{{ __('basic.meta_title') }}",
+    "url": "{{ route('test') }}"
+  }@if($articles->previousPageUrl()),@endif
+  @if($articles->previousPageUrl())
+  "previousPage": "{{ $articles->previousPageUrl() }}"@if($articles->nextPageUrl()),@endif
+  @endif
+  @if($articles->nextPageUrl())
+  "nextPage": "{{ $articles->nextPageUrl() }}"
+  @endif
+}
+</script>
+@endif
+
+@if($searchQuery && $articles->total() == 0)
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "No articles found for '{{ $searchQuery }}'",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We couldn't find any articles matching your search term. Try using different keywords or browse our complete article collection."
+      }
+    }
+  ]
+}
+</script>
+@endif
+
+@if(!$searchQuery && $articles->total() > 0)
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Find PHP Articles and Tutorials",
+  "description": "Learn how to browse and search through our collection of PHP articles, tutorials, and guides for backend developers.",
+  "image": "{{ asset('assets/images/favicon.ico') }}",
+  "totalTime": "PT5M",
+  "estimatedCost": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "value": "0"
+  },
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Browse Articles",
+      "text": "Scroll through our latest PHP articles and tutorials on the main blog page.",
+      "url": "{{ route('test') }}"
+    },
+    {
+      "@type": "HowToStep", 
+      "name": "Search Articles",
+      "text": "Use the search box to find specific topics or keywords in our article collection.",
+      "url": "{{ route('test') }}"
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Read Articles",
+      "text": "Click on any article to read the full tutorial or guide.",
+      "url": "{{ route('test') }}"
+    }
+  ]
+}
+</script>
+@endif
+
+@if($articles->total() > 0)
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ArticleList",
+  "name": "{{ $searchQuery ? 'Search Results for ' . $searchQuery : 'Latest PHP Articles' }}",
+  "description": "{{ $searchQuery ? 'Search results for ' . $searchQuery : 'Latest PHP articles and tutorials for backend developers' }}",
+  "url": "{{ request()->fullUrl() }}",
+  "numberOfItems": {{ $articles->total() }},
+  "itemListElement": [
+    @foreach($articles as $index => $article)
+    {
+      "@type": "ListItem",
+      "position": {{ ($articles->currentPage() - 1) * $articles->perPage() + $loop->iteration }},
+      "item": {
+        "@type": "Article",
+        "headline": "{{ addslashes($article->name) }}",
+        "description": "{{ addslashes($article->short_description) }}",
+        "url": "{{ $article->getRoute() }}",
+        "datePublished": "{{ $article->getPublishedDate()->format('Y-m-d\TH:i:sP') }}",
+        "author": {
+          "@type": "Person",
+          "name": "Jakub Owsianka"
+        }
+      }
+    }@if(!$loop->last),@endif
+    @endforeach
+  ]
+}
+</script>
+@endif
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "oatllo",
+  "url": "{{ route('index') }}",
+  "logo": "{{ asset('assets/images/favicon.ico') }}",
+  "sameAs": [
+    "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Jakub Owsianka",
+    "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jakub Owsianka",
+  "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/",
+  "jobTitle": "PHP Developer",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "oatllo"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "oatllo",
+  "description": "PHP development tutorials and articles for backend developers",
+  "url": "{{ route('index') }}",
+  "telephone": "+48-XXX-XXX-XXX",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "PL"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "52.2297",
+    "longitude": "21.0122"
+  },
+  "openingHours": "Mo-Fr 09:00-17:00",
+  "priceRange": "$$"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "{{ __('basic.meta_title') }}",
+  "description": "{{ __('basic.meta_description') }}",
+  "url": "{{ route('index') }}",
+  "author": {
+    "@type": "Person",
+    "name": "Jakub Owsianka"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "oatllo"
+  },
+  "datePublished": "2024-01-01",
+  "dateModified": "{{ now()->format('Y-m-d') }}",
+  "inLanguage": "{{ env('APP_LOCALE', 'en') }}",
+  "isAccessibleForFree": true
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "{{ $searchQuery ? 'Search Results for ' . $searchQuery . ' - ' . __('basic.meta_title') : __('basic.meta_title') }}",
+  "description": "{{ $searchQuery ? 'Search results for ' . $searchQuery . '. ' . __('basic.meta_description') : __('basic.meta_description') }}",
+  "url": "{{ request()->fullUrl() }}",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "{{ __('basic.meta_title') }}",
+    "url": "{{ route('index') }}"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "{{ route('index') }}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "{{ $searchQuery ? 'Search Results' : 'Blog' }}",
+        "item": "{{ request()->fullUrl() }}"
+      }
+    ]
+  },
+  "mainEntity": {
+    "@type": "{{ $searchQuery ? 'SearchResultsPage' : 'Blog' }}",
+    "name": "{{ $searchQuery ? 'Search Results for ' . $searchQuery : 'Latest PHP Articles' }}"
+  }
+}
+</script>
+
+@if($searchQuery)
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SearchResultsPage",
+  "name": "Search Results for {{ $searchQuery }}",
+  "description": "Search results for {{ $searchQuery }} on {{ __('basic.meta_title') }}",
+  "url": "{{ request()->fullUrl() }}",
+  "query": "{{ $searchQuery }}",
+  "numberOfItems": {{ $articles->total() }},
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "{{ __('basic.meta_title') }}",
+    "url": "{{ route('index') }}"
+  }
+}
+</script>
+@endif
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ __('basic.meta_title') }}",
+  "description": "{{ __('basic.meta_description') }}",
+  "url": "{{ route('index') }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web Browser",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Jakub Owsianka"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "PHP Development Tutorials",
+  "description": "Comprehensive PHP tutorials and guides for backend developers",
+  "provider": {
+    "@type": "Organization",
+    "name": "oatllo",
+    "url": "{{ route('index') }}"
+  },
+  "courseMode": "online",
+  "educationalLevel": "intermediate",
+  "inLanguage": "{{ env('APP_LOCALE', 'en') }}",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  },
+  "instructor": {
+    "@type": "Person",
+    "name": "Jakub Owsianka"
+  }
+}
+</script>
+
+@if($articles->total() > 0)
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "name": "PHP Development Resources",
+  "description": "Collection of PHP articles, tutorials, and guides for backend developers",
+  "url": "{{ request()->fullUrl() }}",
+  "author": {
+    "@type": "Person",
+    "name": "Jakub Owsianka"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "oatllo"
+  },
+  "datePublished": "{{ $articles->first()->getPublishedDate()->format('Y-m-d\TH:i:sP') }}",
+  "dateModified": "{{ $articles->first()->updated_at->format('Y-m-d\TH:i:sP') }}",
+  "wordCount": {{ $articles->sum(function($article) { return str_word_count(strip_tags($article->content ?? '')); }) }},
+  "dependencies": "PHP, Laravel, MySQL",
+  "proficiencyLevel": "intermediate"
+}
+</script>
+@endif
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LearningResource",
+  "name": "{{ __('basic.meta_title') }}",
+  "description": "{{ __('basic.meta_description') }}",
+  "url": "{{ route('index') }}",
+  "learningResourceType": "Tutorial",
+  "educationalLevel": "intermediate",
+  "inLanguage": "{{ env('APP_LOCALE', 'en') }}",
+  "teaches": "PHP Development",
+  "educationalUse": "self-study",
+  "timeRequired": "PT30M",
+  "typicalAgeRange": "18-65",
+  "interactivityType": "active",
+  "isAccessibleForFree": true,
+  "author": {
+    "@type": "Person",
+    "name": "Jakub Owsianka"
+  }
+}
 </script>
 </body>
 </html>
