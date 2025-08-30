@@ -8,6 +8,7 @@ use App\Aidevs\OpenAiHelper;
 use App\Jobs\KnowledgeJob;
 use App\Magisterka\CodeReviewAnalyzerService;
 use App\Magisterka\DocumentationFileLoader;
+use App\Models\Article;
 use App\Models\CodeKnowledge;
 use App\Prompts\Abstract\Enums\OpenApiResultType;
 use App\Services\Generator\InternalUrlsGenerator;
@@ -18,7 +19,7 @@ use Highlight\Highlighter;
 use Illuminate\Http\Request;
 use OpenAI\Laravel\Facades\OpenAI;
 
-class TestController extends Controller
+class  TestController extends Controller
 {
     const TASK = 'photos';
     const API_KEY = '6982ce64-7d13-4d2e-a23a-ba07ba2c8f45';
@@ -26,8 +27,21 @@ class TestController extends Controller
     const URL_POLIGON_VERIFY = 'https://poligon.aidevs.pl/verify';
 
 
-    public function test(Request $reques, PracaMagisterska $pracaMagisterska, GeneratorImagePostService $generatorImagePostService, OpenAiHelper $openAiHelper)
+    public function test(Request $reques, PracaMagisterska $pracaMagisterska, OpenAiHelper $openAiHelper)
     {
+
+
+        // Pobierz artykuły z paginacją (12 na stronę)
+        $articles = Article::where('is_published', true)
+            ->where('type', 'normal')
+//            ->where('language', env('APP_LOCALE'))
+            ->orderBy('published_at', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        return view('new_view.listing_blog', [
+            'articles' => $articles
+        ]);
 
 //        $generatorImagePostService->generateNormalPost2();
 

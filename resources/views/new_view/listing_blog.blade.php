@@ -39,10 +39,78 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body class="bg-neutral-950 text-neutral-100 antialiased">
+{!! \App\Services\HomeService::getTagManagerBODY() !!}
+
+<!-- ===========================================================
+  HEADER NAVIGATION
+=========================================================== -->
+<div x-data="{ open: false }">
+    <header class="absolute inset-x-0 top-0 z-50">
+        <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+            <div class="flex lg:flex-1">
+                <a href="{{ route('index') }}" class="-m-1.5 p-1.5">
+                    <div class="logo_oatllo">oatllo</div>
+                </a>
+            </div>
+            <div class="flex lg:hidden">
+                <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400" @click="open = !open">
+                    <span class="sr-only">Open menu</span>
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-x-12">
+                <a href="{{ route('index') }}" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">{{ __('basic.home') }}</a>
+                <a href="{{ route('blog') }}" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">Blog</a>
+                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">{{ __('basic.courses') }}</a>
+            </div>
+            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">
+                    <i class="fa-brands fa-linkedin mr-1"></i>LinkedIn
+                </a>
+            </div>
+        </nav>
+
+        <!-- Mobile menu, show/hide based on menu open state. -->
+        <div class="lg:hidden" role="dialog" aria-modal="true" x-show="open">
+            <!-- Background backdrop, show/hide based on slide-over state. -->
+            <div class="fixed inset-0 z-50"></div>
+            <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
+                <div class="flex items-center justify-between">
+                    <a href="{{ route('index') }}" class="-m-1.5 p-1.5">
+                        <div class="logo_oatllo">oatllo</div>
+                    </a>
+                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400" @click="open = !open">
+                        <span class="sr-only">Close menu</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-2 divide-y divide-gray-500/25">
+                        <div class="space-y-2 py-6">
+                            <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">{{ __('basic.home') }}</a>
+                            <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">Blog</a>
+                            <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">{{ __('basic.courses') }}</a>
+                        </div>
+                        <div class="py-6">
+                            <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">
+                                <i class="fa-brands fa-linkedin mr-2"></i>LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+
 <!-- ===========================================================
   MAIN CONTENT
 =========================================================== -->
-<main id="blog" class="pt-24 pb-32" aria-label="Blog articles">
+<main id="blog" class="pt-32 pb-32" aria-label="Blog articles">
     <!-- Page Header -->
     <header class="mx-auto mb-16 max-w-3xl px-4 text-center sm:px-6 lg:px-8">
         <h1 class="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
@@ -60,64 +128,42 @@
 
     <!-- Articles Grid -->
     <section class="mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3 sm:px-6 lg:px-8" itemscope itemtype="https://schema.org/Blog">
-        <!-- Single article card – duplicate dynamically (use a CMS / static site generator) -->
-        <article class="flex flex-col overflow-hidden rounded-2xl bg-neutral-900/70 shadow-lg transition hover:shadow-rose-500/30" itemscope itemprop="blogPost" itemtype="https://schema.org/BlogPosting">
-            <a href="/articles/optimise-php-performance" class="group relative block" itemprop="url">
-                <img src="/images/posts/php-performance-cover.webp" alt="Boosting PHP performance – hero image" class="h-56 w-full object-cover transition group-hover:scale-105" itemprop="image" loading="lazy" />
-                <span class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></span>
-            </a>
-            <div class="flex flex-1 flex-col p-6">
-                <header class="mb-3 flex-1">
-                    <h2 class="text-xl font-bold tracking-tight text-white group-hover:text-rose-400" itemprop="headline">
-                        <a href="/articles/optimise-php-performance" class="inline-block h-full w-full" itemprop="url">10 Proven Ways to Optimise PHP Performance in 2025</a>
-                    </h2>
-                    <p class="mt-2 line-clamp-3 text-neutral-400" itemprop="description">
-                        Learn how to squeeze every millisecond out of your PHP apps with OPcache tuning, JIT insights, and real‑world benchmarking examples.
-                    </p>
-                </header>
-                <!-- Meta info -->
-                <footer class="mt-auto flex items-center justify-between text-sm text-neutral-400">
-                    <div>
-                        <i class="fa-solid fa-calendar text-rose-400 mr-1"></i>
-                        <time datetime="2025-06-18" itemprop="datePublished">Jun&nbsp;18,&nbsp;2025</time>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-clock text-rose-400"></i>
-                        <span>7&nbsp;min read</span>
-                    </div>
-                </footer>
+        @forelse($articles as $article)
+            <article class="flex flex-col overflow-hidden rounded-2xl bg-neutral-900/70 shadow-lg transition hover:shadow-rose-500/30" itemscope itemprop="blogPost" itemtype="https://schema.org/BlogPosting">
+                <a href="{{ $article->getRoute() }}" class="group relative block" itemprop="url">
+                    <img src="{{ $article->image }}" alt="{{ $article->name }}" class="h-56 w-full object-cover transition group-hover:scale-105" itemprop="image" loading="lazy" />
+                    <span class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></span>
+                </a>
+                <div class="flex flex-1 flex-col p-6">
+                    <header class="mb-3 flex-1">
+                        <h2 class="text-xl font-bold tracking-tight text-white group-hover:text-rose-400" itemprop="headline">
+                            <a href="{{ $article->getRoute() }}" class="inline-block h-full w-full" itemprop="url">{{ $article->name }}</a>
+                        </h2>
+                        <p class="mt-2 line-clamp-3 text-neutral-400" itemprop="description">
+                            {{ $article->short_description }}
+                        </p>
+                    </header>
+                    <!-- Meta info -->
+                    <footer class="mt-auto flex items-center justify-between text-sm text-neutral-400">
+                        <div>
+                            <i class="fa-solid fa-calendar text-rose-400 mr-1"></i>
+                            <time datetime="{{ $article->getPublishedDate()->format('Y-m-d') }}" itemprop="datePublished">{{ $article->getPublishedDate()->format('M j, Y') }}</time>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-clock text-rose-400"></i>
+                            <span>{{ $article->getTimeRead() }}&nbsp;min read</span>
+                        </div>
+                    </footer>
+                </div>
+            </article>
+        @empty
+            <div class="col-span-full text-center py-12">
+                <div class="text-neutral-400 text-lg">
+                    <i class="fa-solid fa-newspaper text-4xl mb-4 block"></i>
+                    <p>Brak artykułów do wyświetlenia.</p>
+                </div>
             </div>
-        </article>
-
-        <!-- Repeat sample cards below -->
-        <article class="flex flex-col overflow-hidden rounded-2xl bg-neutral-900/70 shadow-lg transition hover:shadow-rose-500/30" itemscope itemprop="blogPost" itemtype="https://schema.org/BlogPosting">
-            <a href="/articles/php-8-attributes-guide" class="group relative block" itemprop="url">
-                <img src="/images/posts/php-8-attributes.webp" alt="PHP 8 attributes code sample" class="h-56 w-full object-cover transition group-hover:scale-105" itemprop="image" loading="lazy" />
-                <span class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></span>
-            </a>
-            <div class="flex flex-1 flex-col p-6">
-                <header class="mb-3 flex-1">
-                    <h2 class="text-xl font-bold tracking-tight text-white group-hover:text-rose-400" itemprop="headline">
-                        <a href="/articles/php-8-attributes-guide" class="inline-block h-full w-full" itemprop="url">PHP 8 Attributes: Complete Guide with Practical Examples</a>
-                    </h2>
-                    <p class="mt-2 line-clamp-3 text-neutral-400" itemprop="description">
-                        Discover how to leverage PHP 8 attributes for custom annotations, cleaner code and powerful metadata‑driven development.
-                    </p>
-                </header>
-                <footer class="mt-auto flex items-center justify-between text-sm text-neutral-400">
-                    <div>
-                        <i class="fa-solid fa-calendar text-rose-400 mr-1"></i>
-                        <time datetime="2025-05-29" itemprop="datePublished">May&nbsp;29,&nbsp;2025</time>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-clock text-rose-400"></i>
-                        <span>5&nbsp;min read</span>
-                    </div>
-                </footer>
-            </div>
-        </article>
-
-        <!-- Add additional <article> cards as needed -->
+        @endforelse
     </section>
 
     <!-- Pagination -->
