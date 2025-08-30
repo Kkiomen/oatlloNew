@@ -130,10 +130,10 @@ class HomeController extends Controller
             $articles = Article::where('is_published', true)
                 ->where('language', env('APP_LOCALE'))
                 ->whereNotIn('id', $lessonsNotIn)
-                ->orderBy('created_at', 'desc')->paginate(10);
+                ->orderBy('created_at', 'desc')->paginate(12);
         }else{
             $articles = Article::where('is_published', true)
-                ->orderBy('created_at', 'desc')->paginate(10);
+                ->orderBy('created_at', 'desc')->paginate(12);
         }
 
         return view('views_basic.blog',[
