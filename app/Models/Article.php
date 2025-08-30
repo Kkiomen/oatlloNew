@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\Generator\InternalUrlsGenerator;
 use App\Services\Generator\TagForArticleGenerator;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CourseCategoryLesson;
@@ -315,7 +316,7 @@ class Article extends Model
     {
         $article->is_published = $publish;
         if($publish === true){
-            $article->published_at = now();
+            $article->published_at = Carbon::now();
             TagForArticleGenerator::generate();
             InternalUrlsGenerator::generate();
         }

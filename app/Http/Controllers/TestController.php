@@ -34,11 +34,16 @@ class  TestController extends Controller
         // Pobierz parametr wyszukiwania
         $searchQuery = $request->get('q');
 
-        $uniqueCategoryIds = Article::whereNotNull('category_id')->where('is_published', true)
-            ->distinct()
-            ->pluck('category_id');
-
-        $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
+        // Pobierz kategorie z liczbą artykułów
+        $categories = Category::withCount(['articles' => function($query) {
+            $query->where('is_published', true);
+        }])
+        ->whereHas('articles', function($query) {
+            $query->where('is_published', true);
+        })
+        ->orderBy('articles_count', 'desc')
+        ->take(8)
+        ->get();
 
         // Buduj query dla artykułów
         $articlesQuery = Article::with(['category', 'tags'])->where('is_published', true);
@@ -60,6 +65,12 @@ class  TestController extends Controller
                 $query->where('name', 'like', '%' . $searchQuery . '%')
                       ->orWhere('short_description', 'like', '%' . $searchQuery . '%');
             });
+        }
+
+        // Dodaj filtrowanie po kategorii jeśli podano
+        $categoryId = $request->get('category');
+        if ($categoryId) {
+            $articlesQuery->where('category_id', $categoryId);
         }
 
         $articles = $articlesQuery->orderBy('created_at', 'desc')->paginate(12);

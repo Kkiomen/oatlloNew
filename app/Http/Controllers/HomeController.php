@@ -143,12 +143,6 @@ class HomeController extends Controller
         // Pobierz parametr wyszukiwania
         $searchQuery = $request->get('q');
 
-        $uniqueCategoryIds = Article::whereNotNull('category_id')->where('is_published', true)
-            ->distinct()
-            ->pluck('category_id');
-
-        $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
-
         // Buduj query dla artykułów
         $articlesQuery = Article::with(['category', 'tags'])->where('is_published', true);
 
@@ -175,7 +169,6 @@ class HomeController extends Controller
 
         return view('views_basic.blog', [
             'articles' => $articles,
-            'categories' => $categories,
             'searchQuery' => $searchQuery
         ]);
     }

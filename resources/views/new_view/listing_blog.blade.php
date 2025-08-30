@@ -27,11 +27,11 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ request()->fullUrl() }}">
     <meta property="og:site_name" content="oatllo">
-    
+
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $searchQuery ? 'Search Results for ' . $searchQuery . ' - ' . __('basic.meta_title') : __('basic.meta_title') }}">
     <meta name="twitter:description" content="{{ $searchQuery ? 'Search results for ' . $searchQuery . '. ' . __('basic.meta_description') : __('basic.meta_description') }}">
-    
+
     @if(env('LANGUAGE_MODE') == 'strict')
         <link rel="alternate" hreflang="pl" href="{{ request()->fullUrl() }}">
         <link rel="alternate" hreflang="en" href="{{ str_replace('/pl/', '/en/', request()->fullUrl()) }}">
@@ -442,7 +442,7 @@
       "url": "{{ route('test') }}"
     },
     {
-      "@type": "HowToStep", 
+      "@type": "HowToStep",
       "name": "Search Articles",
       "text": "Use the search box to find specific topics or keywords in our article collection.",
       "url": "{{ route('test') }}"
@@ -717,6 +717,140 @@
     "@type": "Person",
     "name": "Jakub Owsianka"
   }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ __('basic.meta_title') }}",
+  "url": "{{ route('index') }}",
+  "description": "{{ __('basic.meta_description') }}",
+  "potentialAction": [
+    {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "{{ route('test') }}?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    },
+    {
+      "@type": "ReadAction",
+      "target": "{{ route('test') }}"
+    }
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "oatllo"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SiteNavigationElement",
+  "name": "Main Navigation",
+  "url": "{{ route('index') }}",
+  "hasPart": [
+    {
+      "@type": "WebPage",
+      "name": "Home",
+      "url": "{{ route('index') }}"
+    },
+    {
+      "@type": "WebPage",
+      "name": "Blog",
+      "url": "{{ route('test') }}"
+    },
+    {
+      "@type": "WebPage",
+      "name": "Courses",
+      "url": "{{ \App\Services\HomeService::getRouteCourses() }}"
+    }
+  ]
+}
+</script>
+
+@if($articles->total() > 0)
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DataFeed",
+  "name": "PHP Articles Feed",
+  "description": "Latest PHP articles and tutorials",
+  "url": "{{ request()->fullUrl() }}",
+  "dataFeedElement": [
+    @foreach($articles as $article)
+    {
+      "@type": "DataFeedItem",
+      "name": "{{ addslashes($article->name) }}",
+      "description": "{{ addslashes($article->short_description) }}",
+      "url": "{{ $article->getRoute() }}",
+      "dateModified": "{{ $article->updated_at->format('Y-m-d\TH:i:sP') }}",
+      "dateCreated": "{{ $article->getPublishedDate()->format('Y-m-d\TH:i:sP') }}"
+    }@if(!$loop->last),@endif
+    @endforeach
+  ]
+}
+</script>
+@endif
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "{{ $searchQuery ? 'Search Results for ' . $searchQuery : 'PHP Articles Collection' }}",
+  "description": "{{ $searchQuery ? 'Search results for ' . $searchQuery : 'Collection of PHP articles, tutorials, and guides for backend developers' }}",
+  "url": "{{ request()->fullUrl() }}",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "{{ __('basic.meta_title') }}",
+    "url": "{{ route('index') }}"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "numberOfItems": {{ $articles->total() }},
+    "itemListElement": [
+      @foreach($articles as $index => $article)
+      {
+        "@type": "ListItem",
+        "position": {{ ($articles->currentPage() - 1) * $articles->perPage() + $loop->iteration }},
+        "item": {
+          "@type": "Article",
+          "headline": "{{ addslashes($article->name) }}",
+          "description": "{{ addslashes($article->short_description) }}",
+          "url": "{{ $article->getRoute() }}"
+        }
+      }@if(!$loop->last),@endif
+      @endforeach
+    ]
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ __('basic.meta_title') }}",
+  "url": "{{ route('index') }}",
+  "description": "{{ __('basic.meta_description') }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ route('test') }}?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "oatllo"
+  },
+  "inLanguage": "{{ env('APP_LOCALE', 'en') }}"
 }
 </script>
 </body>

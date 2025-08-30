@@ -44,10 +44,9 @@ class AutoPublishController extends Controller
             }
 
             // Ustaw datę automatycznej publikacji i opublikuj artykuł
-            $article->update([
-                'is_published' => true,
-                'auto_publish_date' => Carbon::now(),
-            ]);
+            Article::publish($article, true);
+            $article->auto_publish_date = Carbon::now();
+            $article->save();
 
             return response()->json([
                 'success' => true,
