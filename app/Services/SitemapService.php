@@ -32,7 +32,7 @@ class SitemapService
                 loc: route('blogTag', ['tag' => Str::slug($tag->name)], false),
                 priority: '0.3',
                 changefreq: 'weekly',
-                lastmod: $date
+                lastmod: $tag->updated_at->toIso8601String()
             );
         }
 
