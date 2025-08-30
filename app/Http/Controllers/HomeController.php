@@ -165,7 +165,7 @@ class HomeController extends Controller
             });
         }
 
-        $articles = $articlesQuery->orderBy('created_at', 'desc')->paginate(12);
+        $articles = $articlesQuery->orderBy('published_at', 'desc')->paginate(12);
 
         return view('views_basic.blog', [
             'articles' => $articles,
