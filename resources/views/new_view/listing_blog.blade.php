@@ -160,7 +160,7 @@
             <div class="col-span-full text-center py-12">
                 <div class="text-neutral-400 text-lg">
                     <i class="fa-solid fa-newspaper text-4xl mb-4 block"></i>
-                    <p>Brak artykułów do wyświetlenia.</p>
+                    <p>Brak No articles to display.</p>
                 </div>
             </div>
         @endforelse
