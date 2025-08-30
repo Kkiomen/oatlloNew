@@ -114,16 +114,46 @@
     <!-- Page Header -->
     <header class="mx-auto mb-16 max-w-3xl px-4 text-center sm:px-6 lg:px-8">
         <h1 class="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-            Latest <span class="text-rose-400">PHP Articles</span>
+            @if($searchQuery)
+                Search Results for "<span class="text-rose-400">{{ $searchQuery }}</span>"
+            @else
+                Latest <span class="text-rose-400">PHP Articles</span>
+            @endif
         </h1>
         <p class="mt-4 text-lg text-neutral-300">
-            Practical tutorials, performance tips and deep‑dive guides for modern backend developers.
+            @if($searchQuery)
+                Found {{ $articles->total() }} article(s) matching your search.
+            @else
+                Practical tutorials, performance tips and deep‑dive guides for modern backend developers.
+            @endif
         </p>
         <!-- Search / filter (optional) -->
-        <form action="/search" method="get" class="relative mt-8 flex justify-center">
-            <input type="search" name="q" placeholder="Search articles…" aria-label="Search blog" class="w-full max-w-lg rounded-xl border border-transparent bg-white/10 p-3 pr-10 placeholder-neutral-400 text-white focus:outline-none focus:ring-2 focus:ring-rose-500" />
+        <form action="{{ route('test') }}" method="get" class="relative mt-8 flex justify-center">
+            <input type="search" name="q" value="{{ $searchQuery ?? '' }}" placeholder="Search articles…" aria-label="Search blog" class="w-full max-w-lg rounded-xl border border-transparent bg-white/10 p-3 pr-10 placeholder-neutral-400 text-white focus:outline-none focus:ring-2 focus:ring-rose-500" />
             <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-rose-400" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
+        @if($searchQuery)
+            <div class="mt-4 text-center">
+                <a href="{{ route('test') }}" class="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-4 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200">
+                    <i class="fa-solid fa-times"></i>
+                    Clear search
+                </a>
+            </div>
+        @endif
+
+        @if($articles->total() > 0)
+            <div class="mt-4 text-center text-sm text-neutral-400">
+                Showing {{ $articles->firstItem() }} to {{ $articles->lastItem() }} of {{ $articles->total() }} article{{ $articles->total() > 1 ? 's' : '' }}
+            </div>
+        @elseif($searchQuery)
+            <div class="mt-4 text-center text-sm text-neutral-400">
+                No articles found matching your search
+            </div>
+        @else
+            <div class="mt-4 text-center text-sm text-neutral-400">
+                No articles available
+            </div>
+        @endif
     </header>
 
     <!-- Articles Grid -->
@@ -160,27 +190,64 @@
             <div class="col-span-full text-center py-12">
                 <div class="text-neutral-400 text-lg">
                     <i class="fa-solid fa-newspaper text-4xl mb-4 block"></i>
-                    <p>Brak No articles to display.</p>
+                    @if($searchQuery)
+                        <p>No articles found matching "{{ $searchQuery }}".</p>
+                        <p class="mt-2 text-sm">Try different keywords or <a href="{{ route('test') }}" class="text-rose-400 hover:text-rose-300">browse all articles</a>.</p>
+                    @else
+                        <p>No articles to display.</p>
+                    @endif
                 </div>
             </div>
         @endforelse
     </section>
 
     <!-- Pagination -->
-    <nav class="mt-20 flex justify-center" aria-label="Blog pagination">
-        <ul class="inline-flex items-center gap-2">
-            <li><a href="?page=1" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white" aria-label="First page"><i class="fa-solid fa-angles-left"></i></a></li>
-            <li><a href="?page=prev" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white" aria-label="Previous page"><i class="fa-solid fa-angle-left"></i></a></li>
-            <!-- Page numbers (render dynamically) -->
-            <li><a href="?page=1" class="rounded-full bg-rose-500 px-3 py-2 text-sm font-semibold text-white">1</a></li>
-            <li><a href="?page=2" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white">2</a></li>
-            <li><a href="?page=3" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white">3</a></li>
-            <li><span class="px-2 text-neutral-500">…</span></li>
-            <li><a href="?page=8" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white">8</a></li>
-            <li><a href="?page=next" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white" aria-label="Next page"><i class="fa-solid fa-angle-right"></i></a></li>
-            <li><a href="?page=last" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white" aria-label="Last page"><i class="fa-solid fa-angles-right"></i></a></li>
-        </ul>
-    </nav>
+    @if($articles->hasPages())
+        <nav class="mt-20 flex justify-center" aria-label="Blog pagination">
+            <ul class="inline-flex items-center gap-2">
+                {{-- First page --}}
+                @if($articles->onFirstPage())
+                    <li><span class="rounded-full bg-neutral-800 px-3 py-2 text-sm text-neutral-500 cursor-not-allowed" aria-label="First page"><i class="fa-solid fa-angles-left"></i></span></li>
+                @else
+                    <li><a href="{{ $articles->url(1) }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="First page"><i class="fa-solid fa-angles-left"></i></a></li>
+                @endif
+
+                {{-- Previous page --}}
+                @if($articles->onFirstPage())
+                    <li><span class="rounded-full bg-neutral-800 px-3 py-2 text-sm text-neutral-500 cursor-not-allowed" aria-label="Previous page"><i class="fa-solid fa-angle-left"></i></span></li>
+                @else
+                    <li><a href="{{ $articles->previousPageUrl() }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Previous page"><i class="fa-solid fa-angle-left"></i></a></li>
+                @endif
+
+                {{-- Page numbers --}}
+                @foreach($articles->getUrlRange(1, $articles->lastPage()) as $page => $url)
+                    @if($page == $articles->currentPage())
+                        <li><span class="rounded-full bg-rose-500 px-3 py-2 text-sm font-semibold text-white">{{ $page }}</span></li>
+                    @elseif($page <= 3 || $page > $articles->lastPage() - 2)
+                        <li><a href="{{ $url }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200">{{ $page }}</a></li>
+                    @elseif($page == 4 && $articles->lastPage() > 6)
+                        <li><span class="px-2 text-neutral-500">…</span></li>
+                    @elseif($page == $articles->lastPage() - 2 && $articles->lastPage() > 6)
+                        <li><span class="px-2 text-neutral-500">…</span></li>
+                    @endif
+                @endforeach
+
+                {{-- Next page --}}
+                @if($articles->hasMorePages())
+                    <li><a href="{{ $articles->nextPageUrl() }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Next page"><i class="fa-solid fa-angle-right"></i></a></li>
+                @else
+                    <li><span class="rounded-full bg-neutral-800 px-3 py-2 text-sm text-neutral-500 cursor-not-allowed" aria-label="Next page"><i class="fa-solid fa-angle-right"></i></span></li>
+                @endif
+
+                {{-- Last page --}}
+                @if($articles->currentPage() == $articles->lastPage())
+                    <li><span class="rounded-full bg-neutral-800 px-3 py-2 text-sm text-neutral-500 cursor-not-allowed" aria-label="Last page"><i class="fa-solid fa-angles-right"></i></span></li>
+                @else
+                    <li><a href="{{ $articles->url($articles->lastPage()) }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Last page"><i class="fa-solid fa-angles-right"></i></a></li>
+                @endif
+            </ul>
+        </nav>
+    @endif
 </main>
 
 <!-- ===========================================================

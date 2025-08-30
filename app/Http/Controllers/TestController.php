@@ -9,7 +9,9 @@ use App\Jobs\KnowledgeJob;
 use App\Magisterka\CodeReviewAnalyzerService;
 use App\Magisterka\DocumentationFileLoader;
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\CodeKnowledge;
+use App\Models\CourseCategoryLesson;
 use App\Prompts\Abstract\Enums\OpenApiResultType;
 use App\Services\Generator\InternalUrlsGenerator;
 use App\Services\Posts\GeneratorImagePostService;
@@ -27,25 +29,46 @@ class  TestController extends Controller
     const URL_POLIGON_VERIFY = 'https://poligon.aidevs.pl/verify';
 
 
-    public function test(Request $reques, PracaMagisterska $pracaMagisterska, OpenAiHelper $openAiHelper)
+    public function test(Request $request, PracaMagisterska $pracaMagisterska, OpenAiHelper $openAiHelper)
     {
+        // Pobierz parametr wyszukiwania
+        $searchQuery = $request->get('q');
 
+        $uniqueCategoryIds = Article::whereNotNull('category_id')->where('is_published', true)
+            ->distinct()
+            ->pluck('category_id');
 
-        // Pobierz artykuły z paginacją (12 na stronę)
-        $articles = Article::where('is_published', true)
-            ->where('type', 'normal')
-//            ->where('language', env('APP_LOCALE'))
-            ->orderBy('published_at', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->paginate(12);
+        $categories = Category::whereIn('id', $uniqueCategoryIds)->get();
+
+        // Buduj query dla artykułów
+        $articlesQuery = Article::where('is_published', true);
+
+        // Dodaj filtrowanie według języka jeśli jest włączone
+        if(env('LANGUAGE_MODE') == 'strict') {
+            $lessonsNotIn = [];
+            foreach (CourseCategoryLesson::get() as $lesson){
+                $lessonsNotIn[] = $lesson->lesson_id;
+            }
+
+            $articlesQuery->where('language', env('APP_LOCALE'))
+                ->whereNotIn('id', $lessonsNotIn);
+        }
+
+        // Dodaj wyszukiwanie jeśli podano query
+        if ($searchQuery) {
+            $articlesQuery->where(function($query) use ($searchQuery) {
+                $query->where('name', 'like', '%' . $searchQuery . '%')
+                      ->orWhere('short_description', 'like', '%' . $searchQuery . '%');
+            });
+        }
+
+        $articles = $articlesQuery->orderBy('created_at', 'desc')->paginate(12);
 
         return view('new_view.listing_blog', [
-            'articles' => $articles
+            'articles' => $articles,
+            'categories' => $categories,
+            'searchQuery' => $searchQuery
         ]);
-
-//        $generatorImagePostService->generateNormalPost2();
-
-        dd('fd');
 //
 //        $r = OpenAiHelper::getResult(user: 'Wygeneruj ciekawy kod (krótki) w PHP do pokazania w Rolce na instragram jako ciekawostka', system: 'ZWRÓC JSON, { "code": "kod", "name": "Nazwa ciekawoski", "description": "Krótki opis pod header"} #### Pamietaj ze głównie czytelnikami są Seniorzy więc to musze być naprawde ciekawostki ', resultType: OpenApiResultType::JSON_OBJECT);
 //
