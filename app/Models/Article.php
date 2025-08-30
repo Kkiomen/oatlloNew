@@ -45,6 +45,7 @@ class Article extends Model
         'schema_ai' => 'array',
         'options_ai' => 'array',
         'is_published' => 'boolean',
+        'published_at' => 'datetime',
         'auto_publish_date' => 'datetime',
     ];
 
@@ -153,7 +154,18 @@ class Article extends Model
             return $date ? $date->format('Y-m-d') : '';
         }
 
-        return $date;
+        // Upewniamy się, że zwracamy obiekt DateTime
+        if ($date instanceof \DateTime) {
+            return $date;
+        }
+
+        // Jeśli to string, konwertujemy na DateTime
+        if (is_string($date)) {
+            return new \DateTime($date);
+        }
+
+        // Fallback do updated_at
+        return $this->updated_at ?? new \DateTime();
     }
 
     public function getTimeRead(): int
