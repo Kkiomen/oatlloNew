@@ -15,47 +15,27 @@
     <meta name="description" content="{{ $article->seo_description ?: 'Lekcja kursu' }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="author" content="Jakub Owsianka">
-    <meta name="creator" content="Jakub Owsianka">
-    <meta name="publisher" content="Oatllo">
-    <meta name="language" content="{{ env('APP_LANG_HTML') }}">
-    <meta name="revisit-after" content="7 days">
-    <meta name="rating" content="general">
-    <meta name="distribution" content="global">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Oatllo - Jakub Owsianka">
 
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
 
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
     <link rel="canonical" href="{{ $article->getRoute() }}">
-    <meta name="keywords" content="{{ __('basic.meta_keywords') }}, {{ $course->name }}, {{ $category->title }}, programming, PHP, development">
+    <meta name="keywords" content="{{ __('basic.meta_keywords') }}">
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="article">
-    <meta property="og:title" content="{{ $article->seo_title ?: $article->title }}">
-    <meta property="og:description" content="{{ $article->seo_description ?: 'Lekcja kursu ' . $course->name . ' - ' . $category->title }}">
+    <meta property="og:title" content="{{ $courseCategory->title_seo }}">
+    <meta property="og:description" content="{{ $courseCategory->description_seo }}">
     <meta property="og:image" content="{{ $currentImage }}">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="{{ $article->seo_title ?: $article->title }}">
     <meta property="og:url" content="{{ $article->getRoute() }}">
     <meta property="og:site_name" content="Oatllo">
     <meta property="og:locale" content="{{ env('APP_LANG_HTML') }}">
-    <meta property="og:author" content="Jakub Owsianka">
-    <meta property="og:section" content="{{ $category->title }}">
-    <meta property="og:tag" content="{{ $course->name }}, {{ $category->title }}, programming, PHP, development">
-    <meta property="article:published_time" content="{{ $article->created_at->toISOString() }}">
-    <meta property="article:modified_time" content="{{ $article->updated_at->toISOString() }}">
-    <meta property="article:author" content="https://www.linkedin.com/in/jakub-owsianka-446bb5213/">
-    <meta property="article:section" content="{{ $category->title }}">
-    <meta property="article:tag" content="{{ $course->name }}, {{ $category->title }}, programming, PHP, development">
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $article->seo_title ?: $article->title }}">
-    <meta name="twitter:description" content="{{ $article->seo_description ?: 'Lekcja kursu ' . $course->name . ' - ' . $category->title }}">
+    <meta name="twitter:title" content="{{ $courseCategory->title_seo }}">
+    <meta name="twitter:description" content="{{ $courseCategory->description_seo }}">
     <meta name="twitter:image" content="{{ $currentImage }}">
-    <meta name="twitter:image:alt" content="{{ $article->seo_title ?: $article->title }}">
     <meta name="twitter:site" content="@Oatllo">
     <meta name="twitter:creator" content="@Oatllo">
 
@@ -528,7 +508,7 @@
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": "{{ addslashes($article->seo_title ?: $article->title) }}",
-      "description": "{{ addslashes($article->seo_description ?: 'Lekcja kursu ' . $course->name . ' - ' . $category->title) }}",
+      "description": "{{ addslashes($article->seo_description ?: 'Course lesson: ' . $course->name . ' - ' . $category->title) }}",
       "image": {
         "@type": "ImageObject",
         "url": "{{ $currentImage }}",
@@ -566,11 +546,11 @@
       },
       "articleSection": "{{ addslashes($category->title) }}",
       "keywords": "{{ addslashes($course->name) }}, {{ addslashes($category->title) }}, programming, PHP, development, {{ __('basic.meta_keywords') }}",
-      "inLanguage": "{{ env('APP_LANG_HTML') }}",
+      "inLanguage": "en-US",
       "isPartOf": {
         "@type": "Course",
         "name": "{{ addslashes($course->name) }}",
-        "description": "{{ addslashes($course->description ?? '') }}",
+        "description": "{{ addslashes($course->description ?? 'Programming course') }}",
         "url": "{{ $course->getRoute() }}"
       },
       "wordCount": {{ str_word_count(strip_tags($article->content_html ?? '')) }},
@@ -637,7 +617,7 @@
         "name": "Jakub Owsianka",
         "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
       },
-      "description": "Platforma edukacyjna z kursami programowania i rozwoju technologicznego"
+      "description": "Educational platform with programming courses and technological development"
     }
 </script>
 
@@ -646,7 +626,7 @@
       "@context": "https://schema.org",
       "@type": "Course",
       "name": "{{ addslashes($course->name) }}",
-      "description": "{{ addslashes($course->description ?? 'Kurs programowania') }}",
+      "description": "{{ addslashes($course->description ?? 'Programming course') }}",
       "url": "{{ $course->getRoute() }}",
       "provider": {
         "@type": "Organization",
@@ -658,13 +638,13 @@
         "name": "Jakub Owsianka",
         "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
       },
-      "coursePrerequisites": "Podstawowa znajomość programowania",
+      "coursePrerequisites": "Basic programming knowledge",
       "educationalLevel": "Intermediate",
-      "inLanguage": "{{ env('APP_LANG_HTML') }}",
+      "inLanguage": "en-US",
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "online",
-        "inLanguage": "{{ env('APP_LANG_HTML') }}"
+        "inLanguage": "en-US"
       }
     }
 </script>
@@ -675,7 +655,7 @@
       "@type": "WebSite",
       "name": "Oatllo",
       "url": "{{ route('index') }}",
-      "description": "Platforma edukacyjna z kursami programowania i rozwoju technologicznego",
+      "description": "Educational platform with programming courses and technological development",
       "publisher": {
         "@type": "Organization",
         "name": "Oatllo",
@@ -692,6 +672,72 @@
         },
         "query-input": "required name=search_term_string"
       }
+    }
+</script>
+
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LearningResource",
+      "name": "{{ addslashes($article->seo_title ?: $article->title) }}",
+      "description": "{{ addslashes($article->seo_description ?: 'Course lesson: ' . $course->name . ' - ' . $category->title) }}",
+      "url": "{{ $article->getRoute() }}",
+      "learningResourceType": "Lesson",
+      "educationalLevel": "Intermediate",
+      "inLanguage": "en-US",
+      "author": {
+        "@type": "Person",
+        "name": "Jakub Owsianka",
+        "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Oatllo",
+        "url": "{{ route('index') }}"
+      },
+      "isPartOf": {
+        "@type": "Course",
+        "name": "{{ addslashes($course->name) }}",
+        "url": "{{ $course->getRoute() }}"
+      },
+      "teaches": "{{ addslashes($category->title) }}",
+      "about": "{{ addslashes($course->name) }}, {{ addslashes($category->title) }}, programming, PHP, development",
+      "timeRequired": "PT15M",
+      "dateCreated": "{{ $article->created_at->toISOString() }}",
+      "dateModified": "{{ $article->updated_at->toISOString() }}"
+    }
+</script>
+
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this lesson part of a course?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, this lesson is part of the {{ addslashes($course->name) }} course in the {{ addslashes($category->title) }} category."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difficulty level of this lesson?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This lesson is at an intermediate level and requires basic programming knowledge."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take to complete this lesson?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The estimated time to complete this lesson is approximately 15 minutes."
+          }
+        }
+      ]
     }
 </script>
 
