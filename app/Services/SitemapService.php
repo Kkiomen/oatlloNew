@@ -45,16 +45,14 @@ class SitemapService
             }
         }
 
-        $lessonsNotIn = [];
-        foreach (CourseCategoryLesson::get() as $lesson){
-            $lessonsNotIn[] = $lesson->lesson_id;
-        }
+        // Usuwamy logikę lessonsNotIn - CourseCategoryLesson nie ma już lesson_id
+        // i nie powiązuje się z Article
 
         // Add blog posts
         if(env('LANGUAGE_MODE') == 'strict'){
-             $articles = Article::where('is_published', true)->whereNotIn('id', $lessonsNotIn)->where('language', env('APP_LOCALE'))->get();
+             $articles = Article::where('is_published', true)->where('language', env('APP_LOCALE'))->get();
         }else{
-            $articles = Article::where('is_published', true)->whereNotIn('id', $lessonsNotIn)->get();
+            $articles = Article::where('is_published', true)->get();
         }
 
         if($articles->count() > 0){
@@ -87,14 +85,14 @@ class SitemapService
         }
 
 
-        $defaultLangue = env('APP_LOCALE');
-        $courses = Course::where('lang', $defaultLangue)->where('is_published', 1)->get();
+        // Add courses and their content
+        $courses = Course::where('is_published', 1)->get();
         foreach ($courses as $course){
             $sitemap->addItem(
-                loc: $course->getRoute(false) ,
+                loc: $course->getRoute(false),
                 priority: '0.7',
                 changefreq: 'weekly',
-                lastmod: $article->updated_at->toIso8601String()
+                lastmod: $course->updated_at->toIso8601String()
             );
 
             foreach ($course->categories as $category) {
@@ -102,15 +100,15 @@ class SitemapService
                     loc: $category->getRoute(false),
                     priority: '0.7',
                     changefreq: 'weekly',
-                    lastmod: $article->updated_at->toIso8601String()
+                    lastmod: $category->updated_at->toIso8601String()
                 );
 
                 foreach ($category->lessons as $lesson) {
                     $sitemap->addItem(
-                        loc: $lesson->getRouteCourse($category, false),
+                        loc: $lesson->getRoute(false),
                         priority: '0.7',
                         changefreq: 'weekly',
-                        lastmod: $article->updated_at->toIso8601String()
+                        lastmod: $lesson->updated_at->toIso8601String()
                     );
                 }
             }

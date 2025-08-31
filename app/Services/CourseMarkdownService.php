@@ -95,6 +95,10 @@ class CourseMarkdownService
             throw new \Exception("Błędny format JSON w chapter.json: " . json_last_error_msg());
         }
 
+        $chapterConfig['title'] = str_replace("—", "-", $chapterConfig['title'] ?? $categoryName);
+        $chapterConfig['description'] = str_replace("—", "-", $chapterConfig['description'] ?? '');
+        $chapterConfig['full_description'] = str_replace("—", "-", $chapterConfig['full_description'] ?? '');
+
         // Znajdź lub utwórz kategorię
         $category = CourseCategory::updateOrCreate(
             [
@@ -103,9 +107,9 @@ class CourseMarkdownService
             ],
             [
                 'category_name' => $categoryName,
-                'title' => $chapterConfig['title'] ?? $categoryName,
-                'description' => $chapterConfig['description'] ?? '',
-                'description_content' => $chapterConfig['full_description'] ?? '',
+                'title' => $chapterConfig['title'],
+                'description' => $chapterConfig['description'],
+                'description_content' => $chapterConfig['full_description'],
                 'sort' => $chapterConfig['position'] ?? 1,
                 'is_published' => true,
                 'lang' => 'pl', // domyślnie polski
@@ -170,6 +174,10 @@ class CourseMarkdownService
         // Konwertuj Markdown na HTML
         $htmlContent = $this->convertMarkdownToHtml($markdownContent);
 
+        $metadata['title'] = str_replace("—", "-", $metadata['title'] ?? $filename);
+        $metadata['seo_title'] = str_replace("—", "-", $metadata['seo_title'] ?? '');
+        $metadata['seo_description'] = str_replace("—", "-", $metadata['seo_description'] ?? '');
+
         // Zapisz lub zaktualizuj lekcję
         CourseCategoryLesson::updateOrCreate(
             [
@@ -177,12 +185,12 @@ class CourseMarkdownService
                 'slug' => $metadata['slug'] ?? Str::slug($filename)
             ],
             [
-                'title' => $metadata['title'] ?? $filename,
+                'title' => $metadata['title'],
                 'content_html' => $htmlContent,
                 'meta_hash' => $contentHash,
                 'position' => $metadata['position'] ?? $sort,
-                'seo_title' => $metadata['seo_title'] ?? '',
-                'seo_description' => $metadata['seo_description'] ?? '',
+                'seo_title' => $metadata['seo_title'],
+                'seo_description' => $metadata['seo_description'],
                 'is_published' => true,
                 'sort' => $sort,
             ]
@@ -245,131 +253,96 @@ class CourseMarkdownService
             return '';
         }
 
-        // 0) Normalizacja końców linii
         $html = str_replace(["\r\n", "\r"], "\n", $markdown);
 
-        // 0.1) Ułatwienie podziału: dołóż pustą linię PRZED blokami (lista, nagłówek, hr, code)
-        //     to minimalizuje przypadki <p>...<ul> w jednym akapicie
-        $html = preg_replace(
-            '/\n(?=(?:[ ]{0,3}(?:- |\* |\d+\. |```|#{1,6}\s|---\s*$)))/m',
-            "\n\n",
-            $html
-        );
-
-        // 1) Placeholdery i escaper
-        $esc = static function (string $s): string {
-            return htmlspecialchars($s, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
-        };
-
-        // Bezpieczne placeholdery (ASCII RS/US – nie kolidują z regexami na * _ itp.)
-        $phBlock  = static function (int $i): string { return sprintf("\x1EBC%05d\x1F", $i); };
-        $phInline = static function (int $i): string { return sprintf("\x1EIC%05d\x1F", $i); };
+        // --- CODE BLOCKS ---
+        $esc = fn(string $s) => htmlspecialchars($s, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $phBlock = fn(int $i) => sprintf("\x1EBC%05d\x1F", $i);
+        $phInline = fn(int $i) => sprintf("\x1EIC%05d\x1F", $i);
 
         $codeBlocks = [];
         $inlineCodes = [];
-        $cb = 0;
-        $ci = 0;
+        $cb = 0; $ci = 0;
 
-        // 2) Fenced code blocks (pozwalamy na do 3 spacji wcięcia i luzy przy zamknięciu)
-        //    Jedna reguła obsługuje z językiem i bez – brak języka = domyślnie php.
+        // fenced code blocks (```php ... ```)
         $html = preg_replace_callback(
             '/(^|\n)[ ]{0,3}```[ \t]*([A-Za-z0-9_+-]+)?[ \t]*\n([\s\S]*?)\n[ ]{0,3}```[ \t]*(?=\n|$)/',
             function ($m) use (&$codeBlocks, &$cb, $esc, $phBlock) {
-                $lang = isset($m[2]) && $m[2] !== '' ? strtolower($m[2]) : 'php';
-                $code = $esc($m[3]);
+                $lang = $m[2] !== '' ? strtolower($m[2]) : 'php';
                 $ph   = $phBlock($cb++);
-                $codeBlocks[$ph] = '<pre><code class="language-'.$lang.'">'.$code.'</code></pre>';
-                return $m[1].$ph; // zachowaj poprzedzający \n (grupa 1)
+                $codeBlocks[$ph] = '<pre><code class="language-'.$lang.'">'.$esc($m[3]).'</code></pre>';
+                return $m[1].$ph;
             },
             $html
         );
 
-        // 3) Inline code – tniemy wcześnie, by nie psuły go inne regexy
+        // inline code `
         $html = preg_replace_callback(
             '/`([^`\n]+)`/',
             function ($m) use (&$inlineCodes, &$ci, $esc, $phInline) {
-                $code = $esc($m[1]);
-                $ph   = $phInline($ci++);
-                // Jeśli nie chcesz klasy na inline: '<code>'.$code.'</code>'
-                $inlineCodes[$ph] = '<code class="language-php">'.$code.'</code>';
+                $ph = $phInline($ci++);
+                $inlineCodes[$ph] = '<code>'.$esc($m[1]).'</code>';
                 return $ph;
             },
             $html
         );
 
-        // 4) Obrazy
+        // --- LINKS & IMAGES ---
         $html = preg_replace('/!\[([^\]]*)\]\(([^)]+)\)/', '<img src="$2" alt="$1">', $html);
-
-        // 5) Linki
         $html = preg_replace('/\[([^\]]+)\]\(([^)]+)\)/', '<a href="$2">$1</a>', $html);
 
-        // 6) Nagłówki #…###### (elastycznie)
-        $html = preg_replace('/^#{6}[ \t]+(.+)$/m', '<h6>$1</h6>', $html);
-        $html = preg_replace('/^#{5}[ \t]+(.+)$/m', '<h5>$1</h5>', $html);
-        $html = preg_replace('/^#{4}[ \t]+(.+)$/m', '<h4>$1</h4>', $html);
-        $html = preg_replace('/^#{3}[ \t]+(.+)$/m', '<h3>$1</h3>', $html);
-        $html = preg_replace('/^#{2}[ \t]+(.+)$/m', '<h2>$1</h2>', $html);
-        $html = preg_replace('/^#{1}[ \t]+(.+)$/m', '<h1>$1</h1>', $html);
+        // --- HEADERS ---
+        for ($i=6; $i>=1; $i--) {
+            $html = preg_replace('/^'.str_repeat('#',$i).'[ \t]+(.+)$/m', "<h$i>$1</h$i>", $html);
+        }
 
-        // 7) Pogrubienie/Kursywa — ostrożniej, bez łapania środka słów
-        $html = preg_replace('/(?<!\*)\*\*(.+?)\*\*(?!\*)/s', '<strong>$1</strong>', $html);
-        $html = preg_replace('/(?<!_)__(.+?)__(?!_)/s', '<strong>$1</strong>', $html);
-        $html = preg_replace('/(?<!\*)\*(.+?)\*(?!\*)/s', '<em>$1</em>', $html);
-        $html = preg_replace('/(?<!_)_(.+?)_(?!_)/s', '<em>$1</em>', $html);
-
-        // 8) Linie poziome
-        $html = preg_replace('/^(?:---|\*\*\*|___)\s*$/m', '<hr>', $html);
-
-        // 9) Listy – faza A: linie z markerem → <li>…</li>
+        // --- LISTS ---
         // UL item
         $html = preg_replace('/^[ ]{0,3}(?:-|\*)[ \t]+(.+)$/m', '<li>$1</li>', $html);
-        // OL item (tymczasowo oznaczamy atrybutem, żeby nie złapało ich <ul>)
+        // OL item
         $html = preg_replace('/^[ ]{0,3}\d+\.[ \t]+(.+)$/m', '<li data-ol="1">$1</li>', $html);
 
-        // 10) Listy – faza B: opakuj *ciągi* <li>…</li> w odpowiednie listy
-        // OL — najpierw, żeby nie kolidowało z UL
+        // wrap OL
         $html = preg_replace_callback(
-            '/(?:^(?:<li data-ol="1">(?:.|\n)*?<\/li>)\s*)+/m',
-            function ($m) {
-                $block = str_replace('<li data-ol="1">', '<li>', $m[0]);
-                return "<ol>\n".trim($block)."\n</ol>";
-            },
+            '/(?:^(?:<li data-ol="1">.*<\/li>)\s*)+/m',
+            fn($m) => "<ol>\n".str_replace('<li data-ol="1">','<li>',$m[0])."\n</ol>",
             $html
         );
-        // UL — tylko czyste <li> (bez data-ol)
+        // wrap UL
         $html = preg_replace_callback(
             '/(?:^(?:<li>(?:.|\n)*?<\/li>)\s*)+/m',
-            function ($m) {
-                return "<ul>\n".trim($m[0])."\n</ul>";
-            },
+            fn($m) => "<ul>\n".trim($m[0])."\n</ul>",
             $html
         );
 
-        // 11) Akapity – tylko dla „gołego” tekstu (nie zaczynającego się od bloków)
+        // --- EMPHASIS ---
+        $html = preg_replace('/(?<!\*)\*\*(.+?)\*\*(?!\*)/s', '<strong>$1</strong>', $html);
+        $html = preg_replace('/(?<!_)__(.+?)__(?!_)/s', '<strong>$1</strong>', $html);
+        // kursywa — ignorujemy "* " na początku (lista)
+        $html = preg_replace('/(?<!\*)\*(?!\s)(.+?)(?<!\s)\*(?!\*)/s', '<em>$1</em>', $html);
+        $html = preg_replace('/(?<!_)_(.+?)_(?!_)/s', '<em>$1</em>', $html);
+
+        // --- HR ---
+        $html = preg_replace('/^(?:---|\*\*\*|___)\s*$/m', '<hr>', $html);
+
+        // --- PARAGRAPHS ---
         $blocks = preg_split("/\n{2,}/", $html);
         foreach ($blocks as &$b) {
             $t = ltrim($b);
-            if ($t === '') {
-                continue;
-            }
-            if (!preg_match('/^(<(?:h[1-6]|ul|ol|pre|hr|blockquote)>)/', $t)) {
-                // wewnątrz akapitu pojedyncze \n → <br>
+            if ($t === '') continue;
+            if (!preg_match('/^(<(?:h[1-6]|ul|ol|pre|hr)>)/', $t)) {
                 $b = '<p>'.preg_replace("/\n/", "<br>", $b).'</p>';
             }
         }
-        unset($b);
         $html = implode("\n\n", $blocks);
 
-        // 12) Przywróć inline code i code blocks
-        foreach ($inlineCodes as $ph => $val) {
-            $html = str_replace($ph, $val, $html);
-        }
-        foreach ($codeBlocks as $ph => $val) {
-            $html = str_replace($ph, $val, $html);
-        }
+        // --- RESTORE placeholders ---
+        foreach ($inlineCodes as $ph => $val) $html = str_replace($ph,$val,$html);
+        foreach ($codeBlocks as $ph => $val) $html = str_replace($ph,$val,$html);
 
         return $html;
     }
+
 
 
 

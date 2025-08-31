@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Services\CourseMarkdownService;
+use App\Services\SitemapService;
 use Illuminate\Console\Command;
 
 class ProcessCourseMarkdown extends Command
@@ -47,6 +48,10 @@ class ProcessCourseMarkdown extends Command
             }
 
             $this->info('✅ Przetwarzanie zakończone pomyślnie!');
+
+            $this->info('Generowanie sitemap..');
+            SitemapService::generateSitemap();
+            $this->info('Generowanie zakończone ..');
 
         } catch (\Exception $e) {
             $this->error('❌ Błąd podczas przetwarzania: ' . $e->getMessage());

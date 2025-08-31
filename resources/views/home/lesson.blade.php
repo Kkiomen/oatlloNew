@@ -140,6 +140,36 @@
             overflow-x: auto;
             font-size: 0.875rem;
         }
+
+        /* Custom scrollbar styles */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #262626; /* neutral-800 */
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #525252; /* neutral-600 */
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #737373; /* neutral-500 */
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:active {
+            background: #a3a3a3; /* neutral-400 */
+        }
+
+        /* Firefox scrollbar */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #525252 #262626;
+        }
     </style>
 
     <!-- Highlight.js for code syntax highlighting -->
@@ -314,9 +344,9 @@
   LESSON CONTENT
 =========================================================== -->
 <main class="mx-auto mt-16 max-w-7xl px-0 sm:px-6 lg:px-8">
-    <div class="flex flex-col lg:flex-row lg:space-x-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
         <!-- Main content (3/4 width) -->
-        <article class="lg:basis-3/4 w-full" itemprop="articleBody">
+        <article class="lg:col-span-3 w-full" itemprop="articleBody">
             <div class="bg-neutral-900/50 rounded-none sm:rounded-2xl p-4 sm:p-8 border-0 sm:border sm:border-neutral-800">
                 <div class="prose prose-invert max-w-none text-neutral-300 leading-relaxed">
                     <style>
@@ -394,8 +424,8 @@
         </article>
 
         <!-- Sidebar (1/4 width) -->
-        <aside class="lg:basis-1/4 w-full mt-8 lg:mt-0">
-            <div class="bg-neutral-900/50 rounded-none sm:rounded-2xl p-4 sm:p-6 border-0 sm:border sm:border-neutral-800 sticky top-8">
+        <aside class="lg:col-span-1 w-full mt-8 lg:mt-0">
+            <div class="bg-neutral-900/50 rounded-none sm:rounded-2xl p-4 sm:p-6 border-0 sm:border sm:border-neutral-800 sticky top-8 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto custom-scrollbar">
                 <h3 class="text-lg font-semibold text-white mb-6 flex items-center">
                     <i class="fa-solid fa-list text-green-400 mr-2"></i>
                     Course Contents

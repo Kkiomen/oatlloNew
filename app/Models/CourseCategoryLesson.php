@@ -34,9 +34,9 @@ class CourseCategoryLesson extends Model
         return $this->belongsTo(CourseCategory::class, 'course_category_id');
     }
 
-    public function getRoute(): string
+    public function getRoute(bool $absolute = true): string
     {
         // Wymuszamy angielski URL dla lekcji
-        return route('course_lesson_en', ['courseName' => $this->category->course->slug, 'chapter' => $this->category->slug, 'lesson' => $this->slug]);
+        return route('course_lesson_en', ['courseName' => $this->category->course->slug, 'chapter' => $this->category->slug, 'lesson' => $this->slug], $absolute);
     }
 }
