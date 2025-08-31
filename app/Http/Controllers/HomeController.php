@@ -27,16 +27,19 @@ class HomeController extends Controller
         $defaultLangue = env('APP_LOCALE');
 
         if(env('LANGUAGE_MODE') == 'strict'){
-            $lessonsNotIn = [];
-            foreach (CourseCategoryLesson::get() as $lesson){
-                $lessonsNotIn[] = $lesson->lesson_id;
-            }
-
-            $randomArticles = Article::where('is_published', true)->where('language', $defaultLangue)->whereNotIn('id', $lessonsNotIn)->orderBy('id', 'desc')->take(6)->get();
+            $randomArticles = Article::where('is_published', true)
+                ->where('language', $defaultLangue)
+                ->where('type', 'normal') // Wykluczamy lekcje kursów
+                ->orderBy('id', 'desc')
+                ->take(6)
+                ->get();
             $postInstagrams = InstagramPost::where('language', $defaultLangue)->orderBy('created_at', 'desc')->take(8)->get();
-//            $randomArticles = Article::where('is_published', true)->where('language', $defaultLangue)->whereNotIn('id', $lessonsNotIn)->inRandomOrder()->take(6)->get();
         }else{
-            $randomArticles = Article::where('is_published', true)->inRandomOrder()->take(6)->get();
+            $randomArticles = Article::where('is_published', true)
+                ->where('type', 'normal') // Wykluczamy lekcje kursów
+                ->inRandomOrder()
+                ->take(6)
+                ->get();
         }
 
         return view('views_basic.welcome', [
@@ -89,17 +92,21 @@ class HomeController extends Controller
             abort(404);
         }
 
-        $lessonsNotIn = [];
-        foreach (CourseCategoryLesson::get() as $lesson){
-            $lessonsNotIn[] = $lesson->lesson_id;
-        }
-
-
         if(env('LANGUAGE_MODE') == 'strict'){
-            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->whereNotIn('id', $lessonsNotIn)->where('language', $defaultLangue)->inRandomOrder()->take(3)->get();
-
+            $randomArticles = Article::where('id', '!=', $article->id)
+                ->where('is_published', true)
+                ->where('type', 'normal') // Wykluczamy lekcje kursów
+                ->where('language', $defaultLangue)
+                ->inRandomOrder()
+                ->take(3)
+                ->get();
         }else{
-            $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->whereNotIn('id', $lessonsNotIn)->inRandomOrder()->take(3)->get();
+            $randomArticles = Article::where('id', '!=', $article->id)
+                ->where('is_published', true)
+                ->where('type', 'normal') // Wykluczamy lekcje kursów
+                ->inRandomOrder()
+                ->take(3)
+                ->get();
         }
 
         if (!$article) {
