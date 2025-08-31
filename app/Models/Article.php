@@ -186,12 +186,10 @@ class Article extends Model
      */
     public function getNextArticle(): ?Article
     {
-        $lessonsNotIn = CourseCategoryLesson::pluck('lesson_id')->toArray();
 
         return Article::where('id', '>', $this->id)
             ->where('is_published', true)
             ->where('type', 'normal')
-            ->whereNotIn('id', $lessonsNotIn)
             ->where('language', $this->language)
             ->orderBy('id', 'asc')
             ->first();
@@ -203,12 +201,10 @@ class Article extends Model
      */
     public function getPreviousArticle(): ?Article
     {
-        $lessonsNotIn = CourseCategoryLesson::pluck('lesson_id')->toArray();
 
         return Article::where('id', '<', $this->id)
             ->where('is_published', true)
             ->where('type', 'normal')
-            ->whereNotIn('id', $lessonsNotIn)
             ->where('language', $this->language)
             ->orderBy('id', 'desc')
             ->first();
@@ -221,12 +217,10 @@ class Article extends Model
      */
     public function getRelatedArticles(int $limit = 6): \Illuminate\Database\Eloquent\Collection
     {
-        $lessonsNotIn = CourseCategoryLesson::pluck('lesson_id')->toArray();
 
         $query = Article::where('id', '!=', $this->id)
             ->where('is_published', true)
             ->where('type', 'normal')
-            ->whereNotIn('id', $lessonsNotIn)
             ->where('language', $this->language);
 
         // Jeśli artykuł ma kategorię, szukaj artykułów z tej samej kategorii
@@ -247,7 +241,6 @@ class Article extends Model
             return Article::where('id', '!=', $this->id)
                 ->where('is_published', true)
                 ->where('type', 'normal')
-                ->whereNotIn('id', $lessonsNotIn)
                 ->where('language', $this->language)
                 ->orderBy('created_at', 'desc')
                 ->limit($limit)
@@ -266,11 +259,9 @@ class Article extends Model
      */
     public static function getPopularArticles(int $limit = 4): \Illuminate\Database\Eloquent\Collection
     {
-        $lessonsNotIn = CourseCategoryLesson::pluck('lesson_id')->toArray();
 
         return Article::where('is_published', true)
             ->where('type', 'normal')
-            ->whereNotIn('id', $lessonsNotIn)
             ->where('language', env('APP_LOCALE'))
             ->orderBy('created_at', 'desc')
             ->limit($limit)
@@ -288,12 +279,10 @@ class Article extends Model
             return Article::where('id', 0)->get(); // Zwraca pustą Eloquent Collection
         }
 
-        $lessonsNotIn = CourseCategoryLesson::pluck('lesson_id')->toArray();
 
         return Article::where('id', '!=', $this->id)
             ->where('is_published', true)
             ->where('type', 'normal')
-            ->whereNotIn('id', $lessonsNotIn)
             ->where('language', $this->language)
             ->where('category_id', $this->category_id)
             ->orderBy('created_at', 'desc')
@@ -308,11 +297,9 @@ class Article extends Model
      */
     public static function getLatestArticles(int $limit = 6): \Illuminate\Database\Eloquent\Collection
     {
-        $lessonsNotIn = CourseCategoryLesson::pluck('lesson_id')->toArray();
 
         return Article::where('is_published', true)
             ->where('type', 'normal')
-            ->whereNotIn('id', $lessonsNotIn)
             ->where('language', env('APP_LOCALE'))
             ->orderBy('published_at', 'desc')
             ->orderBy('created_at', 'desc')
