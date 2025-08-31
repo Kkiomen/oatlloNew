@@ -148,13 +148,7 @@ class HomeController extends Controller
 
         // Dodaj filtrowanie według języka jeśli jest włączone
         if(env('LANGUAGE_MODE') == 'strict') {
-            $lessonsNotIn = [];
-            foreach (CourseCategoryLesson::get() as $lesson){
-                $lessonsNotIn[] = $lesson->lesson_id;
-            }
-
-            $articlesQuery->where('language', env('APP_LOCALE'))
-                ->whereNotIn('id', $lessonsNotIn);
+            $articlesQuery->where('language', env('APP_LOCALE'));
         }
 
         // Dodaj wyszukiwanie jeśli podano query
