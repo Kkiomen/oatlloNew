@@ -245,48 +245,57 @@ class CourseMarkdownService
             return '';
         }
 
-        // Normalizacja CRLF -> LF
+        // 0) Normalizacja końców linii
         $html = str_replace(["\r\n", "\r"], "\n", $markdown);
 
-        // Mapy placeholderów
+        // 0.1) Ułatwienie podziału: dołóż pustą linię PRZED blokami (lista, nagłówek, hr, code)
+        //     to minimalizuje przypadki <p>...<ul> w jednym akapicie
+        $html = preg_replace(
+            '/\n(?=(?:[ ]{0,3}(?:- |\* |\d+\. |```|#{1,6}\s|---\s*$)))/m',
+            "\n\n",
+            $html
+        );
+
+        // 1) Placeholdery i escaper
+        $esc = static function (string $s): string {
+            return htmlspecialchars($s, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        };
+
+        // Bezpieczne placeholdery (ASCII RS/US – nie kolidują z regexami na * _ itp.)
+        $phBlock  = static function (int $i): string { return sprintf("\x1EBC%05d\x1F", $i); };
+        $phInline = static function (int $i): string { return sprintf("\x1EIC%05d\x1F", $i); };
+
         $codeBlocks = [];
         $inlineCodes = [];
         $cb = 0;
         $ci = 0;
 
-        // Helper do bezpieczeństwa kodu
-        $esc = fn(string $s) => htmlspecialchars($s, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        // 2) Fenced code blocks (pozwalamy na do 3 spacji wcięcia i luzy przy zamknięciu)
+        //    Jedna reguła obsługuje z językiem i bez – brak języka = domyślnie php.
+        $html = preg_replace_callback(
+            '/(^|\n)[ ]{0,3}```[ \t]*([A-Za-z0-9_+-]+)?[ \t]*\n([\s\S]*?)\n[ ]{0,3}```[ \t]*(?=\n|$)/',
+            function ($m) use (&$codeBlocks, &$cb, $esc, $phBlock) {
+                $lang = isset($m[2]) && $m[2] !== '' ? strtolower($m[2]) : 'php';
+                $code = $esc($m[3]);
+                $ph   = $phBlock($cb++);
+                $codeBlocks[$ph] = '<pre><code class="language-'.$lang.'">'.$code.'</code></pre>';
+                return $m[1].$ph; // zachowaj poprzedzający \n (grupa 1)
+            },
+            $html
+        );
 
-        // BEZPIECZNE PLACEHOLDERY (znaki kontrolne ASCII 30/31)
-        $phBlock  = fn(int $i) => sprintf("\x1EBC%05d\x1F", $i);
-        $phInline = fn(int $i) => sprintf("\x1EIC%05d\x1F", $i);
-
-        // 1) Bloki kodu z językiem  ```lang\n...\n```
-        $html = preg_replace_callback('/```([A-Za-z0-9_+-]+)[ \t]*\n([\s\S]*?)\n```/', function ($m) use (&$codeBlocks, &$cb, $esc, $phBlock) {
-            $lang = strtolower($m[1]);
-            $code = $esc($m[2]);
-            $ph = $phBlock($cb++);
-            $codeBlocks[$ph] = '<pre><code class="language-' . $lang . '">' . $code . '</code></pre>';
-            return $ph;
-        }, $html);
-
-        // 2) Bloki kodu bez języka  ```\n...\n```
-        $html = preg_replace_callback('/```[ \t]*\n([\s\S]*?)\n```/', function ($m) use (&$codeBlocks, &$cb, $esc, $phBlock) {
-            $code = $esc($m[1]);
-            $ph = $phBlock($cb++);
-            // Domyślnie PHP gdy brak języka:
-            $codeBlocks[$ph] = '<pre><code class="language-php">' . $code . '</code></pre>';
-            return $ph;
-        }, $html);
-
-        // 3) Kod inline `...`  — wycinamy wcześnie, żeby nie psuły go inne regexy
-        $html = preg_replace_callback('/`([^`\n]+)`/', function ($m) use (&$inlineCodes, &$ci, $esc, $phInline) {
-            $code = $esc($m[1]);
-            $ph = $phInline($ci++);
-            // jeśli nie chcesz klasy na inline, zmień na <code>…</code>
-            $inlineCodes[$ph] = '<code class="language-php">' . $code . '</code>';
-            return $ph;
-        }, $html);
+        // 3) Inline code – tniemy wcześnie, by nie psuły go inne regexy
+        $html = preg_replace_callback(
+            '/`([^`\n]+)`/',
+            function ($m) use (&$inlineCodes, &$ci, $esc, $phInline) {
+                $code = $esc($m[1]);
+                $ph   = $phInline($ci++);
+                // Jeśli nie chcesz klasy na inline: '<code>'.$code.'</code>'
+                $inlineCodes[$ph] = '<code class="language-php">'.$code.'</code>';
+                return $ph;
+            },
+            $html
+        );
 
         // 4) Obrazy
         $html = preg_replace('/!\[([^\]]*)\]\(([^)]+)\)/', '<img src="$2" alt="$1">', $html);
@@ -294,22 +303,15 @@ class CourseMarkdownService
         // 5) Linki
         $html = preg_replace('/\[([^\]]+)\]\(([^)]+)\)/', '<a href="$2">$1</a>', $html);
 
-        // 6) Nagłówki
-        $html = preg_replace('/^######[ \t]+(.+)$/m', '<h6>$1</h6>', $html);
-        $html = preg_replace('/^##### [ \t]+(.+)$/m', '<h5>$1</h5>', $html);
-        $html = preg_replace('/^####[ \t]+(.+)$/m', '<h4>$1</h4>', $html);
-        $html = preg_replace('/^### [ \t]+(.+)$/m', '<h3>$1</h3>', $html);
-        $html = preg_replace('/^##  [ \t]+(.+)$/m', '<h2>$1</h2>', $html);
-        $html = preg_replace('/^#   [ \t]+(.+)$/m', '<h1>$1</h1>', $html);
-        // elastyczne dopasowanie 1–6 # (w razie nietypowych odstępów)
-        $html = preg_replace('/^#{1}[ \t]+(.+)$/m', '<h1>$1</h1>', $html);
-        $html = preg_replace('/^#{2}[ \t]+(.+)$/m', '<h2>$1</h2>', $html);
-        $html = preg_replace('/^#{3}[ \t]+(.+)$/m', '<h3>$1</h3>', $html);
-        $html = preg_replace('/^#{4}[ \t]+(.+)$/m', '<h4>$1</h4>', $html);
-        $html = preg_replace('/^#{5}[ \t]+(.+)$/m', '<h5>$1</h5>', $html);
+        // 6) Nagłówki #…###### (elastycznie)
         $html = preg_replace('/^#{6}[ \t]+(.+)$/m', '<h6>$1</h6>', $html);
+        $html = preg_replace('/^#{5}[ \t]+(.+)$/m', '<h5>$1</h5>', $html);
+        $html = preg_replace('/^#{4}[ \t]+(.+)$/m', '<h4>$1</h4>', $html);
+        $html = preg_replace('/^#{3}[ \t]+(.+)$/m', '<h3>$1</h3>', $html);
+        $html = preg_replace('/^#{2}[ \t]+(.+)$/m', '<h2>$1</h2>', $html);
+        $html = preg_replace('/^#{1}[ \t]+(.+)$/m', '<h1>$1</h1>', $html);
 
-        // 7) Pogrubienie / kursywa (ostrożniej, żeby nie łapać środka słów)
+        // 7) Pogrubienie/Kursywa — ostrożniej, bez łapania środka słów
         $html = preg_replace('/(?<!\*)\*\*(.+?)\*\*(?!\*)/s', '<strong>$1</strong>', $html);
         $html = preg_replace('/(?<!_)__(.+?)__(?!_)/s', '<strong>$1</strong>', $html);
         $html = preg_replace('/(?<!\*)\*(.+?)\*(?!\*)/s', '<em>$1</em>', $html);
@@ -318,42 +320,47 @@ class CourseMarkdownService
         // 8) Linie poziome
         $html = preg_replace('/^(?:---|\*\*\*|___)\s*$/m', '<hr>', $html);
 
-        // 9) Listy UL
-        $html = preg_replace_callback('/(?:^(?:-|\*)\s+.+\n?)+/m', function ($m) {
-            $items = preg_split('/\n/', trim($m[0]));
-            $lis = [];
-            foreach ($items as $line) {
-                if (preg_match('/^(?:-|\*)\s+(.+)$/', $line, $mm)) {
-                    $lis[] = '<li>' . $mm[1] . '</li>';
-                }
-            }
-            return $lis ? "<ul>\n" . implode("\n", $lis) . "\n</ul>" : $m[0];
-        }, $html);
+        // 9) Listy – faza A: linie z markerem → <li>…</li>
+        // UL item
+        $html = preg_replace('/^[ ]{0,3}(?:-|\*)[ \t]+(.+)$/m', '<li>$1</li>', $html);
+        // OL item (tymczasowo oznaczamy atrybutem, żeby nie złapało ich <ul>)
+        $html = preg_replace('/^[ ]{0,3}\d+\.[ \t]+(.+)$/m', '<li data-ol="1">$1</li>', $html);
 
-        // 10) Listy OL
-        $html = preg_replace_callback('/(?:^\d+\.\s+.+\n?)+/m', function ($m) {
-            $items = preg_split('/\n/', trim($m[0]));
-            $lis = [];
-            foreach ($items as $line) {
-                if (preg_match('/^\d+\.\s+(.+)$/', $line, $mm)) {
-                    $lis[] = '<li>' . $mm[1] . '</li>';
-                }
-            }
-            return $lis ? "<ol>\n" . implode("\n", $lis) . "\n</ol>" : $m[0];
-        }, $html);
+        // 10) Listy – faza B: opakuj *ciągi* <li>…</li> w odpowiednie listy
+        // OL — najpierw, żeby nie kolidowało z UL
+        $html = preg_replace_callback(
+            '/(?:^(?:<li data-ol="1">(?:.|\n)*?<\/li>)\s*)+/m',
+            function ($m) {
+                $block = str_replace('<li data-ol="1">', '<li>', $m[0]);
+                return "<ol>\n".trim($block)."\n</ol>";
+            },
+            $html
+        );
+        // UL — tylko czyste <li> (bez data-ol)
+        $html = preg_replace_callback(
+            '/(?:^(?:<li>(?:.|\n)*?<\/li>)\s*)+/m',
+            function ($m) {
+                return "<ul>\n".trim($m[0])."\n</ul>";
+            },
+            $html
+        );
 
-        // 11) Akapity (bez psucia bloków)
+        // 11) Akapity – tylko dla „gołego” tekstu (nie zaczynającego się od bloków)
         $blocks = preg_split("/\n{2,}/", $html);
         foreach ($blocks as &$b) {
             $t = ltrim($b);
-            if ($t === '') continue;
-            if (!preg_match('/^(<h[1-6]|<ul>|<ol>|<pre>|<hr>)/', $t)) {
-                $b = '<p>' . preg_replace("/\n/", "<br>", $b) . '</p>';
+            if ($t === '') {
+                continue;
+            }
+            if (!preg_match('/^(<(?:h[1-6]|ul|ol|pre|hr|blockquote)>)/', $t)) {
+                // wewnątrz akapitu pojedyncze \n → <br>
+                $b = '<p>'.preg_replace("/\n/", "<br>", $b).'</p>';
             }
         }
+        unset($b);
         $html = implode("\n\n", $blocks);
 
-        // 12) Przywróć inline code i code blocks – TERAZ placeholders dalej są nienaruszone
+        // 12) Przywróć inline code i code blocks
         foreach ($inlineCodes as $ph => $val) {
             $html = str_replace($ph, $val, $html);
         }
@@ -363,6 +370,7 @@ class CourseMarkdownService
 
         return $html;
     }
+
 
 
 
