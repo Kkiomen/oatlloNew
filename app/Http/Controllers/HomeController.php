@@ -39,20 +39,9 @@ class HomeController extends Controller
             $randomArticles = Article::where('is_published', true)->inRandomOrder()->take(6)->get();
         }
 
-        // Pobierz kursy PHP
-        $courses = Course::where('is_published', true)
-            ->where('lang', $defaultLangue)
-            ->with(['categories' => function($query) {
-                $query->withCount('lessons');
-            }])
-            ->take(3)
-            ->get();
-
         return view('views_basic.welcome', [
             'randomArticles' => $randomArticles,
-            'postInstagrams' => $postInstagrams,
-            'courses' => $courses,
-            'defaultLangue' => $defaultLangue
+            'postInstagrams' => $postInstagrams
         ]);
     }
 

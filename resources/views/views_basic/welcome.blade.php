@@ -192,66 +192,71 @@
     </div>
     @endif
 
-    @if($courses->count() > 0)
     <div class="bg-neutral-900 py-24 sm:py-32">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
-            <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl">Kursy <span class="text-rose-400">PHP</span></h2>
-                <p class="mt-2 text-lg/8 text-neutral-300">Od podstaw do zaawansowanych technik programowania. Ucz się PHP z praktycznymi przykładami i realnymi projektami.</p>
-            </div>
-            <div class="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                @foreach($courses as $course)
-                    @php
-                        if($defaultLangue == 'pl'){
-                            $urlToCourse = route('course_pl', ['courseName' => $course->slug ]);
-                        }else{
-                            $urlToCourse = route('course_en', ['courseName' => $course->slug ]);
-                        }
-                        $currentImage = empty($course->image) ? 'storage/uploads/empty_image.jpg' : $course->image;
-                        $pattern = "/asset\('(.+?)'\)/";
-                        if (preg_match($pattern, $currentImage, $matches)) {
-                            $currentImage = $matches[1];
-                        }
-                        $currentImage = str_contains($currentImage, 'http') ? $currentImage : asset($currentImage);
-                    @endphp
-                    <article class="flex flex-col overflow-hidden rounded-2xl bg-neutral-800/70 shadow-lg transition hover:shadow-rose-500/30">
-                        <a href="{{ $urlToCourse }}" class="group relative block">
-                            <img src="{{ $currentImage }}" alt="{{ $course->title_list }}" class="h-56 w-full object-cover transition group-hover:scale-105" loading="lazy" />
-                            <span class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></span>
-                        </a>
-                        <div class="flex flex-1 flex-col p-6">
-                            <header class="mb-3 flex-1">
-                                <h3 class="text-xl font-bold tracking-tight text-white group-hover:text-rose-400">
-                                    <a href="{{ $urlToCourse }}" class="inline-block h-full w-full">{{ $course->title_list }}</a>
-                                </h3>
-                                <p class="mt-2 line-clamp-3 text-neutral-400">
-                                    {{ $course->description_list }}
-                                </p>
-                            </header>
-                            <!-- Meta info -->
-                            <footer class="mt-auto flex items-center justify-between text-sm text-neutral-400">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-clock text-rose-400"></i>
-                                    <span>Self-paced</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-book text-rose-400"></i>
-                                    <span>{{ $course->categories->sum('lessons_count') }} lekcji</span>
-                                </div>
-                            </footer>
+            <div class="mx-auto max-w-4xl">
+                <!-- Featured PHP Course Card -->
+                <div class="flex flex-col lg:flex-row overflow-hidden rounded-2xl bg-gradient-to-r from-blue-900 to-neutral-800 shadow-2xl">
+                    <!-- Left Section - Visual -->
+                    <div class="lg:w-2/5 bg-blue-900 p-8 relative">
+                        <div class="text-gray-300 mb-4">
+                            <div class="text-sm font-medium">COURSE</div>
+                            <div class="text-4xl font-bold mb-2">PHP</div>
+                            <div class="bg-gray-300 text-gray-700 px-3 py-1 rounded text-sm font-semibold inline-block">FOR FREE</div>
                         </div>
-                    </article>
-                @endforeach
-            </div>
-            <div class="mt-12 text-center">
-                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="inline-flex items-center rounded-md bg-rose-500 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400 transition-colors duration-200">
-                    <i class="fa-solid fa-graduation-cap mr-2"></i>{{ __('basic.go_to_course') }} <span aria-hidden="true">→</span>
-                </a>
-                <p class="mt-4 text-sm text-neutral-400">Dołącz do tysięcy programistów, którzy już rozwijają swoje umiejętności</p>
+
+                        <!-- Elephant mascot placeholder -->
+                        <div class="absolute bottom-8 right-8 w-24 h-24 bg-blue-400 rounded-full flex items-center justify-center opacity-80">
+                            <div class="text-blue-900 font-bold text-lg">php</div>
+                        </div>
+
+                        <div class="absolute bottom-4 left-8 text-gray-300 text-sm font-medium">oatllo</div>
+                    </div>
+
+                    <!-- Right Section - Content -->
+                    <div class="lg:w-3/5 bg-neutral-800 p-8 flex flex-col justify-between">
+                        <div>
+                            <!-- Featured tag -->
+                            <div class="inline-flex items-center bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium mb-4">
+                                <i class="fa-solid fa-star mr-1"></i>
+                                Featured
+                            </div>
+
+                            <!-- Main headline -->
+                            <h2 class="text-3xl font-bold text-white mb-4">
+                                Instant results from learning PHP
+                            </h2>
+
+                            <!-- Description -->
+                            <p class="text-gray-300 mb-6 leading-relaxed">
+                                Gain practical knowledge and learn from real-world projects. This PHP course will help you quickly create dynamic web applications and gain the skills you need in the job market.
+                            </p>
+
+                            <!-- Course features -->
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center text-gray-300">
+                                    <i class="fa-solid fa-clock text-green-400 mr-3"></i>
+                                    <span>Self-paced learning</span>
+                                </div>
+                                <div class="flex items-center text-gray-300">
+                                    <i class="fa-solid fa-users text-green-400 mr-3"></i>
+                                    <span>Beginner to Advanced</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <div class="mt-6">
+                            <a href="https://oatllo.com/course/php" class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200">
+                                Start Learning
+                                <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    @endif
 
     @if(!empty($postInstagrams))
         <div class="bg-dark-brown">
