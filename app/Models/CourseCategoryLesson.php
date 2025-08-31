@@ -36,6 +36,11 @@ class CourseCategoryLesson extends Model
 
     public function getRoute(bool $absolute = true): string
     {
+        // Sprawdź czy wszystkie wymagane pola istnieją
+        if (empty($this->slug) || empty($this->category) || empty($this->category->course) || empty($this->category->course->slug) || empty($this->category->slug)) {
+            return '';
+        }
+
         // Wymuszamy angielski URL dla lekcji
         return route('course_lesson_en', ['courseName' => $this->category->course->slug, 'chapter' => $this->category->slug, 'lesson' => $this->slug], $absolute);
     }

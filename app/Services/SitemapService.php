@@ -104,12 +104,18 @@ class SitemapService
                 );
 
                 foreach ($category->lessons as $lesson) {
-                    $sitemap->addItem(
-                        loc: $lesson->getRoute(false),
-                        priority: '0.7',
-                        changefreq: 'weekly',
-                        lastmod: $lesson->updated_at->toIso8601String()
-                    );
+                    // Sprawdź czy lekcja ma slug przed dodaniem do sitemap
+                    if (!empty($lesson->slug)) {
+                        $lessonUrl = $lesson->getRoute(false);
+                        if (!empty($lessonUrl)) {
+                            $sitemap->addItem(
+                                loc: $lessonUrl,
+                                priority: '0.7',
+                                changefreq: 'weekly',
+                                lastmod: $lesson->updated_at->toIso8601String()
+                            );
+                        }
+                    }
                 }
             }
         }
