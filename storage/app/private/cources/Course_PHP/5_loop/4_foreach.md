@@ -3,8 +3,8 @@ title: "The foreach Loop in PHP – Complete Lesson for Beginners"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 4
-seo_title: "PHP foreach Loop | Beginner’s Guide"
-seo_description: "Learn how to use the foreach loop in PHP. Syntax, examples, best practices, common mistakes, and quizzes. Ideal for arrays, collections, iterables, generators, and object properties."
+seo_title: "PHP foreach Loop Tutorial: Complete Guide for Beginners"
+seo_description: "Learn how to use the foreach loop in PHP. Master array iteration, key-value pairs, references, and best practices with practical examples."
 slug: php-foreach-loop-guide
 ---
 

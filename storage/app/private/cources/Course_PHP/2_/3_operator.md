@@ -3,8 +3,8 @@ title: "Operators in PHP — Arithmetic, Comparison, and Logic"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 3
-seo_title: "PHP Operators: Arithmetic, Comparison, Logic | Beginner’s Guide"
-seo_description: "Learn the basics of arithmetic, comparison, and logical operators in PHP. Beginner-friendly guide with code examples, best practices, and common pitfalls."
+seo_title: "PHP Operators: Arithmetic, Comparison, and Logic Guide"
+seo_description: "Master PHP operators with this comprehensive tutorial. Learn arithmetic, comparison, and logical operators with practical examples and best practices."
 slug: operators-arithmetic-comparison-logic
 ---
 

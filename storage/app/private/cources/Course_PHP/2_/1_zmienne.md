@@ -1,10 +1,10 @@
 ---
-title: "Variables and Data Types in PHP – Complete Beginner’s Guide"
+title: "Variables and Data Types in PHP – Complete Beginner's Guide"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 1
-seo_title: "Variables and Data Types in PHP | Beginner’s Guide"
-seo_description: "Learn what variables and data types are in PHP, how they work, and how to use them. Complete guide with examples, best practices, and common mistakes."
+seo_title: "PHP Variables and Data Types: Complete Tutorial"
+seo_description: "Master PHP variables and data types with this comprehensive guide. Learn about strings, integers, arrays, objects, and best practices for variable naming."
 slug: variables-and-data-types-in-php
 ---
 

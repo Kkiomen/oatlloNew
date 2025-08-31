@@ -3,8 +3,8 @@ title: "Anonymous Functions (Closures) in PHP"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 4
-seo_title: "PHP Anonymous Functions and Closures | Beginner’s Guide"
-seo_description: "Learn how to use anonymous functions (closures) in PHP: syntax, arrow functions, use keyword, first-class callables, best practices, and common mistakes."
+seo_title: "PHP Anonymous Functions and Closures Tutorial"
+seo_description: "Learn how to use anonymous functions and closures in PHP. Master arrow functions, use keyword, callbacks, and functional programming with examples."
 slug: php-anonymous-functions-guide
 ---
 

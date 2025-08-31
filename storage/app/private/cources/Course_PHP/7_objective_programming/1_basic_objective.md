@@ -3,8 +3,8 @@ title: "Classes and Objects in PHP: Introduction to Object-Oriented Programming"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 1
-seo_title: "PHP OOP Basics | Classes and Objects"
-seo_description: "Learn the basics of Object-Oriented Programming in PHP: classes, objects, properties, methods, constructors, this, access modifiers, encapsulation, and best practices."
+seo_title: "PHP OOP Tutorial: Classes and Objects Complete Guide"
+seo_description: "Learn Object-Oriented Programming in PHP with classes, objects, properties, methods, constructors, and access modifiers. Master OOP basics with examples."
 slug: php-oop-basics-guide
 ---
 

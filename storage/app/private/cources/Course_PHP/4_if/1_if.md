@@ -3,8 +3,8 @@ title: "Basic Conditional Statements in PHP: if, else, elseif"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 1
-seo_title: "Conditional Statements in PHP | Beginner’s Guide"
-seo_description: "Learn the basics of conditional statements in PHP: if, else, and elseif. Understand truthy/falsy values, comparison operators, best practices, and common mistakes."
+seo_title: "PHP Conditional Statements: if, else, elseif Tutorial"
+seo_description: "Learn how to use conditional statements in PHP including if, else, and elseif. Master decision-making logic with practical examples and best practices."
 slug: conditional-statements-php-if-else-elseif
 ---
 

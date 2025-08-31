@@ -3,8 +3,8 @@ title: "Iterating Over Arrays in PHP: foreach, array_walk, and array_chunk"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 3
-seo_title: "Iterating Arrays in PHP: foreach, array_walk, array_chunk"
-seo_description: "Learn how to iterate over arrays in PHP using foreach, array_walk, and array_chunk. Understand when to use them, see examples, best practices, and common mistakes."
+seo_title: "PHP Array Iteration: foreach, array_walk, array_chunk"
+seo_description: "Learn how to iterate through arrays in PHP using foreach, array_walk, and array_chunk. Master array looping with practical examples and best practices."
 slug: iterating-arrays-php-foreach-array-walk-array-chunk
 ---
 

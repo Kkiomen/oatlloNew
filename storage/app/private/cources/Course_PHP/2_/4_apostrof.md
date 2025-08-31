@@ -3,8 +3,8 @@ title: "Difference Between Single Quotes and Double Quotes in PHP"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 4
-seo_title: "Single vs Double Quotes in PHP | Beginner’s Guide"
-seo_description: "Learn the difference between single quotes (' ') and double quotes (" ") in PHP. Understand string interpolation, escape sequences, best practices, and common mistakes."
+seo_title: "PHP Quotes: Single vs Double Quotes Complete Guide"
+seo_description: "Learn the difference between single and double quotes in PHP. Understand string interpolation, escape sequences, and when to use each type."
 slug: difference-single-double-quotes-php
 ---
 

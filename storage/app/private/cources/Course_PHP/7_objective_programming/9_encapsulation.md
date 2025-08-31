@@ -3,8 +3,8 @@ title: "Encapsulation in PHP – Key OOP Principles"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 9
-seo_title: "PHP Encapsulation | Advanced Guide"
-seo_description: "Learn encapsulation in PHP OOP: access modifiers, getters/setters, validation, readonly properties, immutability, collections, magic methods, best practices, pitfalls, and quiz."
+seo_title: "PHP Encapsulation Tutorial: Advanced OOP Principles"
+seo_description: "Learn advanced encapsulation in PHP OOP with access modifiers, getters/setters, validation, readonly properties, and immutability. Master data hiding with examples."
 slug: php-encapsulation-advanced-guide
 ---
 

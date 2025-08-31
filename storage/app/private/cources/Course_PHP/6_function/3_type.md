@@ -3,8 +3,8 @@ title: "Function Typing in PHP: int, string, array, bool, mixed, void, object, ?
 hash: null
 last_verified: 2025-08-31 11:01
 position: 3
-seo_title: "PHP Function Typing | Beginner’s Guide"
-seo_description: "Learn how to type PHP functions with int, string, array, bool, mixed, void, object, and nullable types. Includes syntax, examples, best practices, and common pitfalls."
+seo_title: "PHP Function Typing Tutorial: Complete Type System Guide"
+seo_description: "Learn how to use function typing in PHP including int, string, array, bool, mixed, void, object, and nullable types. Master type safety with examples."
 slug: php-function-typing-guide
 ---
 

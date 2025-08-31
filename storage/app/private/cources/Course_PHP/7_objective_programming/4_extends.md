@@ -3,8 +3,8 @@ title: "Inheritance in PHP: Understanding extends and parent::"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 4
-seo_title: "PHP Inheritance | extends and parent:: Guide"
-seo_description: "Learn inheritance in PHP: how to use extends and parent::, override methods, call parent constructors, visibility rules, final classes/methods, best practices, and pitfalls."
+seo_title: "PHP Inheritance Tutorial: extends and parent:: Guide"
+seo_description: "Learn inheritance in PHP with extends and parent::. Master method overriding, constructor calls, visibility rules, and OOP inheritance patterns with examples."
 slug: php-inheritance-guide
 ---
 

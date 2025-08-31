@@ -3,8 +3,8 @@ title: "Function Arguments in PHP: Optional Parameters and Default Values"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 2
-seo_title: "PHP Function Arguments | Optional Parameters & Defaults"
-seo_description: "Learn how to use function arguments in PHP: optional parameters, default values, typing, nullables, named arguments, variadic parameters, best practices, and common mistakes."
+seo_title: "PHP Function Arguments: Optional Parameters and Defaults"
+seo_description: "Learn how to use function arguments in PHP including optional parameters, default values, typing, and named arguments. Master flexible function design."
 slug: php-function-arguments-guide
 ---
 

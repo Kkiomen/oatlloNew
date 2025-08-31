@@ -3,8 +3,8 @@ title: "Getters and Setters in PHP OOP"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 7
-seo_title: "PHP Getters and Setters | Encapsulation Guide"
-seo_description: "Learn getters and setters in PHP OOP: encapsulation, validation, fluent setters, immutability, readonly properties, domain methods, magic methods, best practices, and pitfalls."
+seo_title: "PHP Getters and Setters Tutorial: Encapsulation Guide"
+seo_description: "Learn getters and setters in PHP OOP for encapsulation, validation, fluent setters, and immutability. Master safe object state management with examples."
 slug: php-getter-setter-guide
 ---
 

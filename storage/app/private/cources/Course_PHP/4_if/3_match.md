@@ -3,8 +3,8 @@ title: "The match Expression in PHP 8+: A Modern Approach to Conditionals"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 3
-seo_title: "PHP match Expression | Beginner’s Guide"
-seo_description: "Learn the match expression in PHP 8+. Strict comparisons, no fall-through, always returns a value, safer than switch. Examples with enums, ranges, validation, and best practices."
+seo_title: "PHP match Expression Tutorial: Modern Conditional Logic"
+seo_description: "Learn how to use the match expression in PHP 8+. Master strict comparisons, value returns, and modern conditional logic with practical examples."
 slug: php-match-expression-guide
 ---
 

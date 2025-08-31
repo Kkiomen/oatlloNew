@@ -3,8 +3,8 @@ title: "Basic operations on arrays in PHP"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 2
-seo_title: "PHP Array Operations: Add, Remove, Search, Sort, Merge | Beginner’s Guide"
-seo_description: "Learn the most common array operations in PHP: adding, removing, modifying, iterating, searching, sorting, merging, and transforming arrays. Complete with code examples and best practices."
+seo_title: "PHP Array Operations: Add, Remove, Search, Sort, and Merge"
+seo_description: "Master PHP array operations including adding, removing, searching, sorting, and merging arrays. Complete tutorial with practical examples."
 slug: basic-operations-arrays-php
 ---
 

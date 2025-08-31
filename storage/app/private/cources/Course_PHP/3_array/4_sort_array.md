@@ -3,8 +3,8 @@ title: "Sorting Arrays in PHP: sort, asort, ksort"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 4
-seo_title: "Sorting Arrays in PHP: sort, asort, ksort"
-seo_description: "Learn how to sort arrays in PHP using sort, asort, and ksort. Understand flags, stability, best practices, and common pitfalls with practical code examples."
+seo_title: "PHP Array Sorting: sort, asort, ksort Complete Tutorial"
+seo_description: "Learn how to sort arrays in PHP using sort, asort, and ksort functions. Master array sorting with practical examples and best practices."
 slug: sorting-arrays-php-sort-asort-ksort
 ---
 

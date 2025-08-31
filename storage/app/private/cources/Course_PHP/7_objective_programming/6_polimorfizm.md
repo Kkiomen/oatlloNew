@@ -1,11 +1,11 @@
 ---
-title: "Polimorfizm w PHP: Przewodnik po programowaniu obiektowym"
+title: "Polymorphism in PHP: Object-Oriented Programming Guide"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 6
-seo_title: "PHP Constructor and Destructor | Beginner’s Guide"
-seo_description: "Learn how constructors (__construct) and destructors (__destruct) work in PHP OOP: initialization, cleanup, dependency injection, property promotion, named constructors, examples, and best practices."
-slug: php-constructor-destructor-guide
+seo_title: "PHP Polymorphism Tutorial: Interfaces and Abstract Classes"
+seo_description: "Learn polymorphism in PHP OOP with interfaces, abstract classes, method overriding, and late static bindings. Master flexible OOP design with examples."
+slug: php-polymorphism-guide
 ---
 
 ---
@@ -14,8 +14,8 @@ title: "Polymorphism in PHP: Object-Oriented Programming Guide"
 hash: null
 last\_verified: 2025-08-31 11:01
 position: 6
-seo\_title: "PHP Polymorphism | Interfaces, Abstract Classes, Overriding"
-seo\_description: "Learn polymorphism in PHP OOP: interfaces, abstract classes, method overriding, late static bindings, examples, best practices, common mistakes, and quiz."
+seo\_title: "PHP Polymorphism Tutorial: Interfaces and Abstract Classes"
+seo\_description: "Learn polymorphism in PHP OOP with interfaces, abstract classes, method overriding, and late static bindings. Master flexible OOP design with examples."
 slug: php-polymorphism-guide
 ----------------------------
 

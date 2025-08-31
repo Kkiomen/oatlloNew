@@ -3,8 +3,8 @@ title: "Indexed, Associative, and Multidimensional Arrays in PHP"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 1
-seo_title: "Arrays in PHP: Indexed, Associative, Multidimensional | Beginner’s Guide"
-seo_description: "Learn about arrays in PHP — indexed, associative, and multidimensional. Complete guide with examples, best practices, and common mistakes."
+seo_title: "PHP Arrays Tutorial: Indexed, Associative, Multidimensional"
+seo_description: "Learn how to work with arrays in PHP. Master indexed, associative, and multidimensional arrays with practical examples and best practices."
 slug: array-indexed-associative-multidimensional-php
 ---
 

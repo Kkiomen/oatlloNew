@@ -1,10 +1,10 @@
 ---
-title: "Constants in PHP — Complete Beginner’s Guide"
+title: "Constants in PHP — Complete Beginner's Guide"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 2
-seo_title: "Constants in PHP | Beginner’s Guide"
-seo_description: "Learn what constants are in PHP, how to define and use them, and the best practices. A complete guide for beginners with examples and common mistakes."
+seo_title: "PHP Constants Tutorial: How to Define and Use Constants"
+seo_description: "Learn how to create and use constants in PHP. Complete guide covering const keyword, define() function, class constants, and best practices."
 slug: constants-in-php
 ---
 

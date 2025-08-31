@@ -3,8 +3,8 @@ title: "Ending Scripts in PHP: exit and die"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 4
-seo_title: "PHP exit and die | Beginner’s Guide"
-seo_description: "Learn how to use exit and die in PHP. Differences from return and break, usage in web and CLI, passing messages and exit codes, best practices, and common pitfalls."
+seo_title: "PHP exit and die: Script Termination Complete Guide"
+seo_description: "Learn how to use exit and die in PHP to terminate scripts. Master exit codes, messages, and best practices for web and CLI applications."
 slug: php-exit-die-guide
 ---
 

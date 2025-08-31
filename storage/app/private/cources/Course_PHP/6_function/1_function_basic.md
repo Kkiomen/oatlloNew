@@ -3,8 +3,8 @@ title: "Defining Functions in PHP: Functions and the return Statement"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 1
-seo_title: "PHP Functions and return | Beginner’s Guide"
-seo_description: "Learn how to define functions in PHP, use return, parameters, default values, types, scope, best practices, and common mistakes. Includes examples and quizzes."
+seo_title: "PHP Functions Tutorial: Defining Functions and Return"
+seo_description: "Learn how to define functions in PHP with parameters, return values, types, and scope. Master function basics with practical examples and best practices."
 slug: php-functions-basics-guide
 ---
 

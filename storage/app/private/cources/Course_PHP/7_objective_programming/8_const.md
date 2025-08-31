@@ -3,8 +3,8 @@ title: "Class Constants and self vs static in PHP"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 8
-seo_title: "PHP Class Constants and self vs static | Guide"
-seo_description: "Learn class constants in PHP and the differences between self:: and static::. Understand visibility, final and typed constants, late static binding, examples, best practices, and pitfalls."
+seo_title: "PHP Class Constants Tutorial: self vs static Guide"
+seo_description: "Learn class constants in PHP and the differences between self:: and static::. Master late static binding, visibility, and typed constants with examples."
 slug: php-class-constants-static-guide
 ---
 

@@ -3,8 +3,8 @@ title: "Concatenation, Interpolation, and String Manipulation in PHP"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 5
-seo_title: "PHP Concatenation and String Manipulation | Beginner’s Guide"
-seo_description: "Learn how to concatenate and interpolate strings in PHP, manipulate text safely, and use built-in functions. Complete guide with examples, best practices, and common pitfalls."
+seo_title: "PHP String Concatenation and Interpolation Tutorial"
+seo_description: "Learn how to concatenate strings and use interpolation in PHP. Master string manipulation with practical examples and best practices."
 slug: concatenation-interpolation-string-manipulation-php
 ---
 

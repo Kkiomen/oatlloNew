@@ -3,8 +3,8 @@ title: "Constructor and Destructor in PHP"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 2
-seo_title: "PHP Constructor and Destructor | Beginner’s Guide"
-seo_description: "Learn how constructors (__construct) and destructors (__destruct) work in PHP OOP: initialization, cleanup, dependency injection, property promotion, named constructors, examples, and best practices."
+seo_title: "PHP Constructor and Destructor Tutorial: Complete Guide"
+seo_description: "Learn how constructors and destructors work in PHP OOP. Master object initialization, cleanup, property promotion, and dependency injection with examples."
 slug: php-constructor-destructor-guide
 ---
 

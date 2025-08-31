@@ -3,8 +3,8 @@ title: "Hello World: Your First PHP Code Example for Beginners"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 3
-seo_title: "PHP Hello World: Your First PHP Code Example for Beginners"
-seo_description: "Learn how to write and run your first PHP 'Hello World' program. Step-by-step guide for beginners with code examples, best practices, and common mistakes."
+seo_title: "PHP Hello World Tutorial: Write Your First PHP Program"
+seo_description: "Learn how to create your first PHP Hello World program. Step-by-step tutorial with code examples, best practices, and common beginner mistakes."
 slug: hello-world-your-first-php-code
 ---
 

@@ -3,8 +3,8 @@ title: "Encapsulation in PHP OOP: public, private, protected"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 5
-seo_title: "PHP Encapsulation | public, private, protected"
-seo_description: "Learn encapsulation in PHP OOP: access modifiers (public, private, protected), examples with inheritance, getters/setters, traits, constants, best practices, common mistakes, and quiz."
+seo_title: "PHP Encapsulation Tutorial: public, private, protected Guide"
+seo_description: "Learn encapsulation in PHP OOP with access modifiers public, private, and protected. Master data hiding, getters/setters, and OOP security with examples."
 slug: php-encapsulation-guide
 ---
 

@@ -3,8 +3,8 @@ title: "The for Loop in PHP – Complete Lesson for Beginners"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 1
-seo_title: "PHP for Loop | Beginner’s Guide"
-seo_description: "Learn how to use the for loop in PHP with syntax, examples, best practices, common mistakes, and quizzes. Covers counters, arrays, HTML generation, nested loops, and infinite loops."
+seo_title: "PHP for Loop Tutorial: Complete Guide for Beginners"
+seo_description: "Learn how to use the for loop in PHP. Master loop syntax, counters, arrays, HTML generation, and best practices with practical examples."
 slug: php-for-loop-guide
 ---
 

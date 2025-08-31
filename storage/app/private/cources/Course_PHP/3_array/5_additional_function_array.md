@@ -3,8 +3,8 @@ title: "Additional Array Functions in PHP"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 5
-seo_title: "PHP Array Functions: map, filter, reduce, merge, search | Beginner’s Guide"
-seo_description: "Learn powerful array functions in PHP: map, filter, reduce, column extraction, set operations, merging, filling, randomness, reversing, and searching. Practical examples with best practices and pitfalls."
+seo_title: "PHP Array Functions: map, filter, reduce, merge, and search"
+seo_description: "Master advanced PHP array functions including map, filter, reduce, merge, and search. Learn powerful array manipulation techniques with examples."
 slug: php-array-functions-map-filter-reduce-merge
 ---
 

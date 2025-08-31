@@ -3,8 +3,8 @@ title: "Getting Started with PHP: Installation and First Steps with XAMPP (Windo
 hash: null
 last_verified: 2025-08-31 11:01
 position: 2
-seo_title: "Getting Started with PHP: Install and Run XAMPP on Windows, macOS & Linux"
-seo_description: "Learn how to install PHP with XAMPP on Windows, macOS, and Linux. Step-by-step guide for beginners to set up a local development environment and start coding PHP."
+seo_title: "How to Install XAMPP for PHP Development: Setup Guide"
+seo_description: "Step-by-step guide to install XAMPP for PHP development on Windows, macOS, and Linux. Set up Apache, MySQL, and PHP for local web development."
 slug: php-installation-first-steps
 ---
 

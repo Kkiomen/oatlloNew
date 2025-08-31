@@ -3,8 +3,8 @@ title: "The do-while Loop in PHP – Complete Lesson for Beginners"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 3
-seo_title: "PHP do-while Loop | Beginner’s Guide"
-seo_description: "Learn how to use the do-while loop in PHP. Syntax, examples, best practices, common mistakes, and quizzes. Ideal for prompts, menus, retries, and actions until condition is met."
+seo_title: "PHP do-while Loop Tutorial: Complete Guide"
+seo_description: "Learn how to use the do-while loop in PHP. Master loop syntax, menu systems, input validation, and best practices with practical examples."
 slug: php-do-while-loop-guide
 ---
 

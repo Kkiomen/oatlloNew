@@ -3,8 +3,8 @@ title: "Math Functions in PHP: round, ceil, floor, rand"
 hash: null
 last_verified: 2025-08-31 11:01
 position: 6
-seo_title: "Math Functions in PHP: round, ceil, floor, rand | Beginner’s Guide"
-seo_description: "Learn how to use PHP math functions round, ceil, floor, and rand. Complete guide with examples, explanations, best practices, and common pitfalls."
+seo_title: "PHP Math Functions: round, ceil, floor, rand Tutorial"
+seo_description: "Master PHP math functions including round, ceil, floor, and rand. Learn how to perform calculations and generate random numbers with examples."
 slug: math-functions-round-ceil-floor-rand
 ---
 
