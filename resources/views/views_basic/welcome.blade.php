@@ -55,19 +55,21 @@
                     </button>
                 </div>
                 <div class="hidden lg:flex lg:gap-x-12">
-                    <a href="{{ route('index') }}" class="text-sm/6 font-semibold text-white">{{ __('basic.home') }}</a>
-                    <a href="{{ route('blog') }}" class="text-sm/6 font-semibold text-white">Blog</a>
-                    <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm/6 font-semibold text-white">{{ __('basic.courses') }}</a>
+                    <a href="{{ route('index') }}" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">{{ __('basic.home') }}</a>
+                    <a href="{{ route('blog') }}" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">Blog</a>
+                    <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">{{ __('basic.courses') }}</a>
                 </div>
-{{--                <div class="hidden lg:flex lg:flex-1 lg:justify-end">--}}
-{{--                    <a href="#" class="text-sm/6 font-semibold text-white">Log in <span aria-hidden="true">&rarr;</span></a>--}}
-{{--                </div>--}}
+                <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+                    <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">
+                        <i class="fa-brands fa-linkedin mr-1"></i>LinkedIn
+                    </a>
+                </div>
             </nav>
             <!-- Mobile menu, show/hide based on menu open state. -->
-            <div class="lg:hidden" role="dialog" aria-modal="true" x-show="!open">
+            <div class="lg:hidden" role="dialog" aria-modal="true" x-show="open">
                 <!-- Background backdrop, show/hide based on slide-over state. -->
                 <div class="fixed inset-0 z-50"></div>
-                <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-gray-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
+                <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
                     <div class="flex items-center justify-between">
                         <a href="{{ route('index') }}" class="-m-1.5 p-1.5">
                             <div class="logo_oatllo">oatllo</div>
@@ -80,15 +82,17 @@
                         </button>
                     </div>
                     <div class="mt-6 flow-root">
-                        <div class="-my-6 divide-y divide-gray-500/25">
+                        <div class="-my-2 divide-y divide-gray-500/25">
                             <div class="space-y-2 py-6">
-                                <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">{{ __('basic.home') }}</a>
-                                <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">Blog</a>
-                                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-white hover:bg-gray-800">{{ __('basic.courses') }}</a>
+                                <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">{{ __('basic.home') }}</a>
+                                <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">Blog</a>
+                                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">{{ __('basic.courses') }}</a>
                             </div>
-{{--                            <div class="py-6">--}}
-{{--                                <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-gray-800">Log in</a>--}}
-{{--                            </div>--}}
+                            <div class="py-6">
+                                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">
+                                    <i class="fa-brands fa-linkedin mr-2"></i>LinkedIn
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -183,6 +187,67 @@
                     </h3>
                 </article>
                 @endforeach
+            </div>
+        </div>
+    </div>
+    @endif
+
+    @if($courses->count() > 0)
+    <div class="bg-neutral-900 py-24 sm:py-32">
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <h2 class="text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl">Kursy <span class="text-rose-400">PHP</span></h2>
+                <p class="mt-2 text-lg/8 text-neutral-300">Od podstaw do zaawansowanych technik programowania. Ucz się PHP z praktycznymi przykładami i realnymi projektami.</p>
+            </div>
+            <div class="mx-auto mt-16 grid max-w-2xl auto-rows-fr grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                @foreach($courses as $course)
+                    @php
+                        if($defaultLangue == 'pl'){
+                            $urlToCourse = route('course_pl', ['courseName' => $course->slug ]);
+                        }else{
+                            $urlToCourse = route('course_en', ['courseName' => $course->slug ]);
+                        }
+                        $currentImage = empty($course->image) ? 'storage/uploads/empty_image.jpg' : $course->image;
+                        $pattern = "/asset\('(.+?)'\)/";
+                        if (preg_match($pattern, $currentImage, $matches)) {
+                            $currentImage = $matches[1];
+                        }
+                        $currentImage = str_contains($currentImage, 'http') ? $currentImage : asset($currentImage);
+                    @endphp
+                    <article class="flex flex-col overflow-hidden rounded-2xl bg-neutral-800/70 shadow-lg transition hover:shadow-rose-500/30">
+                        <a href="{{ $urlToCourse }}" class="group relative block">
+                            <img src="{{ $currentImage }}" alt="{{ $course->title_list }}" class="h-56 w-full object-cover transition group-hover:scale-105" loading="lazy" />
+                            <span class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></span>
+                        </a>
+                        <div class="flex flex-1 flex-col p-6">
+                            <header class="mb-3 flex-1">
+                                <h3 class="text-xl font-bold tracking-tight text-white group-hover:text-rose-400">
+                                    <a href="{{ $urlToCourse }}" class="inline-block h-full w-full">{{ $course->title_list }}</a>
+                                </h3>
+                                <p class="mt-2 line-clamp-3 text-neutral-400">
+                                    {{ $course->description_list }}
+                                </p>
+                            </header>
+                            <!-- Meta info -->
+                            <footer class="mt-auto flex items-center justify-between text-sm text-neutral-400">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-clock text-rose-400"></i>
+                                    <span>Self-paced</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-book text-rose-400"></i>
+                                    <span>{{ $course->categories->sum('lessons_count') }} lekcji</span>
+                                </div>
+                            </footer>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+            <div class="mt-12 text-center">
+                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="inline-flex items-center rounded-md bg-rose-500 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-400 transition-colors duration-200">
+                    <i class="fa-solid fa-graduation-cap mr-2"></i>{{ __('basic.go_to_course') }} <span aria-hidden="true">→</span>
+                </a>
+                <p class="mt-4 text-sm text-neutral-400">Dołącz do tysięcy programistów, którzy już rozwijają swoje umiejętności</p>
             </div>
         </div>
     </div>

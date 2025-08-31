@@ -24,8 +24,9 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $postInstagrams = [];
+        $defaultLangue = env('APP_LOCALE');
+
         if(env('LANGUAGE_MODE') == 'strict'){
-            $defaultLangue = env('APP_LOCALE');
             $lessonsNotIn = [];
             foreach (CourseCategoryLesson::get() as $lesson){
                 $lessonsNotIn[] = $lesson->lesson_id;
@@ -38,10 +39,20 @@ class HomeController extends Controller
             $randomArticles = Article::where('is_published', true)->inRandomOrder()->take(6)->get();
         }
 
+        // Pobierz kursy PHP
+        $courses = Course::where('is_published', true)
+            ->where('lang', $defaultLangue)
+            ->with(['categories' => function($query) {
+                $query->withCount('lessons');
+            }])
+            ->take(3)
+            ->get();
 
         return view('views_basic.welcome', [
             'randomArticles' => $randomArticles,
-            'postInstagrams' => $postInstagrams
+            'postInstagrams' => $postInstagrams,
+            'courses' => $courses,
+            'defaultLangue' => $defaultLangue
         ]);
     }
 
