@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace App\Services\Course;
 
-use App\Models\Article;
 use App\Models\Course;
-use App\Models\CourseCategory;
+use App\Models\CourseCategoryLesson;
 
 class CourseHelper
 {
-    public static function lessonGo(Course $course,  Article $article): array
+    public static function lessonGo(Course $course, CourseCategoryLesson $lesson): array
     {
         $lessons = [];
         $founded = false;
         $finish = false;
 
         foreach ($course->categories as $category){
-            foreach ($category->lessons as $lesson){
+            foreach ($category->lessons as $categoryLesson){
                 $lessons[] = [
-                    'name' => $lesson->name,
-                    'route' => $lesson->getRouteCourse($category)
+                    'name' => $categoryLesson->title,
+                    'route' => $categoryLesson->getRoute()
                 ];
 
                 if ($founded){
@@ -28,7 +27,7 @@ class CourseHelper
                     break;
                 }
 
-                if($lesson->name == $article->name){
+                if($categoryLesson->id == $lesson->id){
                     $founded = true;
                 }
             }
@@ -40,7 +39,6 @@ class CourseHelper
 
         $lastTwoElements = array_slice($lessons, -2);
         $lastTwoElements = array_values($lastTwoElements);
-
 
         $results = [
             'previous' => $lastTwoElements[0] ?? null,

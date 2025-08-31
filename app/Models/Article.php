@@ -100,10 +100,6 @@ class Article extends Model
 
     public function getRoute(bool $absolute = true): string
     {
-        if ($this->isCourseLesson()) {
-            return $this->getRouteCourse(null, $absolute);
-        }
-
         if (!empty($this->category_id)) {
             $category = Category::find($this->category_id);
             if ($category) {
@@ -143,7 +139,7 @@ class Article extends Model
 
     public function isCourseLesson(): bool
     {
-        return CourseCategoryLesson::where('lesson_id', $this->id)->exists();
+        return false;
     }
 
     public function getPublishedDate(bool $asString = false): \DateTime|string

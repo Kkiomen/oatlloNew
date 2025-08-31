@@ -11,8 +11,8 @@
 <html lang="{{ env('APP_LANG_HTML') }}" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <title>{{ $article->view_content['basic_website_structure_title'] }}</title>
-    <meta name="description" content="{{ $article->view_content['basic_website_structure_description'] }}">
+    <title>{{ $article->seo_title ?: $article->title }}</title>
+    <meta name="description" content="{{ $article->seo_description ?: 'Lekcja kursu' }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="robots" content="index, follow">
@@ -21,14 +21,14 @@
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
 
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
-    <link rel="canonical" href="{{ $article->getRouteCourse($courseCategory) }}">
+    <link rel="canonical" href="{{ $article->getRoute() }}">
     <meta name="keywords" content="{{ __('basic.meta_keywords') }}">
 
     <meta property="og:type" content="article">
     <meta property="og:title" content="{{ $courseCategory->title_seo }}">
     <meta property="og:description" content="{{ $courseCategory->description_seo }}">
     <meta property="og:image" content="{{ $currentImage }}">
-    <meta property="og:url" content="{{ $article->getRouteCourse($courseCategory) }}">
+    <meta property="og:url" content="{{ $article->getRoute() }}">
     <meta property="og:site_name" content="Oatllo">
     <meta property="og:locale" content="{{ env('APP_LANG_HTML') }}">
 
@@ -49,15 +49,108 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css" integrity="sha512-v8QQ0YQ3H4K6Ic3PJkym91KoeNT5S3PnDKvqnwqFD1oiqIl653crGZplPdU5KKtHjO0QKcQ2aUlQZYjHczkmGw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <link rel="stylesheet" href="{{ asset('/assets/libs/highlight/default.min.css') }}">
+
+    <style>
+        .prose h2 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700;  /* font-bold */
+            color: #fff;       /* text-white */
+            margin-top: 3rem;  /* mt-12 */
+            margin-bottom: 1rem; /* mb-4 */
+            border-bottom: 1px solid #262626; /* border-neutral-800 */
+            padding-bottom: 0.5rem; /* pb-2 */
+        }
+
+        .prose h3 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600;   /* font-semibold */
+            color: #fff;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .prose h4 {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600;
+            color: #e5e5e5; /* text-neutral-200 */
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .prose p {
+            color: #d4d4d8; /* text-neutral-300 */
+            line-height: 1.75; /* leading-relaxed */
+            margin-bottom: 1rem;
+        }
+
+        .prose strong,
+        .prose b {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .prose ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #d4d4d8;
+        }
+        .prose ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #d4d4d8;
+        }
+        .prose li {
+            margin-bottom: 0.5rem;
+            line-height: 1.75;
+        }
+        .prose ul > li::marker,
+        .prose ol > li::marker {
+            color: #f43f5e; /* rose-400 */
+        }
+
+        .prose a {
+            color: #f43f5e;
+            text-decoration: underline;
+        }
+        .prose a:hover {
+            color: #fb7185; /* rose-300 */
+        }
+
+        .prose blockquote {
+            border-left: 4px solid #f43f5e;
+            font-style: italic;
+            color: #e5e5e5;
+        }
+
+        .prose pre {
+            margin-bottom: 1rem;
+        }
+        .prose code {
+            background-color: #171717; /* neutral-900 */
+            color: #fda4af; /* rose-400 */
+            border-radius: 0.25rem;
+        }
+
+        .prose pre {
+            background-color: #171717; /* neutral-900 */
+            color: #f5f5f5;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+
+    <!-- Highlight.js for code syntax highlighting -->
+
     <script src="{{ asset('/assets/libs/highlight/highlight.min.js') }}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/github.css">
+    <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
+
     <script src="{{ asset('/assets/libs/highlight/php.min.js') }}"></script>
 
-    @if(!empty($article->structure_data_google))
-        <script type="application/ld+json">
-            {!! $article->structure_data_google !!}
-        </script>
-    @endif
+
 </head>
 <body class="bg-neutral-950 text-neutral-100 antialiased">
 {!! \App\Services\HomeService::getTagManagerBODY() !!}
@@ -150,13 +243,13 @@
         </li>
         <li>&#8250;</li>
         <li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-            <a href="{{ $category->getRoute() }}" itemprop="item" class="hover:text-green-400"><span itemprop="name">{{ $category->category_name }}</span></a>
+            <a href="{{ $category->getRoute() }}" itemprop="item" class="hover:text-green-400"><span itemprop="name">{{ $category->title }}</span></a>
             <meta itemprop="position" content="4" />
         </li>
         <li>&#8250;</li>
         <li class="text-neutral-300" itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-            <span itemprop="name">{{ $article->name }}</span>
-            <meta itemprop="item" content="{{ $article->getRouteCourse($courseCategory) }}" />
+            <span itemprop="name">{{ $article->title }}</span>
+            <meta itemprop="item" content="{{ $article->getRoute() }}" />
             <meta itemprop="position" content="5" />
         </li>
     </ol>
@@ -169,13 +262,13 @@
         </li>
         <li>&#8250;</li>
         <li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-            <a href="{{ $category->getRoute() }}" itemprop="item" class="hover:text-green-400"><span itemprop="name">{{ $category->category_name }}</span></a>
+            <a href="{{ $category->getRoute() }}" itemprop="item" class="hover:text-green-400"><span itemprop="name">{{ $category->title }}</span></a>
             <meta itemprop="position" content="2" />
         </li>
         <li>&#8250;</li>
         <li class="text-neutral-300" itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-            <span itemprop="name" class="truncate max-w-[150px] block">{{ $article->name }}</span>
-            <meta itemprop="item" content="{{ $article->getRouteCourse($courseCategory) }}" />
+            <span itemprop="name" class="truncate max-w-[150px] block">{{ $article->title }}</span>
+            <meta itemprop="item" content="{{ $article->getRoute() }}" />
             <meta itemprop="position" content="3" />
         </li>
     </ol>
@@ -185,19 +278,19 @@
   LESSON HEADER (HERO)
 =========================================================== -->
 <header class="mx-auto mt-10 max-w-5xl px-4 sm:px-6 lg:px-8" itemscope itemtype="https://schema.org/Article">
-    <meta itemprop="mainEntityOfPage" content="{{ $article->getRouteCourse($courseCategory) }}" />
+    <meta itemprop="mainEntityOfPage" content="{{ $article->getRoute() }}" />
     <meta itemprop="author" content="Jakub Owsianka" />
     <meta itemprop="publisher" content="Oatllo - Jakub Owsianka" />
-    <meta itemprop="headline" content="{{ $article->name }}" />
-    <meta itemprop="description" content="{{ $article->view_content['basic_website_structure_description'] }}" />
+    <meta itemprop="headline" content="{{ $article->title }}" />
+    <meta itemprop="description" content="{{ $article->seo_description ?: 'Lekcja kursu' }}" />
     <meta itemprop="image" content="{{ $currentImage }}" />
-    <meta itemprop="articleSection" content="{{ $category->category_name }}" />
+    <meta itemprop="articleSection" content="{{ $category->title }}" />
 
     <h1 class="text-4xl font-extrabold tracking-tight text-white md:text-5xl" itemprop="headline">
-        {!! $article->name !!}
+        {!! $article->title !!}
     </h1>
     <p class="mx-auto mt-4 max-w-2xl text-lg text-neutral-300" itemprop="description">
-        {{ $article->view_content['basic_website_structure_description'] }}
+        {{ $article->seo_description ?: 'Lekcja kursu' }}
     </p>
 
     <!-- Course and category info -->
@@ -208,7 +301,7 @@
         </div>
         <div class="flex items-center">
             <i class="fa-solid fa-folder text-green-400 mr-2"></i>
-            <span>{{ $category->category_name }}</span>
+            <span>{{ $category->title }}</span>
         </div>
         <div class="flex items-center">
             <i class="fa-solid fa-play-circle text-green-400 mr-2"></i>
@@ -279,34 +372,23 @@
                         }
                     </style>
 
-                    @foreach($article->contents as $content)
-                        @if($content['type'] == 'text' && !empty($content['content']))
-                            {!! $content['content'] !!}
-                        @endif
+                    @if(!empty($article->content_html))
+                        {!! $article->content_html !!}
+                    @else
+                        @foreach($article->contents as $content)
+                            @if($content['type'] == 'text' && !empty($content['content']))
+                                {!! $content['content'] !!}
+                            @endif
 
-                        @if($content['type'] == 'image' && !empty($content['content']))
-                            <figure class="mt-8 mb-8">
-                                <img class="rounded-xl bg-neutral-800 object-cover w-full" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? '' }}" loading="lazy">
-                            </figure>
-                        @endif
-                    @endforeach
-
-                    <!-- Tags -->
-                    @if(!$article->tags->isEmpty())
-                        <div class="mt-12 pt-8 border-t border-neutral-800">
-                            <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
-                                <i class="fa-solid fa-tags text-green-400 mr-2"></i>
-                                {{ __('basic.tags') }}:
-                            </h3>
-                            <div class="flex flex-wrap gap-2">
-                                @foreach($article->tags as $tag)
-                                    <a href="{{ route('blogTag', ['tag' => Str::slug($tag->name)]) }}" class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400 border border-green-500/30 hover:bg-green-500/30 transition-colors duration-200">
-                                        {{ $tag->name }}
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
+                            @if($content['type'] == 'image' && !empty($content['content']))
+                                <figure class="mt-8 mb-8">
+                                    <img class="rounded-xl bg-neutral-800 object-cover w-full" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? '' }}" loading="lazy">
+                                </figure>
+                            @endif
+                        @endforeach
                     @endif
+
+
                 </div>
             </div>
         </article>
@@ -324,15 +406,15 @@
                         <div>
                             <h4 class="font-semibold text-white mb-3">
                                 <a href="{{ $cat->getRoute() }}" class="hover:text-green-400 transition-colors duration-200">
-                                    {{ $cat->category_name }}
+                                    {{ $cat->title }}
                                 </a>
                             </h4>
                             <ul class="space-y-2">
                                 @foreach($cat->lessons as $lesson)
                                     <li>
-                                        <a href="{{ $lesson->getRouteCourse($cat) }}" class="text-sm text-neutral-400 hover:text-green-400 transition-colors duration-200 flex items-center @if($article->name === $lesson->name) text-green-400 font-semibold @endif">
-                                            <i class="fa-solid fa-play-circle text-xs mr-2 @if($article->name === $lesson->name) text-green-400 @else text-neutral-500 @endif"></i>
-                                            {{ $lesson->name }}
+                                        <a href="{{ $lesson->getRoute() }}" class="text-sm text-neutral-400 hover:text-green-400 transition-colors duration-200 flex items-center @if($article->title === $lesson->title) text-green-400 font-semibold @endif">
+                                            <i class="fa-solid fa-play-circle text-xs mr-2 @if($article->title === $lesson->title) text-green-400 @else text-neutral-500 @endif"></i>
+                                            {{ $lesson->title }}
                                         </a>
                                     </li>
                                 @endforeach
@@ -384,7 +466,7 @@
 <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 mb-10 text-center">
     <a href="{{ $course->getRoute() }}" class="inline-flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 text-white px-6 py-3 rounded-lg transition-colors duration-200">
         <i class="fa-solid fa-arrow-left"></i>
-        <span>Back to {{ $course->name }}</span>
+        <span>Back to {{ $course->title_list }}</span>
     </a>
 </div>
 
@@ -395,8 +477,8 @@
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "{{ addslashes($article->name) }}",
-      "description": "{{ addslashes($article->view_content['basic_website_structure_description']) }}",
+      "headline": "{{ addslashes($article->title) }}",
+      "description": "{{ addslashes($article->seo_description ?: 'Lekcja kursu') }}",
       "image": "{{ $currentImage }}",
       "author": {
         "@type": "Person",
@@ -413,9 +495,9 @@
           "url": "https://oatllo.com/assets/images/logo-512.png"
         }
       },
-      "mainEntityOfPage": "{{ $article->getRouteCourse($courseCategory) }}",
-      "articleSection": "{{ addslashes($category->category_name) }}",
-      "keywords": "{{ !empty($article->view_content['basic_website_structure_keywords']) ? $article->view_content['basic_website_structure_keywords'] : 'programming, PHP, development' }}"
+      "mainEntityOfPage": "{{ $article->getRoute() }}",
+      "articleSection": "{{ addslashes($category->title) }}",
+      "keywords": "programming, PHP, development"
     }
 </script>
 
@@ -439,20 +521,20 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "{{ addslashes($course->name) }}",
+          "name": "{{ addslashes($course->title_list) }}",
           "item": "{{ $course->getRoute() }}"
         },
         {
           "@type": "ListItem",
           "position": 4,
-          "name": "{{ addslashes($category->category_name) }}",
+          "name": "{{ addslashes($category->title) }}",
           "item": "{{ $category->getRoute() }}"
         },
         {
           "@type": "ListItem",
           "position": 5,
-          "name": "{{ addslashes($article->name) }}",
-          "item": "{{ $article->getRouteCourse($courseCategory) }}"
+          "name": "{{ addslashes($article->title) }}",
+          "item": "{{ $article->getRoute() }}"
         }
       ]
     }

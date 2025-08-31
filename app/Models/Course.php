@@ -33,11 +33,7 @@ class Course extends Model
 
     public function getRoute(bool $absolute = true)
     {
-        $language = env('APP_LOCALE');
-        if($language === 'pl'){
-            return route('course_pl', ['courseName' => $this->slug], $absolute);
-        }else{
-            return route('course_en', ['courseName' => $this->slug], $absolute);
-        }
+        // Wymuszamy angielski URL dla kursu
+        return route('course_en', ['courseName' => $this->slug], $absolute);
     }
 }

@@ -2,187 +2,94 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Article;
 use App\Models\Course;
 use App\Models\CourseCategory;
 use App\Models\CourseCategoryLesson;
-use App\Services\ImageService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 
 class CourseController extends Controller
 {
-    public function list(Request $request): View
+    /**
+     * Wyświetla listę wszystkich kursów
+     */
+    public function index()
     {
-        $courses = Course::get();
-        return view('courses.list', [
-            'courses' => $courses,  
-        ]);
+        $courses = Course::where('is_published', true)
+            ->with(['categories' => function($query) {
+                $query->withCount('lessons');
+            }])
+            ->get();
+
+        return view('courses.index', compact('courses'));
     }
 
-    public function add(Request $request): mixed
+    /**
+     * Wyświetla szczegóły kursu
+     */
+    public function show($courseName)
     {
-        $course = new Course();
-        $course->is_published = false;
-        $course->save();
+        $course = Course::where('slug', $courseName)
+            ->where('is_published', true)
+            ->with(['categories' => function($query) {
+                $query->with(['lessons' => function($q) {
+                    $q->orderBy('sort');
+                }]);
+            }])
+            ->firstOrFail();
 
-        return Redirect::route('courses.edit', ['id' => $course]);
-    }
-    public function addCategory(Request $request, Course $course): mixed
-    {
-        $courseCategory = new CourseCategory();
-        $courseCategory->course_id = $course->id;
-        $courseCategory->lang = $course->lang;
-        $courseCategory->category_name = 'Nowy rozdział';
-        $courseCategory->sort = 0;
-        $courseCategory->is_published = false;
-        $courseCategory->save();
-
-        return Redirect::back();
+        return view('courses.show', compact('course'));
     }
 
-    public function store(Request $request, ImageService $imageService): mixed
+    /**
+     * Wyświetla rozdział kursu
+     */
+    public function showChapter($courseName, $chapter)
     {
-        if(!empty($request->get('id'))){
-            $course = Course::find($request->get('id'));
-            $data = $request->all();
+        $course = Course::where('slug', $courseName)
+            ->where('is_published', true)
+            ->firstOrFail();
 
-            if(isset($data['is_published']) && $data['is_published'] === '1'){
-                $course->is_published = true;
-            }else{
-                $course->is_published = false;
-            }
-            unset($data['id']);
-            unset($data['is_published']);
+        $category = CourseCategory::where('course_id', $course->id)
+            ->where('slug', $chapter)
+            ->where('is_published', true)
+            ->with(['lessons' => function($query) {
+                $query->orderBy('sort');
+            }])
+            ->firstOrFail();
 
-            $course->update($data);
-
-            $course->save();
-
-            $image = $request->file('image');
-            if ($image) {
-                $filePath = $imageService->uploadImage($image);
-                $course->image = $filePath;
-                $course->save();
-            }
-        }
-
-        return Redirect::back();
+        return view('courses.chapter', compact('course', 'category'));
     }
 
-    public function edit(Request $request, int $id): View
+    /**
+     * Wyświetla lekcję
+     */
+    public function showLesson($courseName, $chapter, $lesson)
     {
-        $defaultLangue = env('APP_LOCALE');
-        $course = Course::find($id);
-        $courseCategories = CourseCategory::where('course_id', $id)->orderBy('sort', 'asc')->get();
+        $course = Course::where('slug', $courseName)
+            ->where('is_published', true)
+            ->firstOrFail();
 
-        $lessonsNotIn = [];
-        foreach (CourseCategoryLesson::get() as $lesson){
-            $lessonsNotIn[] = $lesson->lesson_id;
-        }
+        $category = CourseCategory::where('course_id', $course->id)
+            ->where('slug', $chapter)
+            ->where('is_published', true)
+            ->firstOrFail();
 
-        $articles = Article::where('language', $defaultLangue)->whereNotIn('id', $lessonsNotIn)->where('is_published', false)->get();
+        $lesson = CourseCategoryLesson::where('course_category_id', $category->id)
+            ->where('slug', $lesson)
+            ->where('is_published', true)
+            ->firstOrFail();
 
+        // Pobierz poprzednią i następną lekcję
+        $previousLesson = CourseCategoryLesson::where('course_category_id', $category->id)
+            ->where('sort', '<', $lesson->sort)
+            ->orderBy('sort', 'desc')
+            ->first();
 
-        return view('courses.edit', [
-            'course' => $course,
-            'courseCategories' => $courseCategories,
-            'articles' => $articles,
-        ]);
-    }
+        $nextLesson = CourseCategoryLesson::where('course_category_id', $category->id)
+            ->where('sort', '>', $lesson->sort)
+            ->orderBy('sort')
+            ->first();
 
-    public function editCategory(Request $request, CourseCategory $category): mixed
-    {
-        $data = $request->all();
-
-        if(isset($data['is_published']) && $data['is_published'] === '1'){
-            $category->is_published = true;
-        }else{
-            $category->is_published = false;
-        }
-        unset($data['id']);
-        unset($data['is_published']);
-
-        $category->update($data);
-
-        $category->save();
-
-        return Redirect::back();
-    }
-
-    public function editCategoryShort(Request $request): mixed
-    {
-
-        foreach ($request->get('category_name') as $couseCategortId => $value){
-            $courseCategory = CourseCategory::find($couseCategortId);
-            $courseCategory->category_name = $value;
-            $courseCategory->save();
-        }
-
-        foreach ($request->get('slug') as $couseCategortId => $value){
-            $courseCategory = CourseCategory::find($couseCategortId);
-            $courseCategory->slug = $value;
-            $courseCategory->save();
-        }
-
-        foreach ($request->get('sort') as $couseCategortId => $value){
-            $courseCategory = CourseCategory::find($couseCategortId);
-            $courseCategory->sort = $value;
-            $courseCategory->save();
-        }
-
-
-        return Redirect::back();
-    }
-
-    public function fetchLessonToChoose(Request $request, CourseCategory $category): mixed
-    {
-        $defaultLangue = env('APP_LOCALE');
-        $articles = Article::where('language', $defaultLangue)->where('is_published', false)->get();
-        $results = [];
-
-        foreach ($articles as $article){
-            $results[] = [
-                'id' => $article->id,
-                'title' => $article->name,
-            ];
-        }
-
-        return response()->json($results);
-    }
-
-    public function chooseLesson(Request $request): mixed
-    {
-        $data = $request->all();
-
-        $lesson = new CourseCategoryLesson();
-        $lesson->course_category_id = $data['category'];
-        $lesson->lesson_id = $data['article'];
-        $lesson->save();
-
-
-        return Redirect::back();
-    }
-
-    public function editCategoryLessonsPositions(Request $request): mixed
-    {
-        $data = $request->all();
-
-        foreach ($data['sort'] as $categoryLessonId => $value){
-            $lesson = CourseCategoryLesson::find($categoryLessonId);
-            $lesson->sort = $value;
-            $lesson->save();
-        }
-
-        return Redirect::back();
-    }
-
-    public function removeCategoryLessonsPositions(Request $request, int $id): mixed
-    {
-        $lesson = CourseCategoryLesson::find($id);
-        $lesson->delete();
-
-        return Redirect::back();
+        return view('courses.lesson', compact('course', 'category', 'lesson', 'previousLesson', 'nextLesson'));
     }
 }

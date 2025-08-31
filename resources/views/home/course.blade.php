@@ -270,7 +270,7 @@
                                             <div class="mr-0.5">
                                                 <h3 class="text-lg font-semibold text-white mb-2">
                                                     <a href="{{ $category->getRoute() }}" class="hover:text-green-400 transition-colors duration-200">
-                                                        {{ $category->category_name }}
+                                                        {{ $category->title }}
                                                     </a>
                                                     <span class="ml-2">
                                                         <span class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium text-green-400 ring-1 ring-green-500/20">
@@ -285,12 +285,12 @@
                                                 @foreach($category->lessons as $lesson)
                                                     <div class="bg-neutral-800/50 rounded-lg p-4 hover:bg-neutral-800 transition-colors duration-200">
                                                         <h4 class="font-medium text-white mb-1">
-                                                            <a href="{{ $lesson->getRouteCourse($category) }}" class="hover:text-green-400 transition-colors duration-200 flex items-center">
+                                                            <a href="{{ $lesson->getRoute() }}" class="hover:text-green-400 transition-colors duration-200 flex items-center">
                                                                 <i class="fa-solid fa-play-circle text-green-400 mr-2 text-sm"></i>
-                                                                {{ $lesson->name }}
+                                                                {{ $lesson->title }}
                                                             </a>
                                                         </h4>
-                                                        <p class="text-sm text-neutral-400">{{ $lesson->short_description }}</p>
+                                                        <p class="text-sm text-neutral-400">{{ $lesson->seo_description ?: 'Lekcja kursu' }}</p>
                                                     </div>
                                                 @endforeach
                                             </div>

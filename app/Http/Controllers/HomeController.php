@@ -314,13 +314,15 @@ class HomeController extends Controller
 
     public function course(Request $request, string $courseName): View
     {
-        $defaultLangue = env('APP_LOCALE');
-        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+        $course = Course::where('slug', $courseName)
+            ->with(['categories.lessons'])
+            ->first();
 
         if(!$course){
             abort(404);
         }
 
+        $defaultLangue = env('APP_LOCALE');
         if($defaultLangue == 'pl'){
             $urlToCourse = route('course_pl', ['courseName' => $course->slug ]);
         }else{
@@ -331,7 +333,7 @@ class HomeController extends Controller
 
         foreach ($course->categories as $category) {
             foreach ($category->lessons as $lesson) {
-                $firstLesson = $lesson->getRouteCourse($category);
+                $firstLesson = $lesson->getRoute();
                 break;
             }
 
@@ -351,14 +353,13 @@ class HomeController extends Controller
 
     public function chapterPl(Request $request, string $courseName, string $chapter): View
     {
-        $defaultLangue = env('APP_LOCALE');
-        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+        $course = Course::where('slug', $courseName)->first();
 
         if(!$course){
             abort(404);
         }
 
-        $courseCategory = CourseCategory::where('slug', $chapter)->where('lang', $defaultLangue)->where('course_id', $course->id)->first();
+        $courseCategory = CourseCategory::where('slug', $chapter)->where('course_id', $course->id)->first();
 
         if(!$courseCategory){
             abort(404);
@@ -375,25 +376,22 @@ class HomeController extends Controller
 
     public function courseLessonPl(Request $request, string $courseName, string $chapter, string $lesson): View
     {
-        $defaultLangue = env('APP_LOCALE');
-        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+        $course = Course::where('slug', $courseName)->first();
 
         if(!$course){
             abort(404);
         }
 
-        $courseCategory = CourseCategory::where('slug', $chapter)->where('lang', $defaultLangue)->where('course_id', $course->id)->first();
+        $courseCategory = CourseCategory::where('slug', $chapter)->where('course_id', $course->id)->first();
 
         if(!$courseCategory){
             abort(404);
         }
 
-        $currentLesson = null;
-        foreach ($courseCategory->lessons as $categoryLesson){
-            if($categoryLesson->slug == $lesson){
-                $currentLesson = $categoryLesson;
-            }
-        }
+        $currentLesson = CourseCategoryLesson::where('course_category_id', $courseCategory->id)
+            ->where('slug', $lesson)
+            ->where('is_published', true)
+            ->first();
 
         if(!$currentLesson){
             abort(404);
@@ -412,25 +410,22 @@ class HomeController extends Controller
 
     public function courseLessonEn(Request $request, string $courseName, string $chapter, string $lesson): View
     {
-        $defaultLangue = env('APP_LOCALE');
-        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+        $course = Course::where('slug', $courseName)->first();
 
         if(!$course){
             abort(404);
         }
 
-        $courseCategory = CourseCategory::where('slug', $chapter)->where('lang', $defaultLangue)->where('course_id', $course->id)->first();
+        $courseCategory = CourseCategory::where('slug', $chapter)->where('course_id', $course->id)->first();
 
         if(!$courseCategory){
             abort(404);
         }
 
-        $currentLesson = null;
-        foreach ($courseCategory->lessons as $categoryLesson){
-            if($categoryLesson->slug == $lesson){
-                $currentLesson = $categoryLesson;
-            }
-        }
+        $currentLesson = CourseCategoryLesson::where('course_category_id', $courseCategory->id)
+            ->where('slug', $lesson)
+            ->where('is_published', true)
+            ->first();
 
         if(!$currentLesson){
             abort(404);
@@ -449,14 +444,13 @@ class HomeController extends Controller
 
     public function chapterEn(Request $request, string $courseName, string $chapter): View
     {
-        $defaultLangue = env('APP_LOCALE');
-        $course = Course::where('slug', $courseName)->where('lang', $defaultLangue)->first();
+        $course = Course::where('slug', $courseName)->first();
 
         if(!$course){
             abort(404);
         }
 
-        $courseCategory = CourseCategory::where('slug', $chapter)->where('lang', $defaultLangue)->where('course_id', $course->id)->first();
+        $courseCategory = CourseCategory::where('slug', $chapter)->where('course_id', $course->id)->first();
 
         if(!$courseCategory){
             abort(404);

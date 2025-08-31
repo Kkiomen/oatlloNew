@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Course;
 use App\Models\CourseCategoryLesson;
-use App\Models\Article;
 
 class CourseCategory extends Model
 {
@@ -26,6 +25,11 @@ class CourseCategory extends Model
         'sort',
     ];
 
+    protected $casts = [
+        'is_published' => 'boolean',
+        'sort' => 'integer',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);
@@ -33,39 +37,17 @@ class CourseCategory extends Model
 
     public function lessons()
     {
-        return $this->belongsToMany(Article::class, 'course_category_lessons', 'course_category_id', 'lesson_id')->withPivot('sort')->orderBy('sort');
+        return $this->hasMany(CourseCategoryLesson::class)->where('is_published', true)->orderBy('sort');
     }
 
-    public function lessonsMore(): array
+    public function allLessons()
     {
-        $categoriesLessons = CourseCategoryLesson::where('course_category_id', $this->id)->orderBy('sort')->get();
-        $lessons = [];
-
-        foreach($categoriesLessons as $categoryLesson){
-            $article = Article::find($categoryLesson->lesson_id);
-            if(!$article){
-                continue;
-            }
-
-            $lessons[] = [
-                'id' => $categoryLesson->id,
-                'name' => $article->name,
-                'sort' => $categoryLesson->sort,
-                'lesson_id' => $article->id
-            ];
-
-        }
-
-        return $lessons;
+        return $this->hasMany(CourseCategoryLesson::class)->orderBy('sort');
     }
 
     public function getRoute(bool $absolute = true): string
     {
-        $language = env('APP_LOCALE');
-        if($language === 'pl'){
-            return route('course_chapter_pl', ['courseName' => $this->course->slug, 'chapter' => $this->slug], $absolute);
-        }
-
+        // Wymuszamy angielski URL dla kategorii
         return route('course_chapter_en', ['courseName' => $this->course->slug, 'chapter' => $this->slug], $absolute);
     }
 }
