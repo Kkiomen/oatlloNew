@@ -24,6 +24,11 @@
     <link rel="canonical" href="{{ $urlToCourse }}">
     <meta name="keywords" content="{{ __('basic.meta_keywords') }}">
 
+    <!-- Hreflang tags for language versions -->
+    <link rel="alternate" hreflang="pl" href="{{ $urlToCourse }}">
+    <link rel="alternate" hreflang="en" href="{{ str_replace('/pl/', '/en/', $urlToCourse) }}">
+    <link rel="alternate" hreflang="x-default" href="{{ str_replace('/pl/', '/en/', $urlToCourse) }}">
+
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ $course->title_seo }}">
     <meta property="og:description" content="{{ $course->description_seo }}">
@@ -270,7 +275,7 @@
                                             <div class="mr-0.5">
                                                 <h3 class="text-lg font-semibold text-white mb-2">
                                                     <a href="{{ $category->getRoute() }}" class="hover:text-green-400 transition-colors duration-200">
-                                                        {{ $category->title }}
+                                                        {{ $category->category_name }}
                                                     </a>
                                                     <span class="ml-2">
                                                         <span class="inline-flex items-center gap-x-1.5 rounded-full px-2 py-1 text-xs font-medium text-green-400 ring-1 ring-green-500/20">
@@ -285,12 +290,12 @@
                                                 @foreach($category->lessons as $lesson)
                                                     <div class="bg-neutral-800/50 rounded-lg p-4 hover:bg-neutral-800 transition-colors duration-200">
                                                         <h4 class="font-medium text-white mb-1">
-                                                            <a href="{{ $lesson->getRoute() }}" class="hover:text-green-400 transition-colors duration-200 flex items-center">
+                                                            <a href="{{ $lesson->getRouteCourse($category) }}" class="hover:text-green-400 transition-colors duration-200 flex items-center">
                                                                 <i class="fa-solid fa-play-circle text-green-400 mr-2 text-sm"></i>
-                                                                {{ $lesson->title }}
+                                                                {{ $lesson->name }}
                                                             </a>
                                                         </h4>
-                                                        <p class="text-sm text-neutral-400">{{ $lesson->seo_description ?: 'Lekcja kursu' }}</p>
+                                                        <p class="text-sm text-neutral-400">{{ $lesson->short_description }}</p>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -340,8 +345,22 @@
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "online",
-        "inLanguage": "{{ env('APP_LANG_HTML') }}"
-      }
+        "inLanguage": "{{ env('APP_LANG_HTML') }}",
+        "courseWorkload": "PT2H"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "{{ $urlToCourse }}"
+      },
+      "instructor": {
+        "@type": "Person",
+        "name": "Jakub Owsianka",
+        "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+      },
+      "coursePrerequisites": "Basic programming knowledge"
     }
 </script>
 

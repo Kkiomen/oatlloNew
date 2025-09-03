@@ -667,8 +667,16 @@
   },
   "instructor": {
     "@type": "Person",
-    "name": "Jakub Owsianka"
-  }
+    "name": "Jakub Owsianka",
+    "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+  },
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "online",
+    "inLanguage": "{{ env('APP_LOCALE', 'en') }}",
+    "courseWorkload": "PT2H"
+  },
+  "coursePrerequisites": "Basic programming knowledge"
 }
 </script>
 

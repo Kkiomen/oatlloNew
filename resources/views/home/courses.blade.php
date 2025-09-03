@@ -332,7 +332,26 @@
                   "url": "{{ route('index') }}"
                 },
                 "courseMode": "online",
-                "educationalLevel": "beginner to advanced"
+                "educationalLevel": "beginner to advanced",
+                "hasCourseInstance": {
+                  "@type": "CourseInstance",
+                  "courseMode": "online",
+                  "inLanguage": "{{ env('APP_LANG_HTML') }}",
+                  "courseWorkload": "PT2H"
+                },
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "USD",
+                  "availability": "https://schema.org/InStock",
+                  "url": "{{ $urlToCourse }}"
+                },
+                "instructor": {
+                  "@type": "Person",
+                  "name": "Jakub Owsianka",
+                  "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+                },
+                "coursePrerequisites": "Basic programming knowledge"
               }
             }@if(!$loop->last),@endif
     @endforeach

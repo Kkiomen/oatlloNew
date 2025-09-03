@@ -620,13 +620,21 @@
         "name": "Jakub Owsianka",
         "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
       },
-      "coursePrerequisites": "Podstawowa znajomość programowania",
+      "coursePrerequisites": "Basic programming knowledge",
       "educationalLevel": "Intermediate",
       "inLanguage": "{{ env('APP_LANG_HTML') }}",
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "online",
-        "inLanguage": "{{ env('APP_LANG_HTML') }}"
+        "inLanguage": "{{ env('APP_LANG_HTML') }}",
+        "courseWorkload": "PT2H"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "url": "{{ $course->getRoute() }}"
       }
     }
 </script>
@@ -637,7 +645,7 @@
       "@type": "WebSite",
       "name": "Oatllo",
       "url": "{{ route('index') }}",
-      "description": "Platforma edukacyjna z kursami programowania i rozwoju technologicznego",
+      "description": "Educational platform with programming courses and technological development",
       "publisher": {
         "@type": "Organization",
         "name": "Oatllo",
