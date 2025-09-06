@@ -330,15 +330,14 @@
     {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": "{{ addslashes($course->title_seo) }}",
-      "description": "{{ addslashes($course->description_seo) }}",
+      "name": {!! json_encode($course->title_seo ?: $course->title_list) !!},
+      "description": {!! json_encode($course->description_seo ?: $course->description) !!},
       "url": "{{ $urlToCourse }}",
       "provider": {
         "@type": "Organization",
         "name": "Oatllo",
         "url": "{{ route('index') }}"
       },
-      "courseMode": "online",
       "educationalLevel": "beginner to advanced",
       "image": "{{ $currentImage }}",
       "inLanguage": "{{ env('APP_LANG_HTML') }}",
@@ -346,7 +345,12 @@
         "@type": "CourseInstance",
         "courseMode": "online",
         "inLanguage": "{{ env('APP_LANG_HTML') }}",
-        "courseWorkload": "PT2H"
+        "courseWorkload": "PT2H",
+        "instructor": {
+          "@type": "Person",
+          "name": "Jakub Owsianka",
+          "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+        }
       },
       "offers": {
         "@type": "Offer",
@@ -354,11 +358,6 @@
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
         "url": "{{ $urlToCourse }}"
-      },
-      "instructor": {
-        "@type": "Person",
-        "name": "Jakub Owsianka",
-        "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
       },
       "coursePrerequisites": "Basic programming knowledge"
     }
@@ -384,7 +383,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "{{ addslashes($course->title_list) }}",
+          "name": {!! json_encode($course->title_list) !!},
           "item": "{{ $urlToCourse }}"
         }
       ]

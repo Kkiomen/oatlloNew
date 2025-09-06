@@ -346,8 +346,8 @@
     {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": {!! json_encode($courseCategory->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
-      "description": {!! json_encode($courseCategory->description, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+      "name": {!! json_encode($courseCategory->title) !!},
+      "description": {!! json_encode($courseCategory->description) !!},
       "url": "{{ $courseCategory->getRoute() }}",
       "provider": {
         "@type": "Organization",
@@ -359,7 +359,7 @@
       "inLanguage": "{{ env('APP_LANG_HTML') }}",
       "isPartOf": {
         "@type": "Course",
-        "name": {!! json_encode($course->title_list, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+        "name": {!! json_encode($course->title_list) !!},
         "url": "{{ $course->getRoute() }}"
       },
       "hasCourseInstance": {
@@ -404,13 +404,13 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": {!! json_encode($course->title_list, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+          "name": {!! json_encode($course->title_list) !!},
           "item": "{{ $course->getRoute() }}"
         },
         {
           "@type": "ListItem",
           "position": 4,
-          "name": {!! json_encode($courseCategory->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+          "name": {!! json_encode($courseCategory->title) !!},
           "item": "{{ $courseCategory->getRoute() }}"
         }
       ]
