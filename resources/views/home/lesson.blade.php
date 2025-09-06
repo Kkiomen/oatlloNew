@@ -521,8 +521,8 @@
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "{{ addslashes($article->title) }}",
-      "description": "{{ addslashes($article->seo_description ?: 'Lekcja kursu') }}",
+      "headline": {{ json_encode($article->title) }},
+      "description": {{ json_encode($article->seo_description ?: 'Lekcja kursu') }},
       "image": "{{ $currentImage }}",
       "author": {
         "@type": "Person",
@@ -536,11 +536,11 @@
         "name": "Oatllo",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://oatllo.com/assets/images/logo-512.png"
+          "url": "{{ asset('assets/images/logo-512.png') }}"
         }
       },
       "mainEntityOfPage": "{{ $article->getRoute() }}",
-      "articleSection": "{{ addslashes($category->title) }}",
+      "articleSection": {{ json_encode($category->title) }},
       "keywords": "programming, PHP, development"
     }
 </script>
@@ -559,25 +559,25 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "{{ __('basic.courses') }}",
+          "name": {{ json_encode(__('basic.courses')) }},
           "item": "{{ \App\Services\HomeService::getRouteCourses() }}"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "{{ addslashes($course->title_list) }}",
+          "name": {{ json_encode($course->title_list) }},
           "item": "{{ $course->getRoute() }}"
         },
         {
           "@type": "ListItem",
           "position": 4,
-          "name": "{{ addslashes($category->title) }}",
+          "name": {{ json_encode($category->title) }},
           "item": "{{ $category->getRoute() }}"
         },
         {
           "@type": "ListItem",
           "position": 5,
-          "name": "{{ addslashes($article->title) }}",
+          "name": {{ json_encode($article->title) }},
           "item": "{{ $article->getRoute() }}"
         }
       ]
@@ -590,7 +590,7 @@
       "@type": "Organization",
       "name": "Oatllo",
       "url": "{{ route('index') }}",
-      "logo": "{{ asset('assets/images/favicon.ico') }}",
+      "logo": "{{ asset('assets/images/logo-512.png') }}",
       "sameAs": [
         "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
       ],
@@ -603,41 +603,6 @@
     }
 </script>
 
-<script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Course",
-      "name": "{{ addslashes($course->name) }}",
-      "description": "{{ addslashes($course->description ?? 'Kurs programowania') }}",
-      "url": "{{ $course->getRoute() }}",
-      "provider": {
-        "@type": "Organization",
-        "name": "Oatllo",
-        "url": "{{ route('index') }}"
-      },
-      "instructor": {
-        "@type": "Person",
-        "name": "Jakub Owsianka",
-        "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
-      },
-      "coursePrerequisites": "Basic programming knowledge",
-      "educationalLevel": "Intermediate",
-      "inLanguage": "{{ env('APP_LANG_HTML') }}",
-      "hasCourseInstance": {
-        "@type": "CourseInstance",
-        "courseMode": "online",
-        "inLanguage": "{{ env('APP_LANG_HTML') }}",
-        "courseWorkload": "PT2H"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock",
-        "url": "{{ $course->getRoute() }}"
-      }
-    }
-</script>
 
 <script type="application/ld+json">
     {
@@ -651,7 +616,7 @@
         "name": "Oatllo",
         "logo": {
           "@type": "ImageObject",
-          "url": "{{ asset('assets/images/favicon.ico') }}"
+          "url": "{{ asset('assets/images/logo-512.png') }}"
         }
       },
       "potentialAction": {
