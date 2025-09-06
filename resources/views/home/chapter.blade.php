@@ -357,11 +357,6 @@
       "educationalLevel": "beginner to advanced",
       "image": "{{ $currentImage }}",
       "inLanguage": "{{ env('APP_LANG_HTML') }}",
-      "isPartOf": {
-        "@type": "Course",
-        "name": {!! json_encode($course->title_list, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
-        "url": "{{ $course->getRoute() }}"
-      },
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "online",
