@@ -683,13 +683,7 @@
     "@type": "Blog",
     "name": "{{ __('basic.meta_title') }}",
     "url": "{{ route('test') }}"
-  }@if($articles->previousPageUrl() || $articles->nextPageUrl()),@endif
-        @if($articles->previousPageUrl())
-            "previousPage": "{{ $articles->previousPageUrl() }}"@if($articles->nextPageUrl()),@endif
-        @endif
-        @if($articles->nextPageUrl())
-            "nextPage": "{{ $articles->nextPageUrl() }}"
-        @endif
+  }
         }
     </script>
 @endif
