@@ -347,7 +347,7 @@
       "@context": "https://schema.org",
       "@type": "Course",
       "name": {!! json_encode($courseCategory->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
-      "description": {{ json_encode($courseCategory->description ?: 'Learn programming with this course chapter') }},
+      "description": {!! json_encode($courseCategory->description, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
       "url": "{{ $courseCategory->getRoute() }}",
       "provider": {
         "@type": "Organization",
