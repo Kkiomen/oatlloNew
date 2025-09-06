@@ -571,8 +571,8 @@
     @foreach($articles as $index => $article)
         {
           "@type": "BlogPosting",
-          "headline": "{{ addslashes($article->name) }}",
-      "description": "{{ addslashes($article->short_description) }}",
+          "headline": {!! json_encode($article->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+      "description": {!! json_encode($article->short_description, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
       "url": "{{ $article->getRoute() }}",
       "datePublished": "{{ $article->getPublishedDate()->format('Y-m-d\TH:i:sP') }}",
       "dateModified": "{{ $article->updated_at->format('Y-m-d\TH:i:sP') }}",
@@ -598,7 +598,7 @@
         "@id": "{{ $article->getRoute() }}"
       }@if($article->category),@endif
         @if($article->category)
-            "articleSection": "{{ addslashes($article->category->name) }}"
+            "articleSection": {!! json_encode($article->category->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
         @endif
         @if($article->tags && $article->tags->count() > 0),
       "keywords": "{{ $article->tags->pluck('name')->implode(', ') }}"
@@ -623,8 +623,8 @@
           "@type": "ListItem",
           "position": {{ ($articles->currentPage() - 1) * $articles->perPage() + $loop->iteration }},
       "url": "{{ $article->getRoute() }}",
-      "name": "{{ addslashes($article->name) }}",
-      "description": "{{ addslashes($article->short_description) }}"
+      "name": {!! json_encode($article->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+      "description": {!! json_encode($article->short_description, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
     }@if(!$loop->last),@endif
     @endforeach
     ]
@@ -683,7 +683,7 @@
     "@type": "Blog",
     "name": "{{ __('basic.meta_title') }}",
     "url": "{{ route('test') }}"
-  }@if($articles->previousPageUrl()),@endif
+  }@if($articles->previousPageUrl() || $articles->nextPageUrl()),@endif
         @if($articles->previousPageUrl())
             "previousPage": "{{ $articles->previousPageUrl() }}"@if($articles->nextPageUrl()),@endif
         @endif
