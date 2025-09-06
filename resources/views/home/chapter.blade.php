@@ -373,7 +373,8 @@
         "price": "0",
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
-        "url": "{{ $courseCategory->getRoute() }}"
+        "url": "{{ $courseCategory->getRoute() }}",
+        "category": "Education"
       },
       "coursePrerequisites": "Basic programming knowledge"
     }
