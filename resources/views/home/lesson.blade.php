@@ -521,8 +521,8 @@
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": {{ json_encode($article->title) }},
-      "description": {{ json_encode($article->seo_description ?: 'Lekcja kursu') }},
+      "headline": {!! json_encode($article->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+      "description": {!! json_encode($article->seo_description ?: 'Lekcja kursu', JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
       "image": "{{ $currentImage }}",
       "author": {
         "@type": "Person",
@@ -540,7 +540,7 @@
         }
       },
       "mainEntityOfPage": "{{ $article->getRoute() }}",
-      "articleSection": {{ json_encode($category->title) }},
+      "articleSection": {!! json_encode($category->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
       "keywords": "programming, PHP, development"
     }
 </script>
@@ -559,25 +559,25 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": {{ json_encode(__('basic.courses')) }},
+          "name": {!! json_encode(__('basic.courses'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
           "item": "{{ \App\Services\HomeService::getRouteCourses() }}"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": {{ json_encode($course->title_list) }},
+          "name": {!! json_encode($course->title_list, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
           "item": "{{ $course->getRoute() }}"
         },
         {
           "@type": "ListItem",
           "position": 4,
-          "name": {{ json_encode($category->title) }},
+          "name": {!! json_encode($category->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
           "item": "{{ $category->getRoute() }}"
         },
         {
           "@type": "ListItem",
           "position": 5,
-          "name": {{ json_encode($article->title) }},
+          "name": {!! json_encode($article->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
           "item": "{{ $article->getRoute() }}"
         }
       ]
