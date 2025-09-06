@@ -437,15 +437,15 @@
             </header>
 
             <!-- FAQ accordion using <details> for accessibility -->
-            <div class="space-y-4" itemscope itemtype="https://schema.org/FAQPage">
+            <div class="space-y-4">
                 <!-- Q1 -->
                 <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
                     <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
-                        <span itemprop="name">What kind of content will I find here?</span>
+                        <span>What kind of content will I find here?</span>
                         <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
                     </summary>
-                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
-                        <p itemprop="text">
+                    <div class="mt-4 text-neutral-300">
+                        <p>
                             You will find in-depth blog posts, practical tutorials, code snippets, cheat sheets and occasional live-coding sessions – all focused on modern PHP, MySQL and backend development techniques.
                         </p>
                     </div>
@@ -453,11 +453,11 @@
                 <!-- Q2 -->
                 <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
                     <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
-                        <span itemprop="name">Do I need previous programming experience?</span>
+                        <span>Do I need previous programming experience?</span>
                         <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
                     </summary>
-                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
-                        <p itemprop="text">
+                    <div class="mt-4 text-neutral-300">
+                        <p>
                             Not at all. Many articles start from the basics and offer incremental challenges. Beginners and seasoned developers alike can benefit – just pick the level that suits you.
                         </p>
                     </div>
@@ -465,11 +465,11 @@
                 <!-- Q3 -->
                 <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
                     <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
-                        <span itemprop="name">How often do you publish new articles?</span>
+                        <span>How often do you publish new articles?</span>
                         <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
                     </summary>
-                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
-                        <p itemprop="text">
+                    <div class="mt-4 text-neutral-300">
+                        <p>
                             I aim to release a fresh tutorial or deep-dive every two weeks, plus a quick-tip newsletter every Friday. Follow me on Instagram or sign up for the email list so you never miss an update.
                         </p>
                     </div>
@@ -477,11 +477,11 @@
                 <!-- Q4 -->
                 <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
                     <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
-                        <span itemprop="name">Can I request a topic or ask a question?</span>
+                        <span>Can I request a topic or ask a question?</span>
                         <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
                     </summary>
-                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
-                        <p itemprop="text">
+                    <div class="mt-4 text-neutral-300">
+                        <p>
                             Absolutely! Leave a comment under any article or tweet me your idea. I prioritise topics that help the community the most.
                         </p>
                     </div>
@@ -489,11 +489,11 @@
                 <!-- Q5 -->
                 <details class="group rounded-lg bg-neutral-900 p-6 shadow-lg">
                     <summary class="flex cursor-pointer list-none items-center justify-between text-lg font-medium text-rose-400">
-                        <span itemprop="name">What's the best way to stay updated?</span>
+                        <span>What's the best way to stay updated?</span>
                         <i class="fa-solid fa-chevron-down transition-transform duration-200 group-open:rotate-180"></i>
                     </summary>
-                    <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer" class="mt-4 text-neutral-300">
-                        <p itemprop="text">
+                    <div class="mt-4 text-neutral-300">
+                        <p>
                             Subscribe to the free PHP newsletter. I also post quick updates on LinkedIn and Mastodon.
                         </p>
                     </div>
@@ -561,6 +561,91 @@
 
 </div>
 
+<!-- ===========================================================
+  STRUCTURED DATA – JSON-LD (FAQ + Organization + Person)
+=========================================================== -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What kind of content will I find here?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You will find in-depth blog posts, practical tutorials, code snippets, cheat sheets and occasional live-coding sessions – all focused on modern PHP, MySQL and backend development techniques."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need previous programming experience?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not at all. Many articles start from the basics and offer incremental challenges. Beginners and seasoned developers alike can benefit – just pick the level that suits you."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often do you publish new articles?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "I aim to release a fresh tutorial or deep-dive every two weeks, plus a quick-tip newsletter every Friday. Follow me on Instagram or sign up for the email list so you never miss an update."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I request a topic or ask a question?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Absolutely! Leave a comment under any article or tweet me your idea. I prioritise topics that help the community the most."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the best way to stay updated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Subscribe to the free PHP newsletter. I also post quick updates on LinkedIn and Mastodon."
+      }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Oatllo",
+  "url": "{{ route('index') }}",
+  "logo": "{{ asset('assets/images/logo-512.png') }}",
+  "sameAs": [
+    "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "Jakub Owsianka",
+    "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+  },
+  "description": "Educational platform with programming courses and technological development"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jakub Owsianka",
+  "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/",
+  "sameAs": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/",
+  "jobTitle": "PHP Developer",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Oatllo"
+  }
+}
+</script>
 
 </body>
 </html>
