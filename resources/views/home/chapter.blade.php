@@ -346,7 +346,7 @@
     {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": {{ json_encode($courseCategory->title ?: 'Course Chapter') }},
+      "name": {!! json_encode($courseCategory->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
       "description": {{ json_encode($courseCategory->description ?: 'Learn programming with this course chapter') }},
       "url": "{{ $courseCategory->getRoute() }}",
       "provider": {
@@ -410,7 +410,7 @@
         {
           "@type": "ListItem",
           "position": 4,
-          "name": {{ json_encode($courseCategory->title) }},
+          "name": {!! json_encode($courseCategory->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
           "item": "{{ $courseCategory->getRoute() }}"
         }
       ]
