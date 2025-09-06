@@ -346,28 +346,32 @@
     {
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": "{{ addslashes($courseCategory->title) }}",
-      "description": "{{ addslashes($courseCategory->description) }}",
+      "name": {!! json_encode($courseCategory->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+      "description": {!! json_encode($courseCategory->description, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
       "url": "{{ $courseCategory->getRoute() }}",
       "provider": {
         "@type": "Organization",
         "name": "Oatllo",
         "url": "{{ route('index') }}"
       },
-      "courseMode": "online",
       "educationalLevel": "beginner to advanced",
       "image": "{{ $currentImage }}",
       "inLanguage": "{{ env('APP_LANG_HTML') }}",
       "isPartOf": {
         "@type": "Course",
-        "name": "{{ addslashes($course->title_list) }}",
+        "name": {!! json_encode($course->title_list, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
         "url": "{{ $course->getRoute() }}"
       },
       "hasCourseInstance": {
         "@type": "CourseInstance",
         "courseMode": "online",
         "inLanguage": "{{ env('APP_LANG_HTML') }}",
-        "courseWorkload": "PT2H"
+        "courseWorkload": "PT2H",
+        "instructor": {
+          "@type": "Person",
+          "name": "Jakub Owsianka",
+          "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+        }
       },
       "offers": {
         "@type": "Offer",
@@ -375,11 +379,6 @@
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
         "url": "{{ $courseCategory->getRoute() }}"
-      },
-      "instructor": {
-        "@type": "Person",
-        "name": "Jakub Owsianka",
-        "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
       },
       "coursePrerequisites": "Basic programming knowledge"
     }
@@ -405,13 +404,13 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "{{ addslashes($course->title_list) }}",
+          "name": {!! json_encode($course->title_list, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
           "item": "{{ $course->getRoute() }}"
         },
         {
           "@type": "ListItem",
           "position": 4,
-          "name": "{{ addslashes($courseCategory->title) }}",
+          "name": {!! json_encode($courseCategory->title, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
           "item": "{{ $courseCategory->getRoute() }}"
         }
       ]
