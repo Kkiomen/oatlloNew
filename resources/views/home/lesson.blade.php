@@ -529,8 +529,8 @@
         "name": "Jakub Owsianka",
         "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
       },
-      "datePublished": "{{ $article->created_at->format('Y-m-d') }}",
-      "dateModified": "{{ $article->updated_at->format('Y-m-d') }}",
+      "datePublished": "{{ $article->created_at->toISOString() }}",
+      "dateModified": "{{ $article->updated_at->toISOString() }}",
       "publisher": {
         "@type": "Organization",
         "name": "Oatllo",
