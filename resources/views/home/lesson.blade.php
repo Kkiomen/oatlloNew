@@ -527,7 +527,8 @@
       "author": {
         "@type": "Person",
         "name": "Jakub Owsianka",
-        "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
+        "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/",
+        "sameAs": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
       },
       "datePublished": "{{ $article->created_at->toISOString() }}",
       "dateModified": "{{ $article->updated_at->toISOString() }}",
