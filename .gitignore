@@ -21,3 +21,7 @@ yarn-error.log
 
 # Robocze wersje artykułów bloga (przed uploadem)
 /blog-drafts
+
+# Generowane mapy strony
+/public/sitemap.xml
+/public/sitemap-index.xml
