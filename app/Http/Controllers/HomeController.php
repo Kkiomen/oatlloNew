@@ -12,8 +12,10 @@ use App\Models\CourseCategoryLesson;
 use App\Models\InstagramPost;
 use App\Models\Tag;
 use App\Models\TagArticle;
+use App\Services\Article\MarkdownArticleRepository;
 use App\Services\Course\CourseHelper;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -71,23 +73,46 @@ class HomeController extends Controller
 
     public function articleWithCategory(Request $request, string $categorySlug, string $articleSlug): View
     {
-        $article = Article::where('slug', $articleSlug)->first();
+        // Źródło 1: plik .md (ma pierwszeństwo przed bazą przy tym samym slug).
+        $article = app(MarkdownArticleRepository::class)->findBySlug($articleSlug);
+        if (!($article && $article->is_published)) {
+            // Źródło 2: baza danych.
+            $article = Article::where('slug', $articleSlug)->first();
+        }
+
         if(!$article || $article->contents == null){
             abort(404);
         }
-        $randomArticles = Article::where('id', '!=', $article->id)->where('is_published', true)->where('type', 'normal')->inRandomOrder()->take(3)->get();
+        $randomArticles = Article::where('is_published', true)->where('type', 'normal')
+            ->when($article->id !== null, fn ($q) => $q->where('id', '!=', $article->id))
+            ->inRandomOrder()->take(3)->get();
         $category = Category::where('slug', $categorySlug)->first();
 
         return view('views_basic.article', [
             'article' => $article,
             'category' => $category,
-            'randomArticles' => $randomArticles
+            'randomArticles' => $randomArticles,
+            'nextArticle' => $article->getNextArticle(),
+            'previousArticle' => $article->getPreviousArticle(),
+            'relatedArticles' => $article->getRelatedArticles(6),
+            'popularArticles' => Article::getPopularArticles(4),
+            'categoryArticles' => $article->getCategoryArticles(6),
+            'latestArticles' => Article::getLatestArticles(6),
         ]);
     }
     public function article(Request $request, string $articleSlug): View
     {
         $defaultLangue = env('APP_LOCALE');
-        $article = Article::where('slug', $articleSlug)->where('language', $defaultLangue)->first();
+
+        // Źródło 1: plik .md (ma pierwszeństwo przed bazą przy tym samym slug).
+        $article = app(MarkdownArticleRepository::class)->findBySlug($articleSlug);
+        if ($article && (env('LANGUAGE_MODE') != 'strict' || $article->language === $defaultLangue) && $article->is_published) {
+            // artykuł z pliku .md
+        } else {
+            // Źródło 2: baza danych.
+            $article = Article::where('slug', $articleSlug)->where('language', $defaultLangue)->first();
+        }
+
         if(!$article || $article->contents == null){
             abort(404);
         }
@@ -166,7 +191,43 @@ class HomeController extends Controller
             });
         }
 
-        $articles = $articlesQuery->orderBy('published_at', 'desc')->paginate(12);
+        $dbArticles = $articlesQuery->orderBy('published_at', 'desc')->get();
+
+        // Źródło 2: artykuły z plików .md.
+        $language = env('LANGUAGE_MODE') == 'strict' ? env('APP_LOCALE') : null;
+        $mdArticles = app(MarkdownArticleRepository::class)->published($language);
+
+        if ($searchQuery) {
+            $needle = mb_strtolower($searchQuery);
+            $mdArticles = $mdArticles->filter(function ($a) use ($needle) {
+                return str_contains(mb_strtolower($a->name), $needle)
+                    || str_contains(mb_strtolower((string) $a->short_description), $needle);
+            });
+        }
+
+        // Scalanie: pliki .md mają pierwszeństwo przed bazą przy tym samym slug.
+        $merged = collect();
+        foreach ($dbArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+        foreach ($mdArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+
+        $sorted = $merged->values()
+            ->sortByDesc(fn ($a) => $a->getPublishedDate())
+            ->values();
+
+        // Ręczna paginacja scalonej kolekcji (zachowuje działanie widoku).
+        $perPage = 12;
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $articles = new LengthAwarePaginator(
+            $sorted->forPage($page, $perPage)->values(),
+            $sorted->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         return view('views_basic.blog', [
             'articles' => $articles,
@@ -193,13 +254,27 @@ class HomeController extends Controller
 
         }
 
+        // Fallback: tag może istnieć wyłącznie w artykułach z plików .md (nie ma go w bazie).
+        if(!$tag){
+            $mdHasTag = app(MarkdownArticleRepository::class)->published()
+                ->contains(fn ($a) => $a->tags->contains(fn ($t) => $t->slug === $slug));
+
+            if($mdHasTag){
+                $tag = new Tag();
+                $tag->name = Str::title(str_replace('-', ' ', $slug));
+                $tag->slug = $slug;
+                $tag->language = env('APP_LOCALE');
+                $tag->exists = false;
+            }
+        }
+
         if(!$tag){
             abort(404);
         }
 
-
-
-        $articleTagIds = TagArticle::where('tag_id', $tag->id)->pluck('article_id');
+        $articleTagIds = $tag->id
+            ? TagArticle::where('tag_id', $tag->id)->pluck('article_id')
+            : collect();
 
         $uniqueCategoryIds = Article::whereNotNull('category_id')->whereIn('id', $articleTagIds->toArray())->where('is_published', true)
             ->distinct()
@@ -210,33 +285,40 @@ class HomeController extends Controller
         $coursesLesson = [];
         $normalArticles = [];
 
+        // Źródło 1: artykuły z bazy powiązane z tagiem.
+        $dbQuery = Article::where('is_published', true)
+            ->whereIn('id', $articleTagIds->toArray());
+
         if(env('LANGUAGE_MODE') == 'strict') {
-            $articles = Article::where('is_published', true)
-                ->where('language', env('APP_LOCALE'))
-                ->whereIn('id', $articleTagIds->toArray())
-                ->orderBy('created_at', 'desc')->paginate(10);
-
-            $lessonsNotIn = [];
-            foreach (CourseCategoryLesson::get() as $lesson){
-                $lessonsNotIn[] = $lesson->lesson_id;
-            }
-
-            foreach ($articles as $article){
-                if(in_array($article->id, $lessonsNotIn)){
-                    $coursesLesson[] = $article;
-                }else{
-                    $normalArticles[] = $article;
-                }
-            }
-
-
-
-
-        }else{
-            $articles = Article::where('is_published', true)
-                ->whereIn('id', $articleTagIds->toArray())
-                ->orderBy('created_at', 'desc')->paginate(10);
+            $dbQuery->where('language', env('APP_LOCALE'));
         }
+
+        $dbArticles = $dbQuery->orderBy('created_at', 'desc')->get();
+
+        $lessonsNotIn = CourseCategoryLesson::pluck('lesson_id')->all();
+
+        foreach ($dbArticles as $article){
+            if(in_array($article->id, $lessonsNotIn)){
+                $coursesLesson[] = $article;
+            }else{
+                $normalArticles[] = $article;
+            }
+        }
+
+        // Źródło 2: artykuły z plików .md oznaczone tym tagiem.
+        $language = env('LANGUAGE_MODE') == 'strict' ? env('APP_LOCALE') : null;
+        $mdArticles = app(MarkdownArticleRepository::class)->published($language)
+            ->filter(fn ($a) => $a->tags->contains(fn ($t) => $t->slug === $tag->slug));
+
+        foreach ($mdArticles as $article){
+            $normalArticles[] = $article;
+        }
+
+        // Scalone, posortowane malejąco po dacie publikacji.
+        $normalArticles = collect($normalArticles)
+            ->sortByDesc(fn ($a) => $a->getPublishedDate())
+            ->values()
+            ->all();
 
         return view('views_basic.blog_tag',[
             'categories' => $categories,
@@ -248,25 +330,51 @@ class HomeController extends Controller
     }
 
 
-    public function blogListCategory(string $slug): View
+    public function blogListCategory(Request $request, string $slug): View
     {
         $currentCategory = Category::where('slug', $slug)->first();
         if(!$currentCategory){
             abort(404);
         }
 
+        // Źródło 1: artykuły z bazy w tej kategorii.
+        $dbQuery = Article::where('type', 'normal')
+            ->where('is_published', true)
+            ->where('category_id', $currentCategory->id);
+
         if(env('LANGUAGE_MODE') == 'strict') {
-            $articles = Article::where('type', 'normal')
-                ->where('is_published', true)
-                ->where('category_id', $currentCategory->id)
-                ->where('language', env('APP_LOCALE'))
-                ->orderBy('created_at', 'desc')->paginate(10);
-        }else{
-            $articles = Article::where('type', 'normal')
-                ->where('is_published', true)
-                ->where('category_id', $currentCategory->id)
-                ->orderBy('created_at', 'desc')->paginate(10);
+            $dbQuery->where('language', env('APP_LOCALE'));
         }
+
+        $dbArticles = $dbQuery->orderBy('created_at', 'desc')->get();
+
+        // Źródło 2: artykuły z plików .md przypisane do tej kategorii.
+        $language = env('LANGUAGE_MODE') == 'strict' ? env('APP_LOCALE') : null;
+        $mdArticles = app(MarkdownArticleRepository::class)->published($language)
+            ->filter(fn ($a) => (int) $a->category_id === (int) $currentCategory->id);
+
+        // Scalanie: pliki .md mają pierwszeństwo przed bazą przy tym samym slug.
+        $merged = collect();
+        foreach ($dbArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+        foreach ($mdArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+
+        $sorted = $merged->values()
+            ->sortByDesc(fn ($a) => $a->getPublishedDate())
+            ->values();
+
+        $perPage = 10;
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $articles = new LengthAwarePaginator(
+            $sorted->forPage($page, $perPage)->values(),
+            $sorted->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         $currentCategory = $currentCategory->name;
 
@@ -282,7 +390,8 @@ class HomeController extends Controller
         return view('views_basic.blog', [
             'categories' => $categories,
             'articles' => $articles,
-            'currentCategory' => $currentCategory
+            'currentCategory' => $currentCategory,
+            'searchQuery' => null
         ]);
     }
 

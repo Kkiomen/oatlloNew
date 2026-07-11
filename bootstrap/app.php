@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'article.token' => \App\Http\Middleware\VerifyArticleApiToken::class,
+        ]);
         $middleware->validateCsrfTokens(except: [
             'cmspage/update',
         ]);

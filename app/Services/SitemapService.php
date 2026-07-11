@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseCategoryLesson;
 use App\Models\Tag;
+use App\Services\Article\MarkdownArticleRepository;
 use App\Services\Library\SitemapGenerator;
 use Illuminate\Support\Str;
 
@@ -25,20 +26,43 @@ class SitemapService
         $sitemap->addItem('/', '1.0', 'daily', $date);
         $sitemap->addItem(route('blog', [], false), '0.8', 'daily', $date);
 
+        // Drugie źródło: artykuły z plików .md.
+        $language = env('LANGUAGE_MODE') == 'strict' ? env('APP_LOCALE') : null;
+        $mdArticles = app(MarkdownArticleRepository::class)->published($language);
+
         // ============= TAGI ==================
+        $tagSlugs = [];
         $tags = Tag::where('language', env('APP_LOCALE'))->get();
         foreach ($tags as $tag){
+            $slug = Str::slug($tag->name);
+            $tagSlugs[$slug] = true;
             $sitemap->addItem(
-                loc: route('blogTag', ['tag' => Str::slug($tag->name)], false),
+                loc: route('blogTag', ['tag' => $slug], false),
                 priority: '0.3',
                 changefreq: 'weekly',
                 lastmod: $tag->updated_at->toIso8601String()
             );
         }
 
+        // Tagi istniejące wyłącznie w plikach .md.
+        foreach ($mdArticles as $mdArticle){
+            foreach ($mdArticle->tags as $mdTag){
+                if (isset($tagSlugs[$mdTag->slug])) {
+                    continue;
+                }
+                $tagSlugs[$mdTag->slug] = true;
+                $sitemap->addItem(
+                    loc: route('blogTag', ['tag' => $mdTag->slug], false),
+                    priority: '0.3',
+                    changefreq: 'weekly',
+                    lastmod: $date
+                );
+            }
+        }
+
 
         // Add different category posts
-        $categories = static::prepareCategoriesBlog();
+        $categories = static::prepareCategoriesBlog($mdArticles);
         if($categories->count() > 0){
             foreach($categories as $category){
                 $sitemap->addItem(route('blog.list.category', ['slug' => $category->slug], false), '0.7', 'weekly', 'Today');
@@ -55,16 +79,22 @@ class SitemapService
             $articles = Article::where('is_published', true)->get();
         }
 
-        if($articles->count() > 0){
-            foreach($articles as $article){
-                $sitemap->addItem(
-                    loc: $article->getRoute(false) ,
-                    priority: '0.7',
-                    changefreq: 'weekly',
-                    lastmod: $article->getPublishedDate()->toIso8601String()
-                );
+        // Scalanie: pliki .md mają pierwszeństwo przed bazą przy tym samym slug.
+        $mergedArticles = [];
+        foreach($articles as $article){
+            $mergedArticles[$article->slug] = $article;
+        }
+        foreach($mdArticles as $article){
+            $mergedArticles[$article->slug] = $article;
+        }
 
-            }
+        foreach($mergedArticles as $article){
+            $sitemap->addItem(
+                loc: $article->getRoute(false) ,
+                priority: '0.7',
+                changefreq: 'weekly',
+                lastmod: $article->getPublishedDate()->toIso8601String()
+            );
         }
 
         $defaultLangue = env('APP_LOCALE');
@@ -123,12 +153,22 @@ class SitemapService
         $sitemap->createSitemapIndex(route('index').'/', 'Today');
     }
 
-    protected static function prepareCategoriesBlog(): mixed
+    protected static function prepareCategoriesBlog($mdArticles = null): mixed
     {
         $uniqueCategoryIds = Article::whereNotNull('category_id')->where('is_published', true)
             ->distinct()
-            ->pluck('category_id');
+            ->pluck('category_id')
+            ->all();
 
-        return Category::whereIn('id', $uniqueCategoryIds)->get();
+        // Kategorie przypisane do artykułów z plików .md.
+        if ($mdArticles !== null) {
+            foreach ($mdArticles as $mdArticle) {
+                if (!empty($mdArticle->category_id)) {
+                    $uniqueCategoryIds[] = $mdArticle->category_id;
+                }
+            }
+        }
+
+        return Category::whereIn('id', array_unique($uniqueCategoryIds))->get();
     }
 }

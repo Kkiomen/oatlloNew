@@ -186,6 +186,9 @@ class Article extends Model
      */
     public function getNextArticle(): ?Article
     {
+        if ($this->id === null) {
+            return null;
+        }
 
         return Article::where('id', '>', $this->id)
             ->where('is_published', true)
@@ -201,6 +204,9 @@ class Article extends Model
      */
     public function getPreviousArticle(): ?Article
     {
+        if ($this->id === null) {
+            return null;
+        }
 
         return Article::where('id', '<', $this->id)
             ->where('is_published', true)
@@ -217,6 +223,14 @@ class Article extends Model
      */
     public function getRelatedArticles(int $limit = 6): \Illuminate\Database\Eloquent\Collection
     {
+        if ($this->id === null) {
+            return Article::where('is_published', true)
+                ->where('type', 'normal')
+                ->where('language', $this->language)
+                ->orderBy('created_at', 'desc')
+                ->limit($limit)
+                ->get();
+        }
 
         $query = Article::where('id', '!=', $this->id)
             ->where('is_published', true)
@@ -275,7 +289,7 @@ class Article extends Model
      */
     public function getCategoryArticles(int $limit = 6): \Illuminate\Database\Eloquent\Collection
     {
-        if (!$this->category_id) {
+        if (!$this->category_id || $this->id === null) {
             return Article::where('id', 0)->get(); // Zwraca pustą Eloquent Collection
         }
 

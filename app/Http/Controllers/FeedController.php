@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Services\Article\MarkdownArticleRepository;
 use Illuminate\Http\Request;
 
 class FeedController extends Controller
@@ -32,11 +33,26 @@ class FeedController extends Controller
 
         $defaultLanguage = env('APP_LOCALE', 'en');
 
-        $articles = Article::where('is_published', true)
+        $dbArticles = Article::where('is_published', true)
             ->where('language', $defaultLanguage)
             ->orderBy('created_at', 'desc')
             ->take(20)
             ->get();
+
+        // Drugie źródło: artykuły z plików .md (mają pierwszeństwo przy tym samym slug).
+        $mdArticles = app(MarkdownArticleRepository::class)->published($defaultLanguage);
+
+        $merged = collect();
+        foreach ($dbArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+        foreach ($mdArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+
+        $articles = $merged->values()
+            ->sortByDesc(fn ($a) => $a->getPublishedDate())
+            ->take(20);
 
         foreach ($articles as $article) {
             $item = $channel->addChild('item');
