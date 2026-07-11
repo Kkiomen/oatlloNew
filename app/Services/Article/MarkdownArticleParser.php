@@ -75,7 +75,12 @@ class MarkdownArticleParser
         $article->name = $name;
         $article->slug = $slug;
         $article->short_description = $fm['short_description'] ?? $fm['description'] ?? '';
-        $article->image = $fm['image'] ?? null;
+        // Brak obrazka we frontmatterze (lub jawne "auto") => generowana okładka SVG
+        // dopasowana do tematu artykułu, zamiast pustego/losowego obrazka.
+        $image = $fm['image'] ?? null;
+        $article->image = (empty($image) || $image === 'auto')
+            ? route('article.cover', ['slug' => $slug])
+            : $image;
         $article->language = $fm['language'] ?? config('articles.default_language');
         $article->type = 'normal';
         $article->is_published = array_key_exists('is_published', $fm)

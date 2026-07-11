@@ -22,6 +22,13 @@ Route::get('/blog/lista/{slug}', [\App\Http\Controllers\HomeController::class, '
 Route::post('/send/email', [\App\Http\Controllers\HomeController::class, 'sendEmail'])->name('send.email');
 
 Route::get('/feed', [\App\Http\Controllers\FeedController::class, 'rss'])->name('feed');
+
+// Wygenerowana okładka artykułu (SVG, motyw "okno kodu"). Ścieżka 3-segmentowa,
+// aby nie kolidowała z łapaczami /{articleSlug} i /{categorySlug}/{articleSlug}
+// zdefiniowanymi na końcu pliku.
+Route::get('/articles/{slug}/cover.svg', [\App\Http\Controllers\CoverController::class, 'show'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('article.cover');
 //Route::get('/blog/', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 
 
