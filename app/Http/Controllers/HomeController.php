@@ -75,7 +75,7 @@ class HomeController extends Controller
     {
         // Źródło 1: plik .md (ma pierwszeństwo przed bazą przy tym samym slug).
         $article = app(MarkdownArticleRepository::class)->findBySlug($articleSlug);
-        if (!($article && $article->is_published)) {
+        if (!($article && $article->isLive())) {
             // Źródło 2: baza danych.
             $article = Article::where('slug', $articleSlug)->first();
         }
@@ -106,7 +106,7 @@ class HomeController extends Controller
 
         // Źródło 1: plik .md (ma pierwszeństwo przed bazą przy tym samym slug).
         $article = app(MarkdownArticleRepository::class)->findBySlug($articleSlug);
-        if ($article && (env('LANGUAGE_MODE') != 'strict' || $article->language === $defaultLangue) && $article->is_published) {
+        if ($article && (env('LANGUAGE_MODE') != 'strict' || $article->language === $defaultLangue) && $article->isLive()) {
             // artykuł z pliku .md
         } else {
             // Źródło 2: baza danych.

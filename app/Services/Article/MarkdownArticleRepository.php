@@ -110,7 +110,7 @@ class MarkdownArticleRepository
     public function published(?string $language = null): Collection
     {
         return $this->all()
-            ->filter(fn (Article $a) => $a->is_published)
+            ->filter(fn (Article $a) => $a->isLive())
             ->when($language !== null, fn ($c) => $c->filter(fn (Article $a) => $a->language === $language))
             ->values();
     }

@@ -35,4 +35,17 @@ return [
 
     'default_language' => env('APP_LOCALE', 'en'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Katalog docelowy sitemap
+    |--------------------------------------------------------------------------
+    |
+    | Gdzie zapisywane są pliki sitemap.xml / sitemap-index.xml. Domyślnie
+    | katalog public/. Nadpisywane w testach, aby nie modyfikować wersjonowanego
+    | pliku sitemap.
+    |
+    */
+
+    'sitemap_path' => env('SITEMAP_PATH'),
+
 ];

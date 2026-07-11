@@ -19,7 +19,11 @@ class SitemapService
     {
 
         $sitemap = new SitemapGenerator(route('index'));
-        $sitemap->setPath(public_path('/'));
+        // Katalog docelowy jest konfigurowalny (domyślnie public/), aby testy
+        // mogły kierować wynik do katalogu tymczasowego zamiast nadpisywać
+        // wersjonowany public/sitemap.xml.
+        $sitemapPath = config('articles.sitemap_path') ?: public_path('/');
+        $sitemap->setPath(rtrim((string) $sitemapPath, '/\\') . DIRECTORY_SEPARATOR);
         $sitemap->setFilename('sitemap');
         $date = now()->toIso8601String();
 

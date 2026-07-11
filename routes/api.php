@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AutoPublishController;
 use App\Http\Controllers\Api\ArticleImportController;
+use App\Http\Controllers\Api\CronController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Endpoint do automatycznej publikacji artykułów
 Route::post('/auto-publish', [AutoPublishController::class, 'publishOldestUnpublished'])
     ->name('api.auto-publish');
+
+// "Cron tick" uderzany cyklicznie (np. co godzinę z n8n). Publikuje zaplanowane
+// artykuły (których published_at już minął) i regeneruje sitemap. Publiczny GET.
+Route::get('/cron', [CronController::class, 'run'])->name('api.cron');
 
 // Import artykułów w formacie Markdown (dla lokalnego narzędzia / Claude).
 // Autoryzacja: nagłówek "Authorization: Bearer <ARTICLE_API_TOKEN>".

@@ -330,4 +330,21 @@ class Article extends Model
             InternalUrlsGenerator::generate();
         }
     }
+
+    /**
+     * Czy artykuł jest widoczny publicznie w tej chwili.
+     * Widoczny = opublikowany ORAZ jego zaplanowana data publikacji już minęła.
+     * Dzięki temu artykuł z przyszłym published_at (zaplanowany) jest ukryty,
+     * dopóki nie nadejdzie jego termin.
+     */
+    public function isLive(): bool
+    {
+        if (!$this->is_published) {
+            return false;
+        }
+
+        $publishedAt = $this->published_at;
+
+        return $publishedAt === null || $publishedAt->lessThanOrEqualTo(Carbon::now());
+    }
 }
