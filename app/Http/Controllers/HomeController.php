@@ -295,14 +295,10 @@ class HomeController extends Controller
 
         $dbArticles = $dbQuery->orderBy('created_at', 'desc')->get();
 
-        $lessonsNotIn = CourseCategoryLesson::pluck('lesson_id')->all();
-
+        // CourseCategoryLesson nie ma już pola lesson_id i nie powiązuje się z Article,
+        // więc wszystkie artykuły z bazy traktujemy jako zwykłe artykuły.
         foreach ($dbArticles as $article){
-            if(in_array($article->id, $lessonsNotIn)){
-                $coursesLesson[] = $article;
-            }else{
-                $normalArticles[] = $article;
-            }
+            $normalArticles[] = $article;
         }
 
         // Źródło 2: artykuły z plików .md oznaczone tym tagiem.
