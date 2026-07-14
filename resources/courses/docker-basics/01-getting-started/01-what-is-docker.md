@@ -5,9 +5,9 @@ seo_title: "What is Docker? Containers Explained for Beginners"
 seo_description: "Learn what Docker is and what a container is - and why developers use Docker to package and run applications the same way on every machine."
 ---
 
-**Docker** is a tool that packages an application together with everything it needs to
-run into a single unit called a **container**, so it runs the same way on every
-machine. Let's unpack what that means and why it's so useful.
+**Docker** packages an application together with everything it needs to run into a
+single unit called a **container**. Why that matters becomes obvious the first time an
+app works on your laptop and nowhere else.
 
 ## The problem Docker solves
 

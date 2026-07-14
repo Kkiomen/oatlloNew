@@ -32,8 +32,8 @@ Now when you build, Docker skips those paths. This matters for three reasons:
 - **Smaller and faster builds** - you don't send huge folders like `node_modules` or
   `vendor` that will be rebuilt inside the image anyway.
 - **Cleaner images** - build artifacts and local junk don't sneak in.
-- **Safer images** - secret files like `.env` don't accidentally end up baked into
-  your image, where anyone with the image could read them.
+- **Safer images** - secret files like `.env` don't accidentally get baked in (more on
+  this below).
 
 ## A good default .dockerignore
 

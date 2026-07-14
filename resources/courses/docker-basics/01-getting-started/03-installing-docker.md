@@ -47,10 +47,10 @@ Once `docker version` works, you're ready. In the next lesson we'll
 ## The most common install snag
 
 The number one beginner problem isn't the install itself - it's forgetting that
-**Docker Desktop has to be running** before any `docker` command works. If you see
-"cannot connect to the Docker daemon", Docker just isn't started. Open Docker Desktop,
-wait for the whale icon to go steady, and the same command will work. On Windows,
-enabling **WSL 2** when the installer asks gives you the smoothest experience.
+**Docker Desktop has to be running** before any `docker` command works. That "cannot
+connect to the Docker daemon" error almost always just means you haven't started it
+yet. On Windows, enabling **WSL 2** when the installer asks gives you the smoothest
+experience.
 
 ## FAQ
 

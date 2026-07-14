@@ -33,7 +33,7 @@ a teammate "install PHP 8.4, then this extension, then copy these files, then ru
 this", you write it once in a Dockerfile. Anyone can then build the exact same image
 with a single command.
 
-That gives you three big wins:
+That buys you three things:
 
 - **Repeatable** - the same Dockerfile always produces the same setup.
 - **Shareable** - commit it to your project so the whole team uses it.

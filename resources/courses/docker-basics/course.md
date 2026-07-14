@@ -23,5 +23,5 @@ Every lesson builds on the previous one, with small, runnable examples you can t
 you go. By the end you'll be able to package a real application (we'll dockerize a
 PHP/Laravel app) and follow the practices that keep your images small and safe.
 
-This course is for **developers** who want a practical, no-fluff path to using Docker
-on real projects.
+It's written for **developers** who will actually run and build containers day to day,
+not just read about them.

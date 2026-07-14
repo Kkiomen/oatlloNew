@@ -32,8 +32,8 @@ project) into the image:
 COPY . /app
 ```
 
-This copies everything in the current folder into `/app` inside the image. You'll use
-`COPY` to bring your application's code into the image.
+This copies everything in the current folder into `/app` inside the image - the usual
+way to get your application's code in.
 
 There's a similar instruction called `ADD`, which can also download URLs and unpack
 archives. As a rule, **prefer `COPY`** - it's simpler and does exactly what it says.

@@ -19,9 +19,9 @@ This is different from a volume:
 
 ## Why it's great for development
 
-Imagine you're developing an app inside a container, but you want to edit the code
-with your normal editor on your computer. With a bind mount, you edit files on your
-machine and the container sees the changes immediately - no rebuild needed.
+Say you're developing an app inside a container, but you want to edit the code with your
+normal editor on your computer. A bind mount makes that work: edit files on your machine
+and the container sees the changes immediately. No rebuild needed.
 
 The syntax is the same `-v` flag, but instead of a volume name you give a **path** on
 your computer:

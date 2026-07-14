@@ -41,7 +41,7 @@ Two things to know:
   "belong to" it.
 - `key: value` sets a value; a `-` starts a list item.
 
-You'll see plenty of examples in the next lessons, so it'll become familiar quickly.
+That's enough to read every file in this chapter.
 
 Let's [write our first `docker-compose.yml`](/course/docker-basics/docker-compose/writing-compose-file).
 

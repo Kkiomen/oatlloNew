@@ -9,7 +9,7 @@ seo_description: "Reduce Docker image size with slim and alpine base images, com
 
 Smaller images are faster to build, faster to download, and faster to start. They
 also have a smaller "attack surface" - fewer things installed means fewer things that
-can have security problems. A few simple habits make a big difference.
+can have security problems. Three habits get you most of the way.
 
 ## Pick a smaller base image
 
@@ -58,9 +58,9 @@ repeating as a best practice: a good `.dockerignore` keeps big folders like `nod
 and `vendor` out of your build
 context, so they aren't copied into the image by accident.
 
-These three habits - a slim base, combined-and-cleaned `RUN` steps, and a
-`.dockerignore` - already shrink most images a lot. The next lesson introduces a more
-powerful technique: [multi-stage builds](/course/docker-basics/best-practices/multi-stage-builds).
+A slim base, combined-and-cleaned `RUN` steps, and a `.dockerignore` already shrink most
+images a lot. The next lesson introduces a more powerful technique:
+[multi-stage builds](/course/docker-basics/best-practices/multi-stage-builds).
 
 ## Measure before you optimize
 

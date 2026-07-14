@@ -53,7 +53,7 @@ The result can be dramatically smaller - sometimes from hundreds of megabytes do
 tens. You get the full power of your build tools during the build, and a lean image to
 ship. Only the last stage becomes the final image; earlier stages are discarded.
 
-Multi-stage builds are one of the most valuable Docker techniques for real projects.
+Once your image ships a build tool it never runs, multi-stage is usually the fix.
 Last, let's cover a few [security basics](/course/docker-basics/best-practices/security-basics).
 
 ## When a multi-stage build is (and isn't) worth it

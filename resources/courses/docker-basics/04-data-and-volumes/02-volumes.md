@@ -85,9 +85,8 @@ want to share your own project folder with a container - that's what
 
 When you attach a volume, give it a **name** (`-v db-data:/var/lib/mysql`) rather than
 letting Docker create an anonymous one. Anonymous volumes get random IDs, are easy to
-lose track of, and pile up as junk you can't identify later. A named volume is easy to
-find with `docker volume ls`, easy to reuse, and easy to back up. Future-you will thank
-present-you.
+lose track of, and pile up as junk you can't identify later. A named volume shows up in
+`docker volume ls`, is easy to reuse, and easy to back up. Anonymous ones just rot.
 
 ## FAQ
 

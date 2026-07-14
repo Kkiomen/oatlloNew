@@ -28,9 +28,8 @@ docker pull php:8.4-cli
 ```
 
 If you don't specify a tag, Docker assumes `:latest`. So `docker pull nginx` is the
-same as `docker pull nginx:latest`. On real projects it's a good habit to pin a
-specific version (like `nginx:1.27`) so your setup doesn't change unexpectedly when a
-new "latest" is released.
+same as `docker pull nginx:latest` - which, as you'll see below, isn't always what you
+want.
 
 ## List images with docker images
 

@@ -36,8 +36,6 @@ into an image. Anyone who has the image can read them. Instead:
   `environment`).
 - Keep them in a `.env` file that you exclude with `.dockerignore` and `.gitignore`.
 
-You already have all the tools for this from earlier chapters.
-
 ## Run as a non-root user
 
 By default, processes inside a container run as `root`, the all-powerful user. If an
@@ -65,11 +63,11 @@ pin a version, and deliberately bump it now and then.
 
 ## The leak that outlives the delete
 
-The security mistake with the worst blast radius is baking a secret into an image. Here's
-the part people miss: **deleting the file in a later step doesn't remove it** - the
-secret still sits in the earlier layer, readable by anyone who pulls the image. Layers
-remember everything. So the rule isn't "delete it afterwards", it's "never let it into a
-layer in the first place": pass secrets at run time and keep `.env` in `.dockerignore`.
+We just said not to bake secrets in - here's the part people miss about why a quick fix
+won't save you. **Deleting the file in a later step doesn't remove it.** The secret still
+sits in the earlier layer, readable by anyone who pulls the image. Layers remember
+everything. So the rule isn't "delete it afterwards", it's "never let it into a layer in
+the first place".
 
 ## FAQ
 

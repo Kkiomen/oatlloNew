@@ -69,10 +69,9 @@ kind of [management for images](/course/docker-basics/images-and-containers/mana
 
 ## The habit that saves you disk space
 
-Stopped containers don't disappear on their own - they pile up silently and each keeps
-its name reserved. Run `docker ps -a` after a busy session and you'll often find a
-dozen exited containers you forgot about. Getting into the habit of `--rm` for one-off
-runs, and occasionally clearing out old containers, keeps that clutter from building up.
+Run `docker ps -a` after a busy session and you'll often find a dozen exited containers
+you forgot about, each still holding its name reserved. Getting into the habit of `--rm`
+for one-off runs, plus the occasional cleanup, keeps that clutter from building up.
 
 ## FAQ
 

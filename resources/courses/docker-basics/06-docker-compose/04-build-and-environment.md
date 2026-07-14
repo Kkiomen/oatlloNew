@@ -71,10 +71,8 @@ services:
     image: mysql:8
 ```
 
-`depends_on` makes Compose start `db` before `app`. Note it only waits for the
-container to **start**, not for the database to be fully ready to accept connections -
-apps usually handle that by retrying their connection. But for basic ordering, it
-does the job.
+`depends_on` makes Compose start `db` before `app`. For basic ordering, it does the job -
+but there's an important catch, which the note below covers.
 
 You now have all the Compose building blocks. In the next chapter we'll put
 everything together and

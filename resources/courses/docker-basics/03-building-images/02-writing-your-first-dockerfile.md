@@ -53,10 +53,11 @@ anything yet. In the next lesson we'll
 
 ## A small habit that pays off: order matters
 
-Even in a Dockerfile this short, the order of instructions matters for build speed - and
-it matters a lot on bigger projects. A good instinct to start building now: put the
-things that rarely change (the base image, installing tools) near the top, and the
-things that change often (your own code) near the bottom. We'll see exactly why in the
+Even in a Dockerfile this short, the order of instructions affects build speed - and on
+a real project it's the difference between a rebuild that takes a second and one that
+reinstalls everything. The habit to start now: put things that rarely change (the base
+image, installing tools) near the top, and things that change often (your own code) near
+the bottom. We'll see exactly why in the
 [layers and caching lesson](/course/docker-basics/building-images/layers-and-caching); for
 now, just notice that `FROM` sits above `COPY`.
 

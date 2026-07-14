@@ -72,9 +72,8 @@ app has several parts. Let's
 `docker compose up` reuses what it already has. So when you change something and the app
 doesn't seem to update, the usual fix is `docker compose up -d --build` (you'll meet
 [`--build` properly in a later lesson](/course/docker-basics/docker-compose/build-and-environment))
-or, for a truly clean slate, `docker compose down`
-followed by `up`. Beginners often stare at an old result wondering why their change
-didn't take - Compose simply reused the running containers. A quick down/up clears it.
+or, for a truly clean slate, `docker compose down` followed by `up`. If you're staring at
+an old result wondering why your change didn't take, this is almost always why.
 
 ## FAQ
 

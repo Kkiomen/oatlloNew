@@ -45,9 +45,9 @@ changes.
 
 ## Why this is actually good
 
-This might feel like a problem, but it's a feature. It means every container starts
-from a known, clean state - no leftover mess from a previous run. It's a big part of
-why Docker is so reliable.
+This might feel like a problem, but it's a feature. Every container starts from a
+known, clean state - no leftover files from a previous run. Same image, same fresh
+start, every time.
 
 ## But we need to keep some data
 

@@ -75,11 +75,10 @@ Next, we'll
 ## The extension mistake that wastes an afternoon
 
 The error that eats the most time when dockerizing PHP is a **missing extension**. Your
-app boots, then dies with something like "could not find driver" - which really means
-the `pdo_mysql` extension isn't installed in the image. PHP images don't include every
-extension by default; you add them with `docker-php-ext-install`, as in the Dockerfile
-above. When a PHP app fails only inside Docker, a missing extension is the first thing
-to check.
+app boots, then dies with "could not find driver" - which really means the `pdo_mysql`
+extension isn't installed in the image. PHP images ship without most extensions; you add
+them with `docker-php-ext-install`. So when an app fails only inside Docker, check the
+extensions first.
 
 ## FAQ
 

@@ -87,8 +87,8 @@ cleaner and more flexible with
 When your app connects to the database, the host is the **service name** (`db`), not
 `localhost`. This trips up almost everyone: inside a container, `localhost` means *that
 same container*, so pointing the app at `localhost` for the database fails. Use `db`
-(the service name) and the database's internal port `3306`. Remember this and you'll
-skip the single most common Compose connection bug.
+(the service name) and the database's internal port `3306`. Get this right and you skip
+the single most common Compose connection bug.
 
 ## FAQ
 
