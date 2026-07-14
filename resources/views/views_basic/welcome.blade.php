@@ -301,18 +301,18 @@
         <div class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @php
                 $features = [
-                    ['icon' => 'fa-solid fa-code', 'title' => 'Hands-on Tutorials', 'desc' => 'Real-world PHP, Laravel and JavaScript walkthroughs you can apply immediately.'],
-                    ['icon' => 'fa-solid fa-cubes', 'title' => 'SOLID & Patterns', 'desc' => 'Design patterns and clean-architecture principles explained on practical examples.'],
-                    ['icon' => 'fa-solid fa-database', 'title' => 'Databases & Performance', 'desc' => 'MySQL, query tuning and backend performance optimisation deep-dives.'],
-                    ['icon' => 'fa-solid fa-server', 'title' => 'DevOps & Tooling', 'desc' => 'CI/CD, Docker and the developer tooling that speeds up your workflow.'],
-                    ['icon' => 'fa-brands fa-github', 'title' => 'Open Source', 'desc' => 'Full source code and example projects available on GitHub.'],
-                    ['icon' => 'fa-solid fa-robot', 'title' => 'AI for Developers', 'desc' => 'How to use AI tools effectively in your day-to-day engineering.'],
+                    ['icon' => 'code', 'title' => 'Hands-on Tutorials', 'desc' => 'Real-world PHP, Laravel and JavaScript walkthroughs you can apply immediately.'],
+                    ['icon' => 'cubes', 'title' => 'SOLID & Patterns', 'desc' => 'Design patterns and clean-architecture principles explained on practical examples.'],
+                    ['icon' => 'database', 'title' => 'Databases & Performance', 'desc' => 'MySQL, query tuning and backend performance optimisation deep-dives.'],
+                    ['icon' => 'server', 'title' => 'DevOps & Tooling', 'desc' => 'CI/CD, Docker and the developer tooling that speeds up your workflow.'],
+                    ['icon' => 'github', 'title' => 'Open Source', 'desc' => 'Full source code and example projects available on GitHub.'],
+                    ['icon' => 'robot', 'title' => 'AI for Developers', 'desc' => 'How to use AI tools effectively in your day-to-day engineering.'],
                 ];
             @endphp
             @foreach($features as $f)
                 <div class="card-hover rounded-2xl border border-white/10 bg-neutral-900 p-6">
                     <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-500/10 text-rose-400">
-                        <i class="{{ $f['icon'] }} text-lg"></i>
+                        {!! \App\Support\Icons::svg($f['icon'], 'text-lg') !!}
                     </div>
                     <h3 class="mt-4 text-lg font-semibold text-white">{{ $f['title'] }}</h3>
                     <p class="mt-2 text-sm text-neutral-400">{{ $f['desc'] }}</p>
