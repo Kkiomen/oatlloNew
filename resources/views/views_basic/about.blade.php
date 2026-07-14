@@ -2,8 +2,8 @@
     $authorUrl   = route('about.us');
     $authorImage = asset('/assets/images/owsianka_jakub.png');
     $linkedin    = 'https://www.linkedin.com/in/jakub-owsianka-446bb5213/';
-    $pageTitle   = 'About Jakub Owsianka – Creator of Oatllo | Oatllo';
-    $pageDesc    = 'Jakub Owsianka — PHP & Laravel developer with 10+ years of experience and the creator of Oatllo. I write about backend, architecture, DevOps and AI for developers.';
+    $pageTitle   = 'About Jakub Owsianka - Creator of Oatllo | Oatllo';
+    $pageDesc    = 'Jakub Owsianka - PHP & Laravel developer with 10+ years of experience and the creator of Oatllo. I write about backend, architecture, DevOps and AI for developers.';
 @endphp
 <!DOCTYPE html>
 <html lang="{{ env('APP_LANG_HTML') }}" class="scroll-smooth">
@@ -119,7 +119,7 @@
                 <p class="mt-2 text-lg text-neutral-400" itemprop="jobTitle">PHP &amp; Laravel developer</p>
                 <p class="mx-auto mt-5 max-w-xl text-neutral-300 lg:mx-0" itemprop="description">
                     For over <strong class="text-white">10 years</strong> I've been building backend applications in PHP and Laravel.
-                    I run <strong class="text-white">Oatllo</strong> — a blog and free courses for developers, where I share
+                    I run <strong class="text-white">Oatllo</strong> - a blog and free courses for developers, where I share
                     practical, battle-tested knowledge from real projects. No fluff.
                 </p>
                 <div class="mt-8 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
@@ -134,7 +134,7 @@
     <section class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div class="space-y-5 text-lg leading-relaxed text-neutral-300">
             <p>
-                Programming is not just my job — it's a passion. Over more than a decade I've worked on backend
+                Programming is not just my job - it's a passion. Over more than a decade I've worked on backend
                 systems, from small apps to larger projects that demand thoughtful architecture, efficient database
                 queries and a solid deployment process.
             </p>
@@ -175,7 +175,7 @@
             <div class="absolute inset-0 -z-10 hero-glow" aria-hidden="true"></div>
             <h2 class="text-2xl font-bold text-white sm:text-3xl">What is Oatllo?</h2>
             <p class="mx-auto mt-4 max-w-2xl text-neutral-300">
-                A blog and free courses for developers — practical articles and lessons on PHP, Laravel,
+                A blog and free courses for developers - practical articles and lessons on PHP, Laravel,
                 architecture, databases, DevOps and AI. No fluff, built around real-world projects.
             </p>
             <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
