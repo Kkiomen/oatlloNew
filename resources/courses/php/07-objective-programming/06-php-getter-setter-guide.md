@@ -1,7 +1,7 @@
 ---
 title: "Getters and Setters in PHP OOP"
 slug: php-getter-setter-guide
-seo_title: "PHP Getters and Setters Tutorial: Encapsulation Guide"
+seo_title: "PHP Getters and Setters: Examples and Best Practices"
 seo_description: "Getters and setters in PHP: how to protect object data, add validation, and write clean, fluent setters - beginner-friendly examples included."
 ---
 
@@ -20,12 +20,14 @@ You will use getters and setters in PHP whenever you want to:
 
 ---
 
-## Basics: what are getters and setters?
+## What are getters and setters in PHP?
 
 ### Definitions
 
 - **Getter:** a public method that returns a property value (e.g., `getName(): string`).
 - **Setter:** a public method that sets a property value (e.g., `setName(string $name): void`).
+
+**In practice:** the real reason to use a setter instead of a public property is validation - a setter is the single place where you can reject a bad value (a negative price, an invalid email) before it corrupts the object's state.
 
 Best practices in PHP OOP:
 
@@ -62,7 +64,7 @@ Not always. Sometimes better to have:
 
 ---
 
-## PHP Code Examples
+## PHP getters and setters examples
 
 ### Example 1: Simple class with validation in setters
 
@@ -289,10 +291,20 @@ class DataBag
 
 ---
 
-## Mini Quiz
+## FAQ
 
-1. Should getters have side effects? ➡️ No.
-2. Preferred method name for boolean $active? ➡️ isActive().
-3. Which is better: setBalance or deposit/withdraw? ➡️ deposit/withdraw.
-4. PHP 8.1 feature for write-once properties? ➡️ readonly.
-5. Risk of using __get/__set? ➡️ Lose type safety, harder to test/debug.
+### What are getters and setters in PHP?
+
+A getter is a method that returns a private property's value (`getName()`), and a setter is a method that changes it (`setName($name)`), usually after validating the new value. Together they give controlled access to an object's data instead of exposing it directly.
+
+### Why use getters and setters instead of public properties?
+
+They let you validate input and keep invalid values out (a negative price, an empty name), hide how the class stores data, and change that implementation later without breaking the code that uses the class.
+
+### What is a fluent setter in PHP?
+
+A setter that returns `$this`, so calls can be chained: `$product->setName('Book')->setPrice(20)`. It reads cleanly when you configure an object in several steps.
+
+### Do all properties need a setter in PHP?
+
+No. Use a getter alone for read-only values, a `readonly` property for write-once data, or a domain method (`deposit()`, `withdraw()`) instead of a generic setter when real business rules apply.

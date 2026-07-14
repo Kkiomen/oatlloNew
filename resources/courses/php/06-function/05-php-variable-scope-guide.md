@@ -21,7 +21,7 @@ In practice, scope determines whether a variable is accessible:
 
 ---
 
-## Basics: what is variable scope in PHP?
+## What is variable scope in PHP?
 
 ### Main types of scope
 
@@ -259,7 +259,7 @@ for ($i = 0; $i < 3; $i++) {
 
 ---
 
-## Practical Examples
+## PHP variable scope examples
 
 ### Global vs local
 
@@ -391,57 +391,22 @@ print_r($gross); // [123, 61.5, 246]
 
 ---
 
-## Mini Quiz
-
-1. What does this print?
-
-```php
-<?php
-$z = 5;
-function f() { echo isset($z) ? 'yes' : 'no'; }
-f();
-```
-
-➡️ no
-
-1. How to access global `$x` inside a function? ➡️ `global $x;` or `$GLOBALS['x']`
-2. What does `static $c = 0;` inside a function do? ➡️ Remembers value between calls.
-3. How to capture a variable by reference in a closure? ➡️ `use (&$x)`
-4. Arrow functions capture variables…? ➡️ Automatically by value.
-5. What’s wrong with this?
-
-```php
-function g() {
-    static $now = time();
-}
-```
-
-➡️ Invalid – cannot use runtime expressions for static initialization.
-
-1. Output?
-
-```php
-$mode = 'dev';
-$log = function () use ($mode) { echo $mode; };
-$mode = 'prod';
-$log();
-```
-
-➡️ dev
-
-1. Output?
-
-```php
-$fs = [];
-for ($i = 0; $i < 3; $i++) {
-    $copy = $i;
-    $fs[] = function () use ($copy) { echo $copy; };
-}
-foreach ($fs as $f) $f();
-```
-
-➡️ 012
-
----
-
 Now you know the rules of **variable scope in PHP**. Practice with globals, statics, and closures to write cleaner and safer code.
+
+## FAQ
+
+### How do you access a global variable inside a PHP function?
+
+By default a function cannot see global variables. Import one with `global $x;`, or use `$GLOBALS['x']`. The cleaner approach is to pass the value in as a parameter instead of reaching for a global.
+
+### What is a static variable in a PHP function?
+
+A `static` variable is initialized once and keeps its value between calls to that same function - handy for counters or a simple cache. It must be initialized with a constant value, not a function call.
+
+### Do if, for, and foreach create a new scope in PHP?
+
+No. Only functions, methods, and classes create a new variable scope. Blocks like `if`, `for`, `foreach`, and `while` share the surrounding scope.
+
+### What is the difference between capturing by value and by reference in a closure?
+
+`use ($x)` copies the value at the moment the closure is created, so later changes to `$x` are not seen inside it. `use (&$x)` links to the original variable, so changes are visible both ways.

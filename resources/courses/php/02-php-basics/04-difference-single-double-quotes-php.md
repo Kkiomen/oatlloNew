@@ -1,11 +1,11 @@
 ---
 title: "Difference Between Single Quotes and Double Quotes in PHP"
 slug: difference-single-double-quotes-php
-seo_title: "PHP Quotes: Single vs Double Quotes Complete Guide"
+seo_title: "PHP Single vs Double Quotes: What's the Difference?"
 seo_description: "Single vs double quotes in PHP: the real difference, when variables get interpolated, escape sequences, and which to use - with side-by-side examples."
 ---
 
-## Basic Explanation
+## Single vs double quotes in PHP: the basics
 
 In PHP, text is stored in the **string** type. You can define strings using:
 
@@ -18,6 +18,8 @@ Both create a string, but PHP treats their contents differently:
 - With single quotes, the text is treated almost literally (no interpolation and no most escape sequences).
 
 Understanding when to use ' ' and when to use " " increases code readability and prevents bugs.
+
+**A common gotcha:** if you print a string and see the literal `$name` instead of its value, you used single quotes. Only double quotes (and heredoc) replace variables with their values.
 
 ---
 
@@ -45,7 +47,7 @@ Understanding when to use ' ' and when to use " " increases code readability and
 
 ---
 
-## PHP Code Examples
+## Single vs double quotes examples
 
 ### 1) Interpolation vs literal text
 
@@ -211,49 +213,22 @@ echo $nowdoc . "\n"; // Output contains: Hello, $name!
 
 ---
 
-## Mini Quiz
+You now have solid foundations for working with strings in PHP. Choose the appropriate quotes depending on whether you need interpolation and escape sequences or literal text - it keeps your code readable, secure, and maintainable.
 
-1. What does this output?
+## FAQ
 
-```php
-$name = 'Ola';
-echo 'Hello, $name!';
-```
+### What is the difference between single and double quotes in PHP?
 
-➡️ `Hello, $name!`
+Double quotes interpolate variables (`"Hello $name"` becomes the value) and process escape sequences like `\n` and `\t`. Single quotes are almost literal - only `\\` and `\'` are special, and `$name` stays as plain text.
 
-1. What does this output?
+### Do variables work inside single quotes in PHP?
 
-```php
-$name = 'Ola';
-echo "Hello, $name!";
-```
+No. Single-quoted strings do not replace variables. To insert a variable, use double quotes (`"Hello $name"`) or concatenation (`'Hello ' . $name`).
 
-➡️ `Hello, Ola!`
+### Which is faster, single or double quotes in PHP?
 
-1. Which is correct for an array key?
+The speed difference is negligible in modern PHP, so choose for readability: single quotes for literal text, double quotes when you need interpolation or escape sequences.
 
-- A) `echo "User: $user['name']";`
-- B) `echo "User: {$user['name']}";`
-- C) `echo "User: $user[name]";` ➡️ B
+### How do you put a variable inside a string in PHP?
 
-1. True/False: In single quotes, `\n` creates a new line. ➡️ False
-2. What must you escape in double quotes to display `$` and `"`? ➡️ `\$` and `\"`
-3. What does this output?
-
-```php
-echo "A\tB\nC";
-```
-
-➡️ A, tab, B, newline, C
-
-1. Which is safer and clearer for object properties?
-
-- A) `"Name: $user->name"`
-- B) `"Name: {$user->name}"` ➡️ B
-
-1. How to correctly display Windows path C:\new\file.txt in double quotes? ➡️ "C:\new\file.txt"
-
----
-
-You now have solid foundations for working with strings in PHP. In upcoming tasks, choose the appropriate quotes depending on whether you need interpolation and escape sequences or literal text. This ensures your code remains readable, secure, and maintainable.
+Use double quotes and write the variable directly: `"Hi $name"`. For an array key or object property, wrap it in braces: `"{$user['name']}"` or `"{$obj->prop}"`.
