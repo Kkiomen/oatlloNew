@@ -12,6 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Kanonikalizacja hosta (www/http -> https://oatllo.com) jako 301.
+        // Prepend = uruchamia się przed resztą, zanim cokolwiek się wyrenderuje.
+        $middleware->prepend(\App\Http\Middleware\CanonicalDomain::class);
+
         $middleware->alias([
             'article.token' => \App\Http\Middleware\VerifyArticleApiToken::class,
         ]);

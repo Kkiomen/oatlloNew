@@ -56,6 +56,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Canonical Host
+    |--------------------------------------------------------------------------
+    |
+    | Jedyny poprawny host (bez www), na który CanonicalDomain middleware
+    | przekierowuje 301 wszystkie warianty (www / http). Bez tego Google
+    | indeksuje te same strony pod kilkoma hostami i dzieli sygnały rankingowe.
+    | Egzekwowane tylko w produkcji, więc localhost/Herd zostaje nietknięty.
+    |
+    */
+
+    'canonical_host' => env('CANONICAL_HOST', 'oatllo.com'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |
