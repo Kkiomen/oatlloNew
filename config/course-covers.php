@@ -93,11 +93,9 @@ return [
             'accent'       => '#34d399', // PHP: zielony (życzenie) – hex też zielony, by okładka i strona były spójne
             'accent_color' => 'emerald',
             'label'        => 'PHP',
-            // "php" w elipsie – motyw logo PHP.
-            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5">'
-                . '<ellipse cx="50" cy="50" rx="46" ry="27"/>'
-                . '<text x="50" y="61" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-weight="700" font-size="31" fill="currentColor" stroke="none">php</text>'
-                . '</g>',
+            // "php" w elipsie – motyw logo PHP (oficjalny styl: italic serif w owalu).
+            'logo'     => '<ellipse cx="50" cy="50" rx="47" ry="25.5" fill="none" stroke="currentColor" stroke-width="3.5"/>'
+                . '<text x="50" y="63" text-anchor="middle" font-family="Georgia, &quot;Times New Roman&quot;, serif" font-style="italic" font-weight="700" font-size="37" fill="currentColor">php</text>',
         ],
 
         'node' => [
