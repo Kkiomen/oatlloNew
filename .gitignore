@@ -25,3 +25,7 @@ yarn-error.log
 # Generowane mapy strony
 /public/sitemap.xml
 /public/sitemap-index.xml
+
+# Wklejane zrzuty ekranu / lokalne obrazki robocze
+/img.png
+/img_1.png
