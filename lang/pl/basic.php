@@ -34,6 +34,7 @@ return [
     'tags' => 'Tagi',
     'lessons_from_courses' => 'Lekcje z kursów',
     'articles' => 'Artykuły',
+    'page' => 'Strona',
 
 
 ];

@@ -593,7 +593,7 @@ use Illuminate\Support\Str;
     "name": "Oatllo",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://oatllo.com/assets/images/logo-512.png"
+      "url": "https://oatllo.com/assets/images/logo-512.jpg"
     }
   },
   "mainEntityOfPage": "{{ $article->getRoute() }}",

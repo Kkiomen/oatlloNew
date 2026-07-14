@@ -34,5 +34,6 @@ return [
     'tags' => 'Tagi',
     'lessons_from_courses' => 'Lessons from courses',
     'articles' => 'Articles',
+    'page' => 'Page',
 
 ];

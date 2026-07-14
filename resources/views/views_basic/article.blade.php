@@ -11,19 +11,36 @@
     $categorySlug = optional($article->category)->slug ?: ($categoryName ? Str::slug($categoryName) : null);
     $sectionName  = $categoryName ?: 'Programming';
     $htmlLang     = env('APP_LANG_HTML');
+
+    // Tytuł z marką (bez dublowania, jeśli już zawiera "Oatllo").
+    $fullTitle = Str::contains(Str::lower($seoTitle), 'oatllo') ? $seoTitle : $seoTitle . ' | Oatllo';
+
+    // wordCount do danych strukturalnych (liczony z realnych bloków treści).
+    $wordCount = 0;
+    foreach ($article->getDisplayContents() as $c) {
+        if (($c['type'] ?? '') === 'text') {
+            $wordCount += str_word_count(strip_tags($c['content'] ?? ''));
+        }
+    }
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $htmlLang }}" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="robots" content="index, follow">
-    <title>{{ $seoTitle }}</title>
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <title>{{ $fullTitle }}</title>
     <meta name="description" content="{{ $seoDescription }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
     <link rel="canonical" href="{{ $article->getRoute() }}" />
     <link rel="alternate" hreflang="{{ $htmlLang }}" href="{{ $article->getRoute() }}">
+    {{-- Preload obrazu bohatera (LCP) – szybszy Largest Contentful Paint. --}}
+    <link rel="preload" as="image" href="{{ $article->image }}" fetchpriority="high">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="alternate" type="application/rss+xml" title="Oatllo RSS Feed" href="{{ route('feed') }}" />
-    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/jpeg" href="{{ asset('assets/images/logo-512.jpg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/logo-512.jpg') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
@@ -267,7 +284,7 @@
     <!-- Hero image -->
     <figure class="mx-auto mt-10 max-w-5xl px-4 sm:px-6 lg:px-8" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
         <div class="overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
-            <img src="{{ $article->image }}" alt="{{ $imgAlt }}" class="h-auto max-h-[28rem] w-full object-cover" loading="eager" />
+            <img src="{{ $article->image }}" alt="{{ $imgAlt }}" width="1200" height="630" class="h-auto max-h-[28rem] w-full object-cover" loading="eager" fetchpriority="high" />
         </div>
         <meta itemprop="url" content="{{ $article->image }}" />
         <meta itemprop="width" content="1200" />
@@ -459,15 +476,33 @@
   "@type": "Article",
   "headline": {!! json_encode($article->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
   "description": {!! json_encode($article->short_description, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
-  "image": "{{ $article->image }}",
+  "image": { "@type": "ImageObject", "url": "{{ $article->image }}", "width": 1200, "height": 630 },
   "inLanguage": "{{ $article->language ?? $htmlLang }}",
-  "author": { "@type": "Person", "name": "Jakub Owsianka", "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/" },
+  "wordCount": {{ $wordCount }},
+  "timeRequired": "PT{{ $article->getTimeRead() }}M",
+  "author": { "@type": "Person", "name": "Jakub Owsianka", "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/", "sameAs": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/" },
   "datePublished": "{{ $article->getPublishedDate()->format('Y-m-d\TH:i:sP') }}",
   "dateModified": "{{ $article->updated_at->format('Y-m-d\TH:i:sP') }}",
-  "publisher": { "@type": "Organization", "name": "Oatllo", "logo": { "@type": "ImageObject", "url": "{{ asset('assets/images/logo-512.png') }}" } },
+  "publisher": { "@type": "Organization", "name": "Oatllo", "logo": { "@type": "ImageObject", "url": "{{ asset('assets/images/logo-512.jpg') }}" } },
   "mainEntityOfPage": "{{ $article->getRoute() }}",
   "articleSection": {!! json_encode($sectionName, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}@if(!$article->tags->isEmpty()),
   "keywords": {!! json_encode($article->tags->pluck('name')->implode(', '), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}@endif
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": {!! json_encode(__('basic.home'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}, "item": "{{ route('index') }}" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "{{ route('blog') }}" }@if($categorySlug),
+    { "@type": "ListItem", "position": 3, "name": {!! json_encode($categoryName, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}, "item": "{{ route('blog.list.category', ['slug' => $categorySlug]) }}" },
+    { "@type": "ListItem", "position": 4, "name": {!! json_encode($article->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}, "item": "{{ $article->getRoute() }}" }
+    @else,
+    { "@type": "ListItem", "position": 3, "name": {!! json_encode($article->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}, "item": "{{ $article->getRoute() }}" }
+    @endif
+  ]
 }
 </script>
 

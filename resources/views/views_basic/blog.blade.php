@@ -1,20 +1,29 @@
 @php
     use Illuminate\Support\Str;
 
+    $currentPage = $articles->currentPage();
+    $pageSuffix  = $currentPage > 1 ? ' – ' . __('basic.page') . ' ' . $currentPage : '';
+
     $pageTitle = $searchQuery
         ? ($searchQuery . ' – ' . __('basic.header_blog') . ' | Oatllo')
         : ($currentCategory
-            ? ($currentCategory . ' – ' . __('basic.header_blog') . ' | Oatllo')
-            : __('basic.meta_title_blog'));
+            ? ($currentCategory . ' – ' . __('basic.header_blog') . ' | Oatllo' . $pageSuffix)
+            : __('basic.meta_title_blog') . $pageSuffix);
 
+    // Unikalny opis meta dla każdej strony (kategoria/paginacja) – bez duplikatów w indeksie.
     $pageDescription = $searchQuery
         ? 'Search results for "' . $searchQuery . '" on the Oatllo programming blog.'
-        : __('basic.meta_description_blog');
+        : ($currentCategory
+            ? ($currentCategory . ' – articles, tutorials and guides for developers on the Oatllo programming blog.' . ($currentPage > 1 ? ' ' . __('basic.page') . ' ' . $currentPage . '.' : ''))
+            : __('basic.meta_description_blog') . ($currentPage > 1 ? ' ' . __('basic.page') . ' ' . $currentPage . '.' : ''));
 
     // Duplikat "featured" pokazujemy tylko na 1. stronie listy głównej (bez szukania/kategorii).
     $showFeatured = !$searchQuery && !$currentCategory && $articles->onFirstPage() && $articles->count() > 0;
     $featuredArticle = $showFeatured ? $articles->first() : null;
-    $canonical = url()->current();
+
+    // Self-canonical: strony paginacji wskazują na SIEBIE (z ?page=N), a nie na stronę 1.
+    // Pomijamy pozostałe parametry (np. ?q=), by nie tworzyć śmieciowych kanonikali.
+    $canonical = $currentPage > 1 ? url()->current() . '?page=' . $currentPage : url()->current();
 @endphp
 <!DOCTYPE html>
 <html lang="{{ env('APP_LANG_HTML') }}" class="scroll-smooth">
@@ -34,7 +43,9 @@
 
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
 
-    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/jpeg" href="{{ asset('assets/images/logo-512.jpg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/logo-512.jpg') }}">
     <link rel="canonical" href="{{ $canonical }}">
 
     {{-- Paginacja: podpowiedzi prev/next dla robotów --}}
@@ -50,13 +61,15 @@
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:url" content="{{ $canonical }}">
     <meta property="og:site_name" content="Oatllo">
-    <meta property="og:image" content="{{ asset('assets/images/logo-512.png') }}">
+    <meta property="og:image" content="{{ asset('assets/images/logo-512.jpg') }}">
+    <meta property="og:image:alt" content="Oatllo">
     <meta property="og:locale" content="{{ env('APP_LANG_HTML') }}">
+    <meta name="theme-color" content="#0a0a0a">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $pageDescription }}">
-    <meta name="twitter:image" content="{{ asset('assets/images/logo-512.png') }}">
+    <meta name="twitter:image" content="{{ asset('assets/images/logo-512.jpg') }}">
     <meta name="twitter:site" content="@Oatllo">
 
     <link rel="alternate" type="application/rss+xml" title="Oatllo RSS Feed" href="{{ route('feed') }}" />
@@ -407,7 +420,7 @@
     "@type": "Organization",
     "name": "Oatllo",
     "url": "{{ route('index') }}",
-    "logo": { "@type": "ImageObject", "url": "{{ asset('assets/images/logo-512.png') }}" }
+    "logo": { "@type": "ImageObject", "url": "{{ asset('assets/images/logo-512.jpg') }}" }
   },
   "blogPost": [
     @foreach($articles as $index => $article)

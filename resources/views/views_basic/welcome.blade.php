@@ -11,7 +11,9 @@
 
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
 
-    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/jpeg" href="{{ asset('assets/images/logo-512.jpg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/logo-512.jpg') }}">
     <link rel="canonical" href="{{ route('index') }}">
     <meta name="keywords" content="{{ __('basic.meta_keywords') }}">
 
@@ -20,7 +22,18 @@
     <meta property="og:url" content="{{ route('index') }}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Oatllo">
-    <meta property="og:image" content="{{ asset('assets/images/logo-512.png') }}">
+    <meta property="og:locale" content="{{ env('APP_LANG_HTML') }}">
+    <meta property="og:image" content="{{ asset('assets/images/logo-512.jpg') }}">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="Oatllo">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ __('basic.meta_title') }}">
+    <meta name="twitter:description" content="{{ __('basic.meta_description') }}">
+    <meta name="twitter:image" content="{{ asset('assets/images/logo-512.jpg') }}">
+    <meta name="twitter:site" content="@Oatllo">
+    <meta name="theme-color" content="#0a0a0a">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -444,6 +457,22 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Oatllo",
+  "url": "{{ route('index') }}",
+  "inLanguage": "{{ env('APP_LANG_HTML') }}",
+  "publisher": { "@type": "Organization", "name": "Oatllo", "url": "{{ route('index') }}" },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": { "@type": "EntryPoint", "urlTemplate": "{{ route('blog') }}?q={search_term_string}" },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
     { "@type": "Question", "name": "What kind of content will I find here?", "acceptedAnswer": { "@type": "Answer", "text": "In-depth blog posts, practical tutorials, code snippets and cheat sheets - all focused on modern PHP, Laravel, JavaScript, architecture and backend development." } },
@@ -461,7 +490,7 @@
   "@type": "Organization",
   "name": "Oatllo",
   "url": "{{ route('index') }}",
-  "logo": "{{ asset('assets/images/logo-512.png') }}",
+  "logo": "{{ asset('assets/images/logo-512.jpg') }}",
   "sameAs": [ "https://www.linkedin.com/in/jakub-owsianka-446bb5213/" ],
   "founder": { "@type": "Person", "name": "Jakub Owsianka", "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/" },
   "description": "Educational platform with programming courses and technological development"
