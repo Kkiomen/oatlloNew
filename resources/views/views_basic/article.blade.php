@@ -136,7 +136,7 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/github.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/github.css"></noscript>
-    <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}"></noscript>
 
 </head>
 <body class="bg-neutral-950 text-neutral-100 antialiased">

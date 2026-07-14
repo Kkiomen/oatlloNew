@@ -45,7 +45,7 @@
     <meta name="twitter:image" content="{{ $currentImage }}">
     <meta name="twitter:site" content="@Oatllo">
 
-    <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}"></noscript>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>[x-cloak]{display:none !important;}</style>
