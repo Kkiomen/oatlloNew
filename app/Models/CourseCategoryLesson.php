@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Article\ContentSanitizer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CourseCategory;
@@ -32,6 +33,37 @@ class CourseCategoryLesson extends Model
     public function category()
     {
         return $this->belongsTo(CourseCategory::class, 'course_category_id');
+    }
+
+    /**
+     * Treść lekcji (content_html) oczyszczona tuż przed wyświetleniem
+     * (myślniki em/en -> dywiz, słownik anti-AI).
+     */
+    public function getDisplayContentHtml(): string
+    {
+        if (empty($this->content_html)) {
+            return '';
+        }
+
+        return app(ContentSanitizer::class)->sanitize((string) $this->content_html);
+    }
+
+    /**
+     * Fallbackowe bloki treści (contents) oczyszczone przed wyświetleniem.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    public function getDisplayContents(): array
+    {
+        $sanitizer = app(ContentSanitizer::class);
+
+        return array_map(function ($content) use ($sanitizer) {
+            if (($content['type'] ?? null) === 'text' && !empty($content['content'])) {
+                $content['content'] = $sanitizer->sanitize((string) $content['content']);
+            }
+
+            return $content;
+        }, $this->contents ?? []);
     }
 
     public function getRoute(bool $absolute = true): string

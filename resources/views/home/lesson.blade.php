@@ -417,9 +417,9 @@
                     </style>
 
                     @if(!empty($article->content_html))
-                        {!! $article->content_html !!}
+                        {!! $article->getDisplayContentHtml() !!}
                     @else
-                        @foreach($article->contents as $content)
+                        @foreach($article->getDisplayContents() as $content)
                             @if($content['type'] == 'text' && !empty($content['content']))
                                 {!! $content['content'] !!}
                             @endif
