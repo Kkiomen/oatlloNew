@@ -43,6 +43,11 @@ class SitemapService
         $tags = Tag::where('language', env('APP_LOCALE'))->get();
         foreach ($tags as $tag){
             $slug = Str::slug($tag->name);
+            // Tag o pustym slugu (nazwa nie do zslugowania) rozwaliłby route('blogTag')
+            // wyjątkiem UrlGenerationException i przerwał całą generację sitemapy.
+            if ($slug === '') {
+                continue;
+            }
             $tagSlugs[$slug] = true;
             $sitemap->addItem(
                 loc: route('blogTag', ['tag' => $slug], false),
@@ -55,7 +60,7 @@ class SitemapService
         // Tagi istniejące wyłącznie w plikach .md.
         foreach ($mdArticles as $mdArticle){
             foreach ($mdArticle->tags as $mdTag){
-                if (isset($tagSlugs[$mdTag->slug])) {
+                if (empty($mdTag->slug) || isset($tagSlugs[$mdTag->slug])) {
                     continue;
                 }
                 $tagSlugs[$mdTag->slug] = true;
@@ -73,6 +78,9 @@ class SitemapService
         $categories = static::prepareCategoriesBlog($mdArticles);
         if($categories->count() > 0){
             foreach($categories as $category){
+                if (empty($category->slug)) {
+                    continue;
+                }
                 $sitemap->addItem(route('blog.list.category', ['slug' => $category->slug], false), '0.7', 'weekly', 'Today');
             }
         }
