@@ -131,7 +131,11 @@ class HomeController extends Controller
                 $tags->put($slug, (object) ['name' => $t->name, 'slug' => $slug]);
             }
         }
-        $tags = $tags->values()->sortBy(fn ($t) => mb_strtolower($t->name))->values();
+        // Pomijamy tagi bez poprawnego sluga (route('blogTag') wymaga niepustego).
+        $tags = $tags->values()
+            ->filter(fn ($t) => !empty($t->slug))
+            ->sortBy(fn ($t) => mb_strtolower($t->name))
+            ->values();
 
         // Artykuły (baza + .md), scalone po slug, alfabetycznie.
         $dbArticles = Article::where('is_published', true)->where('type', 'normal')

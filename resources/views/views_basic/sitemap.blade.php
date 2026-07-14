@@ -137,7 +137,9 @@
                 <h2 class="mb-5 flex items-center gap-3 text-2xl font-bold text-white">{!! \App\Support\Icons::svg('tags', 'text-rose-400') !!} {{ __('basic.tags') }}</h2>
                 <div class="flex flex-wrap gap-2">
                     @foreach($tags as $tag)
-                        <a href="{{ route('blogTag', ['tag' => $tag->slug]) }}" class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-neutral-300 hover:border-rose-400/40 hover:text-white transition-colors duration-200">#{{ $tag->name }}</a>
+                        @if(!empty($tag->slug))
+                            <a href="{{ route('blogTag', ['tag' => $tag->slug]) }}" class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-neutral-300 hover:border-rose-400/40 hover:text-white transition-colors duration-200">#{{ $tag->name }}</a>
+                        @endif
                     @endforeach
                 </div>
             </section>
