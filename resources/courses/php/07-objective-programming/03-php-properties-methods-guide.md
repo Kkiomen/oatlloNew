@@ -1,7 +1,7 @@
 ---
 title: "Properties and Methods in PHP Object-Oriented Programming"
 slug: php-properties-methods-guide
-seo_title: "PHP Properties and Methods Tutorial: OOP Fundamentals"
+seo_title: "PHP Object Properties and Methods Explained (OOP)"
 seo_description: "Object properties and methods in PHP explained for beginners: instance vs static, readonly, visibility, and method chaining - with practical examples."
 ---
 
@@ -9,7 +9,7 @@ In this lesson, you’ll learn the fundamentals of Object-Oriented Programming (
 
 ---
 
-## What are Properties and Methods?
+## What are object properties and methods in PHP?
 
 ### Properties
 
@@ -36,6 +36,8 @@ Access modifiers enable **encapsulation** — hiding implementation details and 
 - `$this` – refers to the current object (inside instance methods).
 - `->` – operator for accessing instance properties/methods.
 - `::` – operator for accessing static properties/methods and class constants.
+
+**A common gotcha:** beginners mix up `->` and `::`. Use `->` on an **object** (`$product->getPrice()`) and `::` on the **class** for static members and constants (`Product::$count`). Seeing "using $this when not in object context" usually means you called an instance method statically.
 
 ---
 
@@ -101,7 +103,7 @@ Access modifiers enable **encapsulation** — hiding implementation details and 
 
 ---
 
-## PHP Code Examples
+## PHP object properties and methods: examples
 
 ### 1) Simple class with properties and methods
 
@@ -322,14 +324,22 @@ echo $bag->title;
 
 ---
 
-## Mini Quiz
+Now you know how to use **object properties and methods in PHP OOP** to build predictable, safe, and maintainable code.
 
-1. Which operator accesses instance methods? ➡️ `->`
-2. What does `private` mean? ➡️ Visible only inside the same class.
-3. What happens when you access an uninitialized typed property? ➡️ Error.
-4. When to use `readonly`? ➡️ When property should be set once and immutable.
-5. How to access static property inside class? ➡️ `self::$property`
+## FAQ
 
----
+### What is the difference between properties and methods in PHP?
 
-Now you know how to use **properties and methods in PHP OOP** to build predictable, safe, and maintainable code.
+A property is a variable that stores an object's **state** (like a product's name or price). A method is a function that defines an object's **behavior** (like calculating a total). Properties hold data; methods act on it.
+
+### What is the difference between -> and :: in PHP?
+
+Use `->` to access an object's instance properties and methods (`$product->getPrice()`). Use `::` to access static properties, static methods, and class constants (`Product::$count`, `Product::fromArray(...)`).
+
+### What are static properties in PHP?
+
+A static property is shared by all instances of a class instead of being stored per object. You read or set it with `ClassName::$property`, or `self::$property` inside the class - handy for things like a shared counter.
+
+### What are readonly properties in PHP?
+
+A `readonly` property (PHP 8.1+) can be assigned once - usually in the constructor - and then never changed. It's ideal for immutable values such as an `id`.

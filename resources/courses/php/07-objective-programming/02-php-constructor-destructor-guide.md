@@ -11,7 +11,7 @@ In this lesson you will learn the basics, see practical PHP code examples, disco
 
 ---
 
-## Basics: what is a constructor and destructor?
+## What are constructors and destructors in PHP?
 
 ### Constructor: `__construct`
 
@@ -38,7 +38,7 @@ In this lesson you will learn the basics, see practical PHP code examples, disco
 
 ---
 
-## PHP Code Examples
+## PHP constructor and destructor examples
 
 ### Simplest constructor
 
@@ -284,15 +284,22 @@ try {
 
 ---
 
-## Mini Quiz
+Now you know how constructors and destructors work in PHP, and how to use `__construct` and `__destruct` cleanly in your classes.
 
-1. What is the constructor method in PHP and when is it called? ➡️ `__construct`, called automatically after creating an object.
-2. Can you have multiple constructors with different signatures in PHP? ➡️ No. Use optional parameters or static factory methods.
-3. What is constructor property promotion and since which PHP version? ➡️ Short syntax for defining/assigning properties in the constructor, since PHP 8.
-4. Name two situations when the destructor runs. ➡️ When an object loses its last reference; at the end of the script.
-5. Should you throw exceptions in destructors? Why/why not? ➡️ No, it can cause fatal errors. Destructors should only do safe cleanup.
-6. How to call a parent constructor in a subclass? ➡️ `parent::__construct(...)`
-7. What are named constructors and why use them? ➡️ Static factory methods for alternative object creation.
-8. Why avoid heavy logic in constructors? ➡️ It complicates testing and slows down object creation.
-9. What happens if you return a value from `__construct`? ➡️ Ignored. Constructors cannot return values.
-10. Give an example use of a destructor. ➡️ Closing files, freeing resources, deleting temporary files.
+## FAQ
+
+### What is the difference between a constructor and a destructor in PHP?
+
+The constructor (`__construct`) runs when you create an object with `new` and sets it up - assigning properties and injecting dependencies. The destructor (`__destruct`) runs when the object is destroyed and cleans up, such as closing files or connections.
+
+### When is the destructor called in PHP?
+
+When the object loses its last reference, when the script finishes, or when the garbage collector frees it. Because the exact timing isn't guaranteed, don't rely on a destructor for critical tasks - use `try/finally` instead.
+
+### Can a PHP class have more than one constructor?
+
+No. A class has a single `__construct`. For alternative ways to build an object, use optional parameters or static factory methods (named constructors) like `Price::fromPLN(...)`.
+
+### Can a PHP constructor return a value?
+
+No. `__construct` cannot return a value - any `return` is ignored. Its only job is to initialize the newly created object.

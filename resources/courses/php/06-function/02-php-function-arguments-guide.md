@@ -1,7 +1,7 @@
 ---
 title: "Function Arguments in PHP: Optional Parameters and Default Values"
 slug: php-function-arguments-guide
-seo_title: "PHP Function Arguments: Optional Parameters and Defaults"
+seo_title: "PHP Optional Parameters and Default Values in Functions"
 seo_description: "Optional parameters, default values, and named arguments in PHP - explained simply with clear examples. Write flexible functions the right way."
 ---
 
@@ -19,7 +19,7 @@ This is a fundamental PHP skill used everywhere — from simple scripts to web a
 
 ---
 
-## Basic Explanation
+## What are optional parameters in PHP?
 
 - An **optional parameter** is a parameter with a **default value**. If you call the function without providing that argument, PHP uses the default.
 - A **required parameter** is one without a default — you must pass it.
@@ -30,9 +30,11 @@ Key rules:
 - Default value must be a constant expression (number, string, null, true/false, empty array, class constant, magic constant).
 - If using types, the default must match the type.
 
+**A common gotcha:** the mistake beginners hit most is putting a required parameter after an optional one - modern PHP rejects it. Always list required parameters first, then the optional ones.
+
 ---
 
-## PHP Code Examples
+## PHP optional parameters examples
 
 ### Simple function with an optional parameter
 
@@ -248,14 +250,22 @@ Alternative: redesign the API to avoid ambiguity.
 
 ---
 
-## Mini Quiz
-
-1. What happens if required param follows optional in PHP 8+? ➡️ Fatal error.
-2. Correct nullable definition? ➡️ `function f(?int $x = null)`
-3. Which default is valid? ➡️ `__DIR__`
-4. How to check if 2nd arg passed? ➡️ `func_num_args() >= 2`
-5. Output of greet() with default `"Guest"`? ➡️ Hello, Guest!
-
----
-
 Now you know how to use **optional parameters and default values** in PHP to design safe and flexible functions.
+
+## FAQ
+
+### How do you make a function parameter optional in PHP?
+
+Give the parameter a default value, like `function greet(string $name = 'Guest')`. If the caller omits that argument, PHP uses the default, so the parameter becomes optional.
+
+### Can a required parameter come after an optional one in PHP?
+
+No. Put required parameters first and optional ones after. A required parameter placed after an optional one is an error in modern PHP.
+
+### What is the difference between an omitted argument and passing null in PHP?
+
+Inside the function they usually look the same, because an omitted optional argument falls back to its default (often `null`). To tell them apart, check `func_num_args()`, or redesign the function so the distinction isn't needed.
+
+### What values can a PHP default parameter use?
+
+Only constant expressions: numbers, strings, booleans, `null`, arrays, class constants, and magic constants like `__DIR__`. Function calls (`time()`) and `new` objects are not allowed as defaults.
