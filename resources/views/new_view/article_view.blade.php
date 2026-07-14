@@ -258,7 +258,7 @@ use Illuminate\Support\Str;
 
     <!-- Hero image -->
     <figure class="relative mx-auto mt-10 overflow-hidden rounded-2xl shadow-lg" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-        <img src="{{ $article->image }}" alt="{{ !empty($article->view_content['basic_website_structure_image_img_alt']) ? $article->view_content['basic_website_structure_image_img_alt'] : $article->name }}" class="h-72 w-full object-cover" loading="lazy" />
+        <img decoding="async" src="{{ $article->image }}" alt="{{ !empty($article->view_content['basic_website_structure_image_img_alt']) ? $article->view_content['basic_website_structure_image_img_alt'] : $article->name }}" class="h-72 w-full object-cover" loading="lazy" />
         <meta itemprop="url" content="{{ $article->image }}" />
         <meta itemprop="width" content="1200" />
         <meta itemprop="height" content="630" />
@@ -290,7 +290,7 @@ use Illuminate\Support\Str;
 
         @if($content['type'] == 'image' && !empty($content['content']))
             <figure class="mt-16">
-                <img class="rounded-xl bg-gray-50 object-cover" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? '' }}">
+                <img decoding="async" class="rounded-xl bg-gray-50 object-cover" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? '' }}">
             </figure>
         @endif
 
@@ -336,7 +336,7 @@ use Illuminate\Support\Str;
 
     <!-- Author bio snippet -->
     <div class="mt-14 flex items-start gap-4 border-t border-neutral-800 pt-8" itemscope itemtype="https://schema.org/Person">
-        <img src="{{ asset('/assets/images/owsianka_jakub.png') }}" alt="Jakub Owsianka" class="h-14 w-14 rounded-full object-cover" itemprop="image" />
+        <img decoding="async" src="{{ asset('/assets/images/owsianka_jakub.png') }}" alt="Jakub Owsianka" class="h-14 w-14 rounded-full object-cover" itemprop="image" />
         <div>
             <h3 class="text-lg font-semibold" itemprop="name">Jakub Owsianka</h3>
             <p class="text-neutral-400 text-sm" itemprop="description">Senior PHP developer &amp; open‑source enthusiast. I write about modern backend, DevOps and performance optimisation.</p>
@@ -368,7 +368,7 @@ use Illuminate\Support\Str;
                 <article class="bg-neutral-900 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                     <a href="{{ $relatedArticle->getRoute() }}" class="block">
                         <div class="relative overflow-hidden">
-                            <img src="{{ $relatedArticle->image }}" alt="{{ $relatedArticle->name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                            <img decoding="async" src="{{ $relatedArticle->image }}" alt="{{ $relatedArticle->name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </div>
                         <div class="p-4">
@@ -433,7 +433,7 @@ use Illuminate\Support\Str;
                 <article class="bg-neutral-900 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                     <a href="{{ $categoryArticle->getRoute() }}" class="block">
                         @if($categoryArticle->image)
-                            <img src="{{ $categoryArticle->image }}" alt="{{ $categoryArticle->name }}" class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
+                            <img decoding="async" src="{{ $categoryArticle->image }}" alt="{{ $categoryArticle->name }}" class="w-full h-32 object-cover group-hover:scale-110 transition-transform duration-300">
                         @else
                             <div class="w-full h-32 bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center">
                                 <i class="fa-solid fa-file-text text-white text-2xl"></i>
@@ -474,7 +474,7 @@ use Illuminate\Support\Str;
                     <a href="{{ $latestArticle->getRoute() }}" class="block">
                         @if($latestArticle->image)
                             <div class="relative overflow-hidden">
-                                <img src="{{ $latestArticle->image }}" alt="{{ $latestArticle->name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
+                                <img decoding="async" src="{{ $latestArticle->image }}" alt="{{ $latestArticle->name }}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 <div class="absolute top-3 left-3 bg-rose-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
                                     NEW

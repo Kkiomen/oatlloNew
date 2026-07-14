@@ -183,7 +183,7 @@
 
         <figure class="overflow-hidden rounded-3xl border border-white/10 shadow-2xl" itemprop="image">
             <div class="aspect-[16/10] w-full bg-neutral-800">
-                <img src="{{ $currentImage }}" alt="{{ $course->title_seo ?: $course->title_list }}" width="1200" height="750" class="h-full w-full object-cover" loading="eager" fetchpriority="high" />
+                <img decoding="async" src="{{ $currentImage }}" alt="{{ $course->title_seo ?: $course->title_list }}" width="1200" height="750" class="h-full w-full object-cover" loading="eager" fetchpriority="high" />
             </div>
         </figure>
     </div>

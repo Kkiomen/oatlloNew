@@ -146,7 +146,7 @@
                             $currentImage = str_contains($currentImage, 'http') ? $currentImage : asset($currentImage);
                         @endphp
 
-                        <img src="{{ $currentImage }}"/>
+                        <img decoding="async" src="{{ $currentImage }}"/>
                     </div>
 
                     <div class="mt-10 flex justify-end">

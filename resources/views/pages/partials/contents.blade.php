@@ -35,7 +35,7 @@
                                 <template x-if="section.content">
                                     <div class="relative mt-2 flex justify-center w-full rounded-lg border border-dashed border-gray-900/25 px-6 py-10 text-center">
                                         <!-- Image Preview -->
-                                        <img :src="section.content" class="max-w-full max-h-100 object-cover" >
+                                        <img decoding="async" :src="section.content" class="max-w-full max-h-100 object-cover" >
                                     </div>
                                 </template>
 
@@ -87,7 +87,7 @@
 
                                                     <div x-if="section.content" class="relative mt-2 flex justify-center w-full rounded-lg border border-dashed border-gray-900/25 px-6 py-10 text-center">
                                                         <!-- Image Preview -->
-                                                        <img :src="section.content" class="max-w-full max-h-100 object-cover" >
+                                                        <img decoding="async" :src="section.content" class="max-w-full max-h-100 object-cover" >
                                                     </div>
 
                                                     <div class="relative mt-2 w-full">
@@ -233,7 +233,7 @@
 {{--                    <div class="rounded-lg border-2 border-dashed border-gray-300 w-full text-center px-3" @click="addFullWidthSection">--}}
 {{--                        <div class="flex flex-col gap-3 py-3 hover:bg-gray-200 cursor-pointer">--}}
 {{--                            <div class="bg-black p-3 rounded-xl mx-auto my-4">--}}
-{{--                                <img src="{{ asset('assets/images/one-row.png') }}" class="w-10 h-10" />--}}
+{{--                                <img decoding="async" src="{{ asset('assets/images/one-row.png') }}" class="w-10 h-10" />--}}
 {{--                            </div>--}}
 {{--                            <div class="uppercase">--}}
 {{--                                <div class="text-sm">Typ</div>--}}
@@ -246,7 +246,7 @@
                     <div class="rounded-lg border-2 border-dashed border-gray-300 w-full text-center px-3" @click="addTwoColumnsSection">
                         <div class="flex flex-col gap-3 py-3 hover:bg-gray-200 cursor-pointer">
                             <div class="bg-black p-3 rounded-xl mx-auto my-4">
-                                <img src="{{ asset('assets/images/two-row.png') }}" class="w-10 h-10" />
+                                <img decoding="async" src="{{ asset('assets/images/two-row.png') }}" class="w-10 h-10" />
                             </div>
                             <div class="uppercase">
                                 <div class="text-sm">Typ</div>

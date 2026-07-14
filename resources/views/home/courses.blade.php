@@ -186,7 +186,7 @@
         <section class="mx-auto mb-16 max-w-6xl px-4 sm:px-6 lg:px-8">
             <a href="{{ $courseUrl($featuredCourse) }}" class="card-hover group grid overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 lg:grid-cols-2">
                 <div class="relative min-h-[16rem] overflow-hidden bg-neutral-800">
-                    <img src="{{ $courseImg($featuredCourse) }}" alt="{{ $featuredCourse->title_list ?: $featuredCourse->name }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="eager">
+                    <img decoding="async" src="{{ $courseImg($featuredCourse) }}" alt="{{ $featuredCourse->title_list ?: $featuredCourse->name }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="eager">
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/70 to-transparent lg:bg-gradient-to-r"></div>
                     <span class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-emerald-500/30">
                         <i class="fa-solid fa-star"></i> Featured
@@ -221,7 +221,7 @@
                 <article class="card-hover group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-900" itemscope itemprop="itemListElement" itemtype="https://schema.org/Course">
                     <a href="{{ $courseUrl($course) }}" class="relative block overflow-hidden" itemprop="url" aria-label="{{ $course->title_list ?: $course->name }}">
                         <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800">
-                            <img src="{{ $courseImg($course) }}" alt="{{ $course->title_list ?: $course->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" itemprop="image" loading="lazy" />
+                            <img decoding="async" src="{{ \App\Services\HomeService::responsiveImage($courseImg($course), 800) }}" alt="{{ $course->title_list ?: $course->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" itemprop="image" loading="lazy" />
                         </div>
                         <span class="absolute left-3 top-3 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-emerald-500/30">FREE</span>
                     </a>

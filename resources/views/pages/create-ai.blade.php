@@ -77,7 +77,7 @@
                                             <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
                                                 <template x-for="(image, index) in imagePreviews" :key="index">
                                                     <div class="flex flex-col items-center">
-                                                        <img :src="image" class="h-full no-select rounded-tl-xl rounded-tr-xl max-h-20 object-cover"/>
+                                                        <img decoding="async" :src="image" class="h-full no-select rounded-tl-xl rounded-tr-xl max-h-20 object-cover"/>
                                                         <div @click="removeImage(index)" class="bg-red-400 hover:bg-red-600 select-none cursor-pointer w-full text-center rounded-bl-xl rounded-br-xl py-1">
                                                             <i class="fa-solid text-white fa-trash"></i>
                                                         </div>
@@ -99,7 +99,7 @@
                                     </div>
                                 </div>
 
-{{--                                <img src="{{ asset('/assets/images/diagram_ai.svg') }}" class="w-full/50 mt-10 no-select"/>--}}
+{{--                                <img decoding="async" src="{{ asset('/assets/images/diagram_ai.svg') }}" class="w-full/50 mt-10 no-select"/>--}}
 
                             </div>
                         </div>

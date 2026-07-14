@@ -117,7 +117,7 @@
                                                   placeholder="Write your article text here..." onfocus="this.classList.add('border', 'border-gray-300', 'rounded-md', 'p-4')"
                                                   onblur="this.classList.remove('border', 'border-gray-300', 'rounded-md', 'p-4')">{{ $content->content }}</textarea>
                                     @elseif($content->type == 'image')
-                                        <img src="{{ $content->content }}" alt="Article Image" class="w-full h-auto mb-4 rounded-md">
+                                        <img decoding="async" src="{{ $content->content }}" alt="Article Image" class="w-full h-auto mb-4 rounded-md">
                                         <input type="text" name="contents[{{ $loop->index }}][content]" value="{{ $content->content }}"
                                                class="block w-full p-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm mt-2"
                                                placeholder="Paste the image URL here..." style="display: none;">

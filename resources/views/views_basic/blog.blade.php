@@ -239,7 +239,7 @@
         <section class="mx-auto mb-16 max-w-6xl px-4 sm:px-6 lg:px-8">
             <a href="{{ $featuredArticle->getRoute() }}" class="card-hover group grid overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 lg:grid-cols-2">
                 <div class="relative min-h-[16rem] overflow-hidden bg-neutral-800">
-                    <img src="{{ $featuredArticle->image }}" alt="{{ $featuredArticle->name }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                    <img decoding="async" src="{{ \App\Services\HomeService::responsiveImage($featuredArticle->image, 1000) }}" alt="{{ $featuredArticle->name }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/70 to-transparent lg:bg-gradient-to-r"></div>
                     <span class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-rose-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-rose-500/30">
                         <i class="fa-solid fa-star"></i> Featured
@@ -286,7 +286,7 @@
                 <article class="card-hover group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-900" itemscope itemprop="blogPost" itemtype="https://schema.org/BlogPosting">
                     <a href="{{ $article->getRoute() }}" class="relative block overflow-hidden" itemprop="url">
                         <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800">
-                            <img src="{{ $article->image }}" alt="{{ $article->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" itemprop="image" loading="lazy" />
+                            <img decoding="async" src="{{ \App\Services\HomeService::responsiveImage($article->image, 800) }}" alt="{{ $article->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" itemprop="image" loading="lazy" />
                         </div>
                         @if($article->getCategoryName())
                             <span class="absolute left-3 top-3 rounded-full bg-neutral-950/80 px-3 py-1 text-xs font-medium text-rose-300 backdrop-blur">{{ $article->getCategoryName() }}</span>

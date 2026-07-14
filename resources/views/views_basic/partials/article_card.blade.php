@@ -2,7 +2,7 @@
 <article class="card-hover group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-900">
     <a href="{{ $card->getRoute() }}" class="relative block overflow-hidden" aria-label="{{ $card->name }}">
         <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800">
-            <img src="{{ $card->image }}" alt="{{ $card->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+            <img src="{{ \App\Services\HomeService::responsiveImage($card->image, 800) }}" alt="{{ $card->name }}" width="800" height="450" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async">
         </div>
         @if($card->getCategoryName())
             <span class="absolute left-3 top-3 rounded-full bg-neutral-950/80 px-3 py-1 text-xs font-medium text-rose-300 backdrop-blur">{{ $card->getCategoryName() }}</span>

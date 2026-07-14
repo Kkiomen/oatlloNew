@@ -68,7 +68,7 @@
                                 <tbody class="divide-y divide-gray-200 bg-white">
                                 @foreach($posts as $post)
                                     <tr>
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"><img src="{{ $post->getUrl() }}" width="300" height="150" class="object-cover object-top"/></td>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"><img decoding="async" src="{{ $post->getUrl() }}" width="300" height="150" class="object-cover object-top"/></td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $post->url }}</td>
                                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                                             <form x-data @submit.prevent="confirmDelete($el)" action="{{ route('instagram_post.remove', ['post' => $post->id]) }}" method="POST"

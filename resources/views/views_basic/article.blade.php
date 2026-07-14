@@ -250,7 +250,7 @@
         <!-- Meta row -->
         <div class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 border-y border-white/5 py-5 text-sm">
             <div class="flex items-center gap-3">
-                <img src="{{ asset('/assets/images/owsianka_jakub.png') }}" alt="Jakub Owsianka" class="h-10 w-10 rounded-full object-cover ring-2 ring-white/10">
+                <img decoding="async" src="{{ asset('/assets/images/owsianka_jakub.png') }}" alt="Jakub Owsianka" class="h-10 w-10 rounded-full object-cover ring-2 ring-white/10">
                 <div class="leading-tight">
                     <div class="font-semibold text-white">Jakub Owsianka</div>
                     <div class="text-xs text-neutral-500">{{ __('basic.about_me_description') }}</div>
@@ -284,7 +284,7 @@
     <!-- Hero image -->
     <figure class="mx-auto mt-10 max-w-5xl px-4 sm:px-6 lg:px-8" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
         <div class="overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
-            <img src="{{ $article->image }}" alt="{{ $imgAlt }}" width="1200" height="630" class="h-auto max-h-[28rem] w-full object-cover" loading="eager" fetchpriority="high" />
+            <img decoding="async" src="{{ $article->image }}" alt="{{ $imgAlt }}" width="1200" height="630" class="h-auto max-h-[28rem] w-full object-cover" loading="eager" fetchpriority="high" />
         </div>
         <meta itemprop="url" content="{{ $article->image }}" />
         <meta itemprop="width" content="1200" />
@@ -305,7 +305,7 @@
                 @endif
                 @if($content['type'] == 'image' && !empty($content['content']))
                     <figure class="my-8">
-                        <img class="w-full rounded-xl object-cover" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? $article->name }}" loading="lazy">
+                        <img decoding="async" class="w-full rounded-xl object-cover" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? $article->name }}" loading="lazy">
                     </figure>
                 @endif
             @endforeach
@@ -336,7 +336,7 @@
 =========================================================== -->
 <section class="mx-auto mt-16 max-w-4xl px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col items-start gap-5 rounded-2xl border border-white/10 bg-neutral-900 p-6 sm:flex-row sm:items-center" itemscope itemtype="https://schema.org/Person">
-        <img src="{{ asset('/assets/images/owsianka_jakub.png') }}" alt="Jakub Owsianka" class="h-16 w-16 flex-none rounded-full object-cover ring-2 ring-rose-500/30" itemprop="image" />
+        <img decoding="async" src="{{ asset('/assets/images/owsianka_jakub.png') }}" alt="Jakub Owsianka" class="h-16 w-16 flex-none rounded-full object-cover ring-2 ring-rose-500/30" itemprop="image" />
         <div class="flex-1">
             <div class="text-xs uppercase tracking-wide text-rose-400">Written by</div>
             <h2 class="text-lg font-semibold text-white" itemprop="name">Jakub Owsianka</h2>

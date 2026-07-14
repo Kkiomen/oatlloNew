@@ -36,7 +36,7 @@
                             @if ($content->content_type == 'text')
                                 <p class="mb-4">{!! $content->text_content !!}</p>
                             @elseif ($content->content_type == 'image')
-                                <img src="{{ asset('storage/'.$content->image_path) }}" alt="{{ $content->alt_text }}" class="w-full h-auto rounded-lg mb-4">
+                                <img decoding="async" src="{{ asset('storage/'.$content->image_path) }}" alt="{{ $content->alt_text }}" class="w-full h-auto rounded-lg mb-4">
                             @endif
                         @endforeach
                     </div>
@@ -48,7 +48,7 @@
                                 @if ($content->content_type == 'text')
                                     <p class="mb-4">{!! $content->text_content !!}</p>
                                 @elseif ($content->content_type == 'image')
-                                    <img src="{{ asset('storage/'.$content->image_path) }}" alt="{{ $content->alt_text }}" class="w-full h-auto rounded-lg mb-4">
+                                    <img decoding="async" src="{{ asset('storage/'.$content->image_path) }}" alt="{{ $content->alt_text }}" class="w-full h-auto rounded-lg mb-4">
                                 @endif
                             </div>
                         @endforeach
@@ -61,7 +61,7 @@
                                 @if ($content->content_type == 'text')
                                     <p class="mb-4">{!! $content->text_content !!}</p>
                                 @elseif ($content->content_type == 'image')
-                                    <img src="{{ asset('storage/'.$content->image_path) }}" alt="{{ $content->alt_text }}" class="w-full h-auto rounded-lg mb-4">
+                                    <img decoding="async" src="{{ asset('storage/'.$content->image_path) }}" alt="{{ $content->alt_text }}" class="w-full h-auto rounded-lg mb-4">
                                 @endif
                             </div>
                         @endforeach

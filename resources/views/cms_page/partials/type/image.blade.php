@@ -16,7 +16,7 @@
             @endphp
 
             <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 text-center ">
-                <img src="{{ $currentImage }}" id="preview-image-{{ $element['key'] }}" class="h-48"/>
+                <img decoding="async" src="{{ $currentImage }}" id="preview-image-{{ $element['key'] }}" class="h-48"/>
             </div>
             <div class="bg-black hover:bg-gray-800 text-white text-center p-2 mt-2 rounded cursor-pointer select-none" @click="open = !open">
                 Zaaktualizuj obraz

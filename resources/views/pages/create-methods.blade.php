@@ -43,7 +43,7 @@
                     <div class="overflow-hidden rounded-lg bg-white shadow w-full md:w-1/2 select-none cursor-pointer hover:shadow-2xl md:max-h-96">
                         <a href="{{ route('pages.createAi') }}">
                             <div class="relative bg-white">
-                                <img class="h-32 w-full bg-gray-50 object-cover lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-1/2" src="{{ asset('/assets/images/generate_ai_article.webp') }}" alt="">
+                                <img decoding="async" class="h-32 w-full bg-gray-50 object-cover lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-1/2" src="{{ asset('/assets/images/generate_ai_article.webp') }}" alt="">
                                 <div class="mx-auto grid max-w-7xl lg:grid-cols-2">
                                     <div class="px-6 pb-10 pt-10 sm:pb-32 sm:pt-20 lg:col-start-2 lg:px-8 lg:pt-32">
                                         <div class="mx-auto max-w-2xl lg:mr-0 lg:max-w-lg">
@@ -61,7 +61,7 @@
                     <div class="overflow-hidden rounded-lg bg-white shadow w-full md:w-1/2 select-none cursor-pointer hover:shadow-2xl md:max-h-96">
                         <a href="{{ route('pages.create') }}">
                         <div class="relative bg-white">
-                            <img class="h-32 w-full bg-gray-50 object-cover lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-1/2" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2850&q=80" alt="">
+                            <img decoding="async" class="h-32 w-full bg-gray-50 object-cover lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-1/2" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2850&q=80" alt="">
                             <div class="mx-auto grid max-w-7xl lg:grid-cols-2">
                                 <div class="px-6 pb-10 pt-10 sm:pb-32 sm:pt-20 lg:col-start-2 lg:px-8 lg:pt-32">
                                     <div class="mx-auto max-w-2xl lg:mr-0 lg:max-w-lg">

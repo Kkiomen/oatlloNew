@@ -218,7 +218,7 @@
                             @endif
                             @if($content['type'] == 'image' && !empty($content['content']))
                                 <figure class="my-8">
-                                    <img class="w-full rounded-xl object-cover" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? $lessonTitle }}" loading="lazy">
+                                    <img decoding="async" class="w-full rounded-xl object-cover" src="{{ $content['content'] }}" alt="{{ $content['alt'] ?? $lessonTitle }}" loading="lazy">
                                 </figure>
                             @endif
                         @endforeach

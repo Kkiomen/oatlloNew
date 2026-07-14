@@ -18,7 +18,7 @@
                     @elseif($content->content_type == 'image')
                         <div data-content-id="{{ $content->id }}" data-type="image">
                             <div class="mb-2">
-                                <img src="{{ asset('storage/'.$content->image_path) }}" alt="{{ $content->alt_text }}" class="w-full h-auto rounded-lg preview-image" data-position-id="{{ $i }}">
+                                <img decoding="async" src="{{ asset('storage/'.$content->image_path) }}" alt="{{ $content->alt_text }}" class="w-full h-auto rounded-lg preview-image" data-position-id="{{ $i }}">
                             </div>
                             <input type="file" class="image-input w-full mb-2" data-content-id="{{ $content->id }}" data-position-id="{{ $i }}">
                             <input type="text" class="text_alt w-full border rounded px-2 py-1" placeholder="Alt text" value="{{ $content->alt_text }}" >

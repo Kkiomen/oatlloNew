@@ -171,7 +171,7 @@
         @forelse($articles as $article)
             <article class="flex flex-col overflow-hidden rounded-2xl bg-neutral-900/70 shadow-lg transition hover:shadow-rose-500/30" itemscope itemprop="blogPost" itemtype="https://schema.org/BlogPosting">
                 <a href="{{ $article->getRoute() }}" class="group relative block" itemprop="url">
-                    <img src="{{ $article->image }}" alt="{{ $article->name }}" class="h-56 w-full object-cover transition group-hover:scale-105" itemprop="image" loading="lazy" />
+                    <img decoding="async" src="{{ $article->image }}" alt="{{ $article->name }}" class="h-56 w-full object-cover transition group-hover:scale-105" itemprop="image" loading="lazy" />
                     <span class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></span>
                 </a>
                 <div class="flex flex-1 flex-col p-6">

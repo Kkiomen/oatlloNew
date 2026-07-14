@@ -7,6 +7,30 @@ namespace App\Services;
 class HomeService
 {
 
+    /**
+     * Zwraca URL obrazka dopasowany do szerokości wyświetlania.
+     *
+     * Dla zewnętrznych placeholderów picsum.photos (np. /seed/x/1200/630)
+     * przeskalowuje wymiary do docelowej szerokości (mniejszy transfer).
+     * Dla pozostałych URL-i (uploady, generowane okładki SVG) zwraca bez zmian.
+     */
+    public static function responsiveImage(?string $url, int $width): string
+    {
+        $url = (string) $url;
+
+        if (preg_match('#^(https?://picsum\.photos/.*?/)(\d+)/(\d+)(.*)$#', $url, $m)) {
+            $ow = (int) $m[2];
+            $oh = (int) $m[3];
+            if ($ow > 0 && $oh > 0 && $ow > $width) {
+                $nh = (int) round($oh * ($width / $ow));
+
+                return $m[1] . $width . '/' . $nh . $m[4];
+            }
+        }
+
+        return $url;
+    }
+
     public static function getRouteCourses(): string
     {
         $defaultLangue = env('APP_LOCALE');

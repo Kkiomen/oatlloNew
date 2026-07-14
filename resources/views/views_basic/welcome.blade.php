@@ -197,7 +197,7 @@
         <div class="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
             <!-- Featured -->
             <a href="{{ $featuredArticle->getRoute() }}" class="card-hover group relative flex flex-col justify-end overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 min-h-[26rem]">
-                <img src="{{ $featuredArticle->image }}" alt="{{ $featuredArticle->name }}" class="absolute inset-0 h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                <img decoding="async" src="{{ \App\Services\HomeService::responsiveImage($featuredArticle->image, 1000) }}" alt="{{ $featuredArticle->name }}" class="absolute inset-0 h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" loading="lazy">
                 <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/70 to-transparent"></div>
                 <div class="relative p-8">
                     <div class="flex items-center gap-3 text-xs text-neutral-300">
@@ -220,7 +220,7 @@
                 @foreach($latestArticles as $article)
                     <a href="{{ $article->getRoute() }}" class="card-hover group flex gap-4 overflow-hidden rounded-2xl border border-white/10 bg-neutral-900 p-3">
                         <div class="relative h-24 w-32 flex-none overflow-hidden rounded-xl bg-neutral-800">
-                            <img src="{{ $article->image }}" alt="{{ $article->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
+                            <img decoding="async" src="{{ \App\Services\HomeService::responsiveImage($article->image, 400) }}" alt="{{ $article->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
                         </div>
                         <div class="min-w-0 flex-1 py-1">
                             <div class="flex items-center gap-2 text-xs text-neutral-500">
@@ -264,7 +264,7 @@
                 @endphp
                 <a href="{{ $course->getRoute() }}" class="card-hover group flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-900">
                     <div class="relative h-44 overflow-hidden bg-neutral-800">
-                        <img src="{{ $courseImage }}" alt="{{ $course->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                        <img decoding="async" src="{{ \App\Services\HomeService::responsiveImage($courseImage, 800) }}" alt="{{ $course->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent"></div>
                         <span class="absolute left-4 top-4 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-emerald-500/30">FREE</span>
                     </div>
@@ -332,7 +332,7 @@
         <div class="flex flex-col items-center gap-12 lg:flex-row lg:items-stretch">
             <div class="w-full max-w-xs flex-none">
                 <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-neutral-800">
-                    <img class="h-full w-full object-cover" src="{{ asset('/assets/images/owsianka_jakub.png') }}" alt="Jakub Owsianka - PHP developer" itemprop="image">
+                    <img decoding="async" class="h-full w-full object-cover" src="{{ asset('/assets/images/owsianka_jakub.png') }}" alt="Jakub Owsianka - PHP developer" itemprop="image">
                 </div>
             </div>
             <figure class="relative flex flex-1 flex-col justify-center">
