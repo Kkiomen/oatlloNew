@@ -8,10 +8,8 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseCategoryLesson;
-use App\Models\Tag;
 use App\Services\Article\MarkdownArticleRepository;
 use App\Services\Library\SitemapGenerator;
-use Illuminate\Support\Str;
 
 class SitemapService
 {
@@ -39,39 +37,11 @@ class SitemapService
         $mdArticles = app(MarkdownArticleRepository::class)->published($language);
 
         // ============= TAGI ==================
-        $tagSlugs = [];
-        $tags = Tag::where('language', env('APP_LOCALE'))->get();
-        foreach ($tags as $tag){
-            $slug = Str::slug($tag->name);
-            // Tag o pustym slugu (nazwa nie do zslugowania) rozwaliłby route('blogTag')
-            // wyjątkiem UrlGenerationException i przerwał całą generację sitemapy.
-            if ($slug === '') {
-                continue;
-            }
-            $tagSlugs[$slug] = true;
-            $sitemap->addItem(
-                loc: route('blogTag', ['tag' => $slug], false),
-                priority: '0.3',
-                changefreq: 'weekly',
-                lastmod: $tag->updated_at->toIso8601String()
-            );
-        }
-
-        // Tagi istniejące wyłącznie w plikach .md.
-        foreach ($mdArticles as $mdArticle){
-            foreach ($mdArticle->tags as $mdTag){
-                if (empty($mdTag->slug) || isset($tagSlugs[$mdTag->slug])) {
-                    continue;
-                }
-                $tagSlugs[$mdTag->slug] = true;
-                $sitemap->addItem(
-                    loc: route('blogTag', ['tag' => $mdTag->slug], false),
-                    priority: '0.3',
-                    changefreq: 'weekly',
-                    lastmod: $date
-                );
-            }
-        }
+        // Tagów CELOWO nie ma w sitemapie. Były 256 z 393 URL-i (65%) i Google
+        // odmawiał indeksacji 203 z nich ("discovered/crawled – currently not
+        // indexed"), przepalając crawl budget należny artykułom. Strony tagów są
+        // teraz noindex, follow (blog_tag.blade.php) — nadal przekazują crawl do
+        // artykułów przez linki, ale nie zgłaszamy ich jako treści do indeksu.
 
 
         // Add different category posts

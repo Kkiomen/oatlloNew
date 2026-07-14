@@ -84,9 +84,18 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
 ## SEO
 
 - `robots.txt` wskazuje `Sitemap: https://oatllo.com/sitemap.xml` (+ `Disallow: /api/`).
-- XML sitemap generuje `App\Services\SitemapService` (artykuły baza+`.md`, kategorie, tagi, kursy, `/mapa`, `/about-us`).
+- XML sitemap generuje `App\Services\SitemapService` (artykuły baza+`.md`, kategorie, kursy, `/mapa`, `/about-us`).
+  **Tagów CELOWO nie ma w sitemapie** — patrz niżej.
 - HTML „mapa strony": trasa `site.map` → `/mapa` (`HomeController::siteMap`) → `views_basic/sitemap.blade.php`.
-- Wyszukiwarka bloga i puste strony tagów → `noindex`. Paginacja → self‑canonical z `?page=N`.
+- Wyszukiwarka bloga → `noindex`. Paginacja → self‑canonical z `?page=N`.
+- **Strony tagów (WAŻNE — nie cofać):** wszystkie są `noindex, follow` i **poza sitemapą**.
+  Tag to nawigacja, nie treść. Historia: `TagForArticleGenerator` generował do `tags.description`
+  esej ~900 słów per tag, a `blog_tag.blade.php` go renderował → 256 doorway pages (65% z 393 URL‑i
+  sitemapy), które kanibalizowały realne artykuły. Google odmówił indeksacji 203 z nich
+  („discovered/crawled – currently not indexed") i indeksacja domeny spadła 70 → 48. Dlatego:
+  generowanie `description` jest wyłączone, widok go nie renderuje, sitemap nie zawiera `/blog/tag/*`.
+  Pilnuje tego test `tests/Feature/SitemapTagExclusionTest.php`. Kolumna `tags.description` została
+  w bazie jako martwe dane (nic jej nie czyta).
 - **IndexNow** (Bing/Yandex/Seznam): powiadamianie wyszukiwarek o zmianach URL. Klucz w `INDEXNOW_KEY`
   (env), plik weryfikacyjny hostowany dynamicznie pod `/{key}.txt` (trasa `indexnow.key`, `routes/web.php`
   przed łapaczami `/{articleSlug}`). Serwis `App\Services\IndexNowService` (guard: pusty klucz = no‑op,

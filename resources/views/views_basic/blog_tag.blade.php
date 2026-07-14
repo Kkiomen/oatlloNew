@@ -17,7 +17,10 @@
     <meta name="description" content="{{ $pageDesc }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a0a">
-    <meta name="robots" content="{{ $count > 0 ? 'index, follow' : 'noindex, follow' }}">
+    {{-- Strony tagów to nawigacja, nie treść: zawsze noindex (ale follow, żeby
+         przekazywały crawl do artykułów). Wcześniej tagi z >=1 artykułem były
+         index+follow i niosły wygenerowany esej -> doorway pages. --}}
+    <meta name="robots" content="noindex, follow">
     <meta name="author" content="Oatllo - Jakub Owsianka">
     <link rel="stylesheet" href="{{ asset('assets/css/tailwind.css') }}">
 
@@ -146,11 +149,9 @@
                 {{ $count }} {{ __('basic.articles') }}
             </p>
 
-            @if(!empty($tag->description))
-                <div class="mx-auto mt-8 max-w-2xl rounded-2xl border border-white/10 bg-neutral-900/60 p-6 text-left text-neutral-300">
-                    {!! $tag->description !!}
-                </div>
-            @endif
+            {{-- Świadomie NIE renderujemy `$tag->description`: był to generowany przez AI
+                 esej (~900 słów) per tag, przez co strona tagu udawała artykuł i
+                 kanibalizowała realne wpisy. Strona tagu ma być czystym listingiem. --}}
         </header>
 
         <!-- Kategorie powiązane z tagiem (wewnętrzne linkowanie) -->

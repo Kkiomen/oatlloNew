@@ -7,7 +7,6 @@ namespace App\Services\Generator;
 use App\Models\Article;
 use App\Models\Tag;
 use App\Models\TagArticle;
-use App\Prompts\TagDescriptionPrompt;
 use App\Prompts\TagDescriptionSeoPrompt;
 use App\Prompts\TagsForArticlePrompt;
 use App\Prompts\TagTitleSeoPrompt;
@@ -105,10 +104,11 @@ class TagForArticleGenerator
             ]);
         }
 
-        if($tag->description === null){
-            $tag->description = TagDescriptionPrompt::generateContentTextErrorsLoop($tagName);
-            $tag->save();
-        }
+        // NIE generujemy już `description` (esej ~900 słów per tag). Strony tagów to
+        // nawigacja, nie treść — generowane opisy tworzyły doorway pages, które Google
+        // klasyfikuje jako scaled content abuse (256 takich stron = 65% sitemapy,
+        // 203 z nich Google odmówił zindeksować, ciągnąc w dół całą domenę).
+        // Tagi są teraz noindex i poza sitemapą; `description` zostaje puste.
 
         static::createSeoInformation($tag);
 
