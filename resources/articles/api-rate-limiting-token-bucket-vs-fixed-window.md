@@ -186,16 +186,16 @@ Laravel's built-in limiter is a fixed-window counter backed by your cache store 
 
 ## FAQ
 
-**Where should the counter live: app memory or Redis?**
+### Where should the counter live: app memory or Redis?
 Redis (or another shared store), almost always. In-memory works only if you have a single process; the moment you run two app servers behind a load balancer, per-process counters let a client get `N x limit` by spreading requests across instances. Shared state is the point.
 
-**Should I rate limit by IP or by API key?**
+### Should I rate limit by IP or by API key?
 By API key or user ID whenever you have one. It's stable and fair. Fall back to IP for unauthenticated traffic, but know that IP is leaky: corporate NATs and mobile carriers put thousands of users behind one address, and attackers rotate IPs. Many APIs layer both.
 
-**What limit numbers should I pick?**
+### What limit numbers should I pick?
 Start from what your downstream can actually sustain, not a round marketing number. Measure the p99 throughput your slowest dependency tolerates, leave headroom, and set the sustained rate below it. Then set burst capacity to cover legitimate spikes (a page load that fires 10 parallel calls). Tune from real 429 rates, not guesses.
 
-**Is rate limiting enough to stop a DDoS?**
+### Is rate limiting enough to stop a DDoS?
 No. Application-layer rate limiting helps against a single abusive client, but a distributed attack spreads across thousands of sources, each staying under your per-client limit. That's a job for network-layer protection and a CDN/WAF upstream. Rate limiting is one layer, not the whole defense.
 
 ## Conclusion

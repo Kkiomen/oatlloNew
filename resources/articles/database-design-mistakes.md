@@ -142,19 +142,19 @@ If your ORM is masking the shape of your queries, it's worth learning what it ac
 
 ## FAQ
 
-**Should I always add foreign key constraints?**
+### Should I always add foreign key constraints?
 
 For a transactional (OLTP) database, yes, almost always. They're the only thing guaranteeing a child row can't point at a parent that doesn't exist. The main exceptions are high-write analytics or sharded setups where the enforcement cost is measured and deliberately traded away. That's a decision to make on purpose, not a default.
 
-**Is DECIMAL slower than FLOAT?**
+### Is DECIMAL slower than FLOAT?
 
 Slightly, because it's exact arithmetic rather than hardware floating point. For money and quantities that difference is irrelevant next to the cost of being wrong. Reserve `FLOAT`/`DOUBLE` for genuinely approximate values like sensor readings or scientific measurements.
 
-**Can I fix these on a live table?**
+### Can I fix these on a live table?
 
 Usually, but type and charset conversions can rewrite the whole table and lock it while they run. On a large production table, use an online schema change tool (like `pt-online-schema-change` or `gh-ost` for MySQL) or test the migration on a copy first and schedule a window. Don't run `CONVERT TO CHARACTER SET` on a 200 GB table at peak traffic and hope.
 
-**When is a JSON column the right call instead of more tables?**
+### When is a JSON column the right call instead of more tables?
 
 When the data is read and written as one opaque unit and you rarely query inside it, like stored API payloads or per-user UI preferences. Once you find yourself filtering, joining, or aggregating on values *within* the JSON, that's the signal to model them as real columns or a related table.
 

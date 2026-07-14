@@ -156,16 +156,16 @@ WHERE created_at >= '2026-01-01' AND created_at < '2027-01-01';
 
 ## FAQ
 
-**Does adding an index ever make a query slower?**
+### Does adding an index ever make a query slower?
 The query itself, rarely: the planner won't use an index that hurts. But the index slows every write to that table and consumes memory, so a needless index makes your *overall* system slower. That is the real cost.
 
-**How many indexes is too many on one table?**
+### How many indexes is too many on one table?
 There is no hard number, but if a write-heavy table has more than five or six indexes, review them. Look for redundant ones (covered by a composite's leftmost prefix) and unused ones; PostgreSQL exposes `pg_stat_user_indexes`, and MySQL's `sys.schema_unused_indexes` view flags indexes nothing has touched.
 
-**Should I index every foreign key?**
+### Should I index every foreign key?
 Almost always yes. You join on them constantly, and in MySQL an `InnoDB` foreign key requires an index anyway. Unindexed foreign keys also make parent-row deletes scan the child table. Postgres does *not* auto-create the index for a foreign key. That one is on you.
 
-**What is the difference between EXPLAIN and EXPLAIN ANALYZE?**
+### What is the difference between EXPLAIN and EXPLAIN ANALYZE?
 `EXPLAIN` shows the plan the optimizer intends to use, using estimates, without running the query. `EXPLAIN ANALYZE` executes it and reports actual timings and row counts, which lets you catch bad estimates. Careful: `EXPLAIN ANALYZE` really runs the statement, so don't point it at an `UPDATE` or `DELETE` on production without wrapping it in a transaction you roll back.
 
 ## Conclusion

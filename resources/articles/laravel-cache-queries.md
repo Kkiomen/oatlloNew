@@ -222,16 +222,16 @@ Caching hides a slow query. It doesn't fix it. Before you cache, make sure the q
 
 ## FAQ
 
-**Does `Cache::remember` cache database queries automatically?**
+### Does `Cache::remember` cache database queries automatically?
 No. It caches whatever the closure returns. You decide what goes in: a query result, an array, a computed value. There's no automatic query interception; you wrap the specific expensive calls you want cached.
 
-**What's the difference between `remember` and `rememberForever`?**
+### What's the difference between `remember` and `rememberForever`?
 `remember` takes a TTL and expires the value automatically. `rememberForever` stores it with no expiry. It lives until you call `Cache::forget` or flush the store. Use `rememberForever` only when you have a reliable invalidation path.
 
-**Why does `Cache::tags()` throw an exception?**
+### Why does `Cache::tags()` throw an exception?
 Your cache store doesn't support tagging. Tags need a taggable driver — Redis or Memcached. The `file` and `database` drivers throw `BadMethodCallException` the moment you call `->flush()` on a tag. Point `CACHE_STORE` at `redis` (or `memcached`) and the same code starts working.
 
-**How do I clear a cached query when the data changes?**
+### How do I clear a cached query when the data changes?
 Hook into the model's `saved` and `deleted` events, either through an observer or the model's `booted` method, and call `Cache::forget()` on the affected keys (or `Cache::tags([...])->flush()` with Redis). Remember that bulk updates and raw SQL bypass these events.
 
 ## Wrapping up

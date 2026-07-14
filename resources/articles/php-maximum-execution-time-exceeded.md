@@ -155,16 +155,16 @@ Raise the limit only when you've confirmed the work is inherently long *and* can
 
 ## FAQ
 
-**Where do I permanently change PHP's max execution time?**
+### Where do I permanently change PHP's max execution time?
 Set `max_execution_time` in the `php.ini` that your web SAPI actually loads (verify the path via `phpinfo()`), then restart PHP-FPM or Apache. For a single script, use `set_time_limit()` or `ini_set('max_execution_time', ...)` instead; no restart needed.
 
-**Why does my script still time out after I increased `max_execution_time`?**
+### Why does my script still time out after I increased `max_execution_time`?
 Almost always another timer is shorter: PHP-FPM's `request_terminate_timeout` or the web server's `fastcgi_read_timeout` (nginx) / proxy timeout (Apache). Raise all of them together, or you'll keep hitting the lowest one, usually surfacing as a 504.
 
-**Does the timeout apply to command-line scripts?**
+### Does the timeout apply to command-line scripts?
 No. The CLI SAPI defaults to `max_execution_time = 0` (unlimited), which is why the same code runs fine from the terminal or a queue worker but dies in the browser. Moving heavy work to the CLI/queue is often the cleanest fix.
 
-**Is `set_time_limit(0)` safe to use?**
+### Is `set_time_limit(0)` safe to use?
 Sparingly, and ideally only for CLI/queue jobs. In a web request it can let a stuck script hold an FPM worker forever. Prefer finding the slow query or loop, or a scoped `set_time_limit(N)` around the known-long section.
 
 ## Conclusion

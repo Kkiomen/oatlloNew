@@ -175,16 +175,16 @@ Reach for it when a concrete requirement — swappability, testability, a real d
 
 ## FAQ
 
-**Does the repository pattern make Laravel apps slower?**
+### Does the repository pattern make Laravel apps slower?
 Not measurably. It's a thin object layer; the cost is developer overhead and indirection, not runtime performance. The real "cost" is the extra code you and your team maintain forever.
 
-**Should I return Eloquent models from a repository or plain DTOs?**
+### Should I return Eloquent models from a repository or plain DTOs?
 It depends on how pure you want the abstraction. Returning models is pragmatic and common, but it leaks Eloquent into your domain; callers can still lazy-load relations and call `save()`. Returning DTOs or domain entities is stricter and truer to DDD, but it's a lot more work. For most Laravel apps, returning models is a reasonable compromise; just be honest that the abstraction is leaky.
 
-**Can I test without a repository?**
+### Can I test without a repository?
 Yes. Laravel's `RefreshDatabase` trait plus factories make database testing fast and pleasant, and model factories cover most needs. A repository helps most when you want to test a *service's logic* in complete isolation from persistence: bind a fake and you never hit the DB at all.
 
-**Where do I put the binding for a repository?**
+### Where do I put the binding for a repository?
 In the `register()` method of a service provider using `$this->app->bind(Interface::class, Implementation::class)`. Group them in a dedicated `RepositoryServiceProvider` so all your bindings live in one predictable place.
 
 ## Conclusion

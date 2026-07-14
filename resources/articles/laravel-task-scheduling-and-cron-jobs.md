@@ -168,16 +168,16 @@ The mistakes I've either made or watched others make, roughly in order of how of
 
 ## FAQ
 
-**Do I still need to write cron expressions at all?**
+### Do I still need to write cron expressions at all?
 Only one, and only the `schedule:run` line. Everything else is expressed in PHP through the fluent API. You *can* use `->cron('*/5 * * * *')` for intervals the helpers don't cover, but that's a convenience, not a requirement.
 
-**Why isn't my scheduled task running?**
+### Why isn't my scheduled task running?
 Walk it in order: is the system cron entry present and pointing at the right path? Does `php artisan schedule:list` show the task with a sensible next-due time? Can the cron user read `.env` and write to `storage/logs`? Run `php artisan schedule:run` manually and read the output. Nine times out of ten the answer is right there.
 
-**How do I run a task every 5 minutes?**
+### How do I run a task every 5 minutes?
 `Schedule::command('...')->cron('*/5 * * * *')`. There's no `->everyFiveMinutes()`… actually there is: `->everyFiveMinutes()` exists too, along with `everyTenMinutes()`, `everyFifteenMinutes()`, and `everyThirtyMinutes()`. Use whichever reads clearer to you.
 
-**Can I test the scheduler without a real cron on my machine?**
+### Can I test the scheduler without a real cron on my machine?
 Yes. Run `php artisan schedule:work` in a terminal. It behaves like the production cron, ticking every minute, until you stop it.
 
 ## Wrapping up

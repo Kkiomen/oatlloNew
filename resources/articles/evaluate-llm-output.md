@@ -171,16 +171,16 @@ Things I have personally gotten wrong, so you do not have to:
 
 ## FAQ
 
-**How big does a golden dataset need to be?**
+### How big does a golden dataset need to be?
 Smaller than you think to start. Thirty to fifty well-chosen cases covering your main categories will already catch most regressions. Grow it by adding every real failure you find, rather than trying to write hundreds of cases up front.
 
-**Can I really use an LLM to grade another LLM?**
+### Can I really use an LLM to grade another LLM?
 Yes, and it is one of the most useful tools you have for open-ended output — with the condition that you validate the judge against human ratings first and design a specific, criteria-based rubric. Use it for scale and regression detection, not as the sole gate on a release.
 
-**What is the difference between offline and online evaluation?**
+### What is the difference between offline and online evaluation?
 Offline runs against a fixed dataset before you ship and answers "is this safe to release." Online measures real user traffic through A/B tests and feedback and answers "is it working in practice." Offline protects users from regressions; online tells you if your offline metric is even measuring the right thing.
 
-**Which metric should I actually track?**
+### Which metric should I actually track?
 Match it to the task. Accuracy, precision, and recall for classification; rubric scores and pairwise preference for generation. Whatever you pick, track it per category rather than as one blended average so a struggling subgroup cannot hide.
 
 ## Where to start

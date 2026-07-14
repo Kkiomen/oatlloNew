@@ -209,16 +209,16 @@ A subtle gotcha: if both Nginx *and* your app add `Access-Control-Allow-Origin`,
 
 ## FAQ
 
-**Is a CORS error a frontend or backend problem?**
+### Is a CORS error a frontend or backend problem?
 Backend. The browser enforces the rule, but the fix is a response header your server must send. There is no frontend-only cors policy error fix.
 
-**Why does it work in Postman but not the browser?**
+### Why does it work in Postman but not the browser?
 Postman isn't a browser and doesn't enforce the Same-Origin Policy. Browsers do. A green Postman response only confirms the server works, not that it grants your origin permission.
 
-**Can I just set `Access-Control-Allow-Origin: *`?**
+### Can I just set `Access-Control-Allow-Origin: *`?
 For public, cookie-free APIs, yes. But the moment you send credentials (cookies, HTTP auth), the wildcard is rejected and you must echo the specific requesting origin plus `Access-Control-Allow-Credentials: true`.
 
-**What's the difference between a simple request and a preflight?**
+### What's the difference between a simple request and a preflight?
 A simple request (basic GET/HEAD/POST, no custom headers) goes straight to the server. Anything else — custom headers, JSON content type, PUT/DELETE — triggers an automatic `OPTIONS` preflight the server must approve first.
 
 ## Conclusion

@@ -1,5 +1,5 @@
 ---
-name: "Building a RAG Pipeline with a Vector Database: The Retrieval Layer That Actually Matters"
+name: "Building a RAG Pipeline with a Vector Database"
 slug: rag-pipeline-vector-database
 short_description: "Go deep on the vector database layer of a RAG pipeline vector database setup: pgvector vs Pinecone, HNSW vs IVFFlat, hybrid search, and re-ranking."
 language: en

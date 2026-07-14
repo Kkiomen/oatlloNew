@@ -305,16 +305,16 @@ The things most likely to trip you up, learned the hard way:
 
 ## FAQ
 
-**Do I need the official SDK to use the Claude API in PHP?**
+### Do I need the official SDK to use the Claude API in PHP?
 No. The API is plain HTTPS with JSON. Guzzle or Laravel's `Http` facade cover everything, and both are fully documented above. An SDK is a convenience, not a requirement.
 
-**Which model should I default to?**
+### Which model should I default to?
 `claude-sonnet-5` is the balanced choice for most workloads. Reach for `claude-opus-4-8` on hard reasoning or agentic tasks, and `claude-haiku-4-5-20251001` when you need speed and low cost at volume.
 
-**Why is my request rejected before it even runs?**
+### Why is my request rejected before it even runs?
 Almost always a missing `max_tokens` (it's required) or a missing header. Double-check `x-api-key`, `anthropic-version: 2023-06-01`, and `content-type: application/json` are all present.
 
-**How do I track what a call costs?**
+### How do I track what a call costs?
 Read `usage.input_tokens` and `usage.output_tokens` from the response and log them. That's your ground truth for cost and for spotting prompts that have grown too large.
 
 ## Conclusion

@@ -193,16 +193,16 @@ For production, put these in `redis.conf` rather than setting them at runtime, s
 
 ## FAQ
 
-**When should I use cache-aside versus write-through?**
+### When should I use cache-aside versus write-through?
 Default to cache-aside; it's simpler and only caches data that's requested. Reach for write-through when reads vastly outnumber writes and serving stale data would cause real harm, like billing or permissions.
 
-**How do I choose a TTL?**
+### How do I choose a TTL?
 Start from a business question: how stale can this data be before someone notices or gets hurt? Set the TTL to that tolerance, add a little random jitter, and adjust after watching your hit rate. There's no universally correct number.
 
-**Does caching replace a good database index?**
+### Does caching replace a good database index?
 No. A cache hides a slow query; an index makes the query itself fast, including the cache-miss path and any query the cache never covers. Do both — I cover the indexing side in [database indexing explained](/blog/database-indexing-explained).
 
-**Is Redis safe for counters under heavy concurrency?**
+### Is Redis safe for counters under heavy concurrency?
 Yes. `INCR` and the other single-command operations are atomic because Redis executes commands one at a time, so concurrent increments never lose updates.
 
 ## Wrapping up

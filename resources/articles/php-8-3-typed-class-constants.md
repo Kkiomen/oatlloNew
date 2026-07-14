@@ -214,16 +214,16 @@ And the same instinct that made **readonly properties** attractive ("declare it,
 
 ## FAQ
 
-**Can I use union or nullable types on class constants in PHP 8.3?**
+### Can I use union or nullable types on class constants in PHP 8.3?
 Yes. Union types like `int|string` and nullable types like `?string` are both supported. Intersection types are allowed as well when the constant holds an object satisfying multiple interfaces. The only excluded types are ones that don't describe a value, such as `void`, `never`, and `callable`.
 
-**Is the type check done at compile time or runtime?**
+### Is the type check done at compile time or runtime?
 Mostly at class-linking time, which is why an incompatible interface or parent constant surfaces as a fatal error rather than a runtime exception. A mismatch between the declared type and the assigned literal is caught when the class is compiled.
 
-**Do typed constants replace enums?**
+### Do typed constants replace enums?
 No. Enums model a closed set of named cases, often with methods. Typed constants pin a type onto a single value. They work well together — you can even declare a constant whose type is an enum.
 
-**Will adding types to existing constants break my code?**
+### Will adding types to existing constants break my code?
 Only if a subclass or implementer already violates the type you're declaring, which usually means there was a latent bug. Adding a type that matches current values is backward compatible for consumers on PHP 8.3+.
 
 ## Conclusion

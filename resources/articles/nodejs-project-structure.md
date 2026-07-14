@@ -196,16 +196,16 @@ When a cycle appears, it's almost always telling you a responsibility is in the 
 
 ## FAQ
 
-**Is there an official Node.js project structure?**
+### Is there an official Node.js project structure?
 No. Unlike some frameworks, Node enforces nothing beyond `package.json` and an entry point. Any "standard" folder layout you read about is a community convention, not a rule. Choose based on your app's size and stick to it consistently.
 
-**When should I switch from layered to feature-based?**
+### When should I switch from layered to feature-based?
 As soon as you have more than a couple of distinct domains, or more than one or two developers. If editing one feature already makes you jump between three folders, you're past the point where feature-based would help. It's cheaper to restructure at 5 features than at 50.
 
-**Where do things that don't belong to any feature go?**
+### Where do things that don't belong to any feature go?
 In `shared/` (or `common/`): cross-cutting middleware, the error handler, the database connection, generic helpers. The rule: `shared/` may be imported by feature modules, but it must never import from a feature module. That one-way arrow is what keeps the dependency graph acyclic.
 
-**Do I need TypeScript for this to work?**
+### Do I need TypeScript for this to work?
 No. The structure is identical in plain JavaScript. TypeScript adds compile-time checks that catch a broken import path or a wrong service argument earlier, but the folder layout and the routes/controllers/services separation are language-agnostic.
 
 ## Conclusion

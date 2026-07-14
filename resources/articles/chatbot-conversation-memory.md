@@ -202,16 +202,16 @@ A short list of things that have bitten me or people I've helped:
 
 ## FAQ
 
-**Does the Claude API remember previous messages on its own?**
+### Does the Claude API remember previous messages on its own?
 No. It's stateless. Each `POST /v1/messages` call only knows what's in the `messages` array you send. Your application stores the history and resends it, which is what creates the feeling of memory.
 
-**How many messages should I keep in the context?**
+### How many messages should I keep in the context?
 There's no fixed answer, it depends on your window and budget. A common pattern is to keep the last 15 to 30 turns verbatim and summarize anything older. Measure with the token counting endpoint rather than guessing.
 
-**Where should conversation history live?**
+### Where should conversation history live?
 A database table keyed by conversation is the standard choice, and it's what the examples here use. It survives restarts, supports multiple users, and lets you rebuild the `messages` array on demand. A cache layer works for short-lived sessions but you'll usually want durable storage.
 
-**What happens when a conversation exceeds the context window?**
+### What happens when a conversation exceeds the context window?
 The request fails rather than silently dropping messages. That's why you truncate or summarize *before* you hit the limit, using a token count as your trigger instead of waiting for the error.
 
 ## Wrapping up

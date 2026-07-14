@@ -182,16 +182,16 @@ PHPUnit's ecosystem is older, enormous, and battle-tested. Every static analysis
 
 ## FAQ
 
-**Is Pest faster than PHPUnit?**
+### Is Pest faster than PHPUnit?
 Not in any meaningful way — they run on the same engine. Test execution speed comes down to your code, your database strategy, and parallelization (both support parallel runs). Pest doesn't make the runner faster; it makes writing tests faster.
 
-**Can I use Pest and PHPUnit in the same project?**
+### Can I use Pest and PHPUnit in the same project?
 Yes. Because Pest sits on top of PHPUnit, your old class-based tests and new function-based tests run together under `php artisan test`. This is exactly what makes gradual migration realistic.
 
-**Do I lose anything by choosing Pest?**
+### Do I lose anything by choosing Pest?
 Rarely functionality — you still have access to PHPUnit assertions and features. What you might lose is universality: some third-party tooling, tutorials, and older team members' muscle memory assume the class-based style. On a legacy or mixed-skill team, that friction is real.
 
-**Which should a beginner learn first?**
+### Which should a beginner learn first?
 Learn what PHPUnit assertions do, because they're the foundation and the concepts transfer everywhere. Then adopt Pest for the day-to-day writing experience. Understanding the layer underneath makes you better at debugging either one.
 
 ## My Recommendation

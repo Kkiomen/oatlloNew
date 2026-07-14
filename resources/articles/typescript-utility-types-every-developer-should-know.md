@@ -176,19 +176,19 @@ In everyday code, TypeScript's own control-flow narrowing handles most null chec
 
 ## FAQ
 
-**Do I need to import utility types?**
+### Do I need to import utility types?
 
 No. All of them are global and built into the TypeScript compiler. You can use `Partial`, `Pick`, `Record`, and the rest anywhere without an import statement.
 
-**What is the difference between Pick and Omit?**
+### What is the difference between Pick and Omit?
 
 They are opposites. `Pick<T, K>` keeps only the keys you list; `Omit<T, K>` keeps everything except the keys you list. Pick when the keep-list is short and stable, omit when you want new fields on the source type to flow through automatically.
 
-**Are utility types available at runtime?**
+### Are utility types available at runtime?
 
 No. Like all TypeScript types, they are erased during compilation and produce zero JavaScript. They only help the type checker and your editor. If you need runtime validation, reach for a library like Zod alongside them.
 
-**Can I combine utility types?**
+### Can I combine utility types?
 
 Yes, and that is where they get powerful. `Partial<Omit<User, "id">>` or `Awaited<ReturnType<typeof fetch>>` are perfectly valid. Compose them like functions, reading from the inside out.
 

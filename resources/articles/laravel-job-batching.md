@@ -208,16 +208,16 @@ Even cleaner: add the `SkipIfBatchCancelled` middleware (available in recent Lar
 
 ## FAQ
 
-**Do I need Horizon to use job batching?**
+### Do I need Horizon to use job batching?
 No. Batching is a core queue feature and works with any batching-capable driver and a plain `queue:work` worker under Supervisor. Horizon is just a nicer dashboard and manager for Redis queues. If you're weighing your options, see our post comparing running queues with Horizon vs. Supervisor.
 
-**What happens to a batch when a job fails?**
+### What happens to a batch when a job fails?
 By default the batch is cancelled, remaining jobs are skipped, and `catch` fires with the exception. The failed job also goes to your `failed_jobs` table like any other failed job, so you can retry it. If you want the batch to continue despite failures, call `allowFailures()`.
 
-**Can I retry the failed jobs from a batch?**
+### Can I retry the failed jobs from a batch?
 Yes. Failed batch jobs land in `failed_jobs` like any other failure, so you retry them the usual way: by UUID (`php artisan queue:retry 9f8e...`) or all at once with `php artisan queue:retry all`. There's no "retry this whole batch" command; you're retrying the individual failed jobs. Grab the failed UUIDs from `$batch->failedJobIds` if you want to script it. For the full workflow, read our guide on retrying failed queue jobs.
 
-**How do I clean up old batch records?**
+### How do I clean up old batch records?
 Run `php artisan queue:prune-batches` on a schedule. By default it removes finished batches older than 24 hours; pass `--hours` and `--unfinished`/`--cancelled` to tune what gets pruned.
 
 ## Conclusion

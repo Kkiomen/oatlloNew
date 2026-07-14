@@ -190,16 +190,16 @@ Redis is a good fit when the response payload is small and you can tolerate a re
 
 ## FAQ
 
-**Do I need idempotency keys for `GET` or `PUT`?**
+### Do I need idempotency keys for `GET` or `PUT`?
 No. `GET` is safe and changes nothing, and `PUT`/`DELETE` are already idempotent by their HTTP semantics; repeating them converges on the same state. Reserve idempotency keys for non-idempotent operations, which in practice means `POST` endpoints that create resources or move money.
 
-**What TTL should I use for idempotency keys?**
+### What TTL should I use for idempotency keys?
 Long enough to cover your worst realistic retry scenario. Twenty-four hours is a safe default for most APIs. If clients retry from background queues or can be rate-limited for extended periods, size the TTL to exceed that window so a delayed retry still matches its stored key.
 
-**Who generates the key, the client or the server?**
+### Who generates the key, the client or the server?
 The client. Only the client knows which retries belong to the same logical operation. A UUID v4 per operation is standard. The server treats the key as opaque: it never generates or interprets it, only stores and matches it.
 
-**What happens if the same key arrives with a different request body?**
+### What happens if the same key arrives with a different request body?
 Return `422 Unprocessable Entity`. A matching key with a mismatched payload almost always means a client bug: a key was reused for a genuinely different operation. Storing a request hash lets you detect this instead of returning a misleading cached response.
 
 ## Conclusion

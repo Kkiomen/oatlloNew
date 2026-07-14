@@ -185,16 +185,16 @@ No more stash-switch-stash dance just to peek at another branch. I keep one work
 
 ## FAQ
 
-**What's the difference between `git switch` and `git checkout`?**
+### What's the difference between `git switch` and `git checkout`?
 `checkout` does two unrelated jobs (switching branches and restoring files), which trips people up. Newer Git splits them: `switch` handles branches, `restore` handles files. `checkout` still works, but the newer commands are clearer about intent.
 
-**Is `git rebase` dangerous?**
+### Is `git rebase` dangerous?
 Only when you rewrite commits others have already pulled. Rebasing local, unshared commits is completely safe and produces cleaner history. The rule of thumb: never rebase (or amend, or force-push) a branch other people are actively working on.
 
-**Can I recover work after `git reset --hard`?**
+### Can I recover work after `git reset --hard`?
 Usually yes. Run `git reflog`, find the `HEAD@{n}` entry from before the reset, and check it out or branch from it. Git keeps unreachable commits for around 90 days before garbage collection removes them, so act sooner rather than later.
 
-**Do I need to memorize all of these?**
+### Do I need to memorize all of these?
 No. Start with `stash`, `switch -c`, and `log --oneline --graph --all`. You'll use them daily. Add `reflog`, `bisect`, and `worktree` as the situations that need them show up. They stick fast once they've saved you once.
 
 ## Wrapping up

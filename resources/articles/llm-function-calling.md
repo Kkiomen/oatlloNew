@@ -222,16 +222,16 @@ If you would rather not hand-write the loop at all, the official PHP SDK ships a
 
 ## FAQ
 
-**Is "function calling" the same as "tool use"?**
+### Is "function calling" the same as "tool use"?
 Yes. "Function calling" is the industry term; Anthropic's API and docs call the same mechanism "tool use." The `tools` array, `tool_use` blocks, and `tool_result` blocks are what you actually work with.
 
-**Can the model call several functions in one turn?**
+### Can the model call several functions in one turn?
 It can. A single response may hold multiple `tool_use` blocks. Run them (concurrently if they are independent), then send every `tool_result` back in one user message keyed by `tool_use_id`.
 
-**What happens if my function throws?**
+### What happens if my function throws?
 Return the `tool_result` anyway with `"is_error": true` and a short message describing what went wrong. Dropping the block leaves an unanswered `tool_use` and the request breaks; a proper error block lets the model recover or ask for clarification.
 
-**Do I have to resend the tool definitions every request?**
+### Do I have to resend the tool definitions every request?
 Yes. The API is stateless, so `tools`, the system prompt, and the full message history all travel on every call. For large, stable tool sets, prompt caching keeps that from getting expensive.
 
 ## Wrapping up

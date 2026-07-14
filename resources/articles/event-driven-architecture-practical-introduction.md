@@ -134,16 +134,16 @@ My rule of thumb: start with in-process events to build the decoupling habit, mo
 
 ## FAQ
 
-**Is event-driven architecture the same as microservices?**
+### Is event-driven architecture the same as microservices?
 No. They pair well but they're independent. You can run event-driven patterns inside a single monolith (that's exactly what Laravel events are), and you can build microservices that only talk over synchronous HTTP. Events are about *how components communicate*, not *how you deploy them*.
 
-**Do I need Kafka to do this?**
+### Do I need Kafka to do this?
 Not to start. A message queue you already run (Laravel's queue on Redis, or SQS) handles background reactions fine. Kafka earns its keep when you need event replay, an ordered durable log, or many independent consumers reading the same stream at their own pace. Reach for it when those needs are concrete, not by default.
 
-**How do I handle a consumer that keeps failing?**
+### How do I handle a consumer that keeps failing?
 Retry with exponential backoff and a maximum attempt count, then send the message to a dead-letter queue for inspection instead of retrying forever. Keep the consumer idempotent so retries can't cause double effects, and make sure your logs carry a correlation ID so you can trace the failing message back to the original action.
 
-**Won't eventual consistency confuse my users?**
+### Won't eventual consistency confuse my users?
 It can, so design the UX for it. Show optimistic UI ("we've received your order") rather than asserting a downstream state that hasn't settled. For flows where users truly need an immediate, consistent answer, keep those specific steps synchronous and let the non-critical reactions go async.
 
 ## Wrapping up

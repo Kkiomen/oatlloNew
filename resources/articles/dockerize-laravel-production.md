@@ -288,16 +288,16 @@ Notes from the trenches:
 
 ## FAQ
 
-**Can I use the same image for web, worker, and scheduler?**
+### Can I use the same image for web, worker, and scheduler?
 Yes, and you should. Build one `runtime` image and change only the `command` per service. It guarantees every process runs identical code and keeps your CI simple.
 
-**Should I run `php artisan migrate` on container startup?**
+### Should I run `php artisan migrate` on container startup?
 No. With more than one replica you get a migration race and potential data corruption. Run it as a single `docker compose run --rm app php artisan migrate --force` step in your deploy pipeline instead.
 
-**Why is my dockerized Laravel app returning 500 with a blank page?**
+### Why is my dockerized Laravel app returning 500 with a blank page?
 Ninety percent of the time it's permissions on `storage`/`bootstrap/cache`, or a cached config referencing an `env()` value that's now `null`. Check `storage/logs/laravel.log`, and temporarily set `APP_DEBUG=true` on a non-public instance to see the trace.
 
-**Is Alpine safe for production PHP?**
+### Is Alpine safe for production PHP?
 Yes, for the vast majority of apps. The only real gotcha is musl libc versus glibc with a rare C extension. If you hit one, switch the runtime stage to `php:8.3-fpm` (Debian slim) and move on.
 
 ## Wrapping up

@@ -202,19 +202,19 @@ function SearchBox({ onSearch }) {
 
 ## FAQ
 
-**Is throttle just debounce with different numbers?**
+### Is throttle just debounce with different numbers?
 
 No. They're structurally different. Debounce resets its timer on every call and fires only after silence; throttle tracks elapsed time and fires on a fixed cadence regardless of how many calls come in. No wait value turns one into the other.
 
-**What wait time should I use?**
+### What wait time should I use?
 
 For debounced search, 250–350 ms feels responsive without spamming your API. For throttled scroll or mousemove, 100–200 ms keeps things smooth at roughly 60fps-friendly rates. These are starting points; profile with real input before committing.
 
-**Do I still need these with modern browsers?**
+### Do I still need these with modern browsers?
 
 Often, yes. For scroll specifically, `IntersectionObserver` and `ResizeObserver` can replace throttled listeners entirely and are more efficient, so prefer them when they fit. But for input handling, autosave, and arbitrary rate limiting, debounce and throttle are still the right tools.
 
-**Can I lose the last event with throttle?**
+### Can I lose the last event with throttle?
 
 With a pure leading-edge throttle, yes — the trailing call gets dropped if activity stops mid-interval. The trailing-capable version above (the one with the backup `setTimeout`) fixes that. Lodash handles it by default.
 

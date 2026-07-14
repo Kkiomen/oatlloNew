@@ -110,19 +110,19 @@ If you're testing that Laravel code, the choice between test runners matters too
 
 ## FAQ
 
-**Do I need Intelephense if I already have the official PHP extension?**
+### Do I need Intelephense if I already have the official PHP extension?
 
 The official PHP extension from the PHP Foundation is maturing quickly and worth watching. As of now, most people still reach for Intelephense because its indexing and completion feel more complete on large codebases. Try both and keep whichever gives you fewer false errors on your project.
 
-**Will running Intelephense and PHP Namespace Resolver together cause conflicts?**
+### Will running Intelephense and PHP Namespace Resolver together cause conflicts?
 
 No. They do different jobs — one analyses and completes code, the other manages `use` statements — so they coexist fine. The conflict to avoid is leaving VS Code's built-in `php.suggest.basic` on alongside Intelephense.
 
-**My breakpoints aren't hitting. What's wrong?**
+### My breakpoints aren't hitting. What's wrong?
 
 Nine times out of ten it's the Xdebug port. Xdebug 3 defaults to 9003, not the old 9000. Confirm your `php.ini` and your `launch.json` agree, and check that Xdebug's mode includes `debug`.
 
-**Are these extensions free?**
+### Are these extensions free?
 
 Most are fully free. Intelephense and GitLens have optional paid tiers for advanced features, but the daily-driver functionality in both is free to use.
 

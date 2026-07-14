@@ -17,11 +17,16 @@
 
     // wordCount do danych strukturalnych (liczony z realnych bloków treści).
     $wordCount = 0;
+    $faqHtml = '';
     foreach ($article->getDisplayContents() as $c) {
         if (($c['type'] ?? '') === 'text') {
             $wordCount += str_word_count(strip_tags($c['content'] ?? ''));
+            $faqHtml .= "\n" . ($c['content'] ?? '');
         }
     }
+    // Sekcja "## FAQ" w treści -> dane strukturalne FAQPage (rich results).
+    // Ten sam uniwersalny extractor co lekcje; nigdy nie rzuca (pusto = brak schematu).
+    $faqItems = \App\Services\Course\LessonFaqExtractor::extract($faqHtml);
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $htmlLang }}" class="scroll-smooth">
@@ -476,6 +481,24 @@
   ]
 }
 </script>
+
+@if(!empty($faqItems))
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    @foreach($faqItems as $faq)
+    {
+      "@type": "Question",
+      "name": {!! json_encode($faq['question'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+      "acceptedAnswer": { "@type": "Answer", "text": {!! json_encode($faq['answer'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!} }
+    }@if(!$loop->last),@endif
+    @endforeach
+  ]
+}
+</script>
+@endif
 
 <!-- ===========================================================
   SCRIPTS: reading bar, TOC, highlight

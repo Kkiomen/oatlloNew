@@ -149,16 +149,16 @@ My rough heuristic, after years of getting it wrong in both directions:
 
 ## FAQ
 
-**Is a higher isolation level always safer?**
+### Is a higher isolation level always safer?
 Safer against anomalies, yes, but not free. Higher levels mean more locking or more aborted transactions, which reduces throughput and can introduce deadlocks. The safest correct choice is the lowest level that prevents the specific anomaly your operation can't tolerate.
 
-**Why does the same code behave differently on MySQL and PostgreSQL?**
+### Why does the same code behave differently on MySQL and PostgreSQL?
 Because their defaults differ: InnoDB defaults to REPEATABLE READ while PostgreSQL defaults to READ COMMITTED. A read-then-write sequence sees a stable snapshot under one and a moving one under the other. Test on the engine you deploy to, not just the one on your laptop.
 
-**Does REPEATABLE READ prevent phantom reads?**
+### Does REPEATABLE READ prevent phantom reads?
 By the strict SQL standard, no. But both major engines go beyond the standard here: InnoDB uses next-key locking to block phantoms on locking reads, and PostgreSQL's snapshot-based REPEATABLE READ prevents them too. So in practice, on MySQL and Postgres, you usually get phantom protection at this level.
 
-**What happens if a SERIALIZABLE transaction fails?**
+### What happens if a SERIALIZABLE transaction fails?
 The database aborts one of the conflicting transactions with a serialization error rather than committing a bad result. Your application is expected to catch that error and retry the transaction. In Laravel, the `$attempts` argument to `DB::transaction` gives you deadlock retries for free; serialization failures you typically handle with your own retry loop.
 
 ## Conclusion

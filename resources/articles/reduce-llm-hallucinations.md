@@ -156,16 +156,16 @@ A short list of things that have bitten me or people I work with:
 
 ## FAQ
 
-**Can you completely eliminate LLM hallucinations?**
+### Can you completely eliminate LLM hallucinations?
 No. You can drive the rate down substantially with grounding, validation, and verification, and you can catch many of the rest before they reach users. But an LLM is a probabilistic system, so plan for the failure case rather than assuming it away.
 
-**Why do LLMs hallucinate even with good prompts?**
+### Why do LLMs hallucinate even with good prompts?
 Because the model optimizes for plausible next tokens, not truth. A great prompt reduces ambiguity, but if the model lacks the information and has no way to say "I don't know," it will still generate a confident guess.
 
-**What temperature should I use for factual tasks?**
+### What temperature should I use for factual tasks?
 Low. For extraction, question-answering over documents, and anything where accuracy matters, keep temperature near the bottom of the range so output stays close to the source. Save higher temperatures for creative or ideation features.
 
-**How do I make the model admit it doesn't know?**
+### How do I make the model admit it doesn't know?
 Give it explicit permission and an example. Tell it to reply "I don't know" when the context lacks the answer, show one such example in the prompt, and add a low-confidence field it can set. Models refuse far more readily when refusal is clearly an allowed option.
 
 ## Where to start

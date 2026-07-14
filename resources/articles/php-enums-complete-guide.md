@@ -258,16 +258,16 @@ A quick list of things that bite people (they bit me):
 
 ## FAQ
 
-**When should I use a pure enum vs a backed enum?**
+### When should I use a pure enum vs a backed enum?
 Use a backed enum whenever the value needs to leave your PHP process - saved to a database, sent in an API response, or read from a form. Use a pure enum when the case is purely an in-memory concept and never gets serialized. When in doubt, backed enums are more flexible.
 
-**What version of PHP do I need for enums?**
+### What version of PHP do I need for enums?
 PHP 8.1 or newer. Enums are not available in 8.0 or earlier. If you are stuck on an older version, class constants or a userland enum library are your fallback.
 
-**Can PHP enums have properties?**
+### Can PHP enums have properties?
 No. Enums cannot declare properties or hold state, because every case is a shared singleton instance. They can have methods, constants, and implement interfaces - just no mutable data. If you need state, use a regular class.
 
-**What is the difference between from() and tryFrom()?**
+### What is the difference between from() and tryFrom()?
 Both look up a case by its backing value. `from()` throws a `ValueError` when there is no match; `tryFrom()` returns `null`. Use `tryFrom()` for untrusted input and `from()` when a missing value should genuinely be treated as an error.
 
 ## Conclusion

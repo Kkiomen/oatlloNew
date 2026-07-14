@@ -78,13 +78,13 @@ So read every line before you accept it. Ask it to explain the tradeoffs of what
 
 ## FAQ
 
-**How many of these habits should I try to build at once?**
+### How many of these habits should I try to build at once?
 One or two. Seriously. New habits compete for the same limited pool of willpower, and stacking eight resolutions on January 1st is the reliable way to keep zero of them by February. Pick the one that fixes your most annoying recurring pain, make it automatic, then add the next.
 
-**I'm on a legacy codebase with no tests. Where do I even start?**
+### I'm on a legacy codebase with no tests. Where do I even start?
 Don't try to backfill coverage everywhere. Write a test the next time you fix a bug: one that reproduces it before your fix and passes after. Do the same for every new function you add. In a few months the parts of the code you touch most will be the parts that are tested, which is exactly the coverage you actually want.
 
-**Are these developer habits relevant if AI writes most of my code in 2027?**
+### Are these developer habits relevant if AI writes most of my code in 2027?
 More so, not less. If a model is generating volume, the bottleneck moves to judgment: reading code critically, reviewing carefully, committing in reviewable chunks, and knowing when the confident answer is wrong. Every habit here is about judgment, and that's the part that doesn't get automated away.
 
 ## Where to Start This Week
