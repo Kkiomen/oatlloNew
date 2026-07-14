@@ -5,6 +5,7 @@ namespace App\Services\Article;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Services\Markdown\HtmlContentEnhancer;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use League\CommonMark\Environment\Environment;
@@ -50,7 +51,7 @@ class MarkdownArticleParser
 
         return [
             'frontmatter' => is_array($frontmatter) ? $frontmatter : [],
-            'html' => (string) $result->getContent(),
+            'html' => HtmlContentEnhancer::enhance((string) $result->getContent()),
         ];
     }
 

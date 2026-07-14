@@ -71,9 +71,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/test', [\App\Http\Controllers\TestController::class, 'test'])->name('test');
-
-
 Route::get('/content-generators', [ContentGeneratorController::class, 'index'])->name('content_generators.index');
 Route::post('/content-generators', [ContentGeneratorController::class, 'store'])->name('content_generators.store');
 Route::get('/content-generators/{id}/edit', [ContentGeneratorController::class, 'edit'])->name('content_generators.edit');

@@ -81,7 +81,7 @@ class SitemapService
                 if (empty($category->slug)) {
                     continue;
                 }
-                $sitemap->addItem(route('blog.list.category', ['slug' => $category->slug], false), '0.7', 'weekly', 'Today');
+                $sitemap->addItem(route('blog.list.category', ['slug' => $category->slug], false), '0.7', 'weekly', $date);
             }
         }
 
@@ -109,7 +109,8 @@ class SitemapService
                 loc: $article->getRoute(false) ,
                 priority: '0.7',
                 changefreq: 'weekly',
-                lastmod: $article->getPublishedDate()->toIso8601String()
+                lastmod: $article->getPublishedDate()->toIso8601String(),
+                images: static::imageUrls($article->image ?? null)
             );
         }
 
@@ -145,7 +146,8 @@ class SitemapService
                 loc: $course->getRoute(false),
                 priority: '0.7',
                 changefreq: 'weekly',
-                lastmod: $course->updated_at->toIso8601String()
+                lastmod: $course->updated_at->toIso8601String(),
+                images: static::imageUrls($course->image ?? null)
             );
 
             foreach ($course->categories as $category) {
@@ -173,7 +175,25 @@ class SitemapService
             }
         }
 
-        $sitemap->createSitemapIndex(route('index').'/', 'Today');
+        $sitemap->createSitemapIndex(route('index').'/', $date);
+    }
+
+    /**
+     * Normalizuje obrazek wpisu do listy absolutnych URL-i dla image sitemap.
+     * Pomijamy puste i względne ścieżki (Google wymaga pełnego URL-a) —
+     * okładki artykułów/kursów to trasy route() zwracające absolutny URL.
+     *
+     * @return array<int,string>
+     */
+    protected static function imageUrls(?string $image): array
+    {
+        $image = trim((string) $image);
+
+        if ($image === '' || ! preg_match('#^https?://#i', $image)) {
+            return [];
+        }
+
+        return [$image];
     }
 
     protected static function prepareCategoriesBlog($mdArticles = null): mixed

@@ -268,7 +268,9 @@ class CourseMarkdownService
 
         $converter = new MarkdownConverter($environment);
 
-        return (string) $converter->convert($markdown)->getContent();
+        return \App\Services\Markdown\HtmlContentEnhancer::enhance(
+            (string) $converter->convert($markdown)->getContent()
+        );
     }
 
 

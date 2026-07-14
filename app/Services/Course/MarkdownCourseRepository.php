@@ -15,6 +15,7 @@ use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\FrontMatter\Output\RenderedContentWithFrontMatter;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
+use App\Services\Markdown\HtmlContentEnhancer;
 
 /**
  * Odczyt kursów zadeklarowanych jako pliki .md (drugie źródło kursów obok bazy).
@@ -249,7 +250,7 @@ class MarkdownCourseRepository
 
         return [
             'fm'   => is_array($fm) ? $fm : [],
-            'html' => (string) $result->getContent(),
+            'html' => HtmlContentEnhancer::enhance((string) $result->getContent()),
         ];
     }
 

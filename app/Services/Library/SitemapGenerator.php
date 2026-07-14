@@ -19,6 +19,7 @@ class SitemapGenerator
 
     const EXT = '.xml';
     const SCHEMA = 'http://www.sitemaps.org/schemas/sitemap/0.9';
+    const SCHEMA_IMAGE = 'http://www.google.com/schemas/sitemap-image/1.1';
     const DEFAULT_PRIORITY = 0.5;
     const ITEM_PER_SITEMAP = 50000;
     const SEPERATOR = '-';
@@ -158,6 +159,7 @@ class SitemapGenerator
         $this->getWriter()->setIndent(true);
         $this->getWriter()->startElement('urlset');
         $this->getWriter()->writeAttribute('xmlns', self::SCHEMA);
+        $this->getWriter()->writeAttribute('xmlns:image', self::SCHEMA_IMAGE);
     }
 
     /**
@@ -167,9 +169,10 @@ class SitemapGenerator
      * @param string $priority The priority of this URL relative to other URLs on your site. Valid values range from 0.0 to 1.0.
      * @param string $changefreq How frequently the page is likely to change. Valid values are always, hourly, daily, weekly, monthly, yearly and never.
      * @param string|int $lastmod The date of last modification of url. Unix timestamp or any English textual datetime description.
+     * @param array<int,string> $images Absolute URLs of images associated with this page (image sitemap extension).
      * @return self
      */
-    public function addItem($loc, $priority = self::DEFAULT_PRIORITY, $changefreq = NULL, $lastmod = NULL) {
+    public function addItem($loc, $priority = self::DEFAULT_PRIORITY, $changefreq = NULL, $lastmod = NULL, array $images = []) {
         if (($this->getCurrentItem() % self::ITEM_PER_SITEMAP) == 0) {
             if ($this->getWriter() instanceof \XMLWriter) {
                 $this->endSitemap();
@@ -185,6 +188,14 @@ class SitemapGenerator
             $this->getWriter()->writeElement('changefreq', $changefreq);
         if ($lastmod)
             $this->getWriter()->writeElement('lastmod', $this->getLastModifiedDate($lastmod));
+        foreach ($images as $image) {
+            if (empty($image)) {
+                continue;
+            }
+            $this->getWriter()->startElement('image:image');
+            $this->getWriter()->writeElement('image:loc', $image);
+            $this->getWriter()->endElement();
+        }
         $this->getWriter()->endElement();
         return $this;
     }
