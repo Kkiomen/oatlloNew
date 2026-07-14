@@ -83,6 +83,13 @@ class MarkdownArticleParser
             : $image;
         $article->language = $fm['language'] ?? config('articles.default_language');
         $article->type = 'normal';
+        // Frazy-kotwice do linkowania wewnętrznego (opcjonalne we frontmatterze).
+        // Akceptujemy tablicę lub string; zapisujemy jako listę rozdzieloną przecinkami.
+        $keys = $fm['keys_link'] ?? $fm['keywords'] ?? null;
+        if (is_array($keys)) {
+            $keys = implode(', ', array_map('strval', $keys));
+        }
+        $article->keys_link = ($keys !== null && trim((string) $keys) !== '') ? (string) $keys : null;
         $article->is_published = array_key_exists('is_published', $fm)
             ? (bool) $fm['is_published']
             : true;

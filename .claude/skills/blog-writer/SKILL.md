@@ -28,6 +28,7 @@ language: en
 published_at: <YYYY-MM-DD HH:MM:SS>    # use today's date/time
 is_published: true
 tags: [primary-topic, secondary-topic, one-more]
+keys_link: "distinctive phrase, another specific phrase, exact concept name"
 ---
 ```
 
@@ -41,6 +42,12 @@ Rules for frontmatter:
 - `published_at` — today's date/time (ask the environment for the current date; do
   not hardcode a stale one).
 - `tags` — 2–5 lowercase tags. Free-form (they don't need to pre-exist).
+- `keys_link` — 2–4 comma-separated **anchor phrases** used by the site's internal
+  linking engine: when any of these phrases appears in the body of *another*
+  article, it becomes a link to *this* one. Make them **specific and distinctive**
+  (the exact concept/feature/term this article owns), ≥4 chars, and **not** generic
+  words like `php`, `laravel`, `code`. Prefer multi-word phrases. Optional but
+  recommended — it makes the article a good internal-link target.
 - `category` — include **only** if that category slug already exists in the DB;
   otherwise omit it.
 

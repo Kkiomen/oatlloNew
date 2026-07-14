@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\Article\InternalLinker;
 use App\Services\Article\MarkdownArticleParser;
 use App\Services\Article\MarkdownArticleRepository;
 use App\Services\SitemapService;
@@ -89,6 +90,9 @@ class ArticleImportController extends Controller
         $path = $this->repository->save($raw, $slug);
         $article = $this->parser->toArticle($raw, $slug);
 
+        // Nowy/zmieniony artykuł .md wpływa na indeks linkowania wewnętrznego.
+        InternalLinker::forget();
+
         $this->regenerateSitemap();
 
         return response()->json([
@@ -156,6 +160,7 @@ class ArticleImportController extends Controller
         $deleted = $this->repository->delete($slug);
 
         if ($deleted) {
+            InternalLinker::forget();
             $this->regenerateSitemap();
         }
 

@@ -10,10 +10,19 @@ use Illuminate\Support\Str;
 
 class InternalUrlsGenerator
 {
+    /**
+     * Generuje wyłącznie klucze (keys_link) będące frazami-kotwicami dla
+     * linkowania wewnętrznego. Samo WSTAWIANIE linków odbywa się teraz przy
+     * renderze przez App\Services\Article\InternalLinker (działa dla artykułów
+     * z bazy i z plików .md, bez utrwalania w treści).
+     *
+     * @deprecated Faza utrwalania (generateHrefInArticles/updateInternalLinks)
+     *             nie jest już wywoływana – pozostaje jako martwy kod referencyjny.
+     */
     public static function generate(): void
     {
         static::generateUrlLinksKeys();
-        static::generateHrefInArticles();
+        // static::generateHrefInArticles(); // WYŁĄCZONE: linkowanie przy renderze (InternalLinker).
     }
 
     /**

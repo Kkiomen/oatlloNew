@@ -8,6 +8,10 @@ use App\Models\CourseCategoryLesson;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
+use League\CommonMark\MarkdownConverter;
 
 class CourseMarkdownService
 {
@@ -245,102 +249,26 @@ class CourseMarkdownService
     }
 
     /**
-     * Konwertuje Markdown na HTML
+     * Konwertuje Markdown na HTML za pomocą league/commonmark (CommonMark + GFM).
+     *
+     * Wcześniej używaliśmy ręcznego parsera na regexach, który błędnie traktował
+     * podkreślenia wewnątrz słów jako kursywę (np. UPPER_CASE -> UPPER<em>CASE...</em>)
+     * i psuł zagnieżdżone listy. CommonMark rozwiązuje oba problemy i jest zgodny
+     * ze specyfikacją (tak samo parsujemy artykuły w MarkdownArticleParser).
      */
     private function convertMarkdownToHtml(string $markdown): string
     {
-        if ($markdown === '') {
+        if (trim($markdown) === '') {
             return '';
         }
 
-        $html = str_replace(["\r\n", "\r"], "\n", $markdown);
+        $environment = new Environment();
+        $environment->addExtension(new CommonMarkCoreExtension());
+        $environment->addExtension(new GithubFlavoredMarkdownExtension());
 
-        // --- CODE BLOCKS ---
-        $esc = fn(string $s) => htmlspecialchars($s, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
-        $phBlock = fn(int $i) => sprintf("\x1EBC%05d\x1F", $i);
-        $phInline = fn(int $i) => sprintf("\x1EIC%05d\x1F", $i);
+        $converter = new MarkdownConverter($environment);
 
-        $codeBlocks = [];
-        $inlineCodes = [];
-        $cb = 0; $ci = 0;
-
-        // fenced code blocks (```php ... ```)
-        $html = preg_replace_callback(
-            '/(^|\n)[ ]{0,3}```[ \t]*([A-Za-z0-9_+-]+)?[ \t]*\n([\s\S]*?)\n[ ]{0,3}```[ \t]*(?=\n|$)/',
-            function ($m) use (&$codeBlocks, &$cb, $esc, $phBlock) {
-                $lang = $m[2] !== '' ? strtolower($m[2]) : 'php';
-                $ph   = $phBlock($cb++);
-                $codeBlocks[$ph] = '<pre><code class="language-'.$lang.'">'.$esc($m[3]).'</code></pre>';
-                return $m[1].$ph;
-            },
-            $html
-        );
-
-        // inline code `
-        $html = preg_replace_callback(
-            '/`([^`\n]+)`/',
-            function ($m) use (&$inlineCodes, &$ci, $esc, $phInline) {
-                $ph = $phInline($ci++);
-                $inlineCodes[$ph] = '<code>'.$esc($m[1]).'</code>';
-                return $ph;
-            },
-            $html
-        );
-
-        // --- LINKS & IMAGES ---
-        $html = preg_replace('/!\[([^\]]*)\]\(([^)]+)\)/', '<img src="$2" alt="$1">', $html);
-        $html = preg_replace('/\[([^\]]+)\]\(([^)]+)\)/', '<a href="$2">$1</a>', $html);
-
-        // --- HEADERS ---
-        for ($i=6; $i>=1; $i--) {
-            $html = preg_replace('/^'.str_repeat('#',$i).'[ \t]+(.+)$/m', "<h$i>$1</h$i>", $html);
-        }
-
-        // --- LISTS ---
-        // UL item
-        $html = preg_replace('/^[ ]{0,3}(?:-|\*)[ \t]+(.+)$/m', '<li>$1</li>', $html);
-        // OL item
-        $html = preg_replace('/^[ ]{0,3}\d+\.[ \t]+(.+)$/m', '<li data-ol="1">$1</li>', $html);
-
-        // wrap OL
-        $html = preg_replace_callback(
-            '/(?:^(?:<li data-ol="1">.*<\/li>)\s*)+/m',
-            fn($m) => "<ol>\n".str_replace('<li data-ol="1">','<li>',$m[0])."\n</ol>",
-            $html
-        );
-        // wrap UL
-        $html = preg_replace_callback(
-            '/(?:^(?:<li>(?:.|\n)*?<\/li>)\s*)+/m',
-            fn($m) => "<ul>\n".trim($m[0])."\n</ul>",
-            $html
-        );
-
-        // --- EMPHASIS ---
-        $html = preg_replace('/(?<!\*)\*\*(.+?)\*\*(?!\*)/s', '<strong>$1</strong>', $html);
-        $html = preg_replace('/(?<!_)__(.+?)__(?!_)/s', '<strong>$1</strong>', $html);
-        // kursywa — ignorujemy "* " na początku (lista)
-        $html = preg_replace('/(?<!\*)\*(?!\s)(.+?)(?<!\s)\*(?!\*)/s', '<em>$1</em>', $html);
-        $html = preg_replace('/(?<!_)_(.+?)_(?!_)/s', '<em>$1</em>', $html);
-
-        // --- HR ---
-        $html = preg_replace('/^(?:---|\*\*\*|___)\s*$/m', '<hr>', $html);
-
-        // --- PARAGRAPHS ---
-        $blocks = preg_split("/\n{2,}/", $html);
-        foreach ($blocks as &$b) {
-            $t = ltrim($b);
-            if ($t === '') continue;
-            if (!preg_match('/^(<(?:h[1-6]|ul|ol|pre|hr)>)/', $t)) {
-                $b = '<p>'.preg_replace("/\n/", "<br>", $b).'</p>';
-            }
-        }
-        $html = implode("\n\n", $blocks);
-
-        // --- RESTORE placeholders ---
-        foreach ($inlineCodes as $ph => $val) $html = str_replace($ph,$val,$html);
-        foreach ($codeBlocks as $ph => $val) $html = str_replace($ph,$val,$html);
-
-        return $html;
+        return (string) $converter->convert($markdown)->getContent();
     }
 
 

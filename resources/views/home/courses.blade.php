@@ -104,7 +104,9 @@
                 </a>
             </div>
         </nav>
+    </header>
 
+    <!-- Mobile menu poza naglowkiem: backdrop-filter tworzylby containing-block dla position:fixed -->
         <div class="lg:hidden" role="dialog" aria-modal="true" x-show="open" x-cloak>
             <div class="fixed inset-0 z-50 bg-black/60" @click="open = false"></div>
             <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
@@ -126,7 +128,6 @@
                 </div>
             </div>
         </div>
-    </header>
 </div>
 
 <main id="courses" aria-label="Courses">

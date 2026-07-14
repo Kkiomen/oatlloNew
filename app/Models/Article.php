@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\Article\ContentSanitizer;
+use App\Services\Article\InternalLinker;
 use App\Services\Generator\InternalUrlsGenerator;
 use App\Services\Generator\TagForArticleGenerator;
 use Carbon\Carbon;
@@ -166,23 +167,49 @@ class Article extends Model
     }
 
     /**
-     * Zwraca bloki treści oczyszczone tuż przed wyświetleniem
-     * (myślniki em/en -> dywiz, słownik anti-AI). Działa dla artykułów
-     * zarówno z bazy, jak i z plików .md, bo bazuje na $this->contents.
+     * Cache wyniku getDisplayContents() na czas życia instancji (widok woła tę
+     * metodę dwukrotnie: dla word count i dla renderu treści).
+     *
+     * @var array<int,array<string,mixed>>|null
+     */
+    private ?array $displayContentsCache = null;
+
+    /**
+     * Zwraca bloki treści przygotowane tuż przed wyświetleniem:
+     *  1) sanityzacja (myślniki em/en -> dywiz, słownik anti-AI),
+     *  2) linkowanie wewnętrzne do innych artykułów (App\Services\Article\InternalLinker).
+     *
+     * Działa dla artykułów zarówno z bazy, jak i z plików .md, bo bazuje na
+     * $this->contents (wspólny format obu źródeł).
      *
      * @return array<int,array<string,mixed>>
      */
     public function getDisplayContents(): array
     {
+        if ($this->displayContentsCache !== null) {
+            return $this->displayContentsCache;
+        }
+
         $sanitizer = app(ContentSanitizer::class);
 
-        return array_map(function ($content) use ($sanitizer) {
+        $blocks = array_map(function ($content) use ($sanitizer) {
             if (($content['type'] ?? null) === 'text' && !empty($content['content'])) {
                 $content['content'] = $sanitizer->sanitize((string) $content['content']);
             }
 
             return $content;
         }, $this->contents ?? []);
+
+        // Linkowanie wewnętrzne po sanityzacji (wspólny budżet linków w obrębie artykułu).
+        // Ostateczny bezpiecznik: linkowanie nigdy nie może wywalić renderu (500) —
+        // przy błędzie pokazujemy treść zsanityzowaną, ale bez linków.
+        try {
+            $blocks = app(InternalLinker::class)->linkContents($blocks, $this);
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
+        return $this->displayContentsCache = $blocks;
     }
 
     public function getTimeRead(): int
@@ -348,8 +375,13 @@ class Article extends Model
         if($publish === true){
             $article->published_at = Carbon::now();
             TagForArticleGenerator::generate();
+            // Generuje wyłącznie keys_link (frazy-kotwice). Samo wstawianie linków
+            // odbywa się teraz przy renderze przez App\Services\Article\InternalLinker.
             InternalUrlsGenerator::generate();
         }
+
+        // Zmiana widoczności/treści wpływa na indeks linkowania wewnętrznego.
+        InternalLinker::forget();
     }
 
     /**
