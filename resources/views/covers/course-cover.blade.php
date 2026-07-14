@@ -33,11 +33,14 @@
         <text x="{{ 138 }}" y="100" font-family="{{ $sans }}" font-size="22" font-weight="700" fill="{{ $accent }}">{{ $label }}</text>
     </g>
 
-    {{-- Duże logo technologii (biały mark na poświacie akcentu) --}}
-    <circle cx="{{ $logoCx }}" cy="{{ $logoCy }}" r="210" fill="url(#logoGlow)"/>
-    <g transform="translate({{ $logoCx - 130 }}, {{ $logoCy - 130 }}) scale(2.6)" fill="#f8fafc" color="#f8fafc" opacity="0.96">
-        {!! $logo !!}
-    </g>
+    {{-- Duże logo technologii (biały mark na poświacie akcentu).
+         Puste logo => czysta, minimalistyczna okładka bez znaku (i bez poświaty). --}}
+    @if(trim($logo ?? '') !== '')
+        <circle cx="{{ $logoCx }}" cy="{{ $logoCy }}" r="210" fill="url(#logoGlow)"/>
+        <g transform="translate({{ $logoCx - 130 }}, {{ $logoCy - 130 }}) scale(2.6)" fill="#f8fafc" color="#f8fafc" opacity="0.96">
+            {!! $logo !!}
+        </g>
+    @endif
 
     {{-- Tytuł kursu --}}
     @foreach($titleLines as $line)
