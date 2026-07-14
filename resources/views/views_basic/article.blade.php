@@ -138,7 +138,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/github.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/github.css"></noscript>
     <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"  media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" /></noscript>
 </head>
 <body class="bg-neutral-950 text-neutral-100 antialiased">
 <div id="reading-bar"></div>
@@ -155,7 +154,7 @@
             </div>
             <div class="flex lg:hidden">
                 <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                    {!! \App\Support\Icons::svg('bars', 'text-xl') !!}
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
@@ -165,7 +164,7 @@
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                 <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">
-                    <i class="fa-brands fa-linkedin mr-1"></i>LinkedIn
+                    {!! \App\Support\Icons::svg('linkedin', 'mr-1') !!}LinkedIn
                 </a>
             </div>
         </nav>
@@ -177,7 +176,7 @@
             <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
                 <div class="flex items-center justify-between">
                     <a href="{{ route('index') }}" class="-m-1.5 p-1.5"><div class="logo_oatllo">oatllo</div></a>
-                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu"><i class="fa-solid fa-xmark text-xl"></i></button>
+                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu">{!! \App\Support\Icons::svg('xmark', 'text-xl') !!}</button>
                 </div>
                 <div class="mt-6 flow-root">
                     <div class="-my-2 divide-y divide-white/10">
@@ -187,7 +186,7 @@
                             <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.courses') }}</a>
                         </div>
                         <div class="py-6">
-                            <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800"><i class="fa-brands fa-linkedin mr-2"></i>LinkedIn</a>
+                            <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{!! \App\Support\Icons::svg('linkedin', 'mr-2') !!}LinkedIn</a>
                         </div>
                     </div>
                 </div>
@@ -239,7 +238,7 @@
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         @if($categoryName)
             <a href="{{ route('blog.list.category', ['slug' => $categorySlug]) }}" class="inline-flex items-center gap-2 rounded-full border border-rose-400/30 bg-rose-500/10 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/20 transition-colors duration-200">
-                <i class="fa-solid fa-folder-open"></i> {{ $categoryName }}
+                {!! \App\Support\Icons::svg('folder-open', '') !!} {{ $categoryName }}
             </a>
         @endif
 
@@ -257,11 +256,11 @@
             </div>
             <span class="hidden h-8 w-px bg-white/10 sm:block"></span>
             <div class="flex items-center gap-2 text-neutral-400">
-                <i class="fa-solid fa-calendar text-rose-400"></i>
+                {!! \App\Support\Icons::svg('calendar', 'text-rose-400') !!}
                 <time datetime="{{ $article->getPublishedDate()->format('Y-m-d') }}" itemprop="datePublished">{{ $article->getPublishedDate()->format('M j, Y') }}</time>
             </div>
             <div class="flex items-center gap-2 text-neutral-400">
-                <i class="fa-solid fa-clock text-rose-400"></i>
+                {!! \App\Support\Icons::svg('clock', 'text-rose-400') !!}
                 <span>{{ $article->getTimeRead() }}&nbsp;min read</span>
             </div>
         </div>
@@ -312,10 +311,10 @@
             <!-- Share row -->
             <div class="mt-12 flex flex-wrap items-center gap-4 border-t border-white/10 pt-6 not-prose">
                 <span class="text-sm font-semibold text-neutral-400">Share:</span>
-                <a href="https://twitter.com/intent/tweet?url={{ urlencode($article->getRoute()) }}&text={{ urlencode($article->name) }}&via=Oatllo" target="_blank" rel="noopener" class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-neutral-400 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Share on X/Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode($article->getRoute()) }}" target="_blank" rel="noopener" class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-neutral-400 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($article->getRoute()) }}" target="_blank" rel="noopener" class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-neutral-400 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                <button type="button" onclick="navigator.clipboard.writeText('{{ $article->getRoute() }}'); this.querySelector('span').textContent='Copied!';" class="ml-auto inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-sm text-neutral-400 hover:bg-white/10 hover:text-white transition-colors duration-200"><i class="fa-solid fa-link"></i><span>Copy link</span></button>
+                <a href="https://twitter.com/intent/tweet?url={{ urlencode($article->getRoute()) }}&text={{ urlencode($article->name) }}&via=Oatllo" target="_blank" rel="noopener" class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-neutral-400 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Share on X/Twitter">{!! \App\Support\Icons::svg('x-twitter', '') !!}</a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode($article->getRoute()) }}" target="_blank" rel="noopener" class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-neutral-400 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Share on LinkedIn">{!! \App\Support\Icons::svg('linkedin-in', '') !!}</a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($article->getRoute()) }}" target="_blank" rel="noopener" class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-neutral-400 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Share on Facebook">{!! \App\Support\Icons::svg('facebook-f', '') !!}</a>
+                <button type="button" onclick="navigator.clipboard.writeText('{{ $article->getRoute() }}'); this.querySelector('span').textContent='Copied!';" class="ml-auto inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-sm text-neutral-400 hover:bg-white/10 hover:text-white transition-colors duration-200">{!! \App\Support\Icons::svg('link', '') !!}<span>Copy link</span></button>
             </div>
         </article>
 
@@ -342,7 +341,7 @@
             <p class="mt-1 text-sm text-neutral-400" itemprop="description">PHP &amp; Laravel developer. I write about modern backend, architecture, DevOps and developer tooling.</p>
         </div>
         <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-rose-500 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-400 transition-colors duration-200">
-            <i class="fa-brands fa-linkedin"></i> Follow
+            {!! \App\Support\Icons::svg('linkedin', '') !!} Follow
         </a>
     </div>
 </section>
@@ -354,7 +353,7 @@
     @if(isset($relatedArticles) && $relatedArticles->count() > 0)
         <div class="mb-16">
             <h2 class="mb-8 flex items-center gap-3 text-2xl font-bold text-white">
-                <i class="fa-solid fa-link text-rose-400"></i> Related articles
+                {!! \App\Support\Icons::svg('link', 'text-rose-400') !!} Related articles
             </h2>
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($relatedArticles as $relatedArticle)
@@ -368,11 +367,11 @@
         <div class="mb-16">
             <div class="mb-8 flex items-center justify-between gap-4">
                 <h2 class="flex items-center gap-3 text-2xl font-bold text-white">
-                    <i class="fa-solid fa-folder text-rose-400"></i> More from {{ $categoryName }}
+                    {!! \App\Support\Icons::svg('folder', 'text-rose-400') !!} More from {{ $categoryName }}
                 </h2>
                 @if($categorySlug)
                     <a href="{{ route('blog.list.category', ['slug' => $categorySlug]) }}" class="hidden shrink-0 text-sm font-semibold text-rose-400 hover:text-rose-300 sm:inline-flex sm:items-center sm:gap-2">
-                        View all <i class="fa-solid fa-arrow-right text-xs"></i>
+                        View all {!! \App\Support\Icons::svg('arrow-right', 'text-xs') !!}
                     </a>
                 @endif
             </div>
@@ -387,7 +386,7 @@
     @if(isset($latestArticles) && $latestArticles->count() > 0)
         <div class="mb-4">
             <h2 class="mb-8 flex items-center gap-3 text-2xl font-bold text-white">
-                <i class="fa-solid fa-clock text-rose-400"></i> Latest articles
+                {!! \App\Support\Icons::svg('clock', 'text-rose-400') !!} Latest articles
             </h2>
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($latestArticles as $latestArticle)
@@ -406,7 +405,7 @@
         <div class="grid gap-4 sm:grid-cols-2">
             @if($previousArticle)
                 <a href="{{ $previousArticle->getRoute() }}" class="card-hover group flex items-center gap-3 rounded-2xl border border-white/10 bg-neutral-900 p-5 text-neutral-300 hover:text-white">
-                    <i class="fa-solid fa-angle-left flex-none transition-transform duration-200 group-hover:-translate-x-1 text-rose-400"></i>
+                    {!! \App\Support\Icons::svg('angle-left', 'flex-none transition-transform duration-200 group-hover:-translate-x-1 text-rose-400') !!}
                     <div class="min-w-0">
                         <div class="text-xs uppercase tracking-wide text-neutral-500">Previous</div>
                         <div class="truncate font-semibold">{{ $previousArticle->name }}</div>
@@ -422,7 +421,7 @@
                         <div class="text-xs uppercase tracking-wide text-neutral-500">Next</div>
                         <div class="truncate font-semibold">{{ $nextArticle->name }}</div>
                     </div>
-                    <i class="fa-solid fa-angle-right flex-none transition-transform duration-200 group-hover:translate-x-1 text-rose-400"></i>
+                    {!! \App\Support\Icons::svg('angle-right', 'flex-none transition-transform duration-200 group-hover:translate-x-1 text-rose-400') !!}
                 </a>
             @else
                 <div></div>

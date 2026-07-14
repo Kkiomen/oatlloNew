@@ -13,7 +13,6 @@
     <link rel="preload" href="{{ asset('assets/fonts/montserrat/montserrat-400-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"  media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" /></noscript>
 <style>
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glow { background: radial-gradient(50% 50% at 50% 40%, rgba(244,63,94,.18) 0%, rgba(244,63,94,0) 70%); }
@@ -44,10 +43,10 @@
 
         <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a href="{{ route('index') }}" class="inline-flex items-center gap-2 rounded-xl bg-rose-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-rose-500/30 hover:bg-rose-400 transition-colors duration-200">
-                <i class="fa-solid fa-house"></i> Strona główna
+                {!! \App\Support\Icons::svg('house', '') !!} Strona główna
             </a>
             <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-base font-semibold text-white hover:bg-white/10 transition-colors duration-200">
-                <i class="fa-solid fa-book-open"></i> Blog
+                {!! \App\Support\Icons::svg('book-open', '') !!} Blog
             </a>
         </div>
     </main>

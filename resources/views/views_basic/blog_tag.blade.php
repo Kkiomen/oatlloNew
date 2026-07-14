@@ -50,7 +50,6 @@
     <link rel="preload" href="{{ asset('assets/fonts/montserrat/montserrat-400-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"  media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" /></noscript>
 <style>
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -75,7 +74,7 @@
             </div>
             <div class="flex lg:hidden">
                 <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                    {!! \App\Support\Icons::svg('bars', 'text-xl') !!}
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
@@ -85,7 +84,7 @@
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                 <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">
-                    <i class="fa-brands fa-linkedin mr-1"></i>LinkedIn
+                    {!! \App\Support\Icons::svg('linkedin', 'mr-1') !!}LinkedIn
                 </a>
             </div>
         </nav>
@@ -97,7 +96,7 @@
         <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div class="flex items-center justify-between">
                 <a href="{{ route('index') }}" class="-m-1.5 p-1.5"><div class="logo_oatllo">oatllo</div></a>
-                <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu">{!! \App\Support\Icons::svg('xmark', 'text-xl') !!}</button>
             </div>
             <div class="mt-6 space-y-2">
                 <a href="{{ route('index') }}" class="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.home') }}</a>
@@ -138,7 +137,7 @@
 
         <header class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
             <span class="inline-flex items-center gap-2 rounded-full border border-rose-400/20 bg-rose-500/10 px-4 py-1.5 text-sm font-medium text-rose-300">
-                <i class="fa-solid fa-tag"></i> {{ __('basic.tags') }}
+                {!! \App\Support\Icons::svg('tag', '') !!} {{ __('basic.tags') }}
             </span>
             <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
                 <span class="bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">#{{ $tagName }}</span>
@@ -197,7 +196,7 @@
             </div>
         @else
             <div class="py-16 text-center">
-                <i class="fa-solid fa-tag mb-4 block text-4xl text-neutral-600"></i>
+                {!! \App\Support\Icons::svg('tag', 'mb-4 block text-4xl text-neutral-600') !!}
                 <p class="text-lg text-neutral-400">Brak artykułów z tym tagiem.</p>
                 <p class="mt-2 text-sm text-neutral-500">
                     Zajrzyj do <a href="{{ route('blog') }}" class="text-rose-400 hover:text-rose-300">wszystkich artykułów</a>.
@@ -209,7 +208,7 @@
     <!-- Back to blog -->
     <div class="mx-auto max-w-7xl px-4 pb-4 text-center sm:px-6 lg:px-8">
         <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-base font-semibold text-white hover:bg-white/10 transition-colors duration-200">
-            <i class="fa-solid fa-arrow-left"></i> {{ __('basic.header_blog') }}
+            {!! \App\Support\Icons::svg('arrow-left', '') !!} {{ __('basic.header_blog') }}
         </a>
     </div>
 </main>

@@ -56,7 +56,6 @@
     <link rel="preload" href="{{ asset('assets/fonts/montserrat/montserrat-400-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"  media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" /></noscript>
 <style>
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -87,7 +86,7 @@
             </div>
             <div class="flex lg:hidden">
                 <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                    {!! \App\Support\Icons::svg('bars', 'text-xl') !!}
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
@@ -97,7 +96,7 @@
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                 <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm font-semibold text-neutral-300 hover:text-emerald-400 transition-colors duration-200">
-                    <i class="fa-brands fa-linkedin mr-1"></i>LinkedIn
+                    {!! \App\Support\Icons::svg('linkedin', 'mr-1') !!}LinkedIn
                 </a>
             </div>
         </nav>
@@ -109,7 +108,7 @@
             <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
                 <div class="flex items-center justify-between">
                     <a href="{{ route('index') }}" class="-m-1.5 p-1.5"><div class="logo_oatllo">oatllo</div></a>
-                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu"><i class="fa-solid fa-xmark text-xl"></i></button>
+                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu">{!! \App\Support\Icons::svg('xmark', 'text-xl') !!}</button>
                 </div>
                 <div class="mt-6 flow-root">
                     <div class="-my-2 divide-y divide-white/10">
@@ -119,7 +118,7 @@
                             <a href="{{ $coursesUrl }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.courses') }}</a>
                         </div>
                         <div class="py-6">
-                            <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800"><i class="fa-brands fa-linkedin mr-2"></i>LinkedIn</a>
+                            <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{!! \App\Support\Icons::svg('linkedin', 'mr-2') !!}LinkedIn</a>
                         </div>
                     </div>
                 </div>
@@ -160,22 +159,22 @@
     <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
         <div>
             <span class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300">
-                <i class="fa-solid fa-graduation-cap"></i> {{ __('basic.courses') }}
+                {!! \App\Support\Icons::svg('graduation-cap', '') !!} {{ __('basic.courses') }}
             </span>
             <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-white md:text-5xl">{!! $titleFull !!}</h1>
             <div class="mt-5 max-w-xl text-lg text-neutral-400">{!! $descFull !!}</div>
 
             <div class="mt-6 flex flex-wrap gap-3 text-sm">
-                <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300"><i class="fa-solid fa-layer-group text-emerald-400"></i> {{ $chapterCount }} {{ __('basic.chapter') }}</span>
+                <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300">{!! \App\Support\Icons::svg('layer-group', 'text-emerald-400') !!} {{ $chapterCount }} {{ __('basic.chapter') }}</span>
                 @if($lessonCount > 0)
-                    <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300"><i class="fa-solid fa-play-circle text-emerald-400"></i> {{ $lessonCount }} {{ __('basic.lessons_from_courses') }}</span>
+                    <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300">{!! \App\Support\Icons::svg('play-circle', 'text-emerald-400') !!} {{ $lessonCount }} {{ __('basic.lessons_from_courses') }}</span>
                 @endif
-                <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300"><i class="fa-solid fa-tag text-emerald-400"></i> Free</span>
+                <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300">{!! \App\Support\Icons::svg('tag', 'text-emerald-400') !!} Free</span>
             </div>
 
             <div class="mt-8">
                 <a href="{{ $firstLessonRoute }}" class="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition-colors duration-200">
-                    <i class="fa-solid fa-play"></i> {{ __('basic.go_to_course') }}
+                    {!! \App\Support\Icons::svg('play', '') !!} {{ __('basic.go_to_course') }}
                 </a>
             </div>
         </div>
@@ -194,7 +193,7 @@
         <section class="mt-16">
             <div class="rounded-3xl border border-white/10 bg-neutral-900 p-8">
                 <h2 class="mb-6 flex items-center gap-3 text-2xl font-bold text-white">
-                    <i class="fa-solid fa-circle-info text-emerald-400"></i> About this course
+                    {!! \App\Support\Icons::svg('circle-info', 'text-emerald-400') !!} About this course
                 </h2>
                 <div class="prose-invert max-w-none">{!! $aboutHtml !!}</div>
             </div>
@@ -204,7 +203,7 @@
     <!-- Curriculum -->
     <section class="mt-16">
         <h2 class="mb-8 flex items-center gap-3 text-2xl font-bold text-white">
-            <i class="fa-solid fa-list-check text-emerald-400"></i> Course curriculum
+            {!! \App\Support\Icons::svg('list-check', 'text-emerald-400') !!} Course curriculum
         </h2>
 
         <div class="space-y-4">
@@ -218,7 +217,7 @@
                                 <span class="ml-2 text-xs text-neutral-500">{{ $category->lessons->count() }} {{ __('basic.lessons_from_courses') }}</span>
                             </span>
                         </span>
-                        <i class="fa-solid fa-chevron-down flex-none text-emerald-400 transition-transform duration-200" :class="open ? 'rotate-180' : ''"></i>
+                        {!! \App\Support\Icons::svg('chevron-down', 'flex-none text-emerald-400 transition-transform duration-200') !!}
                     </button>
                     <div x-show="open"
                          x-transition:enter="transition ease-out duration-200"
@@ -228,7 +227,7 @@
                             @foreach($category->lessons as $lesson)
                                 <li>
                                     <a href="{{ $lesson->getRoute() }}" class="group flex items-start gap-3 rounded-xl bg-white/5 p-4 hover:bg-white/10 transition-colors duration-200">
-                                        <i class="fa-solid fa-play-circle mt-0.5 flex-none text-emerald-400"></i>
+                                        {!! \App\Support\Icons::svg('play-circle', 'mt-0.5 flex-none text-emerald-400') !!}
                                         <span class="min-w-0">
                                             <span class="block font-medium text-white group-hover:text-emerald-300 transition-colors duration-200">{{ $lesson->title }}</span>
                                             @if($lesson->seo_description)
@@ -252,7 +251,7 @@
             <h2 class="text-3xl font-bold text-white">Start with the first lesson</h2>
             <p class="mx-auto mt-3 max-w-xl text-neutral-300">Free, self-paced and hands-on. Jump in and start building.</p>
             <a href="{{ $firstLessonRoute }}" class="mt-8 inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition-colors duration-200">
-                <i class="fa-solid fa-play"></i> {{ __('basic.go_to_course') }}
+                {!! \App\Support\Icons::svg('play', '') !!} {{ __('basic.go_to_course') }}
             </a>
         </div>
     </section>

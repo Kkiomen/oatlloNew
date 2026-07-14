@@ -87,8 +87,8 @@
         <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 sm:flex-row">
             <p class="text-sm text-neutral-500">&copy; {{ date('Y') }} Oatllo · Jakub Owsianka</p>
             <div class="flex gap-5">
-                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-neutral-500 hover:text-{{ $accent }}-400" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="{{ route('feed') }}" class="text-neutral-500 hover:text-{{ $accent }}-400" aria-label="RSS"><i class="fa-solid fa-rss"></i></a>
+                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-neutral-500 hover:text-{{ $accent }}-400" aria-label="LinkedIn">{!! \App\Support\Icons::svg('linkedin', '') !!}</a>
+                <a href="{{ route('feed') }}" class="text-neutral-500 hover:text-{{ $accent }}-400" aria-label="RSS">{!! \App\Support\Icons::svg('rss', '') !!}</a>
             </div>
         </div>
     </div>

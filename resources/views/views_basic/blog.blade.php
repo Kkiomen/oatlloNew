@@ -80,7 +80,6 @@
     <link rel="preload" href="{{ asset('assets/fonts/montserrat/montserrat-400-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"  media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" /></noscript>
 <style>
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -107,7 +106,7 @@
             </div>
             <div class="flex lg:hidden">
                 <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                    {!! \App\Support\Icons::svg('bars', 'text-xl') !!}
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
@@ -117,7 +116,7 @@
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-6">
                 <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">
-                    <i class="fa-brands fa-linkedin mr-1"></i>LinkedIn
+                    {!! \App\Support\Icons::svg('linkedin', 'mr-1') !!}LinkedIn
                 </a>
             </div>
         </nav>
@@ -132,7 +131,7 @@
                         <div class="logo_oatllo">oatllo</div>
                     </a>
                     <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu">
-                        <i class="fa-solid fa-xmark text-xl"></i>
+                        {!! \App\Support\Icons::svg('xmark', 'text-xl') !!}
                     </button>
                 </div>
                 <div class="mt-6 flow-root">
@@ -144,7 +143,7 @@
                         </div>
                         <div class="py-6">
                             <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">
-                                <i class="fa-brands fa-linkedin mr-2"></i>LinkedIn
+                                {!! \App\Support\Icons::svg('linkedin', 'mr-2') !!}LinkedIn
                             </a>
                         </div>
                     </div>
@@ -203,12 +202,12 @@
             <!-- Search -->
             <form action="{{ route('blog') }}" method="get" class="relative mx-auto mt-8 flex max-w-lg justify-center" role="search">
                 <input type="search" name="q" value="{{ $searchQuery ?? '' }}" placeholder="{{ __('basic.articles') }}…" aria-label="Search blog" class="w-full rounded-xl border border-white/10 bg-white/5 p-3.5 pr-11 placeholder-neutral-500 text-white focus:border-rose-400/50 focus:outline-none focus:ring-2 focus:ring-rose-500/40" />
-                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-rose-400" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-rose-400" aria-label="Search">{!! \App\Support\Icons::svg('magnifying-glass', '') !!}</button>
             </form>
             @if($searchQuery)
                 <div class="mt-4">
                     <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200">
-                        <i class="fa-solid fa-xmark"></i> Clear search
+                        {!! \App\Support\Icons::svg('xmark', '') !!} Clear search
                     </a>
                 </div>
             @endif
@@ -241,7 +240,7 @@
                     <img decoding="async" src="{{ \App\Services\HomeService::responsiveImage($featuredArticle->image, 1000) }}" alt="{{ $featuredArticle->name }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/70 to-transparent lg:bg-gradient-to-r"></div>
                     <span class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-rose-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-rose-500/30">
-                        <i class="fa-solid fa-star"></i> Featured
+                        {!! \App\Support\Icons::svg('star', '') !!} Featured
                     </span>
                 </div>
                 <div class="flex flex-col justify-center p-8 lg:p-12">
@@ -257,7 +256,7 @@
                     <h2 class="mt-4 text-2xl font-bold text-white group-hover:text-rose-300 transition-colors duration-200 lg:text-3xl">{{ $featuredArticle->name }}</h2>
                     <p class="mt-3 text-neutral-400 line-clamp-3">{{ $featuredArticle->short_description }}</p>
                     <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rose-400 group-hover:gap-3 transition-all duration-200">
-                        {{ __('basic.more') }} <i class="fa-solid fa-arrow-right"></i>
+                        {{ __('basic.more') }} {!! \App\Support\Icons::svg('arrow-right', '') !!}
                     </span>
                 </div>
             </a>
@@ -295,20 +294,20 @@
                         <div class="mb-3 flex items-center gap-2 text-xs text-neutral-500">
                             <time datetime="{{ $article->getPublishedDate()->format('Y-m-d') }}" itemprop="datePublished">{{ $article->getPublishedDate()->format('M j, Y') }}</time>
                             <span>·</span>
-                            <span><i class="fa-solid fa-clock mr-1 text-rose-400/70"></i>{{ $article->getTimeRead() }} min</span>
+                            <span>{!! \App\Support\Icons::svg('clock', 'mr-1 text-rose-400/70') !!}{{ $article->getTimeRead() }} min</span>
                         </div>
                         <h3 class="text-lg font-bold tracking-tight text-white group-hover:text-rose-300 transition-colors duration-200 line-clamp-2" itemprop="headline">
                             <a href="{{ $article->getRoute() }}">{{ $article->name }}</a>
                         </h3>
                         <p class="mt-2 flex-1 text-sm text-neutral-400 line-clamp-3" itemprop="description">{{ $article->short_description }}</p>
                         <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-400 group-hover:gap-3 transition-all duration-200">
-                            {{ __('basic.more') }} <i class="fa-solid fa-arrow-right text-xs"></i>
+                            {{ __('basic.more') }} {!! \App\Support\Icons::svg('arrow-right', 'text-xs') !!}
                         </span>
                     </div>
                 </article>
             @empty
                 <div class="col-span-full py-16 text-center">
-                    <i class="fa-solid fa-newspaper mb-4 block text-4xl text-neutral-600"></i>
+                    {!! \App\Support\Icons::svg('newspaper', 'mb-4 block text-4xl text-neutral-600') !!}
                     @if($searchQuery)
                         <p class="text-lg text-neutral-400">No articles found for "{{ $searchQuery }}".</p>
                         <p class="mt-2 text-sm text-neutral-500">Try different keywords or <a href="{{ route('blog') }}" class="text-rose-400 hover:text-rose-300">browse all articles</a>.</p>
@@ -339,9 +338,9 @@
         <nav class="mt-16 flex justify-center" aria-label="Blog pagination">
             <ul class="inline-flex items-center gap-2">
                 @if($articles->onFirstPage())
-                    <li><span class="rounded-full bg-neutral-900 px-3 py-2 text-sm text-neutral-600" aria-hidden="true"><i class="fa-solid fa-angle-left"></i></span></li>
+                    <li><span class="rounded-full bg-neutral-900 px-3 py-2 text-sm text-neutral-600" aria-hidden="true">{!! \App\Support\Icons::svg('angle-left', '') !!}</span></li>
                 @else
-                    <li><a href="{{ $articles->previousPageUrl() }}" rel="prev" class="rounded-full bg-white/5 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Previous page"><i class="fa-solid fa-angle-left"></i></a></li>
+                    <li><a href="{{ $articles->previousPageUrl() }}" rel="prev" class="rounded-full bg-white/5 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Previous page">{!! \App\Support\Icons::svg('angle-left', '') !!}</a></li>
                 @endif
 
                 @foreach($articles->getUrlRange(1, $articles->lastPage()) as $page => $url)
@@ -355,9 +354,9 @@
                 @endforeach
 
                 @if($articles->hasMorePages())
-                    <li><a href="{{ $articles->nextPageUrl() }}" rel="next" class="rounded-full bg-white/5 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Next page"><i class="fa-solid fa-angle-right"></i></a></li>
+                    <li><a href="{{ $articles->nextPageUrl() }}" rel="next" class="rounded-full bg-white/5 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Next page">{!! \App\Support\Icons::svg('angle-right', '') !!}</a></li>
                 @else
-                    <li><span class="rounded-full bg-neutral-900 px-3 py-2 text-sm text-neutral-600" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span></li>
+                    <li><span class="rounded-full bg-neutral-900 px-3 py-2 text-sm text-neutral-600" aria-hidden="true">{!! \App\Support\Icons::svg('angle-right', '') !!}</span></li>
                 @endif
             </ul>
         </nav>

@@ -52,7 +52,6 @@
     <link rel="preload" href="{{ asset('assets/fonts/montserrat/montserrat-400-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"  media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" /></noscript>
 <script defer src="{{ asset('/assets/libs/highlight/highlight.min.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/github.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlightjs-themes@1.0.0/github.css"></noscript>
     <script defer src="{{ asset('/assets/libs/highlight/php.min.js') }}"></script>
@@ -110,7 +109,7 @@
             </div>
             <div class="flex lg:hidden">
                 <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                    {!! \App\Support\Icons::svg('bars', 'text-xl') !!}
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
@@ -120,7 +119,7 @@
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                 <a href="{{ $course->getRoute() }}" class="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors duration-200">
-                    <i class="fa-solid fa-graduation-cap mr-1"></i>{{ $course->title_list ?: $course->name }}
+                    {!! \App\Support\Icons::svg('graduation-cap', 'mr-1') !!}{{ $course->title_list ?: $course->name }}
                 </a>
             </div>
         </nav>
@@ -132,7 +131,7 @@
             <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
                 <div class="flex items-center justify-between">
                     <a href="{{ route('index') }}" class="-m-1.5 p-1.5"><div class="logo_oatllo">oatllo</div></a>
-                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu"><i class="fa-solid fa-xmark text-xl"></i></button>
+                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu">{!! \App\Support\Icons::svg('xmark', 'text-xl') !!}</button>
                 </div>
                 <div class="mt-6 flow-root">
                     <div class="-my-2 divide-y divide-white/10">
@@ -187,7 +186,7 @@
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div class="flex flex-wrap items-center gap-2 text-xs">
             <a href="{{ $category->getRoute() }}" class="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 font-semibold text-emerald-300 hover:bg-emerald-400/20 transition-colors duration-200">
-                <i class="fa-solid fa-folder-open"></i> {{ $category->title }}
+                {!! \App\Support\Icons::svg('folder-open', '') !!} {{ $category->title }}
             </a>
             <span class="text-neutral-600">·</span>
             <span class="text-neutral-500">{{ $course->title_list ?: $course->name }}</span>
@@ -229,7 +228,7 @@
             <nav class="mt-8 grid gap-4 sm:grid-cols-2" aria-label="Lesson navigation">
                 @if(!empty($lessonSkip['previous']))
                     <a href="{{ $lessonSkip['previous']['route'] }}" class="card-hover group flex items-center gap-3 rounded-2xl border border-white/10 bg-neutral-900 p-5 text-neutral-300 hover:text-white">
-                        <i class="fa-solid fa-angle-left flex-none text-emerald-400 transition-transform duration-200 group-hover:-translate-x-1"></i>
+                        {!! \App\Support\Icons::svg('angle-left', 'flex-none text-emerald-400 transition-transform duration-200 group-hover:-translate-x-1') !!}
                         <div class="min-w-0">
                             <div class="text-xs uppercase tracking-wide text-neutral-500">{{ __('basic.go_to_back_lesson') }}</div>
                             <div class="truncate font-semibold">{{ $lessonSkip['previous']['name'] }}</div>
@@ -245,7 +244,7 @@
                             <div class="text-xs uppercase tracking-wide text-neutral-500">{{ __('basic.go_to_next_lesson') }}</div>
                             <div class="truncate font-semibold">{{ $lessonSkip['next']['name'] }}</div>
                         </div>
-                        <i class="fa-solid fa-angle-right flex-none text-emerald-400 transition-transform duration-200 group-hover:translate-x-1"></i>
+                        {!! \App\Support\Icons::svg('angle-right', 'flex-none text-emerald-400 transition-transform duration-200 group-hover:translate-x-1') !!}
                     </a>
                 @else
                     <div></div>
@@ -257,7 +256,7 @@
         <aside class="lg:col-span-1">
             <div class="sticky top-24 rounded-2xl border border-white/10 bg-neutral-900 p-5 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto custom-scrollbar">
                 <a href="{{ $course->getRoute() }}" class="mb-5 flex items-center gap-2 text-sm font-semibold text-white hover:text-emerald-400 transition-colors duration-200">
-                    <i class="fa-solid fa-graduation-cap text-emerald-400"></i>
+                    {!! \App\Support\Icons::svg('graduation-cap', 'text-emerald-400') !!}
                     {{ $course->title_list ?: $course->name }}
                 </a>
                 <div class="space-y-5">
@@ -269,7 +268,7 @@
                                     @php($isCurrent = $article->title === $lesson->title)
                                     <li>
                                         <a href="{{ $lesson->getRoute() }}" class="flex items-center gap-2 border-l-2 -ml-px py-1.5 pl-3 text-sm transition-colors duration-200 {{ $isCurrent ? 'border-emerald-400 text-emerald-400 font-semibold' : 'border-transparent text-neutral-400 hover:text-white' }}">
-                                            <i class="fa-solid {{ $isCurrent ? 'fa-circle-play' : 'fa-play' }} text-xs {{ $isCurrent ? 'text-emerald-400' : 'text-neutral-600' }}"></i>
+                                            {!! \App\Support\Icons::svg($isCurrent ? 'play-circle' : 'play', 'text-xs ' . ($isCurrent ? 'text-emerald-400' : 'text-neutral-600')) !!}
                                             <span class="line-clamp-1">{{ $lesson->title }}</span>
                                         </a>
                                     </li>

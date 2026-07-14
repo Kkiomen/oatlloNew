@@ -51,7 +51,6 @@
     <link rel="preload" href="{{ asset('assets/fonts/montserrat/montserrat-400-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"  media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" /></noscript>
 <style>
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -84,7 +83,7 @@
             </div>
             <div class="flex lg:hidden">
                 <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                    {!! \App\Support\Icons::svg('bars', 'text-xl') !!}
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
@@ -94,7 +93,7 @@
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                 <a href="{{ $course->getRoute() }}" class="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors duration-200">
-                    <i class="fa-solid fa-graduation-cap mr-1"></i>{{ $course->title_list ?: $course->name }}
+                    {!! \App\Support\Icons::svg('graduation-cap', 'mr-1') !!}{{ $course->title_list ?: $course->name }}
                 </a>
             </div>
         </nav>
@@ -106,7 +105,7 @@
         <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div class="flex items-center justify-between">
                 <a href="{{ route('index') }}" class="-m-1.5 p-1.5"><div class="logo_oatllo">oatllo</div></a>
-                <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu">{!! \App\Support\Icons::svg('xmark', 'text-xl') !!}</button>
             </div>
             <div class="mt-6 space-y-2">
                 <a href="{{ route('index') }}" class="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.home') }}</a>
@@ -152,15 +151,15 @@
 
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <span class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300">
-            <i class="fa-solid fa-folder-open"></i> {{ __('basic.chapter') }}
+            {!! \App\Support\Icons::svg('folder-open', '') !!} {{ __('basic.chapter') }}
         </span>
         <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-white md:text-5xl">{{ $courseCategory->title }}</h1>
         @if($courseCategory->description)
             <p class="mt-4 text-lg text-neutral-400">{{ $courseCategory->description }}</p>
         @endif
         <div class="mt-6 flex flex-wrap gap-3 text-sm">
-            <a href="{{ $course->getRoute() }}" class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300 hover:text-emerald-400 transition-colors duration-200"><i class="fa-solid fa-graduation-cap text-emerald-400"></i> {{ $course->title_list ?: $course->name }}</a>
-            <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300"><i class="fa-solid fa-play-circle text-emerald-400"></i> {{ $lessonCount }} {{ __('basic.lessons_from_courses') }}</span>
+            <a href="{{ $course->getRoute() }}" class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300 hover:text-emerald-400 transition-colors duration-200">{!! \App\Support\Icons::svg('graduation-cap', 'text-emerald-400') !!} {{ $course->title_list ?: $course->name }}</a>
+            <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300">{!! \App\Support\Icons::svg('play-circle', 'text-emerald-400') !!} {{ $lessonCount }} {{ __('basic.lessons_from_courses') }}</span>
         </div>
     </div>
 </header>
@@ -171,7 +170,7 @@
         <section class="mt-14">
             <div class="rounded-3xl border border-white/10 bg-neutral-900 p-8">
                 <h2 class="mb-6 flex items-center gap-3 text-2xl font-bold text-white">
-                    <i class="fa-solid fa-circle-info text-emerald-400"></i> About this chapter
+                    {!! \App\Support\Icons::svg('circle-info', 'text-emerald-400') !!} About this chapter
                 </h2>
                 <div class="prose-invert max-w-none">{!! $aboutHtml !!}</div>
             </div>
@@ -181,7 +180,7 @@
     <!-- Lessons -->
     <section class="mt-14">
         <h2 class="mb-6 flex items-center gap-3 text-2xl font-bold text-white">
-            <i class="fa-solid fa-list-check text-emerald-400"></i> {{ __('basic.lessons_from_courses') }}
+            {!! \App\Support\Icons::svg('list-check', 'text-emerald-400') !!} {{ __('basic.lessons_from_courses') }}
         </h2>
         <ol class="space-y-3">
             @foreach($courseCategory->lessons as $lesson)
@@ -194,7 +193,7 @@
                                 <span class="mt-1 block text-sm text-neutral-400">{{ $lesson->seo_description }}</span>
                             @endif
                         </span>
-                        <i class="fa-solid fa-play-circle mt-1 flex-none text-emerald-400"></i>
+                        {!! \App\Support\Icons::svg('play-circle', 'mt-1 flex-none text-emerald-400') !!}
                     </a>
                 </li>
             @endforeach
@@ -204,11 +203,11 @@
     <!-- Nav -->
     <section class="mt-14 flex flex-col gap-3 sm:flex-row">
         <a href="{{ $course->getRoute() }}" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-base font-semibold text-white hover:bg-white/10 transition-colors duration-200">
-            <i class="fa-solid fa-arrow-left"></i> {{ $course->title_list ?: $course->name }}
+            {!! \App\Support\Icons::svg('arrow-left', '') !!} {{ $course->title_list ?: $course->name }}
         </a>
         @if($lessonCount > 0)
             <a href="{{ $courseCategory->lessons->first()->getRoute() }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition-colors duration-200">
-                <i class="fa-solid fa-play"></i> {{ __('basic.go_to_course') }}
+                {!! \App\Support\Icons::svg('play', '') !!} {{ __('basic.go_to_course') }}
             </a>
         @endif
     </section>

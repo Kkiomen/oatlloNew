@@ -31,7 +31,6 @@
     <link rel="preload" href="{{ asset('assets/fonts/montserrat/montserrat-400-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"  media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" /></noscript>
 <style>
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -49,7 +48,7 @@
                 <a href="{{ route('index') }}" class="-m-1.5 p-1.5"><div class="logo_oatllo">oatllo</div></a>
             </div>
             <div class="flex lg:hidden">
-                <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu"><i class="fa-solid fa-bars text-xl"></i></button>
+                <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu">{!! \App\Support\Icons::svg('bars', 'text-xl') !!}</button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
                 <a href="{{ route('index') }}" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">{{ __('basic.home') }}</a>
@@ -57,7 +56,7 @@
                 <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">{{ __('basic.courses') }}</a>
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200"><i class="fa-brands fa-linkedin mr-1"></i>LinkedIn</a>
+                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">{!! \App\Support\Icons::svg('linkedin', 'mr-1') !!}LinkedIn</a>
             </div>
         </nav>
     </header>
@@ -68,7 +67,7 @@
         <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
             <div class="flex items-center justify-between">
                 <a href="{{ route('index') }}" class="-m-1.5 p-1.5"><div class="logo_oatllo">oatllo</div></a>
-                <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu">{!! \App\Support\Icons::svg('xmark', 'text-xl') !!}</button>
             </div>
             <div class="mt-6 space-y-2">
                 <a href="{{ route('index') }}" class="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.home') }}</a>
@@ -111,7 +110,7 @@
         <!-- Kategorie -->
         @if($categories->count() > 0)
             <section>
-                <h2 class="mb-5 flex items-center gap-3 text-2xl font-bold text-white"><i class="fa-solid fa-folder text-rose-400"></i> {{ __('basic.categories') }}</h2>
+                <h2 class="mb-5 flex items-center gap-3 text-2xl font-bold text-white">{!! \App\Support\Icons::svg('folder', 'text-rose-400') !!} {{ __('basic.categories') }}</h2>
                 <div class="flex flex-wrap gap-2">
                     @foreach($categories as $cat)
                         <a href="{{ route('blog.list.category', ['slug' => $cat->slug]) }}" class="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-neutral-300 hover:border-rose-400/40 hover:text-white transition-colors duration-200">{{ $cat->name }}</a>
@@ -123,10 +122,10 @@
         <!-- Kursy -->
         @if($courses->count() > 0)
             <section>
-                <h2 class="mb-5 flex items-center gap-3 text-2xl font-bold text-white"><i class="fa-solid fa-graduation-cap text-emerald-400"></i> {{ __('basic.courses') }}</h2>
+                <h2 class="mb-5 flex items-center gap-3 text-2xl font-bold text-white">{!! \App\Support\Icons::svg('graduation-cap', 'text-emerald-400') !!} {{ __('basic.courses') }}</h2>
                 <ul class="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     @foreach($courses as $course)
-                        <li><a href="{{ $course->getRoute() }}" class="inline-flex items-center gap-2 text-neutral-300 hover:text-emerald-400 transition-colors duration-200"><i class="fa-solid fa-angle-right text-xs text-emerald-400/70"></i>{{ $course->title_list ?: $course->name }}</a></li>
+                        <li><a href="{{ $course->getRoute() }}" class="inline-flex items-center gap-2 text-neutral-300 hover:text-emerald-400 transition-colors duration-200">{!! \App\Support\Icons::svg('angle-right', 'text-xs text-emerald-400/70') !!}{{ $course->title_list ?: $course->name }}</a></li>
                     @endforeach
                 </ul>
             </section>
@@ -135,7 +134,7 @@
         <!-- Tagi -->
         @if($tags->count() > 0)
             <section>
-                <h2 class="mb-5 flex items-center gap-3 text-2xl font-bold text-white"><i class="fa-solid fa-tags text-rose-400"></i> {{ __('basic.tags') }}</h2>
+                <h2 class="mb-5 flex items-center gap-3 text-2xl font-bold text-white">{!! \App\Support\Icons::svg('tags', 'text-rose-400') !!} {{ __('basic.tags') }}</h2>
                 <div class="flex flex-wrap gap-2">
                     @foreach($tags as $tag)
                         <a href="{{ route('blogTag', ['tag' => $tag->slug]) }}" class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-neutral-300 hover:border-rose-400/40 hover:text-white transition-colors duration-200">#{{ $tag->name }}</a>
@@ -147,10 +146,10 @@
         <!-- Artykuły -->
         @if($articles->count() > 0)
             <section>
-                <h2 class="mb-5 flex items-center gap-3 text-2xl font-bold text-white"><i class="fa-solid fa-newspaper text-rose-400"></i> {{ __('basic.articles') }} <span class="text-base font-normal text-neutral-500">({{ $articles->count() }})</span></h2>
+                <h2 class="mb-5 flex items-center gap-3 text-2xl font-bold text-white">{!! \App\Support\Icons::svg('newspaper', 'text-rose-400') !!} {{ __('basic.articles') }} <span class="text-base font-normal text-neutral-500">({{ $articles->count() }})</span></h2>
                 <ul class="grid grid-cols-1 gap-x-8 gap-y-2 md:grid-cols-2">
                     @foreach($articles as $article)
-                        <li><a href="{{ $article->getRoute() }}" class="inline-flex items-start gap-2 text-neutral-300 hover:text-rose-400 transition-colors duration-200"><i class="fa-solid fa-angle-right mt-1 text-xs text-rose-400/70"></i><span>{{ $article->name }}</span></a></li>
+                        <li><a href="{{ $article->getRoute() }}" class="inline-flex items-start gap-2 text-neutral-300 hover:text-rose-400 transition-colors duration-200">{!! \App\Support\Icons::svg('angle-right', 'mt-1 text-xs text-rose-400/70') !!}<span>{{ $article->name }}</span></a></li>
                     @endforeach
                 </ul>
             </section>

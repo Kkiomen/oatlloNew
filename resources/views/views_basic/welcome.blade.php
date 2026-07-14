@@ -42,7 +42,6 @@
     <link rel="preload" href="{{ asset('assets/fonts/montserrat/montserrat-400-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"  media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" /></noscript>
 <style>
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -76,7 +75,7 @@
             </div>
             <div class="flex lg:hidden">
                 <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu">
-                    <i class="fa-solid fa-bars text-xl"></i>
+                    {!! \App\Support\Icons::svg('bars', 'text-xl') !!}
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
@@ -86,7 +85,7 @@
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-6">
                 <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">
-                    <i class="fa-brands fa-linkedin mr-1"></i>LinkedIn
+                    {!! \App\Support\Icons::svg('linkedin', 'mr-1') !!}LinkedIn
                 </a>
                 <a href="{{ route('blog') }}" class="rounded-lg bg-rose-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-rose-500/25 hover:bg-rose-400 transition-colors duration-200">
                     {{ __('basic.more') }}
@@ -104,7 +103,7 @@
                         <div class="logo_oatllo">oatllo</div>
                     </a>
                     <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu">
-                        <i class="fa-solid fa-xmark text-xl"></i>
+                        {!! \App\Support\Icons::svg('xmark', 'text-xl') !!}
                     </button>
                 </div>
                 <div class="mt-6 flow-root">
@@ -116,7 +115,7 @@
                         </div>
                         <div class="py-6">
                             <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">
-                                <i class="fa-brands fa-linkedin mr-2"></i>LinkedIn
+                                {!! \App\Support\Icons::svg('linkedin', 'mr-2') !!}LinkedIn
                             </a>
                         </div>
                     </div>
@@ -149,11 +148,11 @@
 
         <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 rounded-xl bg-rose-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-rose-500/30 hover:bg-rose-400 transition-colors duration-200">
-                <i class="fa-solid fa-book-open"></i>
+                {!! \App\Support\Icons::svg('book-open', '') !!}
                 {{ __('basic.header_blog') }}
             </a>
             <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-base font-semibold text-white hover:bg-white/10 transition-colors duration-200">
-                <i class="fa-solid fa-graduation-cap text-emerald-400"></i>
+                {!! \App\Support\Icons::svg('graduation-cap', 'text-emerald-400') !!}
                 {{ __('basic.courses') }}
             </a>
         </div>
@@ -189,7 +188,7 @@
             </div>
             <a href="{{ route('blog') }}" class="group inline-flex items-center gap-2 text-sm font-semibold text-rose-400 hover:text-rose-300">
                 {{ __('basic.more') }}
-                <i class="fa-solid fa-arrow-right transition-transform duration-200 group-hover:translate-x-1"></i>
+                {!! \App\Support\Icons::svg('arrow-right', 'transition-transform duration-200 group-hover:translate-x-1') !!}
             </a>
         </div>
 
@@ -248,7 +247,7 @@
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl text-center">
             <span class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300">
-                <i class="fa-solid fa-graduation-cap"></i> {{ __('basic.courses') }}
+                {!! \App\Support\Icons::svg('graduation-cap', '') !!} {{ __('basic.courses') }}
             </span>
             <h2 class="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">{{ __('basic.courses_header_h2') }}</h2>
             <p class="mt-3 text-neutral-400">{{ __('basic.courses_header_h1') }}</p>
@@ -272,11 +271,11 @@
                         <p class="mt-2 flex-1 text-sm text-neutral-400 line-clamp-3">{{ $course->description_list ?: $course->description_seo }}</p>
                         <div class="mt-5 flex items-center justify-between">
                             <span class="inline-flex items-center gap-2 text-sm text-neutral-500">
-                                <i class="fa-solid fa-layer-group text-emerald-400"></i>
+                                {!! \App\Support\Icons::svg('layer-group', 'text-emerald-400') !!}
                                 {{ $course->categories->count() }} {{ __('basic.chapter') }}
                             </span>
                             <span class="inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 group-hover:gap-3 transition-all duration-200">
-                                {{ __('basic.go_to_course') }} <i class="fa-solid fa-arrow-right"></i>
+                                {{ __('basic.go_to_course') }} {!! \App\Support\Icons::svg('arrow-right', '') !!}
                             </span>
                         </div>
                     </div>
@@ -335,7 +334,7 @@
                 </div>
             </div>
             <figure class="relative flex flex-1 flex-col justify-center">
-                <i class="fa-solid fa-quote-left mb-4 text-4xl text-rose-500/40" aria-hidden="true"></i>
+                {!! \App\Support\Icons::svg('quote-left', 'mb-4 text-4xl text-rose-500/40') !!}
                 <blockquote class="text-xl font-semibold leading-relaxed text-white sm:text-2xl">
                     <p itemprop="description">{{ __('basic.about_me_content') }}</p>
                 </blockquote>
@@ -343,7 +342,7 @@
                     <div class="text-lg font-semibold text-white" itemprop="name">Jakub Owsianka</div>
                     <div class="mt-1 text-neutral-400" itemprop="jobTitle">{{ __('basic.about_me_description') }}</div>
                     <div class="mt-4 flex gap-4">
-                        <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-neutral-400 hover:text-rose-400" aria-label="LinkedIn"><i class="fa-brands fa-linkedin fa-lg"></i></a>
+                        <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-neutral-400 hover:text-rose-400" aria-label="LinkedIn">{!! \App\Support\Icons::svg('linkedin', '') !!}</a>
                     </div>
                 </figcaption>
             </figure>
@@ -375,7 +374,7 @@
                 <div class="overflow-hidden rounded-2xl border border-white/10 bg-neutral-900">
                     <button type="button" class="flex w-full items-center justify-between gap-4 px-6 py-5 text-left" @click="open === {{ $i }} ? open = null : open = {{ $i }}">
                         <span class="font-semibold text-white">{{ $faq['q'] }}</span>
-                        <i class="fa-solid fa-chevron-down flex-none text-rose-400 transition-transform duration-200" :class="open === {{ $i }} ? 'rotate-180' : ''"></i>
+                        {!! \App\Support\Icons::svg('chevron-down', 'flex-none text-rose-400 transition-transform duration-200') !!}
                     </button>
                     <div x-show="open === {{ $i }}" x-cloak
                          x-transition:enter="transition ease-out duration-200"
@@ -400,10 +399,10 @@
             <p class="mx-auto mt-4 max-w-2xl text-neutral-300">Fresh tutorials on PHP, Laravel, architecture and developer tooling — straight to the point.</p>
             <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
                 <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 rounded-xl bg-rose-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-rose-500/30 hover:bg-rose-400 transition-colors duration-200">
-                    <i class="fa-solid fa-book-open"></i> {{ __('basic.header_blog') }}
+                    {!! \App\Support\Icons::svg('book-open', '') !!} {{ __('basic.header_blog') }}
                 </a>
                 <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-base font-semibold text-white hover:bg-white/10 transition-colors duration-200">
-                    <i class="fa-brands fa-linkedin"></i> Follow on LinkedIn
+                    {!! \App\Support\Icons::svg('linkedin', '') !!} Follow on LinkedIn
                 </a>
             </div>
         </div>
