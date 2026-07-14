@@ -24,7 +24,7 @@ This article explains the basics, shows numerous PHP code examples, discusses be
   - or `switch` statement.
 - Form `break N;` is allowed, where `N` is the number of nested levels to break out of.
 
-Example: `break;` exits the current loop, while `break 2;` exits two nested levels.
+Example: `break;` exits the current loop, while `break 2;` exits two nested levels. Note that `break` only leaves the loop - the rest of the script keeps running. If you need to stop the whole script instead, that is the job of [`exit` and `die`](/course/php/conditional-instructions/php-exit-die-guide).
 
 ### continue
 

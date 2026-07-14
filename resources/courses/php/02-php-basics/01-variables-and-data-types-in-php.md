@@ -95,7 +95,7 @@ Scope defines where a variable is visible and accessible.
   - 32-bit typical: from -2,147,483,648 to 2,147,483,647
   - Helper constants: **PHP_INT_SIZE**, **PHP_INT_MAX**, **PHP_INT_MIN** — the next lesson covers [constants in PHP](/course/php/php-basics/constants-in-php) in detail
 - **float**: usually 64-bit IEEE 754 (double); very large range (~1.8e308), but limited precision (~14 significant digits).
-  - Be careful with rounding errors in financial calculations — use integers (cents) or arbitrary precision libraries (e.g., ext-bcmath).
+  - Be careful with rounding errors in financial calculations — use integers (cents) or arbitrary precision libraries (e.g., ext-bcmath). PHP also ships [math functions such as `round`, `ceil`, and `floor`](/course/php/php-basics/math-functions-round-ceil-floor-rand) for controlling how numbers are rounded.
 
 ---
 
