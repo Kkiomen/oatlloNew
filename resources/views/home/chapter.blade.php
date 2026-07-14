@@ -263,6 +263,6 @@
 }
 </script>
 
-<script src="{{ asset('/assets/js/script.js') }}"></script>
+<script defer src="{{ asset('/assets/js/script.js') }}"></script>
 </body>
 </html>

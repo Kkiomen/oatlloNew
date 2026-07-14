@@ -619,6 +619,6 @@ use Illuminate\Support\Str;
 
 <!-- Highlight.js initialization -->
 <script>hljs.highlightAll();</script>
-<script src="{{ asset('/assets/js/script.js') }}"></script>
+<script defer src="{{ asset('/assets/js/script.js') }}"></script>
 </body>
 </html>
