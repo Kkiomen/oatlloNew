@@ -32,8 +32,6 @@ Route::get('/articles/{slug}/cover.svg', [\App\Http\Controllers\CoverController:
 //Route::get('/blog/', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 
 
-Route::get('/tmp/asystent-etyka', [\App\Http\Controllers\EtykaController::class, 'index'])->name('etic-index');
-Route::post('/tmp/asystent-etyka', [\App\Http\Controllers\EtykaController::class, 'post'])->name('post-etic-index');
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/kursy', [HomeController::class, 'courses'])->name('courses');
