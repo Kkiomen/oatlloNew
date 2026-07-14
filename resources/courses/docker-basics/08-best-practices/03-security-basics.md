@@ -89,7 +89,7 @@ Create a user in your Dockerfile and switch to it with the `USER` instruction, s
 app no longer runs as all-powerful `root`. This limits the damage if the app is ever
 compromised.
 
-## You made it
+## Next steps after Docker basics
 
 That's the course. You can now explain what Docker is, run and manage containers,
 build your own images with a Dockerfile, persist data with volumes, connect

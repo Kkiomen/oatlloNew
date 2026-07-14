@@ -47,7 +47,7 @@ The final image contains just Nginx and your built files - none of Node, npm, or
 [grabbed Composer from another image](/course/docker-basics/real-project/a-php-dockerfile);
 multi-stage builds are the same idea taken further.
 
-## Why it's worth it
+## Why multi-stage builds shrink your image
 
 The result can be dramatically smaller - sometimes from hundreds of megabytes down to
 tens. You get the full power of your build tools during the build, and a lean image to
