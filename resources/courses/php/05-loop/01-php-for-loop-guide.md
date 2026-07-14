@@ -30,7 +30,7 @@ for ($i = 0; $i < 10; $i++) {
 ```
 
 - **Initialization** – executed once at the beginning (e.g., setting the counter: `$i = 0`).
-- **Condition** – checked before each iteration (if true, the loop continues; if false, it ends).
+- **Condition** – checked before each iteration (if true, the loop continues; if false, it ends). It is built from the same [comparison and logical operators](/course/php/php-basics/operators-arithmetic-comparison-logic) you already know.
 - **Step** – executed after each iteration (e.g., incrementing the counter: `$i++`).
 
 *Note: each part can be empty, but then you must ensure the loop terminates to avoid infinite loops.*
@@ -46,7 +46,7 @@ for ($i = 0; $i < 10; $i++) {
 ### Typical use cases
 
 - Repeat an operation **N times** (e.g., 100 times).
-- Iterate over array elements by **index** (especially when you need the index).
+- Iterate over [indexed arrays](/course/php/array/array-indexed-associative-multidimensional-php) by **index** (especially when you need the index).
 - Process strings character by character.
 - Create nested structures (e.g., tables, grids, multiplication tables).
 - Generate HTML in a loop (lists, tables, product cards).
@@ -97,7 +97,7 @@ for ($i = 0, $n = count($users); $i < $n; $i++) {
 }
 ```
 
-*Note: to iterate over all elements, foreach is often better, but for is convenient when you need the index.*
+*Note: to iterate over all elements, [the foreach loop](/course/php/loop/php-foreach-loop-guide) is often better, but for is convenient when you need the index.*
 
 ### 5) Using break and continue
 
@@ -322,7 +322,7 @@ for ($i = 0; $i == 10; $i++) { }
 - Common pattern: `for ($i = 0; $i < N; $i++) { ... }`.
 - Prefer `<` over `<=` for arrays.
 - Always use braces and cache `count()`.
-- Use break/continue to control loop flow.
+- Use [break and continue](/course/php/loop/php-break-continue-guide) to control loop flow.
 - Alternative syntax `for ... endfor` works well in templates.
 - If you don’t need the index, prefer foreach.
 
@@ -378,4 +378,4 @@ for ($i = 0, $j = 3; $i < $j; $i++, $j--) {
 
 ---
 
-Now you know how to use the **for loop** in PHP. In the next lesson, we’ll compare for, while, and foreach to see which is best in practice.
+Now you know how to use the **for loop** in PHP. In the next lesson, we’ll look at [the while loop](/course/php/loop/php-while-loop-guide) and compare it with for and foreach to see which is best in practice.

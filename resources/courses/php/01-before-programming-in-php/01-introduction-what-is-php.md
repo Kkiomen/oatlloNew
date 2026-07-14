@@ -10,7 +10,7 @@ PHP is a popular, easy-to-learn, server-side scripting language. It is used to b
 Why is it worth learning?
 
 - PHP is stable, fast (especially since PHP 7), well-documented, and supported by a massive community.
-- Perfect for beginners because you can quickly see results in the browser.
+- Perfect for beginners because you can quickly see results in the browser — once you have [PHP installed with a local server](/course/php/before-programming-in-php/php-installation-first-steps), the save-refresh feedback loop is instant.
 - With PHP you’ll understand the basics of web development: HTTP requests, forms, databases, sessions, and security.
 
 In this lesson, you will learn: what PHP is, why and how it was created, its most important versions and what they introduced, and finally — simple code examples, best practices, and a mini quiz.
@@ -82,7 +82,7 @@ Why important: PHP 7 “dispelled” performance issues and introduced modern ty
 - 8.2: **readonly classes**, standalone `true`/`false`/`null` types, deprecation of dynamic properties.
 - 8.3: **typed class constants**, `json_validate()`, further improvements and stricter diagnostics.
 
-Why important: PHP 8 improved developer experience, safety, and readability while boosting performance.
+Why important: PHP 8 improved developer experience, safety, and readability while boosting performance. Don't worry if this list feels dense — you'll practise [the match expression](/course/php/conditional-instructions/php-match-expression-guide) later in the course, and if you want to go deeper right now, [PHP match vs switch](/php-match-vs-switch) is optional side-reading.
 
 Historical note: “PHP 6” as a stable release never came out (ambitious Unicode plans were later implemented step by step).
 
@@ -90,7 +90,7 @@ Historical note: “PHP 6” as a stable release never came out (ambitious Unico
 
 ## 3. PHP Code Examples (with Comments)
 
-The following “PHP code examples” are simple but demonstrate practical basics.
+The following “PHP code examples” are simple but demonstrate practical basics. The first one — [your first Hello World PHP code](/course/php/before-programming-in-php/hello-world-your-first-php-code) — gets a full, step-by-step walkthrough in its own lesson, so just read along here.
 
 ### “Hello, World!” and echo
 
@@ -263,7 +263,7 @@ if (password_verify('secret_password', $hash)) {
 - Validate and filter input (`filter_input`, validation libraries).
 - Passwords: `password_hash()` and `password_verify()`; don’t write your own algorithms.
 - Organize code:
-  - **Namespaces**, **autoloader** (Composer), layered structure (controllers, services, repositories).
+  - **Namespaces**, **autoloader** (Composer), layered structure (controllers, services, repositories). If you want to go deeper on this one, see [Composer autoloading with PSR-4](/composer-autoloading-psr-4).
   - PSR standards (PSR-1/PSR-12 — coding style, PSR-4 — autoloading).
 - Testing and quality:
   - PHPUnit / Pest for tests.

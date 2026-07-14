@@ -5,7 +5,7 @@ seo_title: "PHP Object Properties and Methods Explained (OOP)"
 seo_description: "Object properties and methods in PHP explained for beginners: instance vs static, readonly, visibility, and method chaining - with practical examples."
 ---
 
-In this lesson, you’ll learn the fundamentals of Object-Oriented Programming (OOP) in PHP: what **properties** and **methods** are, how to define them, how to use them, and what best practices to follow. These are core concepts of OOP in PHP — without them you cannot build clean and scalable applications. If you already know classes, objects, constructors, and destructors from previous lessons, now you’ll deepen your knowledge of how to store object state and manage it.
+In this lesson, you’ll learn the fundamentals of Object-Oriented Programming (OOP) in PHP: what **properties** and **methods** are, how to define them, how to use them, and what best practices to follow. These are core concepts of OOP in PHP — without them you cannot build clean and scalable applications. If you already know [classes and objects](/course/php/objective-programming/php-oop-basics-guide) and [constructors and destructors](/course/php/objective-programming/php-constructor-destructor-guide) from previous lessons, now you’ll deepen your knowledge of how to store object state and manage it.
 
 ---
 
@@ -19,7 +19,7 @@ In this lesson, you’ll learn the fundamentals of Object-Oriented Programming (
 
 ### Methods
 
-- Functions defined inside a class.
+- [Functions](/course/php/function/php-functions-basics-guide) defined inside a class.
 - Define the behavior of an object (e.g., calculating tax price, validation, formatting data).
 - Can be instance methods (work on objects) or static methods (work on the class itself).
 
@@ -29,7 +29,7 @@ In this lesson, you’ll learn the fundamentals of Object-Oriented Programming (
 - **protected** – visible within the class and its subclasses.
 - **private** – visible only in this class.
 
-Access modifiers enable **encapsulation** — hiding implementation details and controlling access to object state.
+Access modifiers enable **encapsulation** — hiding implementation details and controlling access to object state. A dedicated lesson on [public, private, and protected](/course/php/objective-programming/php-encapsulation-guide) follows later in this chapter.
 
 ### $this, -> and ::
 
@@ -62,6 +62,7 @@ Access modifiers enable **encapsulation** — hiding implementation details and 
 
 - Mark property as readonly so it can only be set once (e.g., in the constructor).
 - Useful for immutable identifiers (e.g., id).
+- Want more? The article on [readonly properties in PHP](/php-readonly-properties) digs into the edge cases — optional side-reading once the basics click.
 
 ### Initialization rules
 
@@ -292,7 +293,7 @@ echo $bag->title;
 
 - Always declare types (`declare(strict_types=1);`).
 - Start with `private`, relax visibility only when necessary.
-- Validate input in setters or constructor.
+- Validate input in the constructor or in [getters and setters](/course/php/objective-programming/php-getter-setter-guide), the subject of the next lesson.
 - Prefer immutable properties with `readonly` where applicable.
 - Document with PHPDoc for complex types.
 - Follow PSR-12 naming conventions.

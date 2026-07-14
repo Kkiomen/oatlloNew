@@ -9,7 +9,7 @@ seo_description: "Learn polymorphism in PHP OOP with interfaces, abstract classe
 
 Polymorphism is one of the key concepts in Object-Oriented Programming (OOP) in PHP. It allows us to write flexible, extensible, and maintainable code. With polymorphism, we can swap implementations without changing the code that depends on them — for example, replacing a logging system, payment provider, or password hashing strategy. It is invaluable in large PHP applications (e.g., Laravel, Symfony) and in any project that needs to scale and be maintainable.
 
-In earlier lessons, we covered classes and objects, inheritance, access levels, and constructors/destructors. Now we’ll use that knowledge to understand and apply polymorphism in practice.
+In earlier lessons, we covered [classes and objects](/course/php/objective-programming/php-oop-basics-guide), [inheritance](/course/php/objective-programming/php-inheritance-guide), [access levels](/course/php/objective-programming/php-encapsulation-guide), and constructors/destructors. Now we’ll use that knowledge to understand and apply polymorphism in practice.
 
 ---
 
@@ -26,7 +26,7 @@ Polymorphism (from Greek: “many forms”) means treating different objects (fr
 ### Why is it useful?
 
 - Simplifies code: you code against **contracts** (interfaces), not specific classes.
-- Easier testing: you can inject different implementations, including **mocks and fakes**.
+- Easier testing: you can inject different implementations, including **mocks and fakes** — this is the core idea behind [writing testable PHP code](/testable-php-code), an optional deep dive once you’re comfortable with interfaces.
 - Reduces dependencies: encourages **loose coupling** instead of tight coupling.
 - Supports **SOLID principles**, especially **LSP (Liskov Substitution Principle)**: a subclass object should be usable wherever a parent object is expected, without breaking correctness.
 
@@ -204,6 +204,8 @@ Allowed because return type is covariant (Dog is an Animal).
 
 ### 3.6. Late Static Binding (static::)
 
+This is `static::` in action, exactly as described in the lesson on [class constants and self vs static](/course/php/objective-programming/php-class-constants-static-guide).
+
 ```php
 abstract class Mailer
 {
@@ -254,6 +256,8 @@ ApiMailer::make()->send('user@example.com', 'Hello');
 - Encourages clean, flexible, testable code.
 - Supports SOLID, especially LSP.
 - Avoid `instanceof` checks; rely on contracts.
+
+That closes the object-oriented chapter and the course — from here, keep practising, and use the [PHP course](/course/php) outline whenever you need to revisit an earlier topic.
 
 ---
 

@@ -42,9 +42,9 @@ function functionName($optionalParameters) {
 
 ### Parameters and arguments
 
-- **Parameters** – variables defined in the function header (e.g., $a, $b).
+- **Parameters** – variables defined in the function header (e.g., $a, $b). They hold the same [variables and data types](/course/php/php-basics/variables-and-data-types-in-php) you already know.
 - **Arguments** – values passed when calling (e.g., 2, 3).
-- You can set **default values** for parameters.
+- You can set **default values** for parameters — [optional parameters and default values](/course/php/function/php-function-arguments-guide) get a full lesson later in this chapter.
 
 ### The return statement
 
@@ -61,11 +61,15 @@ Since PHP 7+ and 8+, you can declare types:
 - Types: `int`, `float`, `string`, `bool`, `array`, `object`, `callable`, `mixed`, `void`, `never`, union types `int|string`, nullable types `?string`.
 - Declaration `declare(strict_types=1);` enforces strict argument typing.
 
+You'll go through the whole type system in the lesson on [function typing in PHP](/course/php/function/php-function-typing-guide) later in this chapter.
+
 ### Variable scope
 
 - Variables declared in a function are **local** to it.
 - Variables outside are not visible inside (unless you use `global` or pass them as parameters).
 - Prefer parameters instead of `global` – it’s a better practice.
+
+The rules of [variable scope in PHP](/course/php/function/php-variable-scope-guide) — local, global, static, and closures — are the closing lesson of this chapter.
 
 ---
 
@@ -214,6 +218,8 @@ $square = fn(int $x): int => $x * $x;
 echo $square(6); // 36
 ```
 
+An arrow function is a compact form of an [anonymous function (closure)](/course/php/function/php-anonymous-functions-guide), which you'll cover in its own lesson later in this chapter.
+
 ### 12) Passing by reference
 
 ```php
@@ -285,7 +291,7 @@ printGreeting("Ola");
 - Use **parameter and return types** (standard in PHP 8+).
 - Provide **default values** for optional parameters, placed at the end.
 - Use **early returns** for validation (guard clauses).
-- Document functions (DocBlock) and write unit tests for key logic.
+- Document functions (DocBlock) and write unit tests for key logic — if you want to go deeper, this article on [writing testable PHP code](/testable-php-code) shows why small, predictable functions are easy to test.
 - Avoid **global** — prefer parameters or objects.
 - Keep function contracts consistent: predictable inputs/outputs.
 - Split long functions into smaller ones.

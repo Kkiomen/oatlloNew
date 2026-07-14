@@ -5,7 +5,7 @@ seo_title: "How to Install XAMPP for PHP Development: Setup Guide"
 seo_description: "Step-by-step guide to install XAMPP for PHP development on Windows, macOS, and Linux. Set up Apache, MySQL, and PHP for local web development."
 ---
 
-PHP is one of the most popular languages for building websites and web applications. If you’re starting to learn PHP, the fastest and simplest way is to set up a local development environment on your computer. The most beginner-friendly solution is the XAMPP package, which installs and configures everything you need: a web server (Apache), PHP interpreter, and database (MariaDB/MySQL) with phpMyAdmin.
+PHP is one of the most popular languages for building websites and web applications — if you missed it, the previous lesson covers [what PHP is and why it's worth learning](/course/php/before-programming-in-php/introduction-what-is-php). If you’re starting to learn PHP, the fastest and simplest way is to set up a local development environment on your computer. The most beginner-friendly solution is the XAMPP package, which installs and configures everything you need: a web server (Apache), PHP interpreter, and database (MariaDB/MySQL) with phpMyAdmin.
 
 After reading this article, you will know:
 
@@ -171,7 +171,7 @@ Open in your browser to see all information.
 
 ### 3) Mixing HTML and PHP
 
-This is the most common way to build pages in PHP.
+This is the most common way to build pages in PHP. Don't worry about the `$title` and `$year` syntax yet — [variables and data types in PHP](/course/php/php-basics/variables-and-data-types-in-php) are covered properly in the next chapter.
 
 ```php
 <?php
@@ -237,7 +237,7 @@ try {
 
 - Install **Visual Studio Code**.
 - Open your project folder (inside htdocs).
-- Install the “PHP Intelephense” extension or the official PHP extension for code hints.
+- Install the “PHP Intelephense” extension or the official PHP extension for code hints. If you want to go further with your editor, there's a longer round-up of [VS Code extensions for PHP](/vscode-extensions-php).
 - Save files in **UTF-8 without BOM**.
 - Work with .php files and run them via [http://localhost/…](http://localhost/%E2%80%A6)
 
@@ -306,6 +306,7 @@ Apache error log (when something doesn’t work):
 - **WAMP** (Windows) – alternative for Apache+PHP+MySQL.
 - **Docker** – flexible container environment (for advanced users).
 - Built-in PHP server (`php -S localhost:8000`) – requires separate PHP installation, doesn’t replace database or full Apache setup.
+- Once you outgrow XAMPP, a comparison of [Laravel Sail vs Herd as a local PHP environment](/laravel-sail-vs-herd) is worth a read — optional for now.
 
 For beginners, the best start is still **XAMPP + htdocs + localhost**.
 
@@ -322,7 +323,7 @@ For beginners, the best start is still **XAMPP + htdocs + localhost**.
 - Open your project in the browser at **[http://localhost/folder_name/](http://localhost/folder_name/)**.
 - Start with a simple index.php and gradually add features.
 
-After these steps, you can already write your first scripts and start learning PHP in practice.
+After these steps, you can already write your first scripts and start learning PHP in practice — the next lesson walks through [your first PHP code example, Hello World](/course/php/before-programming-in-php/hello-world-your-first-php-code), line by line.
 
 ---
 

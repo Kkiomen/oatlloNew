@@ -20,7 +20,7 @@ seo_description: "Master PHP math functions including round, ceil, floor, and ra
 - **floor(float $num): float** Returns the largest integer less than or equal to the given number (rounds **down**).
 - **rand(int $min, int $max): int** Returns a random integer from the range [min, max] (both inclusive).
 
-⚠️ Note: ceil and floor always round to integers. round lets you control decimal precision and how halves (e.g., 1.5) are treated.
+⚠️ Note: ceil and floor always round to integers. round lets you control decimal precision and how halves (e.g., 1.5) are treated — the mode is passed as one of PHP's built-in [constants](/course/php/php-basics/constants-in-php), such as `PHP_ROUND_HALF_UP`.
 
 ---
 
@@ -62,7 +62,7 @@ echo PHP_EOL;
 var_dump(round(10.0)); // float(10)
 ```
 
-⚠️ Floating point caveat: numbers like 2.675 can’t be represented exactly in binary:
+⚠️ Floating point caveat: numbers like 2.675 can’t be represented exactly in binary — this comes straight from the precision limits of the [float data type](/course/php/php-basics/variables-and-data-types-in-php):
 
 ```php
 <?php
@@ -122,7 +122,7 @@ echo (int) -3.9;  // -3 (differs from floor(-3.9) == -4)
 
 ### Trick: ceil/floor to decimal places
 
-Since ceil and floor don’t have precision parameter, scale the number:
+Since ceil and floor don’t have precision parameter, scale the number using the [arithmetic operators](/course/php/php-basics/operators-arithmetic-comparison-logic) from the earlier lesson:
 
 ```php
 <?php
@@ -228,4 +228,4 @@ echo $token;
 
 ---
 
-Now you know how to use the essential math functions in PHP safely and effectively.
+Now you know how to use the essential math functions in PHP safely and effectively. This wraps up the basics chapter — the rest of the [free PHP course](/course/php) builds on everything you have learned here.

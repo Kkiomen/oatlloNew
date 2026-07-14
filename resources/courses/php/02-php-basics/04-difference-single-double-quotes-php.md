@@ -7,7 +7,7 @@ seo_description: "Single vs double quotes in PHP: the real difference, when vari
 
 ## Single vs double quotes in PHP: the basics
 
-In PHP, text is stored in the **string** type. You can define strings using:
+In PHP, text is stored in the **string** [data type](/course/php/php-basics/variables-and-data-types-in-php). You can define strings using:
 
 - **single quotes**: 'text'
 - **double quotes**: "text"
@@ -34,7 +34,7 @@ Understanding when to use ' ' and when to use " " increases code readability and
 - **Arrays and objects in interpolation**
   - Simple variable: "Hello, $name" — works.
   - Numeric index: "ID: $ids[0]" — works.
-  - String key: requires curly braces — "User: {$user['name']}".
+  - String key: requires curly braces — "User: {$user['name']}". Keys like this come from [associative arrays](/course/php/array/array-indexed-associative-multidimensional-php), which you'll cover in the next chapter.
   - Object property: "User: {$user->name}" (safer with braces).
 - **Performance**
   - The performance difference between ' and " is negligible in modern PHP. Choose based on **readability** and **intent**.
@@ -183,7 +183,7 @@ echo $nowdoc . "\n"; // Output contains: Hello, $name!
 - Use **single quotes** for simple, literal strings.
 - Use **double quotes** when you need **interpolation** or escape sequences (`\n`, `\t`).
 - For arrays/objects in interpolation, always use curly braces: `{$arr['key']}`, `{$obj->prop}`.
-- Avoid overly complex interpolations — use concatenation if readability suffers.
+- Avoid overly complex interpolations — use [string concatenation](/course/php/php-basics/concatenation-interpolation-string-manipulation-php) (the next lesson) if readability suffers.
 - Be consistent with style (PSR-12 coding standards).
 - For HTML/JSON/SQL:
   - SQL: always use **prepared statements**, not string concatenation.

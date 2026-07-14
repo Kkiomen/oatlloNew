@@ -5,7 +5,7 @@ seo_title: "PHP Array Sorting: sort, asort, ksort Complete Tutorial"
 seo_description: "Learn how to sort arrays in PHP using sort, asort, and ksort functions. Master array sorting with practical examples and best practices."
 ---
 
-Sorting arrays is one of the most common operations in PHP programming. It lets you order data by values or keys, which is essential in reports, product lists, rankings, filtering results, or preparing data for display in a user interface. In this lesson, you’ll learn how sorting works with PHP functions: **sort**, **asort**, and **ksort**. You’ll see practical code examples, best practices, and the most common mistakes to avoid.
+Sorting arrays is one of the most common operations in PHP programming. It lets you order data by values or keys, which is essential in reports, product lists, rankings, filtering results, or preparing data for display in a user interface. You met sorting briefly among the [basic operations on arrays in PHP](/course/php/array/basic-operations-arrays-php); in this lesson, you’ll learn how sorting really works with PHP functions: **sort**, **asort**, and **ksort**. You’ll see practical code examples, best practices, and the most common mistakes to avoid.
 
 ---
 
@@ -14,7 +14,7 @@ Sorting arrays is one of the most common operations in PHP programming. It lets 
 ### What you need to know first
 
 - **Indexed arrays** have numeric indexes (0, 1, 2, ...).
-- **Associative arrays** have string keys (e.g., "name" => "Alice").
+- **Associative arrays** have string keys (e.g., "name" => "Alice") — both are described in the lesson on [indexed, associative, and multidimensional arrays](/course/php/array/array-indexed-associative-multidimensional-php).
 - PHP provides different sorting functions:
   - **sort** – sorts by values but reindexes the array (loses original keys).
   - **asort** – sorts by values while preserving keys (good for associative arrays).
@@ -178,7 +178,7 @@ print_r($settings);
 
 - Losing keys with sort/rsort (use asort/arsort instead).
 - Wrong comparison mode: "10" vs "2" as strings → lexicographic order.
-- Mixing value types: numbers + strings may behave unexpectedly.
+- Mixing value types: numbers + strings may behave unexpectedly — recall how [PHP data types](/course/php/php-basics/variables-and-data-types-in-php) get juggled in comparisons.
 - Assuming sort returns a sorted array (it returns bool, modifies in place).
 - Overcomplicating with usort when flags suffice.
 
@@ -204,7 +204,7 @@ ksort($map, SORT_NUMERIC);
 print_r($map);
 ```
 
-Multi-stage sorting (thanks to stability):
+Multi-stage sorting (thanks to stability), using `usort` with the spaceship operator `<=>` from the lesson on [arithmetic, comparison, and logic operators in PHP](/course/php/php-basics/operators-arithmetic-comparison-logic):
 
 ```php
 <?php
@@ -244,4 +244,4 @@ print_r($products);
 
 ---
 
-Now you know the essentials of sorting arrays in PHP. Practice with different flags and data types to gain confidence using sort, asort, and ksort effectively.
+Now you know the essentials of sorting arrays in PHP. Practice with different flags and data types to gain confidence using sort, asort, and ksort effectively. The next lesson goes further, into [PHP's additional array functions](/course/php/array/php-array-functions-map-filter-reduce-merge).

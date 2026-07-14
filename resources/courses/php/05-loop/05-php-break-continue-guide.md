@@ -5,7 +5,7 @@ seo_title: "PHP break and continue: Loop Control Instructions"
 seo_description: "Learn how to use break and continue in PHP loops and switch statements. Master flow control with practical examples and best practices."
 ---
 
-The **break** and **continue** statements are very important elements in PHP programming. They allow you to control the flow of code execution inside loops (`for`, `while`, `do-while`, `foreach`) and in the `switch` statement. With them you can:
+The **break** and **continue** statements are very important elements in PHP programming. They allow you to control the flow of code execution inside loops ([`for`](/course/php/loop/php-for-loop-guide), [`while`](/course/php/loop/php-while-loop-guide), [`do-while`](/course/php/loop/php-do-while-loop-guide), [`foreach`](/course/php/loop/php-foreach-loop-guide)) and in the `switch` statement. With them you can:
 
 - quickly stop a loop when the goal is reached (e.g., a value found),
 - skip part of an iteration when data is not relevant (e.g., invalid records),
@@ -31,7 +31,7 @@ Example: `break;` exits the current loop, while `break 2;` exits two nested leve
 - **Skips the rest of the current iteration** of a loop and jumps to the next one.
 - `continue N;` skips the current iteration of the Nth outer loop (less common, but useful in nested loops).
 
-Note for `switch`: inside `switch` we normally use `break` to exit the `case`. If `switch` is inside a loop and we want to move to the next iteration of the loop from within `switch`, we use `continue 2;`.
+Note for [the `switch` statement](/course/php/conditional-instructions/php-switch-statement-guide): inside `switch` we normally use `break` to exit the `case`. If `switch` is inside a loop and we want to move to the next iteration of the loop from within `switch`, we use `continue 2;`.
 
 ---
 

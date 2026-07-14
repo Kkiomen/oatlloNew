@@ -29,7 +29,7 @@ Examples of valid syntax:
 - `die("Something went wrong");`
 - `die;`
 
-In PHP 8+, the argument must be either **int** or **string**. Other types cause a **TypeError**.
+In PHP 8+, the argument must be either **int** or **string** (see the lesson on [variables and data types in PHP](/course/php/php-basics/variables-and-data-types-in-php) for a refresher). Other types cause a **TypeError**.
 
 ### What happens internally with exit/die?
 
@@ -211,14 +211,14 @@ checkPermissionOrExit(false);
 - Always call `exit` after `header('Location')`.
 - For APIs: set headers, send JSON, then `exit`.
 - In CLI: write errors to **STDERR**, use **0** for success and >0 for errors.
-- Use **constants** for exit codes (e.g., `const EXIT_SUCCESS = 0; const EXIT_FAILURE = 1;`).
+- Use **[constants](/course/php/php-basics/constants-in-php)** for exit codes (e.g., `const EXIT_SUCCESS = 0; const EXIT_FAILURE = 1;`).
 - Register **shutdown functions** if cleanup is needed.
 - Log critical errors before calling `exit`.
 
 ### What to Avoid
 
 - Don’t overuse `exit`/`die` inside **domain logic** — use exceptions instead.
-- Don’t confuse `exit` with `return` (function only) or `break` (loop only).
+- Don’t confuse `exit` with `return` (function only) or `break` (loop only) — both get their own lessons later in the course: [break and continue in loops](/course/php/loop/php-break-continue-guide) and [functions and the return statement](/course/php/function/php-functions-basics-guide).
 - Don’t use numeric `exit` values as HTTP codes — they are different. Use `http_response_code()`.
 - Don’t show sensitive error details to end users. Log them securely instead.
 - Don’t assume code after `exit` will run (except finally/shutdown functions).

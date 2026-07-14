@@ -5,7 +5,7 @@ seo_title: "PHP Getters and Setters: Examples and Best Practices"
 seo_description: "Getters and setters in PHP: how to protect object data, add validation, and write clean, fluent setters - beginner-friendly examples included."
 ---
 
-Getters and setters are fundamental concepts in Object-Oriented Programming (OOP) in PHP. They are used for safe reading and modification of an object’s state (class properties/attributes) while preserving encapsulation. With them you can:
+Getters and setters are fundamental concepts in Object-Oriented Programming (OOP) in PHP. They are used for safe reading and modification of an object’s state (the [properties and methods](/course/php/objective-programming/php-properties-methods-guide) you declare in a class) while preserving [encapsulation](/course/php/objective-programming/php-encapsulation-guide). With them you can:
 
 - protect data (e.g., validate values before saving),
 - control access (public, private, protected),
@@ -58,7 +58,7 @@ Best practices in PHP OOP:
 
 Not always. Sometimes better to have:
 
-- only a getter (read-only property),
+- only a getter (read-only property), often paired with a value assigned once in the [constructor](/course/php/objective-programming/php-constructor-destructor-guide),
 - domain-specific methods instead of generic setters (`deposit(float $amount)` instead of `setBalance`),
 - immutable objects with `withX()` methods returning a new instance.
 
@@ -264,7 +264,7 @@ class DataBag
 - Naming: get/set for general, is/has for boolean.
 - Getters must not cause side effects.
 - Prefer domain methods (`deposit`, `withdraw`) over generic setters.
-- Use immutable objects and readonly when appropriate.
+- Use immutable objects and readonly when appropriate — if you want to go deeper, see [readonly properties in PHP](/php-readonly-properties), and [PHP 8.4 property hooks](/php-8-4-property-hooks) for a modern alternative to hand-written getters and setters.
 - For collections, use add/remove instead of setCollection(array).
 - Use PHPDoc when validation/normalization logic matters.
 - Be consistent when returning `$this` in fluent setters.
@@ -288,6 +288,8 @@ class DataBag
 - Not every property needs a setter.
 - Domain logic often beats generic setters.
 - Avoid public properties and magic method overuse.
+
+Later in this chapter, the lesson on [encapsulation as a key OOP principle](/course/php/objective-programming/php-encapsulation-advanced-guide) shows how getters, setters, and validation fit together in a complete class design.
 
 ---
 

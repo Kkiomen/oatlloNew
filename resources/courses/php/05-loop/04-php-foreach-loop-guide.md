@@ -49,7 +49,7 @@ unset($value); // important after using reference!
 
 Foreach works on:
 
-- arrays (indexed and associative),
+- [arrays (indexed and associative)](/course/php/array/array-indexed-associative-multidimensional-php),
 - objects implementing Traversable (Iterator, IteratorAggregate),
 - generators (`yield`).
 
@@ -179,6 +179,8 @@ if (is_iterable($maybeNull)) {
 
 ### Flow control: continue and break
 
+Inside foreach you can use [break and continue](/course/php/loop/php-break-continue-guide) exactly like in any other loop:
+
 ```php
 <?php
 $products = [
@@ -271,7 +273,7 @@ foreach ($numbers as $n) {
 
 ### Best Practices
 
-- Prefer **foreach** for arrays/collections over `for`/`while`.
+- Prefer **foreach** for arrays/collections over `for`/`while`, but know the [other ways of iterating over arrays](/course/php/array/iterating-arrays-php-foreach-array-walk-array-chunk) such as `array_walk` and `array_chunk`.
 - Use clear variable names: `$user`, `$product`, `$row`.
 - Use key-value form if key is meaningful.
 - Use references only when needed; always `unset($ref)` after.
@@ -321,4 +323,4 @@ foreach ($numbers as $n) {
 
 ---
 
-Now you have solid foundations for the **foreach loop** in PHP. In your projects, choose foreach as the default tool for arrays and collections, applying the best practices above. You can revisit [for](php-for-loop-guide), [while](php-while-loop-guide), and [do-while](php-do-while-loop-guide) lessons to compare use cases.
+Now you have solid foundations for the **foreach loop** in PHP. In your projects, choose foreach as the default tool for arrays and collections, applying the best practices above. You can revisit [the for loop](/course/php/loop/php-for-loop-guide), [the while loop](/course/php/loop/php-while-loop-guide), and [the do-while loop](/course/php/loop/php-do-while-loop-guide) lessons to compare use cases.

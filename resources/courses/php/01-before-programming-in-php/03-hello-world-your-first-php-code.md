@@ -19,8 +19,8 @@ This lesson is a simple but thorough guide that takes you from environment setup
 
 ## Basics: What Is PHP and How Does Output Work?
 
-- **PHP** is a server-side scripting language. This means that PHP code is executed on the server, and the result (usually HTML) is sent to the browser.
-- To see PHP output in the browser, you need an HTTP server with PHP enabled — e.g., **XAMPP**, **WAMP**, **MAMP**, **Laragon**, or PHP’s built-in server.
+- **PHP** is a server-side scripting language. This means that PHP code is executed on the server, and the result (usually HTML) is sent to the browser. The opening lesson explains [what PHP is and where it came from](/course/php/before-programming-in-php/introduction-what-is-php) in more detail.
+- To see PHP output in the browser, you need an HTTP server with PHP enabled — e.g., **XAMPP**, **WAMP**, **MAMP**, **Laragon**, or PHP’s built-in server. If you haven't set one up yet, go back to [installing XAMPP and taking your first steps with PHP](/course/php/before-programming-in-php/php-installation-first-steps).
 - To display text, we use **echo** (or less commonly `print`). Echo sends text to the output stream, which the server then delivers to the browser.
 
 ---
@@ -52,7 +52,7 @@ This is a great option for learning and small examples.
 
 ### Editor and File Encoding
 
-- Use a simple editor: VS Code, Sublime Text, Notepad++, PHPStorm (optional).
+- Use a simple editor: VS Code, Sublime Text, Notepad++, PHPStorm (optional). If you pick VS Code and want to go deeper, this round-up of [PHP extensions for VS Code](/vscode-extensions-php) is optional side-reading.
 - Save files in **UTF-8 without BOM**, with the **.php** extension (e.g., `index.php`).
 
 ---
@@ -135,6 +135,8 @@ echo "Hi, $name!"; // Hi, Jake!
 $name = "Jake";
 echo 'Hi, $name!'; // Displays literally: Hi, $name!
 ```
+
+Both the [difference between single quotes and double quotes in PHP](/course/php/php-basics/difference-single-double-quotes-php) and the wider topic of [concatenation, interpolation, and string manipulation](/course/php/php-basics/concatenation-interpolation-string-manipulation-php) get their own lessons in the next chapter — for now, just remember which quote type interpolates.
 
 ### Special Characters and New Lines
 

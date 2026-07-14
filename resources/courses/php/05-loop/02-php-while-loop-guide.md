@@ -11,7 +11,7 @@ The **while loop in PHP** is a basic control structure that repeats a block of c
 - you read data from a stream (file, database, user input),
 - you wait for a condition to be met (data arrival, process completion).
 
-In PHP programming, the while loop is a foundation alongside for and foreach. It allows you to write clean, concise code and solve real-world problems: from simple counters to iterating over database query results.
+In PHP programming, the while loop is a foundation alongside [the for loop](/course/php/loop/php-for-loop-guide) and [the foreach loop](/course/php/loop/php-foreach-loop-guide). It allows you to write clean, concise code and solve real-world problems: from simple counters to iterating over database query results.
 
 ---
 
@@ -43,7 +43,7 @@ Typically:
 
 ### Variation: the do-while loop
 
-- **do-while** executes the block at least once, checking the condition only after the first pass.
+- [**do-while**](/course/php/loop/php-do-while-loop-guide) executes the block at least once, checking the condition only after the first pass.
 - Useful when you need to run something once (e.g., display a menu) and maybe repeat.
 
 ```php
@@ -221,7 +221,7 @@ while (true) {
 - Ensure **condition updates** inside the loop.
 - Always use **braces { }** even for single statements.
 - Prefer **foreach** for arrays; while fits unknown-length tasks (streams, queues, cursors).
-- In `while(true)`, always add **break conditions** and time/iteration limits.
+- In `while(true)`, always add **break conditions** and time/iteration limits — see [break and continue in loops](/course/php/loop/php-break-continue-guide).
 - Use safe patterns for I/O (strict checks like `!== false`).
 - Limit expensive I/O (echo/print) in long loops.
 
@@ -233,7 +233,7 @@ while (true) {
 - Off-by-one errors (`<` vs `<=`).
 - Using floats in conditions.
 - Using while for arrays instead of foreach.
-- Long loops in web context without limits → timeout risk.
+- Long loops in web context without limits → timeout risk (if you want to go deeper, see [PHP maximum execution time exceeded](/php-maximum-execution-time-exceeded)).
 
 ---
 

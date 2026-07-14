@@ -13,7 +13,7 @@ Constants in PHP are values that cannot be changed once defined. Unlike variable
 
 - A **constant** is a named value that cannot be overwritten or removed once created.
 - **Difference from a variable**:
-  - Variable: prefixed with `$`, can be modified.
+  - Variable: prefixed with `$`, can be modified — see the previous lesson on [variables and data types in PHP](/course/php/php-basics/variables-and-data-types-in-php).
   - Constant: no `$`, **immutable** after definition.
 - **Scope**:
   - Global constants (defined at file or namespace level) are accessible throughout the script.
@@ -48,6 +48,8 @@ Note: This information applies to modern PHP 8+. Some behavior differs in older 
 - Syntax: `public const NAME = value;`
 - Since PHP 7.1, class constants can have visibility modifiers (`public/protected/private`).
 - Since PHP 8.1, you can use `final const` to prevent overriding in child classes.
+- Classes are covered much later in the course, in the lesson on [class constants and self vs static](/course/php/objective-programming/php-class-constants-static-guide) — come back to it once you know what a class is.
+- Optional side-reading, once the basics are comfortable: [typed class constants in PHP 8.3](/php-8-3-typed-class-constants) and [readonly properties](/php-readonly-properties), two newer ways PHP protects values from being changed.
 
 ---
 
@@ -344,4 +346,4 @@ echo B;
 
 Suggested solution (check yourself): `echo constant($name);`
 
-Good luck! In the next lesson, we’ll use constants to organize configuration and errors, combining them with functions and control structures in PHP.
+Good luck! In the next lesson, we’ll use constants to organize configuration and errors, combining them with functions and control structures in PHP, such as the [if, else, and elseif conditional statements](/course/php/conditional-instructions/conditional-statements-php-if-else-elseif) you will meet later in the course.

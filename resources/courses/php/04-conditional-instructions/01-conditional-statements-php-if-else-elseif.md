@@ -11,7 +11,7 @@ Conditional statements are the foundation of programming in PHP. They allow your
 - You’ll see simple and practical PHP code examples.
 - You’ll learn best practices and avoid common mistakes.
 
-The previous lesson covered arrays and their functions — now we’ll show how to combine arrays with conditionals (e.g., checking if an array is not empty before doing something).
+The previous chapter covered [indexed and associative arrays](/course/php/array/array-indexed-associative-multidimensional-php) and [array functions like map, filter, and reduce](/course/php/array/php-array-functions-map-filter-reduce-merge) — now we’ll show how to combine arrays with conditionals (e.g., checking if an array is not empty before doing something).
 
 ---
 
@@ -82,6 +82,8 @@ In PHP, some values are treated as false, even if they’re not literally `false
 - Comparisons: `==`, `===` (identical: type and value), `!=`, `!==`, `<`, `>`, `<=`, `>=`
 - Logical: `&&` (and), `||` (or), `!` (not)
 - There are also `and`, `or` with lower precedence — usually stick to `&&` and `||`.
+
+If any of these look unfamiliar, the lesson on [arithmetic, comparison, and logical operators](/course/php/php-basics/operators-arithmetic-comparison-logic) walks through each of them in detail.
 
 ---
 
@@ -359,4 +361,4 @@ if ("10" > 2) {
 
 ---
 
-Now you know the basic conditional statements in PHP: if, else, and elseif. Practice creating conditions based on form data and arrays, and you’ll quickly feel confident programming in PHP.
+Now you know the basic conditional statements in PHP: if, else, and elseif. Practice creating conditions based on form data and arrays, and you’ll quickly feel confident programming in PHP. Later in this chapter you’ll add two more tools for the same job: the [switch statement](/course/php/conditional-instructions/php-switch-statement-guide) and the [match expression](/course/php/conditional-instructions/php-match-expression-guide).

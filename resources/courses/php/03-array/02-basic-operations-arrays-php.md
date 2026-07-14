@@ -11,11 +11,11 @@ Arrays in PHP are one of the most important tools in daily programming. They all
 
 ## Basics: what will we do with arrays?
 
-From the previous lesson, you already know the types of arrays: indexed (numeric), associative (string keys), and multidimensional. Now let’s focus on the operations you’ll use most often:
+From the previous lesson, you already know the types of arrays: [indexed, associative, and multidimensional arrays in PHP](/course/php/array/array-indexed-associative-multidimensional-php). Now let’s focus on the operations you’ll use most often:
 
 - Adding and removing elements
 - Reading and modifying values
-- Iterating through arrays (loops)
+- [Iterating through arrays](/course/php/array/iterating-arrays-php-foreach-array-walk-array-chunk) (loops)
 - Searching for elements and checking if keys exist
 - Sorting (by keys and values)
 - Merging and splitting arrays
@@ -377,9 +377,9 @@ $upper = array_change_key_case($person, CASE_UPPER); // ['NAME'=>'Ada','AGE'=>31
 
 - Use the simplest tool:
   - Append with $arr[] instead of array_push in loops.
-  - Iterate associative arrays with foreach ($key => $value).
+  - Iterate associative arrays with foreach ($key => $value); the [foreach loop](/course/php/loop/php-foreach-loop-guide) itself gets its own lesson later in the course.
 - Be aware of reindexing:
-  - sort/rsort reindex keys; use asort/ksort to preserve them.
+  - sort/rsort reindex keys; use asort/ksort to preserve them — see [sorting arrays with sort, asort, and ksort](/course/php/array/sorting-arrays-php-sort-asort-ksort).
   - unset leaves a gap; use array_values to rebuild.
 - Check keys properly:
   - array_key_exists works even with null.
@@ -394,7 +394,7 @@ $upper = array_change_key_case($person, CASE_UPPER); // ['NAME'=>'Ada','AGE'=>31
     - keeps left values on conflict.
 - Performance:
   - Save count($arr) before for loops.
-  - Use map/filter/reduce for clean transformations.
+  - Use map/filter/reduce for clean transformations; the [additional array functions in PHP](/course/php/array/php-array-functions-map-filter-reduce-merge) lesson goes through them one by one.
 - Validate optional keys with ?? to avoid notices.
 - Document array structure in comments or PHPDoc.
 

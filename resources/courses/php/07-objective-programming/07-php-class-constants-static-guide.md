@@ -5,9 +5,9 @@ seo_title: "PHP Class Constants Tutorial: self vs static Guide"
 seo_description: "Learn class constants in PHP and the differences between self:: and static::. Master late static binding, visibility, and typed constants with examples."
 ---
 
-Class constants in PHP are names associated with a class that hold **unchangeable values**. They are used for configuration, default values, types, statuses, messages — anything that should not change during the runtime of the program.
+Class constants in PHP are names associated with a class that hold **unchangeable values**. They work like the global [constants in PHP](/course/php/php-basics/constants-in-php) you met in the basics chapter, except they belong to a class. They are used for configuration, default values, types, statuses, messages — anything that should not change during the runtime of the program.
 
-On the other hand, `self` and `static` are language constructs used to reference class elements (static methods, static properties, constants), but they behave differently in the context of inheritance. Understanding the difference between `self::` and `static::` is key to correctly using polymorphism and late static binding in PHP.
+On the other hand, `self` and `static` are language constructs used to reference class elements (static methods, [static properties](/course/php/objective-programming/php-properties-methods-guide), constants), but they behave differently in the context of [inheritance](/course/php/objective-programming/php-inheritance-guide). Understanding the difference between `self::` and `static::` is key to correctly using polymorphism and late static binding in PHP.
 
 ---
 
@@ -19,7 +19,7 @@ On the other hand, `self` and `static` are language constructs used to reference
 - They are **immutable** once defined (cannot be reassigned at runtime).
 - Since PHP 7.1 they can have **visibility modifiers**: `public`, `protected`, `private`.
 - Since PHP 8.1 they can be marked as **final** to prevent overriding in child classes.
-- Since PHP 8.3, **typed class constants** are available (e.g., `public const int COUNT = 10;`).
+- Since PHP 8.3, **typed class constants** are available (e.g., `public const int COUNT = 10;`) — the article on [PHP 8.3 typed class constants](/php-8-3-typed-class-constants) covers this in depth if you want to go deeper.
 - Allowed values: scalars (int, float, string, bool), arrays (`const array`), other constants.
 
 Accessing a constant:
@@ -182,7 +182,7 @@ class Example
 
 ### Best Practices
 
-- Use **class constants** for unchanging values (status codes, limits, versions).
+- Use **class constants** for unchanging values (status codes, limits, versions). For a fixed set of statuses specifically, [PHP enums](/php-enums-complete-guide) are an advanced alternative worth reading about later.
 - Stick to ALL_CAPS naming.
 - Always specify visibility (since PHP 7.1).
 - Use `static::` when you want inheritance and polymorphism.
@@ -207,7 +207,7 @@ class Example
 
 - Class constants hold immutable values in a class.
 - `self::` binds at compile-time, `static::` resolves at runtime.
-- `static::` enables polymorphism (late static binding).
+- `static::` enables [polymorphism](/course/php/objective-programming/php-polymorphism-guide) (late static binding), the subject of the next lesson.
 - Use visibility, `final`, and typed constants (PHP 8.3+) for modern code.
 
 ---

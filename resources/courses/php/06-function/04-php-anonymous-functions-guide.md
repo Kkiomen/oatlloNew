@@ -7,7 +7,7 @@ seo_description: "Learn how to use anonymous functions and closures in PHP. Mast
 
 Anonymous functions, also known as **closures**, are functions without a name. They can be assigned to a variable, passed as an argument, or returned from another function. They are very useful in PHP programming, especially when:
 
-- you need short, one-time functions (e.g., in `array_map`, `array_filter`, `usort`),
+- you need short, one-time functions (e.g., in `array_map`, `array_filter`, `usort`) — the [array functions map, filter, reduce, and merge](/course/php/array/php-array-functions-map-filter-reduce-merge) from the arrays chapter all expect one,
 - you want to encapsulate logic together with context (capture values from the outer scope),
 - you create factories, middleware, event handlers, routes in frameworks (Laravel, Slim),
 - you apply a functional style and want more concise code.
@@ -18,13 +18,13 @@ Modern PHP (7.4+ and 8.x) also offers **arrow functions** and **first-class call
 
 ## Basics: what is an anonymous function and a closure?
 
-- **Anonymous function**: defined without a name, e.g., `function ($x) { return $x * 2; }`.
-- **Closure**: an anonymous function that can *capture* variables from the surrounding scope using the `use` keyword.
+- **Anonymous function**: defined without a name, e.g., `function ($x) { return $x * 2; }`. Unlike a named function from the lesson on [defining functions in PHP](/course/php/function/php-functions-basics-guide), you cannot call it by name — you call it through a variable.
+- **Closure**: an anonymous function that can *capture* variables from the surrounding scope using the `use` keyword. The next lesson on [variable scope in PHP](/course/php/function/php-variable-scope-guide) explains that surrounding scope in full.
 - **Arrow function**: shorter syntax since PHP 7.4, e.g., `fn($x) => $x * 2`. Automatically captures variables from the surrounding scope (by value).
 
 When to use them?
 
-- When a function is to be used as an argument (`callable`) — e.g., in array functions.
+- When a function is to be used as an argument (`callable`) — e.g., in array functions, including the ones that [speed up array operations with array_map, array_filter, and array_walk](/course/php/array/fast-array-operations-php-array-map-filter-walk).
 - When you want to pass logic along with context (e.g., a filter threshold).
 - When named functions feel “too heavy” for a simple operation.
 
@@ -100,7 +100,7 @@ echo $callbacks[1](); // 2
 echo $callbacks[2](); // 3
 ```
 
-⚠️ If using references (`use (&$i)`), all would return 4 (final loop value).
+⚠️ If using references (`use (&$i)`), all would return 4 (final loop value) — `$i` here is the counter of [the for loop](/course/php/loop/php-for-loop-guide), and a reference always reads its last state.
 
 ### 6) Arrow functions
 

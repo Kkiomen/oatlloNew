@@ -5,7 +5,7 @@ seo_title: "PHP Switch Statement Tutorial: Complete Guide"
 seo_description: "Learn how to use the switch statement in PHP. Master switch syntax, fall-through, ranges, and when to use match instead with practical examples."
 ---
 
-The **switch** statement in PHP is a convenient way to choose one of many code paths based on the value of a single variable or expression. It makes the code more readable and easier to maintain compared to long chains of `if`, `elseif`, and `else`. This is especially useful when comparing the same value against many possible variants (e.g., file type, order status, user role).
+The **switch** statement in PHP is a convenient way to choose one of many code paths based on the value of a single variable or expression. It makes the code more readable and easier to maintain compared to [long chains of `if`, `elseif`, and `else`](/course/php/conditional-instructions/conditional-statements-php-if-else-elseif). This is especially useful when comparing the same value against many possible variants (e.g., file type, order status, user role).
 
 In this lesson, you’ll learn the basics of the `switch` statement in PHP, different usage patterns, good programming practices, and the most common mistakes. You’ll also see numerous code examples with comments so you can apply the knowledge right away.
 
@@ -17,7 +17,7 @@ The **switch** statement checks the value of an expression and compares it seque
 
 Key points:
 
-- In PHP, comparisons in `switch` are **loose** (`==`) by default, not strict (`===`). This matters for data types.
+- In PHP, comparisons in `switch` are **loose** (`==`) by default, not strict (`===`). This matters for data types — if the difference is still fuzzy, the lesson on [comparison operators](/course/php/php-basics/operators-arithmetic-comparison-logic) explains `==` versus `===`.
 - The optional **default** block runs if no case matches.
 - Intentional fall-through (executing subsequent cases) is possible, but should be used carefully and commented.
 
@@ -186,7 +186,7 @@ switch ($value) {
 }
 ```
 
-Since `switch` uses loose comparisons, `'0'`, `0`, and `false` may unexpectedly match. Use `if` with `===` or `match` in PHP 8 for strict comparisons.
+Since `switch` uses loose comparisons, `'0'`, `0`, and `false` may unexpectedly match. Use `if` with `===` or, in PHP 8, [the match expression](/course/php/conditional-instructions/php-match-expression-guide) — the next lesson in this chapter — for strict comparisons.
 
 ### 6) Mapping values – returning results
 
@@ -257,7 +257,7 @@ echo statusLabel(Status::Published); // Published
   case 'jpeg':
       // handle both
   ```
-- Use **constants** or **enums** instead of magic strings for safety.
+- Use **[constants](/course/php/php-basics/constants-in-php)** or **enums** instead of magic strings for safety.
 - When returning a value, consider returning directly in the `case` or using `match` (PHP 8+) for strict comparisons.
 - For ranges, use the **switch(true)** pattern or `if/elseif`.
 - Keep `case` blocks small — move logic into functions or methods.
@@ -294,7 +294,7 @@ $currency = match ($country) {
 echo $currency; // PLN
 ```
 
-`match` doesn’t fully replace `switch` (e.g., for side effects), but often simplifies code when mapping values.
+`match` doesn’t fully replace `switch` (e.g., for side effects), but often simplifies code when mapping values. If you want to go deeper, the article [PHP match expression vs switch: what changed](/php-match-vs-switch) compares the two constructs side by side.
 
 ---
 

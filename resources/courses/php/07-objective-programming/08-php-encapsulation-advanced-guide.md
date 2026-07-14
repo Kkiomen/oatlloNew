@@ -9,7 +9,7 @@ Encapsulation (also known as data hiding) is one of the most important principle
 
 In practice, encapsulation in PHP uses access levels for properties and methods: **public**, **protected**, and **private**, as well as supporting patterns such as **getters and setters**, constructor validation, and in newer PHP versions also **readonly** for immutability.
 
-If you’ve covered earlier topics (like access modifiers, getters and setters, constructors and destructors), this lesson will show how these elements come together as a complete practice of encapsulation.
+If you’ve covered earlier topics (like [access modifiers](/course/php/objective-programming/php-encapsulation-guide), [getters and setters](/course/php/objective-programming/php-getter-setter-guide), [constructors and destructors](/course/php/objective-programming/php-constructor-destructor-guide)), this lesson will show how these elements come together as a complete practice of encapsulation.
 
 ---
 
@@ -32,7 +32,7 @@ If you’ve covered earlier topics (like access modifiers, getters and setters, 
 
 - By using access modifiers: **private** (this class only), **protected** (this class + subclasses), **public** (everywhere).
 - By using access methods and validation: **getters**, **setters**, domain methods (e.g., deposit(), withdraw()).
-- By using constructors, typed properties, exceptions, and if suitable: **readonly**.
+- By using constructors, [typed properties](/course/php/objective-programming/php-properties-methods-guide), exceptions, and if suitable: **readonly**.
 - By designing a thoughtful public API that hides implementation details.
 
 ---
@@ -150,7 +150,7 @@ final class Email
 }
 ```
 
-Immutability (readonly) enforces stronger encapsulation.
+Immutability (readonly) enforces stronger encapsulation. If you want to go deeper, the article on [readonly properties in PHP](/php-readonly-properties) walks through what you can and cannot do with them.
 
 ---
 

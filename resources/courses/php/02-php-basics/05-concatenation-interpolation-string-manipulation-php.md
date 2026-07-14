@@ -5,7 +5,7 @@ seo_title: "PHP String Concatenation and Interpolation Tutorial"
 seo_description: "Learn how to concatenate strings and use interpolation in PHP. Master string manipulation with practical examples and best practices."
 ---
 
-Strings are one of the most important data types in PHP programming. We use them to display text, build URLs, generate HTML, create database queries, log messages, and countless other tasks. In this lesson, you’ll learn:
+Strings are one of the most important [data types in PHP](/course/php/php-basics/variables-and-data-types-in-php) programming. We use them to display text, build URLs, generate HTML, create database queries, log messages, and countless other tasks. In this lesson, you’ll learn:
 
 - what concatenation (joining strings) and interpolation (inserting values into strings) are,
 - how to safely and conveniently manipulate text in PHP,
@@ -17,7 +17,7 @@ Strings are one of the most important data types in PHP programming. We use them
 
 ### What is a string in PHP?
 
-- A string is a sequence of characters in quotes: "text", 'text'.
+- A string is a sequence of characters in quotes: "text", 'text' — the previous lesson explains the [difference between single and double quotes](/course/php/php-basics/difference-single-double-quotes-php).
 - Strings in PHP are immutable (every modification creates a new copy in memory).
 - For languages with diacritics (like ą, ę, ł, ż), use UTF-8 encoding and multibyte functions (mb_*).
 
@@ -32,7 +32,7 @@ Examples:
 - "Ala" . " " . "ma kota" → "Ala ma kota"
 - $text .= " appended" → adds text at the end of an existing string
 
-Note: In PHP, + is for numbers, . (dot) is for strings. Never use + to join text.
+Note: In PHP, + is one of the [arithmetic operators](/course/php/php-basics/operators-arithmetic-comparison-logic) and works on numbers, while . (dot) is for strings. Never use + to join text.
 
 ### Interpolation in PHP
 
@@ -51,7 +51,7 @@ Rules:
 ### Alternatives to concatenation and interpolation
 
 - Formatting functions: sprintf(), printf()
-- Joining arrays: implode(', ', $elements)
+- Joining arrays: implode(', ', $elements) — handy once you reach [PHP arrays](/course/php/array/array-indexed-associative-multidimensional-php) in the next chapter
 - echo can take multiple arguments: echo 'Hello ', $name, '!'; (no need for concatenation)
 
 ### Short note on heredoc and nowdoc
@@ -272,7 +272,7 @@ echo $msg . PHP_EOL;
 - Use double quotes for interpolation, single quotes for simple constants.
 - For complex insertions, use curly braces: "{$arr['key']}", "{$obj->prop}".
 - Use heredoc/nowdoc for larger text blocks (readability).
-- For joining many items (like lists), use implode instead of concatenation in a loop.
+- For joining many items (like lists), use implode instead of concatenation in a loop — you'll cover [the foreach loop](/course/php/loop/php-foreach-loop-guide) later in the course.
 - Use mb_* functions for languages with diacritics and ensure UTF-8.
 - Always check function results: strpos may return 0 or false — use !== false.
 - Ensure security:

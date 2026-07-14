@@ -5,7 +5,7 @@ seo_title: "PHP Constructor and Destructor Tutorial: Complete Guide"
 seo_description: "What constructors and destructors do in PHP, when each one runs, and how to use __construct and __destruct - with clear, beginner-friendly examples."
 ---
 
-In Object-Oriented Programming (OOP) in PHP, two special methods play a key role in the lifecycle of an object: **constructor** and **destructor**. The constructor (`__construct`) is used to **initialize the object** right after it is created, while the destructor (`__destruct`) is used to **clean up resources** just before the object is destroyed. Understanding how they work, when they are called, and how to write them according to best practices is essential in everyday PHP programming — especially when working with databases, files, or external APIs.
+In Object-Oriented Programming (OOP) in PHP, two special methods play a key role in the lifecycle of an object built from a class you already met in the lesson on [classes and objects](/course/php/objective-programming/php-oop-basics-guide): **constructor** and **destructor**. The constructor (`__construct`) is used to **initialize the object** right after it is created, while the destructor (`__destruct`) is used to **clean up resources** just before the object is destroyed. Understanding how they work, when they are called, and how to write them according to best practices is essential in everyday PHP programming — especially when working with databases, files, or external APIs.
 
 In this lesson you will learn the basics, see practical PHP code examples, discover common mistakes, and learn how to avoid them — explained simply and step by step.
 
@@ -18,7 +18,7 @@ In this lesson you will learn the basics, see practical PHP code examples, disco
 - **When it runs:** automatically after creating an object (`new Class()`).
 - **Purpose:** setting initial object state (e.g., property values), injecting dependencies (e.g., database connections), validating input.
 - **How it looks:** method named `__construct`, optionally with parameters.
-- **Visibility:** can be `public`, `protected`, or `private` (e.g., in factory or singleton patterns).
+- **Visibility:** can be `public`, `protected`, or `private` (e.g., in factory or singleton patterns) — these [access modifiers](/course/php/objective-programming/php-encapsulation-guide) get a lesson of their own later in this chapter.
 
 ### Destructor: `__destruct`
 
@@ -34,7 +34,7 @@ In this lesson you will learn the basics, see practical PHP code examples, disco
 - In PHP, there is only **one constructor per class** (no method overloading by signature). Different “versions” should be implemented via optional parameters or **named constructors** (static factory methods).
 - Old-style constructors (method named like the class, PHP 4) were removed in PHP 8. Use only `__construct`.
 - Destructors cannot accept parameters and should not throw exceptions.
-- In PHP 8, you can use **constructor property promotion**, which simplifies code.
+- In PHP 8, you can use **constructor property promotion**, which declares [properties and methods](/course/php/objective-programming/php-properties-methods-guide) straight from the parameter list and simplifies code.
 
 ---
 
@@ -126,6 +126,7 @@ class UserRepository extends Connection
 
 - If a subclass does not declare its own constructor, it **inherits** the parent constructor.
 - Always call `parent::__construct()` if the parent requires initialization.
+- Don’t worry if `extends` looks unfamiliar — [inheritance in PHP](/course/php/objective-programming/php-inheritance-guide) has its own lesson later in this chapter.
 
 ### Dependency Injection (DI) via constructor
 
@@ -158,7 +159,7 @@ $service = new OrderService($logger);
 $service->createOrder(42);
 ```
 
-DI makes testing easier (you can inject a mock logger).
+DI makes testing easier (you can inject a mock logger). If you want to go deeper, this is one of the habits behind [writing testable PHP code](/testable-php-code).
 
 ### Destructor for cleanup
 

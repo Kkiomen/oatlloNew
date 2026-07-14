@@ -7,7 +7,7 @@ seo_description: "Learn encapsulation in PHP OOP with access modifiers public, p
 
 Encapsulation is one of the most important principles of Object-Oriented Programming (OOP) in PHP. It allows hiding internal implementation details of a class and controlling who has access to its properties and methods. Thanks to this, code is more secure, easier to maintain, and less prone to errors.
 
-In this lesson you’ll learn about access levels: **public**, **private**, and **protected**, understand when and why to use them, and see many PHP code examples. This is a natural continuation of previous lessons: classes and objects, constructors, inheritance, and methods with `extends` and `parent::`.
+In this lesson you’ll learn about access levels: **public**, **private**, and **protected**, understand when and why to use them, and see many PHP code examples. This is a natural continuation of previous lessons: [classes and objects](/course/php/objective-programming/php-oop-basics-guide), [constructors and destructors](/course/php/objective-programming/php-constructor-destructor-guide), and [inheritance](/course/php/objective-programming/php-inheritance-guide) with `extends` and `parent::`.
 
 ---
 
@@ -25,6 +25,7 @@ In this lesson you’ll learn about access levels: **public**, **private**, and 
 - Forces usage of methods that enforce rules (e.g., validation).
 - Changing implementation doesn’t break code using the class (fewer places to fix).
 - Supports good PHP programming practices and design patterns.
+- Keeps the [properties and methods](/course/php/objective-programming/php-properties-methods-guide) you declared in the previous lessons under the control of the class that owns them.
 
 ### General rule (very useful in practice)
 
@@ -244,7 +245,7 @@ $svc->doWork();
 - Use **private** for internal data and implementation details.
 - Use **protected** for extension points in subclasses.
 - Use **public** only for stable API.
-- Prefer getters/setters or domain methods (`deposit()`, `withdraw()`) instead of public properties.
+- Prefer [getters and setters](/course/php/objective-programming/php-getter-setter-guide) or domain methods (`deposit()`, `withdraw()`) instead of public properties.
 - Add strict typing everywhere.
 - Keep public API small and stable.
 - Document public methods.
@@ -282,4 +283,4 @@ $svc->doWork();
 
 ---
 
-You now understand **encapsulation in PHP**. Apply it consciously to design clean, secure, and professional classes.
+You now understand **encapsulation in PHP**. Apply it consciously to design clean, secure, and professional classes — and later in this chapter, the lesson on [encapsulation as a key OOP principle](/course/php/objective-programming/php-encapsulation-advanced-guide) revisits the topic with validation, immutability, and collection safety.

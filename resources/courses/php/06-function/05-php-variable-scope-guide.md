@@ -29,11 +29,11 @@ In practice, scope determines whether a variable is accessible:
 - **Global scope**: variables defined outside functions (at file level). Not visible in functions unless explicitly imported.
 - **Superglobals**: special arrays (`$_GET`, `$_POST`, `$_SERVER`, `$_SESSION`, `$_COOKIE`, `$_FILES`, `$_ENV`, `$_REQUEST`, `$_GLOBALS`) available everywhere.
 - **Static variable inside a function**: keeps its value across multiple calls of the same function.
-- **Closure**: anonymous functions can “capture” variables from the surrounding context using `use`. Capture can be by value or by reference.
+- **Closure**: [anonymous functions (closures)](/course/php/function/php-anonymous-functions-guide) can “capture” variables from the surrounding context using `use`. Capture can be by value or by reference.
 
 ### What does *not* create a new scope
 
-`if`, `for`, `foreach`, `while`, `switch` **do not create new scopes**. New scope is mainly created inside functions, methods, and classes.
+`if`, `for`, `foreach`, `while`, `switch` **do not create new scopes**. A counter from [the for loop](/course/php/loop/php-for-loop-guide) or a value from [the foreach loop](/course/php/loop/php-foreach-loop-guide) still exists after the loop ends. New scope is mainly created inside functions, methods, and classes.
 
 ### Quick comparison
 
@@ -107,7 +107,7 @@ function showId(): void {
 - Hard to track data flow.
 - Difficult to test.
 - Conflicting changes from multiple places.
-- Prefer passing values via parameters or dependency injection.
+- Prefer passing values via parameters or dependency injection — [function parameters and default values](/course/php/function/php-function-arguments-guide) make the data flow explicit.
 
 ---
 
@@ -153,7 +153,7 @@ echo nextId('USR'); // USR-002
 
 - Class static properties/methods are a different mechanism.
 - Shared at class level, not per function.
-- Covered in OOP lessons.
+- Covered later in the course, in the lesson on [class constants and self vs static](/course/php/objective-programming/php-class-constants-static-guide).
 
 ---
 
@@ -367,7 +367,7 @@ print_r($gross); // [123, 61.5, 246]
 - In loops, create copies when closures should capture iteration values.
 - Always validate superglobals.
 - Use meaningful variable names.
-- Keep functions pure (no side effects) where possible.
+- Keep functions pure (no side effects) where possible — if you want to go deeper, this article on [writing testable PHP code](/testable-php-code) shows how avoiding global state pays off in tests.
 
 ### Common Mistakes
 

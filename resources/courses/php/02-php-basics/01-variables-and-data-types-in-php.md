@@ -38,7 +38,7 @@ seo_description: "Master PHP variables and data types with this comprehensive gu
 
 ### Compound Types
 
-- **array**: ordered map key ⇒ value; can be indexed or associative
+- **array**: ordered map key ⇒ value; can be indexed or associative — a whole chapter later in the course is devoted to [indexed, associative, and multidimensional arrays](/course/php/array/array-indexed-associative-multidimensional-php)
 - **object**: instance of a class
 - **callable**: a function, method, or anonymous function (Closure)
 - **iterable**: anything you can iterate over (array, Traversable)
@@ -56,7 +56,7 @@ seo_description: "Master PHP variables and data types with this comprehensive gu
 - **static**, **self**, **parent**: in OOP context
 - **void** (no return value), **never** (function never returns — e.g., throws exception/stops execution)
 - **nullable** types: `?int` means `int` or `null`
-- **enum** (PHP 8.1+): enumeration type — safe alternative to “magic strings”
+- **enum** (PHP 8.1+): enumeration type — safe alternative to “magic strings”; optional side-reading if you want to go deeper: [a complete guide to PHP enums](/php-enums-complete-guide)
 
 ---
 
@@ -93,7 +93,7 @@ Scope defines where a variable is visible and accessible.
 - **int**: size depends on platform:
   - 64-bit typical: from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
   - 32-bit typical: from -2,147,483,648 to 2,147,483,647
-  - Helper constants: **PHP_INT_SIZE**, **PHP_INT_MAX**, **PHP_INT_MIN**
+  - Helper constants: **PHP_INT_SIZE**, **PHP_INT_MAX**, **PHP_INT_MIN** — the next lesson covers [constants in PHP](/course/php/php-basics/constants-in-php) in detail
 - **float**: usually 64-bit IEEE 754 (double); very large range (~1.8e308), but limited precision (~14 significant digits).
   - Be careful with rounding errors in financial calculations — use integers (cents) or arbitrary precision libraries (e.g., ext-bcmath).
 
@@ -117,12 +117,13 @@ Scope defines where a variable is visible and accessible.
 
 - `==` (loose) converts types, can lead to surprises.
 - `===` (strict) compares both type and value — preferred best practice.
+- Both are explained in depth later in this chapter, in the lesson on [arithmetic, comparison, and logical operators](/course/php/php-basics/operators-arithmetic-comparison-logic).
 
 ---
 
 ## Strings: Practical Notes
 
-- Quotes:
+- Quotes — see the lesson on the [difference between single and double quotes](/course/php/php-basics/difference-single-double-quotes-php):
   - `"text $variable"` – interpolation works
   - `'text $variable'` – treated literally (no interpolation)
 - New lines and multi-line:

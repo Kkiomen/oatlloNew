@@ -5,7 +5,7 @@ seo_title: "PHP Array Iteration: foreach, array_walk, array_chunk"
 seo_description: "Learn how to iterate through arrays in PHP using foreach, array_walk, and array_chunk. Master array looping with practical examples and best practices."
 ---
 
-Iterating over arrays is one of the most common tasks in PHP programming. Whether you’re working with indexed, associative, or multidimensional arrays, you need to know how to conveniently loop through elements, modify them, and process data. In this lesson, you’ll learn three key tools:
+Iterating over arrays is one of the most common tasks in PHP programming. Whether you’re working with [indexed, associative, or multidimensional arrays](/course/php/array/array-indexed-associative-multidimensional-php), you need to know how to conveniently loop through elements, modify them, and process data. In this lesson, you’ll learn three key tools:
 
 - the **foreach** loop,
 - the **array_walk** function (and briefly **array_walk_recursive**),
@@ -19,7 +19,7 @@ You’ll understand when and how to use them, see PHP code examples, and learn b
 
 ### foreach: the simplest way to iterate
 
-- **foreach** is designed for conveniently looping through array elements.
+- **foreach** is designed for conveniently looping through array elements. You only need the array-focused basics here; the [foreach loop in PHP](/course/php/loop/php-foreach-loop-guide) gets a full lesson later, in the chapter on loops.
 - You can easily access the value and key, and even modify elements using references.
 - Ideal for most tasks: displaying, simple transformations, summation.
 
@@ -82,6 +82,8 @@ print_r($products);
 ```
 
 #### Breaking and skipping iterations
+
+Two keywords are enough for now — you'll meet [break and continue in PHP](/course/php/loop/php-break-continue-guide) properly later in the course.
 
 ```php
 <?php
@@ -276,7 +278,7 @@ foreach (array_chunk($rows, 100) as $batch) {
 - Forgetting `unset($v)` after `foreach ($arr as &$v)` — can cause unexpected behavior.
 - Expecting **array_walk** to return a new array — it doesn’t.
 - Modifying array structure during foreach — may cause unexpected results.
-- Using **array_walk** when **array_map** is more appropriate.
+- Using **array_walk** when **array_map** is more appropriate — the lesson on [fast array operations with array_map, array_filter, and array_walk](/course/php/array/fast-array-operations-php-array-map-filter-walk) compares them side by side.
 - Forgetting to preserve keys in **array_chunk** when needed.
 - Overusing callbacks for trivial logic — foreach is clearer.
 - Nested loops on large arrays without optimization.
@@ -319,4 +321,4 @@ echo implode(',', $items);
 
 ---
 
-Now you have solid foundations for iterating over arrays in PHP. Next, we’ll combine these with filtering and mapping data to show practical PHP programming patterns.
+Now you have solid foundations for iterating over arrays in PHP. Next, we’ll combine these with the [array functions for filtering, mapping, and merging data](/course/php/array/php-array-functions-map-filter-reduce-merge) to show practical PHP programming patterns.

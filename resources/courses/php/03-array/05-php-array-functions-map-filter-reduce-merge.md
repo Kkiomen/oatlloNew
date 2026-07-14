@@ -16,7 +16,7 @@ Arrays are one of the most frequently used data types in PHP. Beyond the basics 
 
 Knowing these functions speeds up **PHP programming**, simplifies code, and helps you write **cleaner, more efficient, and secure** applications.
 
-Related earlier lessons: Sorting Arrays in PHP, Iterating Arrays, Basic Array Operations, Indexed/Associative/Multidimensional Arrays.
+Related earlier lessons: [sorting arrays in PHP with sort, asort, and ksort](/course/php/array/sorting-arrays-php-sort-asort-ksort), [iterating over arrays with foreach and array_walk](/course/php/array/iterating-arrays-php-foreach-array-walk-array-chunk), [basic operations on arrays](/course/php/array/basic-operations-arrays-php), and [indexed, associative, and multidimensional arrays](/course/php/array/array-indexed-associative-multidimensional-php).
 
 ---
 
@@ -26,7 +26,7 @@ Many array functions in PHP follow similar patterns:
 
 - Some functions return a **new array** (e.g., array_map, array_filter, array_merge) — they do not modify the original.
 - Others **modify the array in place** (e.g., shuffle, array_splice) — changes apply to the original.
-- Some functions work with a **callback** (anonymous function or function name), which PHP calls for each element.
+- Some functions work with a **callback** (anonymous function or function name), which PHP calls for each element. Copy the callback shapes from the examples for now; [anonymous functions (closures) in PHP](/course/php/function/php-anonymous-functions-guide) are explained in full later in the course.
 - Many functions support **strict comparison modes**, helping avoid subtle bugs.
 
 In this lesson, you’ll see practical examples of using additional array functions, understand their use cases, and avoid pitfalls.
@@ -282,4 +282,4 @@ extract($data); // creates $token, $id
 
 ---
 
-Practice each function with your own data. In real-world PHP projects, combining several array functions (map → filter → column) creates concise and professional code.
+Practice each function with your own data. In real-world PHP projects, combining several array functions (map → filter → column) creates concise and professional code — and the next lesson shows how to keep those combinations quick, in [speeding up array operations in PHP](/course/php/array/fast-array-operations-php-array-map-filter-walk).

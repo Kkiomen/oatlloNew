@@ -5,7 +5,7 @@ seo_title: "PHP Function Typing Tutorial: Complete Type System Guide"
 seo_description: "Learn how to use function typing in PHP including int, string, array, bool, mixed, void, object, and nullable types. Master type safety with examples."
 ---
 
-Function typing in PHP is a way to clearly define what data types **parameters** expect and what **type is returned** by functions. This makes the code safer, easier to understand, and less error-prone. Since PHP 7 you can declare parameter and return types, and since PHP 8 you also have `mixed`, union types, and stricter type error handling. Here, we focus on specific types: **int, string, array, bool, mixed, void, object, ?int (nullable types)**.
+Function typing in PHP is a way to clearly define what data types **parameters** expect and what **type is returned** by functions — it builds directly on the [variables and data types in PHP](/course/php/php-basics/variables-and-data-types-in-php) you already know. This makes the code safer, easier to understand, and less error-prone. Since PHP 7 you can declare parameter and return types on every function you [define with the return statement](/course/php/function/php-functions-basics-guide), and since PHP 8 you also have `mixed`, union types, and stricter type error handling. Here, we focus on specific types: **int, string, array, bool, mixed, void, object, ?int (nullable types)**.
 
 ---
 
@@ -30,7 +30,7 @@ Function typing in PHP is a way to clearly define what data types **parameters**
 - Parameter type: `function name(Type $param) { ... }`
 - Return type: `function name(...): Type { return ...; }`
 - Nullable type: prefix with `?` → `?int` means “int or null”.
-- Default values: can combine with types → `?int $id = null`.
+- Default values: can combine with types → `?int $id = null`, exactly as in the lesson on [optional parameters and default values](/course/php/function/php-function-arguments-guide).
 
 ### PHP version requirements
 
@@ -218,7 +218,7 @@ echo square("3"); // TypeError in strict mode
 - Use nullable `?Type` when null is valid.
 - Ensure return type consistency across all paths.
 - Void functions shouldn’t return values.
-- Document array shapes in PHPDoc when needed.
+- Document array shapes in PHPDoc when needed — the `array` type does not say whether you get [indexed, associative, or multidimensional arrays](/course/php/array/array-indexed-associative-multidimensional-php).
 - Throw exceptions instead of returning magic values (false).
 
 ### Common Mistakes

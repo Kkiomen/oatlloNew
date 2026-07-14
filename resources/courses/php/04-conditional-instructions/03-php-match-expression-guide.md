@@ -1,22 +1,22 @@
 ---
 title: "The match Expression in PHP 8+: A Modern Approach to Conditionals"
 slug: php-match-expression-guide
-seo_title: "PHP match Expression: Examples and match vs switch"
-seo_description: "The PHP match expression explained: how it differs from switch, strict === comparison, and returning values - clear examples for PHP 8 and up."
+seo_title: "PHP match Expression Tutorial: Syntax and Examples"
+seo_description: "Learn the PHP match expression: syntax, strict === comparison, returning a value, and the match(true) trick - with clear, runnable examples for PHP 8+."
 ---
 
-The **PHP `match` expression**, introduced in **PHP 8**, is a modern construct for matching values and returning results. Unlike `switch`, it is an **expression**, meaning that **match always returns a value** that can be assigned to a variable or returned from a function.
+The **PHP `match` expression**, introduced in **PHP 8**, is a modern construct for matching values and returning results. Unlike [the `switch` statement](/course/php/conditional-instructions/php-switch-statement-guide), it is an **expression**, meaning that **match always returns a value** that can be assigned to a variable or returned from a function.
 
 Why it matters:
 
-- Cleaner code: shorter, more readable than `if/elseif` and `switch`.
+- Cleaner code: shorter, more readable than [`if`, `elseif`, and `else` chains](/course/php/conditional-instructions/conditional-statements-php-if-else-elseif) and `switch`.
 - Safer: uses **strict comparison (===)** – no unexpected matches like in `switch`.
 - No fall-through: you don’t need `break;`.
 - Requires completeness: if not all cases are covered, PHP throws an error (unless you add `default`).
 
-In practice, **match** is great for mapping values, formatting statuses, selecting labels, simple routers, and working with **enums** (PHP 8.1+).
+In practice, **match** is great for mapping values, formatting statuses, selecting labels, simple routers, and working with **enums** (PHP 8.1+). Enums are beyond this course, but if you want to go deeper, there is a [complete guide to PHP enums](/php-enums-complete-guide) on the blog.
 
-**A common gotcha:** the thing that trips people up most when moving from `switch` to `match` is strict comparison - `match` compares with `===`, so the string `'2'` does not match the integer `2`. The second gotcha is coverage: if no arm matches and there is no `default`, PHP throws an `UnhandledMatchError` instead of quietly doing nothing like `switch`. Both are intentional - they catch bugs early.
+**A common gotcha:** the thing that trips people up most when moving from `switch` to `match` is [strict comparison with `===`](/course/php/php-basics/operators-arithmetic-comparison-logic) - `match` compares with `===`, so the string `'2'` does not match the integer `2`. The second gotcha is coverage: if no arm matches and there is no `default`, PHP throws an `UnhandledMatchError` instead of quietly doing nothing like `switch`. Both are intentional - they catch bugs early. For a deeper side-by-side breakdown, see [what actually changed between match and switch](/php-match-vs-switch).
 
 ---
 

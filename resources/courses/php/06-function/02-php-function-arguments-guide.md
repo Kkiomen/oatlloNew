@@ -5,7 +5,7 @@ seo_title: "PHP Optional Parameters and Default Values in Functions"
 seo_description: "Optional parameters, default values, and named arguments in PHP - explained simply with clear examples. Write flexible functions the right way."
 ---
 
-In PHP programming, we often write functions that accept **arguments**. Sometimes not all parameters are required — and that’s a good thing! With **optional parameters** and **default values**, we can create flexible functions that are convenient to use and safe.
+In PHP programming, we often write functions that accept **arguments**. You already know how to [define functions and use the return statement](/course/php/function/php-functions-basics-guide); now we look closely at what goes into the parentheses. Sometimes not all parameters are required — and that’s a good thing! With **optional parameters** and **default values**, we can create flexible functions that are convenient to use and safe.
 
 In this lesson you’ll learn:
 
@@ -27,8 +27,8 @@ This is a fundamental PHP skill used everywhere — from simple scripts to web a
 Key rules:
 
 - Required parameters must be defined before optional ones.
-- Default value must be a constant expression (number, string, null, true/false, empty array, class constant, magic constant).
-- If using types, the default must match the type.
+- Default value must be a constant expression (number, string, null, true/false, empty array, class constant, magic constant) — the same kind of value you met in the lesson on [constants in PHP](/course/php/php-basics/constants-in-php).
+- If using types, the default must match the type, so a default follows the rules of [PHP data types](/course/php/php-basics/variables-and-data-types-in-php).
 
 **A common gotcha:** the mistake beginners hit most is putting a required parameter after an optional one - modern PHP rejects it. Always list required parameters first, then the optional ones.
 
@@ -219,13 +219,13 @@ Alternative: redesign the API to avoid ambiguity.
 
 ### Best Practices
 
-- Use strict typing (`declare(strict_types=1)`).
+- Use strict typing (`declare(strict_types=1)`) — the next lesson on [function typing in PHP](/course/php/function/php-function-typing-guide) walks through the whole type system.
 - Put required params first, optional after.
 - For nullable defaults, use `?type $x = null`.
 - Pick defaults that make sense.
 - Document null meaning in PHPDoc.
 - Use named arguments (PHP 8+) for clarity.
-- Use empty arrays as defaults for collections.
+- Use empty arrays as defaults for collections, then merge caller values in with the usual [operations on arrays](/course/php/array/basic-operations-arrays-php).
 - For many optional params, prefer config objects (DTOs).
 
 ### Common Mistakes

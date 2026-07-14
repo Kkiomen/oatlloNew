@@ -26,7 +26,7 @@ An **object** is a “concrete instance” of a class. You can create many objec
 ### Properties and methods
 
 - **Properties** – fields/variables storing the state of an object (e.g., user name, account balance).
-- **Methods** – functions defined inside a class, describing the behavior of an object (e.g., login(), deposit(), getEmail()).
+- **Methods** – [functions](/course/php/function/php-functions-basics-guide) defined inside a class, describing the behavior of an object (e.g., login(), deposit(), getEmail()).
 
 ### The $this keyword
 
@@ -74,7 +74,7 @@ echo $user->introduce(); // Hi! My name is Alice and my email is alice@example.c
 
 ## Constructor: object initialization
 
-The constructor is a special method **__construct()**, which runs automatically when creating an object. It’s used to pass initial data and configure the object.
+The constructor is a special method **__construct()**, which runs automatically when creating an object. It’s used to pass initial data and configure the object. The full object lifecycle, including cleanup, is covered later in this chapter in the lesson on [the constructor and destructor](/course/php/objective-programming/php-constructor-destructor-guide).
 
 ```php
 <?php
@@ -128,7 +128,7 @@ Clean and concise — very useful in PHP OOP.
 
 ## Encapsulation: private properties, getters, and setters
 
-Encapsulation means hiding implementation details and controlling access to object state. Benefits:
+Encapsulation means hiding implementation details and controlling access to object state. You’ll see the full picture later in this chapter, in the lesson on [encapsulation with public, private, and protected](/course/php/objective-programming/php-encapsulation-guide). Benefits:
 
 - prevents invalid data,
 - maintains consistency,
@@ -295,7 +295,7 @@ var_dump($form->isValid()); // true
 
 - Default to **private properties**, expose via getters/setters or domain methods.
 - Use **typing** everywhere (`declare(strict_types=1);`).
-- Follow **PSR-12** (style) and **PSR-4** (autoloading).
+- Follow **PSR-12** (style) and **PSR-4** (autoloading) — if you want to go deeper, see how [Composer autoloading with PSR-4](/composer-autoloading-psr-4) loads your classes.
 - Use clear names (BankAccount, deposit(), getBalance()).
 - One class = one responsibility (SRP).
 - Validate input early.
@@ -343,4 +343,4 @@ var_dump($form->isValid()); // true
 
 ---
 
-You now have a solid foundation in PHP OOP. Next, you can explore **inheritance, interfaces, and polymorphism** to model application logic more effectively.
+You now have a solid foundation in PHP OOP. Next, you can explore **[inheritance with extends and parent::](/course/php/objective-programming/php-inheritance-guide)**, interfaces, and **[polymorphism](/course/php/objective-programming/php-polymorphism-guide)** to model application logic more effectively.

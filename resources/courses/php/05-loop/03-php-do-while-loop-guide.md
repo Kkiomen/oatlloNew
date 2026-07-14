@@ -5,7 +5,7 @@ seo_title: "PHP do-while Loop Tutorial: Complete Guide"
 seo_description: "Learn how to use the do-while loop in PHP. Master loop syntax, menu systems, input validation, and best practices with practical examples."
 ---
 
-In this lesson, you’ll learn about the **do-while loop in PHP**. You’ll see what it is, when to use it, and how to write clear and safe code. We’ll show practical PHP code examples with comments, discuss **best practices**, and cover **common mistakes**. This is the perfect continuation after the lessons on the [while loop](php-while-loop-guide) and [for loop](php-for-loop-guide).
+In this lesson, you’ll learn about the **do-while loop in PHP**. You’ll see what it is, when to use it, and how to write clear and safe code. We’ll show practical PHP code examples with comments, discuss **best practices**, and cover **common mistakes**. This is the perfect continuation after the lessons on [the while loop in PHP](/course/php/loop/php-while-loop-guide) and [the for loop in PHP](/course/php/loop/php-for-loop-guide).
 
 ---
 
@@ -185,9 +185,9 @@ if ($success) {
 
 - Always update loop state inside (e.g., counters).
 - Use do-while when logic requires at least one execution.
-- Add fallback exits (attempt limits, breaks) to avoid infinite loops.
-- Keep conditions simple and use strict comparisons (`===`).
-- Prefer foreach for arrays, do-while for prompts, retries, menus.
+- Add fallback exits (attempt limits, [break and continue](/course/php/loop/php-break-continue-guide)) to avoid infinite loops.
+- Keep conditions simple and use [strict comparison operators](/course/php/php-basics/operators-arithmetic-comparison-logic) (`===`).
+- Prefer [the foreach loop](/course/php/loop/php-foreach-loop-guide) for arrays, do-while for prompts, retries, menus.
 
 ### Common Mistakes
 

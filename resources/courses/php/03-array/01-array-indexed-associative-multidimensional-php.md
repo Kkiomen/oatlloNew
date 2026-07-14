@@ -7,7 +7,7 @@ seo_description: "Learn how to work with arrays in PHP. Master indexed, associat
 
 ## Introduction
 
-Arrays in PHP are one of the most important data structures you’ll work with. They let you store multiple values in a single variable and manage them conveniently. With arrays you can:
+Arrays in PHP are one of the most important data structures you’ll work with. Unlike the simple [variables and data types in PHP](/course/php/php-basics/variables-and-data-types-in-php) you already know, an array lets you store multiple values in a single variable and manage them conveniently. With arrays you can:
 
 - store lists (e.g., shopping cart items),
 - map data by keys (e.g., user by email),
@@ -283,11 +283,11 @@ Note: after `unset`, new `$arr[] = ...` uses the next max index, not filling the
   - **associative** for records/maps,
   - **multidimensional** for complex structures.
 - Use clear keys (e.g., 'email', 'price').
-- Use `foreach` for iteration.
+- Use `foreach` for iteration — a later lesson in this chapter covers [iterating over arrays with foreach, array_walk, and array_chunk](/course/php/array/iterating-arrays-php-foreach-array-walk-array-chunk) in detail.
 - Check key existence:
   - `array_key_exists` detects null values.
   - `isset` returns false if value is null.
-- Use strict comparisons in in_array/array_search.
+- Use strict comparisons in in_array/array_search — the same `===` rules you saw with [comparison operators in PHP](/course/php/php-basics/operators-arithmetic-comparison-logic).
 - Reindex with array_values after deletions if order matters.
 - Keep consistent structure for multidimensional arrays.
 - Document types with PHPDoc.
@@ -311,7 +311,7 @@ Note: after `unset`, new `$arr[] = ...` uses the next max index, not filling the
 - **Indexed**: for lists.
 - **Associative**: for records/maps.
 - **Multidimensional**: for complex structures.
-- You know basics: create, read, add, delete, iterate, use functions.
+- You know basics: create, read, add, delete, iterate, and use the [built-in PHP array functions](/course/php/array/php-array-functions-map-filter-reduce-merge) covered later in this chapter.
 - Watch out for pitfalls: key conversion, unset gaps, isset vs array_key_exists.
 
 ---
@@ -362,4 +362,4 @@ foreach ($u as $i => $p) {
 
 ---
 
-Now you have solid foundations for working with arrays in PHP. Practice creating lists, maps, and simple multidimensional structures. Each small project (to-do list, cart, address book) will strengthen your understanding and fluency.
+Now you have solid foundations for working with arrays in PHP. Practice creating lists, maps, and simple multidimensional structures. Each small project (to-do list, cart, address book) will strengthen your understanding and fluency. Next up: the [basic operations on arrays in PHP](/course/php/array/basic-operations-arrays-php).

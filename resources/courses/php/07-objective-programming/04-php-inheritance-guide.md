@@ -5,7 +5,7 @@ seo_title: "PHP Inheritance Tutorial: extends and parent:: Guide"
 seo_description: "Learn inheritance in PHP with extends and parent::. Master method overriding, constructor calls, visibility rules, and OOP inheritance patterns with examples."
 ---
 
-**Inheritance** is one of the foundations of Object-Oriented Programming (OOP) in PHP. It allows you to create new classes based on existing ones, reuse code, extend functionality, and organize application architecture.
+**Inheritance** is one of the foundations of Object-Oriented Programming (OOP) in PHP. It allows you to create new classes based on existing ones, reuse code, extend functionality, and organize application architecture. It builds directly on what you already know about [classes and objects](/course/php/objective-programming/php-oop-basics-guide) and about [properties and methods](/course/php/objective-programming/php-properties-methods-guide).
 
 This lesson explains:
 
@@ -33,11 +33,13 @@ This lesson explains:
 - **protected** – accessible in the class and subclasses (inherited).
 - **private** – accessible only in the same class (not accessible in child classes, cannot be overridden directly).
 
+These three keywords are the subject of the next lesson, on [encapsulation with public, private, and protected](/course/php/objective-programming/php-encapsulation-guide) — here we only need the inheritance angle.
+
 ### parent:: – when and why?
 
 - **parent::** is the scope resolution operator that allows you to call:
   - a method from the base class (`parent::method()`),
-  - the base class constructor (`parent::__construct()`),
+  - the base class [constructor](/course/php/objective-programming/php-constructor-destructor-guide) (`parent::__construct()`),
   - static methods, properties, and constants (`parent::CONSTANT`, `parent::staticMethod()`).
 - Works only inside the child class definition.
 
@@ -223,6 +225,8 @@ class UserRepository extends Repository
 - **self::** – refers to the current class (ignores later overrides).
 - **parent::** – refers to the immediate parent class.
 - **static::** – uses late static binding (important in static polymorphism).
+
+Both [class constants and the self vs static distinction](/course/php/objective-programming/php-class-constants-static-guide) and [polymorphism](/course/php/objective-programming/php-polymorphism-guide) get their own lessons later in this chapter — for now, just remember the three keywords exist.
 
 ---
 

@@ -11,7 +11,7 @@ Operators play a crucial role in PHP programming. Thanks to them, we can add num
 
 - how addition, subtraction, division, modulo, and exponentiation work,
 - how to combine conditions using logical operators,
-- how to safely compare values and avoid pitfalls of PHP type juggling.
+- how to safely compare values and avoid pitfalls of PHP type juggling, which builds on [variables and data types in PHP](/course/php/php-basics/variables-and-data-types-in-php) from the first lesson of this chapter.
 
 This is a practical lesson with plenty of PHP code examples, SEO-friendly hints, and beginner mistakes to avoid.
 
@@ -78,7 +78,7 @@ echo "\n";
 echo 5.7 % 2.1;   // 1, because PHP casts to int: 5 % 2
 ```
 
-⚠️ Note: `%` works only on integers (operands cast to int). For fractions, use custom logic or math functions.
+⚠️ Note: `%` works only on integers (operands cast to int). For fractions, use custom logic or the [math functions round, ceil, floor, and rand](/course/php/php-basics/math-functions-round-ceil-floor-rand) covered at the end of this chapter.
 
 #### Exponentiation and precedence
 
@@ -382,4 +382,4 @@ var_dump(fdiv(1.0, 0.0));
 
 ---
 
-Now you have solid foundations for working with operators in PHP. In the next lessons, we’ll apply them in conditionals, loops, and practical exercises.
+Now you have solid foundations for working with operators in PHP. In the next lessons, we’ll apply them in conditionals such as [if, else, and elseif](/course/php/conditional-instructions/conditional-statements-php-if-else-elseif), in loops starting with [the for loop](/course/php/loop/php-for-loop-guide), and in practical exercises.

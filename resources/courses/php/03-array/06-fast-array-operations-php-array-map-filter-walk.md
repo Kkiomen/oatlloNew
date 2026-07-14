@@ -5,7 +5,7 @@ seo_title: "Fast PHP Array Operations: array_map, array_filter, array_walk"
 seo_description: "Learn how to optimize array processing in PHP using array_map, array_filter, and array_walk. Master fast array operations with performance tips and examples."
 ---
 
-Arrays are at the heart of PHP programming. We process input data, database/API results, product lists, logs, and even configurations using arrays. To write **fast and readable PHP code**, it’s worth knowing built-in array functions: **array_map**, **array_filter**, and **array_walk**. They allow you to:
+Arrays are at the heart of PHP programming. We process input data, database/API results, product lists, logs, and even configurations using arrays. To write **fast and readable PHP code**, it’s worth knowing three of the [built-in PHP array functions](/course/php/array/php-array-functions-map-filter-reduce-merge) really well: **array_map**, **array_filter**, and **array_walk**. They allow you to:
 
 - quickly transform elements,
 - efficiently filter data,
@@ -57,7 +57,7 @@ Arrays are at the heart of PHP programming. We process input data, database/API 
 
 **Performance note:**
 
-- Built-in functions are fast, but each callback call has overhead. For the simplest tasks, a foreach loop can be just as fast (or faster). Gains are greater when you do more work per element or use built-ins like `strtolower` directly.
+- Built-in functions are fast, but each callback call has overhead. For the simplest tasks, plain [iteration with foreach, array_walk, and array_chunk](/course/php/array/iterating-arrays-php-foreach-array-walk-array-chunk) can be just as fast (or faster). Gains are greater when you do more work per element or use built-ins like `strtolower` directly.
 
 ---
 
@@ -246,12 +246,12 @@ echo "foreach: $foreachManual\n";
   - **array_filter** → selection, keeps keys (use array_values if you need reindexing).
   - **array_walk** → in-place modifications with side effects.
 - Prefer built-in functions as callables ('trim','intval','strtolower') — often faster.
-- Use **arrow functions (fn)** for short logic, and mark closures **static** when $this isn’t needed.
+- Use **arrow functions (fn)** for short logic, and mark closures **static** when $this isn’t needed — [anonymous functions (closures) in PHP](/course/php/function/php-anonymous-functions-guide) are covered later in the course, so don't worry if the syntax still feels new.
 - Be mindful of keys:
   - array_filter preserves keys.
   - array_map preserves keys only with one array.
 - Keep callbacks pure (no side effects) for map/filter; side effects belong in walk.
-- Profile with real profilers (Blackfire, Tideways). Don’t rely only on micro-benchmarks.
+- Profile with real profilers (Blackfire, Tideways). Don’t rely only on micro-benchmarks. If you want to go deeper, this optional article walks through [profiling a slow PHP application](/profile-slow-php-application).
 
 ### Common Mistakes
 
