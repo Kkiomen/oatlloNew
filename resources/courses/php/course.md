@@ -3,7 +3,7 @@ name: "PHP COURSE"
 slug: php
 lang: en
 image: auto
-title_list: "Instant results from learning PHP"
+title_list: "PHP Course"
 description_list: "Gain practical knowledge and learn from real-world projects. This PHP course will help you quickly create dynamic web applications and gain the skills you need in the job market."
 title_full: "PHP Course from Basic to Expert - Create Web Applications!"
 description_full: "PHP course from basic to advanced - Create dynamic web applications"

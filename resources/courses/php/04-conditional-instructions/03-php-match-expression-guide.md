@@ -1,11 +1,11 @@
 ---
 title: "The match Expression in PHP 8+: A Modern Approach to Conditionals"
 slug: php-match-expression-guide
-seo_title: "PHP match Expression Tutorial: Modern Conditional Logic"
+seo_title: "PHP match Expression: Examples and match vs switch"
 seo_description: "The PHP match expression explained: how it differs from switch, strict === comparison, and returning values - clear examples for PHP 8 and up."
 ---
 
-The **match** expression, introduced in **PHP 8**, is a modern construct for matching values and returning results. Unlike `switch`, it is an **expression**, meaning that **match always returns a value** that can be assigned to a variable or returned from a function.
+The **PHP `match` expression**, introduced in **PHP 8**, is a modern construct for matching values and returning results. Unlike `switch`, it is an **expression**, meaning that **match always returns a value** that can be assigned to a variable or returned from a function.
 
 Why it matters:
 
@@ -16,11 +16,13 @@ Why it matters:
 
 In practice, **match** is great for mapping values, formatting statuses, selecting labels, simple routers, and working with **enums** (PHP 8.1+).
 
+**A common gotcha:** the thing that trips people up most when moving from `switch` to `match` is strict comparison - `match` compares with `===`, so the string `'2'` does not match the integer `2`. The second gotcha is coverage: if no arm matches and there is no `default`, PHP throws an `UnhandledMatchError` instead of quietly doing nothing like `switch`. Both are intentional - they catch bugs early.
+
 ---
 
-## Basics: how match works
+## How the PHP match expression works
 
-### Differences between match, switch, and if/elseif
+### PHP match vs switch vs if/elseif
 
 - **match vs switch**
   - match uses **strict identity (===)**, switch defaults to **loose (==)**.
@@ -40,9 +42,9 @@ In practice, **match** is great for mapping values, formatting statuses, selecti
 
 ---
 
-## PHP Code Examples
+## PHP match expression examples
 
-### Simple value-to-text mapping
+### Map a value to text with match
 
 ```php
 <?php
@@ -217,17 +219,22 @@ echo $result; // string two
 
 ---
 
-## Mini Quiz
+Now you know how to use the **PHP `match` expression** to write cleaner, safer, and more predictable conditionals.
 
-1. How does match differ from switch in comparisons? → match uses ===, switch uses ==.
-2. What happens if no match and no default? → UnhandledMatchError.
-3. How to match multiple values in one arm? → Separate with commas.
-4. How to use match for ranges? → Use match(true) with boolean expressions.
-5. Does match return a value? → Yes, can assign or return.
-6. Why is match with enums powerful? → Forces completeness when enums expand.
-7. What happens if arms return mixed types but function return type is string? → TypeError.
-8. Do you need break in match? → No, there’s no fall-through.
+## FAQ
 
----
+### What is the difference between PHP match and switch?
 
-Now you know how to use the **match expression** in PHP 8+ to write cleaner, safer, and more predictable conditionals.
+`match` uses strict comparison (`===`), is an **expression** that returns a value, has no fall-through (so no `break`), and requires every case to be covered or it throws. `switch` uses loose comparison (`==`), is a statement that returns nothing, and falls through until it hits a `break`.
+
+### Does the PHP match expression use strict comparison?
+
+Yes. `match` compares with `===` (strict identity), so the types must match too - the string `'2'` will **not** match the integer `2`.
+
+### What happens if no arm matches in a PHP match?
+
+If no arm matches and there is no `default`, PHP throws an `UnhandledMatchError`. Add a `default` arm to safely handle every other value.
+
+### When was the match expression added to PHP?
+
+The `match` expression was added in **PHP 8.0**. Using it with enums requires **PHP 8.1** or newer.
