@@ -1,113 +1,138 @@
-<!-- =============================================================
-  BLOG LISTING PAGE (Tailwind CSS v3 + Font Awesome 6)
-  Brand: Dark UI with rose accent – consistent with landing page.
-  Focus keywords: PHP blog, backend development articles, learn PHP
-  ============================================================= -->
+@php
+    use Illuminate\Support\Str;
 
+    $pageTitle = $searchQuery
+        ? ($searchQuery . ' – ' . __('basic.header_blog') . ' | Oatllo')
+        : ($currentCategory
+            ? ($currentCategory . ' – ' . __('basic.header_blog') . ' | Oatllo')
+            : __('basic.meta_title_blog'));
+
+    $pageDescription = $searchQuery
+        ? 'Search results for "' . $searchQuery . '" on the Oatllo programming blog.'
+        : __('basic.meta_description_blog');
+
+    // Duplikat "featured" pokazujemy tylko na 1. stronie listy głównej (bez szukania/kategorii).
+    $showFeatured = !$searchQuery && !$currentCategory && $articles->onFirstPage() && $articles->count() > 0;
+    $featuredArticle = $showFeatured ? $articles->first() : null;
+    $canonical = url()->current();
+@endphp
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="{{ env('APP_LANG_HTML') }}" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <title>Programming Blog – Tips, Tutorials & Best Practices</title>
-    <meta name="description" content="Discover programming tutorials, coding tips, and best practices. Stay up to date with software development insights for PHP, Python, JavaScript and more.">
+    <title>{{ $pageTitle }}</title>
+    <meta name="description" content="{{ $pageDescription }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="author" content="Oatllo - Jakub Owsianka">
 
-    <meta name="robots" content="index, follow">
+    @if($searchQuery)
+        <meta name="robots" content="noindex, follow">
+    @else
+        <meta name="robots" content="index, follow">
+    @endif
 
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
 
-
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="canonical" href="{{ $canonical }}">
 
-    <link rel="canonical" href="{{ route('blog') }}">
+    {{-- Paginacja: podpowiedzi prev/next dla robotów --}}
+    @if($articles->currentPage() > 1)
+        <link rel="prev" href="{{ $articles->previousPageUrl() }}">
+    @endif
+    @if($articles->hasMorePages())
+        <link rel="next" href="{{ $articles->nextPageUrl() }}">
+    @endif
 
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Programming Blog – Tips, Tutorials & Best Practices">
-    <meta property="og:description" content="Discover programming tutorials, coding tips, and best practices. Stay up to date with software development insights for PHP, Python, JavaScript and more.">
-    <meta property="og:url" content="{{ route('blog') }}">
-    <meta property="og:site_name" content="Programming Blog">
-    <meta property="og:image" content="https://oatllo.com/assets/images/logo-512.png">
-    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="{{ $pageTitle }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:site_name" content="Oatllo">
+    <meta property="og:image" content="{{ asset('assets/images/logo-512.png') }}">
+    <meta property="og:locale" content="{{ env('APP_LANG_HTML') }}">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Programming Blog – Tips, Tutorials & Best Practices">
-    <meta name="twitter:description" content="Discover programming tutorials, coding tips, and best practices. Stay up to date with software development insights for PHP, Python, JavaScript and more.">
-    <meta name="twitter:image" content="https://oatllo.com/assets/images/logo-512.png">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ asset('assets/images/logo-512.png') }}">
     <meta name="twitter:site" content="@Oatllo">
-    <meta name="twitter:creator" content="@Oatllo">
 
-
+    <link rel="alternate" type="application/rss+xml" title="Oatllo RSS Feed" href="{{ route('feed') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>[x-cloak]{display:none !important;}</style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css" integrity="sha512-v8QQ0YQ3H4K6Ic3PJkym91KoeNT5S3PnDKvqnwqFD1oiqIl653crGZplPdU5KKtHjO0QKcQ2aUlQZYjHczkmGw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js" integrity="sha512-b+nQTCdtTBIRIbraqNEwsjB6UvL3UEMkXnhzd8awtCYh0Kcsjl9uEgwVFVbhoj3uu1DO1ZMacNvLoyJJiNfcvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
+        .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .hero-glow { background: radial-gradient(60% 50% at 50% 0%, rgba(244,63,94,.18) 0%, rgba(244,63,94,0) 70%); }
+        .card-hover { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+        .card-hover:hover { transform: translateY(-4px); border-color: rgba(244,63,94,.5); }
+        .line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    </style>
 </head>
 <body class="bg-neutral-950 text-neutral-100 antialiased">
 {!! \App\Services\HomeService::getTagManagerBODY() !!}
 
 <!-- ===========================================================
-  HEADER NAVIGATION
+  NAVIGATION (sticky glass)
 =========================================================== -->
-<div x-data="{ open: false }">
-    <header class="absolute inset-x-0 top-0 z-50">
-        <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+<div x-data="{ open: false, scrolled: false }" @scroll.window="scrolled = window.scrollY > 20">
+    <header class="fixed inset-x-0 top-0 z-50 transition-colors duration-300" :class="scrolled ? 'glass border-b border-white/5' : ''">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between p-5 lg:px-8" aria-label="Global">
             <div class="flex lg:flex-1">
                 <a href="{{ route('index') }}" class="-m-1.5 p-1.5">
                     <div class="logo_oatllo">oatllo</div>
                 </a>
             </div>
             <div class="flex lg:hidden">
-                <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400" @click="open = !open">
-                    <span class="sr-only">Open menu</span>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
+                <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300" @click="open = !open" aria-label="Open menu">
+                    <i class="fa-solid fa-bars text-xl"></i>
                 </button>
             </div>
-            <div class="hidden lg:flex lg:gap-x-12">
-                <a href="{{ route('index') }}" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">{{ __('basic.home') }}</a>
-                <a href="{{ route('blog') }}" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">Blog</a>
-                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">{{ __('basic.courses') }}</a>
+            <div class="hidden lg:flex lg:gap-x-10">
+                <a href="{{ route('index') }}" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">{{ __('basic.home') }}</a>
+                <a href="{{ route('blog') }}" class="text-sm font-semibold text-white hover:text-rose-400 transition-colors duration-200">Blog</a>
+                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">{{ __('basic.courses') }}</a>
             </div>
-            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm/6 font-semibold text-white hover:text-rose-400 transition-colors duration-200">
+            <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-x-6">
+                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-sm font-semibold text-neutral-300 hover:text-rose-400 transition-colors duration-200">
                     <i class="fa-brands fa-linkedin mr-1"></i>LinkedIn
                 </a>
             </div>
         </nav>
 
-        <!-- Mobile menu, show/hide based on menu open state. -->
-        <div class="lg:hidden" role="dialog" aria-modal="true" x-show="open">
-            <!-- Background backdrop, show/hide based on slide-over state. -->
-            <div class="fixed inset-0 z-50"></div>
+        <!-- Mobile menu -->
+        <div class="lg:hidden" role="dialog" aria-modal="true" x-show="open" x-cloak>
+            <div class="fixed inset-0 z-50 bg-black/60" @click="open = false"></div>
             <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-neutral-900 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-white/10">
                 <div class="flex items-center justify-between">
                     <a href="{{ route('index') }}" class="-m-1.5 p-1.5">
                         <div class="logo_oatllo">oatllo</div>
                     </a>
-                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-400" @click="open = !open">
-                        <span class="sr-only">Close menu</span>
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                        </svg>
+                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-300" @click="open = false" aria-label="Close menu">
+                        <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
                 </div>
                 <div class="mt-6 flow-root">
-                    <div class="-my-2 divide-y divide-gray-500/25">
+                    <div class="-my-2 divide-y divide-white/10">
                         <div class="space-y-2 py-6">
-                            <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">{{ __('basic.home') }}</a>
-                            <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">Blog</a>
-                            <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">{{ __('basic.courses') }}</a>
+                            <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.home') }}</a>
+                            <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">Blog</a>
+                            <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.courses') }}</a>
                         </div>
                         <div class="py-6">
-                            <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-white hover:bg-neutral-800">
+                            <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">
                                 <i class="fa-brands fa-linkedin mr-2"></i>LinkedIn
                             </a>
                         </div>
@@ -118,434 +143,211 @@
     </header>
 </div>
 
-<!-- ===========================================================
-  MAIN CONTENT
-=========================================================== -->
-<main id="blog" class="pt-32 pb-32" aria-label="Blog articles">
-    <!-- Page Header -->
-    <header class="mx-auto mb-16 max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <h1 class="text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+<main id="blog" aria-label="Blog articles">
+    <!-- ===========================================================
+      HERO / PAGE HEADER
+    =========================================================== -->
+    <section class="relative isolate overflow-hidden pt-36 pb-14 sm:pt-44">
+        <div class="absolute inset-0 -z-10 hero-glow" aria-hidden="true"></div>
+
+        <!-- Breadcrumb -->
+        <nav aria-label="Breadcrumb" class="mx-auto mb-8 max-w-5xl px-4 sm:px-6 lg:px-8">
+            <ol class="flex flex-wrap justify-center gap-2 text-sm text-neutral-500" itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
+                    <a href="{{ route('index') }}" itemprop="item" class="hover:text-rose-400"><span itemprop="name">{{ __('basic.home') }}</span></a>
+                    <meta itemprop="position" content="1" />
+                </li>
+                <li>&#8250;</li>
+                <li class="text-neutral-300" itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
+                    <a href="{{ route('blog') }}" itemprop="item" class="hover:text-rose-400"><span itemprop="name">Blog</span></a>
+                    <meta itemprop="position" content="2" />
+                </li>
+                @if($currentCategory)
+                    <li>&#8250;</li>
+                    <li class="text-neutral-300" itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
+                        <span itemprop="name">{{ $currentCategory }}</span>
+                        <meta itemprop="position" content="3" />
+                    </li>
+                @endif
+            </ol>
+        </nav>
+
+        <header class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+            <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
+                @if($searchQuery)
+                    {{ __('basic.header_blog') }}: <span class="bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">{{ $searchQuery }}</span>
+                @elseif($currentCategory)
+                    <span class="bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">{{ $currentCategory }}</span>
+                @else
+                    {{ __('basic.header_blog') }} <span class="bg-gradient-to-r from-rose-400 to-pink-500 bg-clip-text text-transparent">Oatllo</span>
+                @endif
+            </h1>
+            <p class="mx-auto mt-5 max-w-2xl text-lg text-neutral-400">
+                @if($searchQuery)
+                    {{ $articles->total() }} {{ __('basic.articles') }} · "{{ $searchQuery }}"
+                @else
+                    {{ __('basic.header_sub_blog') }}
+                @endif
+            </p>
+
+            <!-- Search -->
+            <form action="{{ route('blog') }}" method="get" class="relative mx-auto mt-8 flex max-w-lg justify-center" role="search">
+                <input type="search" name="q" value="{{ $searchQuery ?? '' }}" placeholder="{{ __('basic.articles') }}…" aria-label="Search blog" class="w-full rounded-xl border border-white/10 bg-white/5 p-3.5 pr-11 placeholder-neutral-500 text-white focus:border-rose-400/50 focus:outline-none focus:ring-2 focus:ring-rose-500/40" />
+                <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-rose-400" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
             @if($searchQuery)
-                Search Results for "<span class="text-rose-400">{{ $searchQuery }}</span>"
-            @else
-                Latest <span class="text-rose-400">PHP Articles</span>
-            @endif
-        </h1>
-        <p class="mt-4 text-lg text-neutral-300">
-            @if($searchQuery)
-                Found {{ $articles->total() }} article(s) matching your search.
-            @else
-                Practical tutorials, performance tips and deep‑dive guides for modern backend developers.
-            @endif
-        </p>
-        <!-- Search / filter (optional) -->
-        <form action="{{ route('blog') }}" method="get" class="relative mt-8 flex justify-center">
-            <input type="search" name="q" value="{{ $searchQuery ?? '' }}" placeholder="Search articles…" aria-label="Search blog" class="w-full max-w-lg rounded-xl border border-transparent bg-white/10 p-3 pr-10 placeholder-neutral-400 text-white focus:outline-none focus:ring-2 focus:ring-rose-500" />
-            <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-rose-400" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </form>
-        @if($searchQuery)
-            <div class="mt-4 text-center">
-                <a href="{{ route('test') }}" class="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-4 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200">
-                    <i class="fa-solid fa-times"></i>
-                    Clear search
-                </a>
-            </div>
-        @endif
-
-        @if($articles->total() > 0)
-            <div class="mt-4 text-center text-sm text-neutral-400">
-                Showing {{ $articles->firstItem() }} to {{ $articles->lastItem() }} of {{ $articles->total() }} article{{ $articles->total() > 1 ? 's' : '' }}
-            </div>
-        @elseif($searchQuery)
-            <div class="mt-4 text-center text-sm text-neutral-400">
-                No articles found matching your search
-            </div>
-        @else
-            <div class="mt-4 text-center text-sm text-neutral-400">
-                No articles available
-            </div>
-        @endif
-    </header>
-
-{{--    <!-- Programming Topics Section -->--}}
-{{--    <section class="mx-auto mb-20 max-w-7xl px-4 sm:px-6 lg:px-8">--}}
-{{--        <div class="text-center mb-12">--}}
-{{--            <h2 class="text-3xl font-bold text-white mb-4">Explore Programming <span class="text-rose-400">Topics</span></h2>--}}
-{{--            <p class="text-neutral-300 max-w-2xl mx-auto">Discover articles organized by topics that matter to developers</p>--}}
-{{--        </div>--}}
-{{--        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">--}}
-{{--            <a href="{{ route('blog') }}?topic=backend" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20">--}}
-{{--                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>--}}
-{{--                <div class="relative z-10">--}}
-{{--                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400">--}}
-{{--                        <i class="fa-solid fa-server text-xl"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white mb-2">Backend Development</h3>--}}
-{{--                    <p class="text-sm text-neutral-400">Server-side programming</p>--}}
-{{--                </div>--}}
-{{--            </a>--}}
-
-{{--            <a href="{{ route('blog') }}?topic=performance" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20">--}}
-{{--                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>--}}
-{{--                <div class="relative z-10">--}}
-{{--                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-green-500/20 text-green-400">--}}
-{{--                        <i class="fa-solid fa-tachometer-alt text-xl"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white mb-2">Performance</h3>--}}
-{{--                    <p class="text-sm text-neutral-400">Optimization techniques</p>--}}
-{{--                </div>--}}
-{{--            </a>--}}
-
-{{--            <a href="{{ route('blog') }}?topic=security" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20">--}}
-{{--                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>--}}
-{{--                <div class="relative z-10">--}}
-{{--                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-yellow-500/20 text-yellow-400">--}}
-{{--                        <i class="fa-solid fa-shield-alt text-xl"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white mb-2">Security</h3>--}}
-{{--                    <p class="text-sm text-neutral-400">Best practices</p>--}}
-{{--                </div>--}}
-{{--            </a>--}}
-
-{{--            <a href="{{ route('blog') }}?topic=testing" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20">--}}
-{{--                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>--}}
-{{--                <div class="relative z-10">--}}
-{{--                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/20 text-purple-400">--}}
-{{--                        <i class="fa-solid fa-vial text-xl"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white mb-2">Testing</h3>--}}
-{{--                    <p class="text-sm text-neutral-400">Quality assurance</p>--}}
-{{--                </div>--}}
-{{--            </a>--}}
-
-{{--            <a href="{{ route('blog') }}?topic=devops" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20">--}}
-{{--                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>--}}
-{{--                <div class="relative z-10">--}}
-{{--                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-400">--}}
-{{--                        <i class="fa-solid fa-cogs text-xl"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white mb-2">DevOps</h3>--}}
-{{--                    <p class="text-sm text-neutral-400">Deployment & CI/CD</p>--}}
-{{--                </div>--}}
-{{--            </a>--}}
-
-{{--            <a href="{{ route('blog') }}?topic=api" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20">--}}
-{{--                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>--}}
-{{--                <div class="relative z-10">--}}
-{{--                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-pink-500/20 text-pink-400">--}}
-{{--                        <i class="fa-solid fa-code text-xl"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white mb-2">API Design</h3>--}}
-{{--                    <p class="text-sm text-neutral-400">REST & GraphQL</p>--}}
-{{--                </div>--}}
-{{--            </a>--}}
-
-{{--            <a href="{{ route('blog') }}?topic=database" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20">--}}
-{{--                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>--}}
-{{--                <div class="relative z-10">--}}
-{{--                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-cyan-500/20 text-cyan-400">--}}
-{{--                        <i class="fa-solid fa-database text-xl"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white mb-2">Database</h3>--}}
-{{--                    <p class="text-sm text-neutral-400">Design & optimization</p>--}}
-{{--                </div>--}}
-{{--            </a>--}}
-
-{{--            <a href="{{ route('blog') }}?topic=tips" class="group relative overflow-hidden rounded-xl bg-gradient-to-br from-neutral-800 to-neutral-900 p-6 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/20">--}}
-{{--                <div class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>--}}
-{{--                <div class="relative z-10">--}}
-{{--                    <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-orange-500/20 text-orange-400">--}}
-{{--                        <i class="fa-solid fa-lightbulb text-xl"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white mb-2">Tips & Tricks</h3>--}}
-{{--                    <p class="text-sm text-neutral-400">Developer insights</p>--}}
-{{--                </div>--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--    </section>--}}
-
-    <!-- Featured Article Section -->
-    @if($articles->count() > 0)
-        <section class="mx-auto mb-20 max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-white mb-4">Featured <span class="text-rose-400">Article</span></h2>
-                <p class="text-neutral-300">Our most popular and comprehensive guide</p>
-            </div>
-            @php $featuredArticle = $articles->first(); @endphp
-            <article class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-800 shadow-2xl">
-                <div class="grid lg:grid-cols-2 gap-0">
-                    <div class="relative">
-                        <img src="{{ $featuredArticle->image }}" alt="{{ $featuredArticle->name }}" class="h-full w-full object-cover" loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent"></div>
-                    </div>
-                    <div class="p-8 lg:p-12 flex flex-col justify-center">
-                        <div class="mb-4">
-                            <span class="inline-flex items-center rounded-full bg-rose-500/20 px-3 py-1 text-sm font-medium text-rose-400">
-                                <i class="fa-solid fa-star mr-2"></i>Featured
-                            </span>
-                        </div>
-                        <h3 class="text-2xl lg:text-3xl font-bold text-white mb-4">{{ $featuredArticle->name }}</h3>
-                        <p class="text-lg text-neutral-300 mb-6 line-clamp-4">{{ $featuredArticle->short_description }}</p>
-                        <div class="flex items-center gap-6 text-sm text-neutral-400 mb-6">
-                            <div class="flex items-center">
-                                <i class="fa-solid fa-calendar text-rose-400 mr-2"></i>
-                                <time datetime="{{ $featuredArticle->getPublishedDate()->format('Y-m-d') }}">{{ $featuredArticle->getPublishedDate()->format('M j, Y') }}</time>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fa-solid fa-clock text-rose-400 mr-2"></i>
-                                <span>{{ $featuredArticle->getTimeRead() }} min read</span>
-                            </div>
-                            @if($featuredArticle->category)
-                                <div class="flex items-center">
-                                    <i class="fa-solid fa-folder text-rose-400 mr-2"></i>
-                                    <span>{{ $featuredArticle->category->name }}</span>
-                                </div>
-                            @endif
-                        </div>
-                        <a href="{{ $featuredArticle->getRoute() }}" class="inline-flex items-center justify-center rounded-lg bg-rose-500 px-6 py-3 text-white font-semibold transition-colors hover:bg-rose-600">
-                            Read Full Article
-                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
+                <div class="mt-4">
+                    <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 rounded-full bg-white/5 px-4 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200">
+                        <i class="fa-solid fa-xmark"></i> Clear search
+                    </a>
                 </div>
-            </article>
+            @endif
+        </header>
+
+        <!-- Category chips (internal linking) -->
+        @isset($categories)
+            @if($categories->count() > 0)
+                <nav class="mx-auto mt-10 flex max-w-5xl flex-wrap justify-center gap-2 px-4 sm:px-6 lg:px-8" aria-label="Categories">
+                    <a href="{{ route('blog') }}" class="rounded-full border px-4 py-1.5 text-sm font-medium transition-colors duration-200 {{ !$currentCategory ? 'border-rose-400/50 bg-rose-500/15 text-rose-300' : 'border-white/10 bg-white/5 text-neutral-300 hover:border-rose-400/40 hover:text-white' }}">
+                        {{ __('basic.articles') }}
+                    </a>
+                    @foreach($categories as $cat)
+                        <a href="{{ route('blog.list.category', ['slug' => $cat->slug]) }}" class="rounded-full border px-4 py-1.5 text-sm font-medium transition-colors duration-200 {{ $currentCategory === $cat->name ? 'border-rose-400/50 bg-rose-500/15 text-rose-300' : 'border-white/10 bg-white/5 text-neutral-300 hover:border-rose-400/40 hover:text-white' }}">
+                            {{ $cat->name }}
+                        </a>
+                    @endforeach
+                </nav>
+            @endif
+        @endisset
+    </section>
+
+    <!-- ===========================================================
+      FEATURED ARTICLE
+    =========================================================== -->
+    @if($featuredArticle)
+        <section class="mx-auto mb-16 max-w-6xl px-4 sm:px-6 lg:px-8">
+            <a href="{{ $featuredArticle->getRoute() }}" class="card-hover group grid overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 lg:grid-cols-2">
+                <div class="relative min-h-[16rem] overflow-hidden bg-neutral-800">
+                    <img src="{{ $featuredArticle->image }}" alt="{{ $featuredArticle->name }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                    <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/70 to-transparent lg:bg-gradient-to-r"></div>
+                    <span class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-rose-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-rose-500/30">
+                        <i class="fa-solid fa-star"></i> Featured
+                    </span>
+                </div>
+                <div class="flex flex-col justify-center p-8 lg:p-12">
+                    <div class="flex flex-wrap items-center gap-3 text-xs text-neutral-400">
+                        @if($featuredArticle->getCategoryName())
+                            <span class="font-semibold text-rose-400">{{ $featuredArticle->getCategoryName() }}</span>
+                            <span>·</span>
+                        @endif
+                        <time datetime="{{ $featuredArticle->getPublishedDate()->format('Y-m-d') }}">{{ $featuredArticle->getPublishedDate()->format('M j, Y') }}</time>
+                        <span>·</span>
+                        <span>{{ $featuredArticle->getTimeRead() }} min read</span>
+                    </div>
+                    <h2 class="mt-4 text-2xl font-bold text-white group-hover:text-rose-300 transition-colors duration-200 lg:text-3xl">{{ $featuredArticle->name }}</h2>
+                    <p class="mt-3 text-neutral-400 line-clamp-3">{{ $featuredArticle->short_description }}</p>
+                    <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-rose-400 group-hover:gap-3 transition-all duration-200">
+                        {{ __('basic.more') }} <i class="fa-solid fa-arrow-right"></i>
+                    </span>
+                </div>
+            </a>
         </section>
     @endif
 
-    <!-- SEO Content Section -->
-    <section class="mx-auto mb-20 max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div class="bg-neutral-900/50 rounded-2xl p-8 border border-neutral-800">
-            <h2 class="text-2xl font-bold text-white mb-6 text-center">Programming Resources & <span class="text-rose-400">Learning Hub</span></h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
-                        <i class="fa-solid fa-code text-rose-400 mr-3"></i>
-                        Latest Programming Tutorials
-                    </h3>
-                    <p class="text-neutral-300 mb-4">Discover comprehensive guides covering modern programming practices, best practices, and advanced techniques for developers at all skill levels.</p>
-                    <ul class="space-y-2 text-sm text-neutral-400">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-rose-400 mr-2"></i>PHP 8+ features and optimizations</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-rose-400 mr-2"></i>Laravel framework tutorials</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-rose-400 mr-2"></i>Performance optimization tips</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-rose-400 mr-2"></i>Security best practices</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
-                        <i class="fa-solid fa-rocket text-rose-400 mr-3"></i>
-                        Developer Productivity
-                    </h3>
-                    <p class="text-neutral-300 mb-4">Learn tools, techniques, and methodologies that will help you write better code faster and more efficiently.</p>
-                    <ul class="space-y-2 text-sm text-neutral-400">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-rose-400 mr-2"></i>Code review strategies</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-rose-400 mr-2"></i>Testing methodologies</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-rose-400 mr-2"></i>CI/CD best practices</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-rose-400 mr-2"></i>Development workflow optimization</li>
-                    </ul>
-                </div>
+    <!-- ===========================================================
+      ARTICLES GRID
+    =========================================================== -->
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        @if($articles->total() > 0)
+            <div class="mb-8 flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-white">
+                    {{ $searchQuery ? 'Results' : ($currentCategory ?: __('basic.articles')) }}
+                </h2>
+                <p class="text-sm text-neutral-500">
+                    {{ $articles->firstItem() }}–{{ $articles->lastItem() }} / {{ $articles->total() }}
+                </p>
             </div>
-        </div>
-    </section>
+        @endif
 
-    <!-- Articles Grid -->
-    <section class="mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3 sm:px-6 lg:px-8" itemscope itemtype="https://schema.org/Blog">
-        @forelse($articles as $article)
-            <article class="flex flex-col overflow-hidden rounded-2xl bg-neutral-900/70 shadow-lg transition hover:shadow-rose-500/30" itemscope itemprop="blogPost" itemtype="https://schema.org/BlogPosting">
-                <a href="{{ $article->getRoute() }}" class="group relative block" itemprop="url">
-                    <img src="{{ $article->image }}" alt="{{ $article->name }}" class="h-56 w-full object-cover transition group-hover:scale-105" itemprop="image" loading="lazy" />
-                    <span class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent"></span>
-                </a>
-                <div class="flex flex-1 flex-col p-6">
-                    <header class="mb-3 flex-1">
-                        <h2 class="text-xl font-bold tracking-tight text-white group-hover:text-rose-400" itemprop="headline">
-                            <a href="{{ $article->getRoute() }}" class="inline-block h-full w-full" itemprop="url">{{ $article->name }}</a>
-                        </h2>
-                        <p class="mt-2 line-clamp-3 text-neutral-400" itemprop="description">
-                            {{ $article->short_description }}
-                        </p>
-                    </header>
-                    <!-- Meta info -->
-                    <footer class="mt-auto flex items-center justify-between text-sm text-neutral-400">
-                        <div>
-                            <i class="fa-solid fa-calendar text-rose-400 mr-1"></i>
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3" itemscope itemtype="https://schema.org/Blog">
+            @forelse($articles as $article)
+                @if($showFeatured && $loop->first) @continue @endif
+                <article class="card-hover group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-900" itemscope itemprop="blogPost" itemtype="https://schema.org/BlogPosting">
+                    <a href="{{ $article->getRoute() }}" class="relative block overflow-hidden" itemprop="url">
+                        <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800">
+                            <img src="{{ $article->image }}" alt="{{ $article->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" itemprop="image" loading="lazy" />
+                        </div>
+                        @if($article->getCategoryName())
+                            <span class="absolute left-3 top-3 rounded-full bg-neutral-950/80 px-3 py-1 text-xs font-medium text-rose-300 backdrop-blur">{{ $article->getCategoryName() }}</span>
+                        @endif
+                    </a>
+                    <div class="flex flex-1 flex-col p-6">
+                        <div class="mb-3 flex items-center gap-2 text-xs text-neutral-500">
                             <time datetime="{{ $article->getPublishedDate()->format('Y-m-d') }}" itemprop="datePublished">{{ $article->getPublishedDate()->format('M j, Y') }}</time>
+                            <span>·</span>
+                            <span><i class="fa-solid fa-clock mr-1 text-rose-400/70"></i>{{ $article->getTimeRead() }} min</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-clock text-rose-400"></i>
-                            <span>{{ $article->getTimeRead() }}&nbsp;min read</span>
-                        </div>
-                    </footer>
-                </div>
-            </article>
-        @empty
-            <div class="col-span-full text-center py-12">
-                <div class="text-neutral-400 text-lg">
-                    <i class="fa-solid fa-newspaper text-4xl mb-4 block"></i>
+                        <h3 class="text-lg font-bold tracking-tight text-white group-hover:text-rose-300 transition-colors duration-200 line-clamp-2" itemprop="headline">
+                            <a href="{{ $article->getRoute() }}">{{ $article->name }}</a>
+                        </h3>
+                        <p class="mt-2 flex-1 text-sm text-neutral-400 line-clamp-3" itemprop="description">{{ $article->short_description }}</p>
+                        <span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-rose-400 group-hover:gap-3 transition-all duration-200">
+                            {{ __('basic.more') }} <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </span>
+                    </div>
+                </article>
+            @empty
+                <div class="col-span-full py-16 text-center">
+                    <i class="fa-solid fa-newspaper mb-4 block text-4xl text-neutral-600"></i>
                     @if($searchQuery)
-                        <p>No articles found matching "{{ $searchQuery }}".</p>
-                        <p class="mt-2 text-sm">Try different keywords or <a href="{{ route('test') }}" class="text-rose-400 hover:text-rose-300">browse all articles</a>.</p>
+                        <p class="text-lg text-neutral-400">No articles found for "{{ $searchQuery }}".</p>
+                        <p class="mt-2 text-sm text-neutral-500">Try different keywords or <a href="{{ route('blog') }}" class="text-rose-400 hover:text-rose-300">browse all articles</a>.</p>
                     @else
-                        <p>No articles to display.</p>
+                        <p class="text-lg text-neutral-400">No articles to display yet.</p>
                     @endif
                 </div>
+            @endforelse
+        </div>
+
+        <!-- SEO intro (only default listing, first page) -->
+        @if(!$searchQuery && !$currentCategory && $articles->onFirstPage())
+            <div class="mx-auto mt-20 max-w-3xl rounded-2xl border border-white/5 bg-neutral-900/40 p-8 text-center">
+                <h2 class="text-xl font-bold text-white">Practical programming articles for developers</h2>
+                <p class="mt-3 text-neutral-400">
+                    The Oatllo blog covers modern <strong class="text-neutral-200">PHP</strong> and <strong class="text-neutral-200">Laravel</strong>,
+                    JavaScript, software architecture, databases, DevOps and developer tooling — hands-on tutorials and deep-dives
+                    you can apply to real projects. New articles are published regularly.
+                </p>
             </div>
-        @endforelse
+        @endif
     </section>
 
-{{--        <!-- Developer Resources Section -->--}}
-{{--    <section class="mx-auto mt-20 max-w-6xl px-4 sm:px-6 lg:px-8">--}}
-{{--        <div class="text-center mb-12">--}}
-{{--            <h2 class="text-2xl font-bold text-white mb-4">Developer <span class="text-rose-400">Resources</span></h2>--}}
-{{--            <p class="text-neutral-300">Essential tools and knowledge for modern development</p>--}}
-{{--        </div>--}}
-{{--        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">--}}
-{{--            <div class="group bg-neutral-900/50 rounded-xl p-6 border border-neutral-800 hover:border-rose-500/50 transition-all duration-300">--}}
-{{--                <div class="flex items-center mb-4">--}}
-{{--                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/20 text-blue-400 mr-4">--}}
-{{--                        <i class="fa-solid fa-server text-lg"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white">Backend Development</h3>--}}
-{{--                </div>--}}
-{{--                <p class="text-neutral-400 text-sm mb-4">Master server-side programming with PHP, databases, APIs, and system architecture for scalable applications.</p>--}}
-{{--                <div class="flex items-center justify-between">--}}
-{{--                    <a href="{{ route('blog') }}?topic=backend" class="text-rose-400 hover:text-rose-300 text-sm font-medium inline-flex items-center">--}}
-{{--                        Explore Backend--}}
-{{--                        <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>--}}
-{{--                    </a>--}}
-{{--                    <span class="text-xs text-neutral-500">PHP, APIs, Databases</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div class="group bg-neutral-900/50 rounded-xl p-6 border border-neutral-800 hover:border-rose-500/50 transition-all duration-300">--}}
-{{--                <div class="flex items-center mb-4">--}}
-{{--                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/20 text-green-400 mr-4">--}}
-{{--                        <i class="fa-solid fa-tachometer-alt text-lg"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white">Performance Optimization</h3>--}}
-{{--                </div>--}}
-{{--                <p class="text-neutral-400 text-sm mb-4">Learn techniques to improve application speed, efficiency, and user experience through optimization.</p>--}}
-{{--                <div class="flex items-center justify-between">--}}
-{{--                    <a href="{{ route('blog') }}?topic=performance" class="text-rose-400 hover:text-rose-300 text-sm font-medium inline-flex items-center">--}}
-{{--                        Optimize Performance--}}
-{{--                        <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>--}}
-{{--                    </a>--}}
-{{--                    <span class="text-xs text-neutral-500">Speed, Efficiency</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div class="group bg-neutral-900/50 rounded-xl p-6 border border-neutral-800 hover:border-rose-500/50 transition-all duration-300">--}}
-{{--                <div class="flex items-center mb-4">--}}
-{{--                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-500/20 text-yellow-400 mr-4">--}}
-{{--                        <i class="fa-solid fa-shield-alt text-lg"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white">Security Best Practices</h3>--}}
-{{--                </div>--}}
-{{--                <p class="text-neutral-400 text-sm mb-4">Implement robust security measures to protect your applications and user data from vulnerabilities.</p>--}}
-{{--                <div class="flex items-center justify-between">--}}
-{{--                    <a href="{{ route('blog') }}?topic=security" class="text-rose-400 hover:text-rose-300 text-sm font-medium inline-flex items-center">--}}
-{{--                        Secure Your Code--}}
-{{--                        <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>--}}
-{{--                    </a>--}}
-{{--                    <span class="text-xs text-neutral-500">Protection, Safety</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div class="group bg-neutral-900/50 rounded-xl p-6 border border-neutral-800 hover:border-rose-500/50 transition-all duration-300">--}}
-{{--                <div class="flex items-center mb-4">--}}
-{{--                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/20 text-purple-400 mr-4">--}}
-{{--                        <i class="fa-solid fa-vial text-lg"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white">Testing & Quality</h3>--}}
-{{--                </div>--}}
-{{--                <p class="text-neutral-400 text-sm mb-4">Build reliable applications with comprehensive testing strategies and quality assurance practices.</p>--}}
-{{--                <div class="flex items-center justify-between">--}}
-{{--                    <a href="{{ route('blog') }}?topic=testing" class="text-rose-400 hover:text-rose-300 text-sm font-medium inline-flex items-center">--}}
-{{--                        Improve Quality--}}
-{{--                        <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>--}}
-{{--                    </a>--}}
-{{--                    <span class="text-xs text-neutral-500">Testing, QA</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div class="group bg-neutral-900/50 rounded-xl p-6 border border-neutral-800 hover:border-rose-500/50 transition-all duration-300">--}}
-{{--                <div class="flex items-center mb-4">--}}
-{{--                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/20 text-indigo-400 mr-4">--}}
-{{--                        <i class="fa-solid fa-cogs text-lg"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white">DevOps & Deployment</h3>--}}
-{{--                </div>--}}
-{{--                <p class="text-neutral-400 text-sm mb-4">Streamline your development workflow with modern DevOps practices and deployment tools.</p>--}}
-{{--                <div class="flex items-center justify-between">--}}
-{{--                    <a href="{{ route('blog') }}?topic=devops" class="text-rose-400 hover:text-rose-300 text-sm font-medium inline-flex items-center">--}}
-{{--                        Master DevOps--}}
-{{--                        <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>--}}
-{{--                    </a>--}}
-{{--                    <span class="text-xs text-neutral-500">CI/CD, Deployment</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <div class="group bg-neutral-900/50 rounded-xl p-6 border border-neutral-800 hover:border-rose-500/50 transition-all duration-300">--}}
-{{--                <div class="flex items-center mb-4">--}}
-{{--                    <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-pink-500/20 text-pink-400 mr-4">--}}
-{{--                        <i class="fa-solid fa-lightbulb text-lg"></i>--}}
-{{--                    </div>--}}
-{{--                    <h3 class="text-lg font-semibold text-white">Tips & Tricks</h3>--}}
-{{--                </div>--}}
-{{--                <p class="text-neutral-400 text-sm mb-4">Discover practical tips, shortcuts, and best practices to enhance your development skills.</p>--}}
-{{--                <div class="flex items-center justify-between">--}}
-{{--                    <a href="{{ route('blog') }}?topic=tips" class="text-rose-400 hover:text-rose-300 text-sm font-medium inline-flex items-center">--}}
-{{--                        Learn Tips--}}
-{{--                        <i class="fa-solid fa-arrow-right ml-1 text-xs"></i>--}}
-{{--                    </a>--}}
-{{--                    <span class="text-xs text-neutral-500">Best Practices</span>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
-
-    <!-- Pagination -->
+    <!-- ===========================================================
+      PAGINATION
+    =========================================================== -->
     @if($articles->hasPages())
-        <nav class="mt-20 flex justify-center" aria-label="Blog pagination">
+        <nav class="mt-16 flex justify-center" aria-label="Blog pagination">
             <ul class="inline-flex items-center gap-2">
-                {{-- First page --}}
                 @if($articles->onFirstPage())
-                    <li><span class="rounded-full bg-neutral-800 px-3 py-2 text-sm text-neutral-500 cursor-not-allowed" aria-label="First page"><i class="fa-solid fa-angles-left"></i></span></li>
+                    <li><span class="rounded-full bg-neutral-900 px-3 py-2 text-sm text-neutral-600" aria-hidden="true"><i class="fa-solid fa-angle-left"></i></span></li>
                 @else
-                    <li><a href="{{ $articles->url(1) }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="First page"><i class="fa-solid fa-angles-left"></i></a></li>
+                    <li><a href="{{ $articles->previousPageUrl() }}" rel="prev" class="rounded-full bg-white/5 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Previous page"><i class="fa-solid fa-angle-left"></i></a></li>
                 @endif
 
-                {{-- Previous page --}}
-                @if($articles->onFirstPage())
-                    <li><span class="rounded-full bg-neutral-800 px-3 py-2 text-sm text-neutral-500 cursor-not-allowed" aria-label="Previous page"><i class="fa-solid fa-angle-left"></i></span></li>
-                @else
-                    <li><a href="{{ $articles->previousPageUrl() }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Previous page"><i class="fa-solid fa-angle-left"></i></a></li>
-                @endif
-
-                {{-- Page numbers --}}
                 @foreach($articles->getUrlRange(1, $articles->lastPage()) as $page => $url)
                     @if($page == $articles->currentPage())
-                        <li><span class="rounded-full bg-rose-500 px-3 py-2 text-sm font-semibold text-white">{{ $page }}</span></li>
-                    @elseif($page <= 3 || $page > $articles->lastPage() - 2)
-                        <li><a href="{{ $url }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200">{{ $page }}</a></li>
-                    @elseif($page == 4 && $articles->lastPage() > 6)
-                        <li><span class="px-2 text-neutral-500">…</span></li>
-                    @elseif($page == $articles->lastPage() - 2 && $articles->lastPage() > 6)
-                        <li><span class="px-2 text-neutral-500">…</span></li>
+                        <li><span class="rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white" aria-current="page">{{ $page }}</span></li>
+                    @elseif($page <= 2 || $page > $articles->lastPage() - 2 || abs($page - $articles->currentPage()) <= 1)
+                        <li><a href="{{ $url }}" class="rounded-full bg-white/5 px-4 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200">{{ $page }}</a></li>
+                    @elseif($page == 3 || $page == $articles->lastPage() - 2)
+                        <li><span class="px-1 text-neutral-600">…</span></li>
                     @endif
                 @endforeach
 
-                {{-- Next page --}}
                 @if($articles->hasMorePages())
-                    <li><a href="{{ $articles->nextPageUrl() }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Next page"><i class="fa-solid fa-angle-right"></i></a></li>
+                    <li><a href="{{ $articles->nextPageUrl() }}" rel="next" class="rounded-full bg-white/5 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Next page"><i class="fa-solid fa-angle-right"></i></a></li>
                 @else
-                    <li><span class="rounded-full bg-neutral-800 px-3 py-2 text-sm text-neutral-500 cursor-not-allowed" aria-label="Next page"><i class="fa-solid fa-angle-right"></i></span></li>
-                @endif
-
-                {{-- Last page --}}
-                @if($articles->currentPage() == $articles->lastPage())
-                    <li><span class="rounded-full bg-neutral-800 px-3 py-2 text-sm text-neutral-500 cursor-not-allowed" aria-label="Last page"><i class="fa-solid fa-angles-right"></i></span></li>
-                @else
-                    <li><a href="{{ $articles->url($articles->lastPage()) }}" class="rounded-full bg-white/10 px-3 py-2 text-sm text-neutral-300 hover:bg-rose-500 hover:text-white transition-colors duration-200" aria-label="Last page"><i class="fa-solid fa-angles-right"></i></a></li>
+                    <li><span class="rounded-full bg-neutral-900 px-3 py-2 text-sm text-neutral-600" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span></li>
                 @endif
             </ul>
         </nav>
@@ -553,168 +355,135 @@
 </main>
 
 <!-- ===========================================================
-  STRUCTURED DATA – JSON-LD (Blog + ItemList + BreadcrumbList)
+  FOOTER
+=========================================================== -->
+<footer class="mt-24 border-t border-white/5 bg-neutral-950">
+    <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8">
+        <div class="flex flex-col gap-10 md:flex-row md:justify-between">
+            <div class="max-w-sm">
+                <div class="logo_oatllo">oatllo</div>
+                <p class="mt-4 text-sm text-neutral-400">{{ __('basic.meta_description') }}</p>
+            </div>
+            <div class="grid grid-cols-2 gap-10 sm:grid-cols-2">
+                <div>
+                    <h2 class="text-sm font-semibold text-white">Explore</h2>
+                    <ul class="mt-4 space-y-2 text-sm text-neutral-400">
+                        <li><a href="{{ route('index') }}" class="hover:text-rose-400">{{ __('basic.home') }}</a></li>
+                        <li><a href="{{ route('blog') }}" class="hover:text-rose-400">Blog</a></li>
+                        <li><a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="hover:text-rose-400">{{ __('basic.courses') }}</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="text-sm font-semibold text-white">Connect</h2>
+                    <ul class="mt-4 space-y-2 text-sm text-neutral-400">
+                        <li><a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="hover:text-rose-400">LinkedIn</a></li>
+                        <li><a href="{{ route('feed') }}" class="hover:text-rose-400">RSS</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 sm:flex-row">
+            <p class="text-sm text-neutral-500">&copy; {{ date('Y') }} Oatllo · Jakub Owsianka</p>
+            <div class="flex gap-5">
+                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-neutral-500 hover:text-rose-400" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="{{ route('feed') }}" class="text-neutral-500 hover:text-rose-400" aria-label="RSS"><i class="fa-solid fa-rss"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ===========================================================
+  STRUCTURED DATA – JSON-LD
 =========================================================== -->
 <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      "name": "{{ __('basic.meta_title') }}",
-  "description": "{{ __('basic.meta_description') }}",
-  "url": "{{ route('test') }}",
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": {!! json_encode($pageTitle, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+  "description": {!! json_encode($pageDescription, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+  "url": "{{ route('blog') }}",
+  "inLanguage": "{{ env('APP_LANG_HTML') }}",
   "publisher": {
     "@type": "Organization",
-    "name": "oatllo",
-    "url": "{{ route('index') }}"
+    "name": "Oatllo",
+    "url": "{{ route('index') }}",
+    "logo": { "@type": "ImageObject", "url": "{{ asset('assets/images/logo-512.png') }}" }
   },
   "blogPost": [
     @foreach($articles as $index => $article)
-        {
-          "@type": "BlogPosting",
-          "headline": {!! json_encode($article->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+        @php
+            $wc = 0;
+            foreach (($article->contents ?? []) as $c) {
+                if (($c['type'] ?? '') === 'text') { $wc += str_word_count(strip_tags($c['content'] ?? '')); }
+            }
+        @endphp
+    {
+      "@type": "BlogPosting",
+      "headline": {!! json_encode($article->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
       "description": {!! json_encode($article->short_description, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
       "url": "{{ $article->getRoute() }}",
       "datePublished": "{{ $article->getPublishedDate()->format('Y-m-d\TH:i:sP') }}",
       "dateModified": "{{ $article->updated_at->format('Y-m-d\TH:i:sP') }}",
-      "wordCount": {{ str_word_count(strip_tags($article->content ?? '')) }},
+      "wordCount": {{ $wc }},
       "timeRequired": "PT{{ $article->getTimeRead() }}M",
-      "author": {
-        "@type": "Person",
-        "name": "Jakub Owsianka"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "oatllo",
-        "url": "{{ route('index') }}"
-      },
-      "image": {
-        "@type": "ImageObject",
-        "url": "{{ $article->image }}",
-        "width": 800,
-        "height": 600
-      },
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "{{ $article->getRoute() }}"
-      }@if($article->category),@endif
-        @if($article->category)
-            "articleSection": {!! json_encode($article->category->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
-        @endif
-        @if($article->tags && $article->tags->count() > 0),
-      "keywords": "{{ $article->tags->pluck('name')->implode(', ') }}"
-        @endif
-        }@if(!$loop->last),@endif
-    @endforeach
-    ]
-  }
-</script>
-
-<script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "{{ $searchQuery ? 'Search Results for ' . $searchQuery : 'Latest PHP Articles' }}",
-  "description": "{{ $searchQuery ? 'Search results for ' . $searchQuery : 'Latest PHP articles and tutorials' }}",
-  "url": "{{ request()->fullUrl() }}",
-  "numberOfItems": {{ $articles->total() }},
-  "itemListElement": [
-    @foreach($articles as $index => $article)
-        {
-          "@type": "ListItem",
-          "position": {{ ($articles->currentPage() - 1) * $articles->perPage() + $loop->iteration }},
-      "url": "{{ $article->getRoute() }}",
-      "name": {!! json_encode($article->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
-      "description": {!! json_encode($article->short_description, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+      "inLanguage": "{{ $article->language ?? env('APP_LANG_HTML') }}",
+      "author": { "@type": "Person", "name": "Jakub Owsianka" },
+      "publisher": { "@type": "Organization", "name": "Oatllo", "url": "{{ route('index') }}" },
+      "image": { "@type": "ImageObject", "url": "{{ $article->image }}", "width": 1200, "height": 630 },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ $article->getRoute() }}" }@if($article->getCategoryName()),
+      "articleSection": {!! json_encode($article->getCategoryName(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}@endif
+      @if($article->tags && $article->tags->count() > 0),
+      "keywords": {!! json_encode($article->tags->pluck('name')->implode(', '), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}@endif
     }@if(!$loop->last),@endif
     @endforeach
-    ]
-  }
-</script>
-
-<script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "{{ route('index') }}"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "{{ $searchQuery ? 'Search Results' : 'Blog' }}",
-      "item": "{{ request()->fullUrl() }}"
-    }
   ]
 }
 </script>
 
-@if($searchQuery)
-    <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "name": "{{ __('basic.meta_title') }}",
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": {!! json_encode($pageTitle, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+  "url": "{{ $canonical }}",
+  "numberOfItems": {{ $articles->total() }},
+  "itemListElement": [
+    @foreach($articles as $index => $article)
+    {
+      "@type": "ListItem",
+      "position": {{ ($articles->currentPage() - 1) * $articles->perPage() + $loop->iteration }},
+      "url": "{{ $article->getRoute() }}",
+      "name": {!! json_encode($article->name, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    }@if(!$loop->last),@endif
+    @endforeach
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": {!! json_encode(__('basic.home'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}, "item": "{{ route('index') }}" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "{{ route('blog') }}" }@if($currentCategory),
+    { "@type": "ListItem", "position": 3, "name": {!! json_encode($currentCategory, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}, "item": "{{ $canonical }}" }@endif
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Oatllo",
   "url": "{{ route('index') }}",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "{{ route('test') }}?q={search_term_string}"
-    },
+    "target": { "@type": "EntryPoint", "urlTemplate": "{{ route('blog') }}?q={search_term_string}" },
     "query-input": "required name=search_term_string"
-  }
-}
-    </script>
-@endif
-
-@if($articles->hasPages())
-    <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          "name": "{{ $searchQuery ? 'Search Results for ' . $searchQuery : 'Latest PHP Articles' }}",
-  "description": "{{ $searchQuery ? 'Search results for ' . $searchQuery : 'Latest PHP articles and tutorials' }}",
-  "url": "{{ request()->fullUrl() }}",
-  "isPartOf": {
-    "@type": "Blog",
-    "name": "{{ __('basic.meta_title') }}",
-    "url": "{{ route('test') }}"
-  }
-        }
-    </script>
-@endif
-
-<script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "oatllo",
-      "url": "{{ route('index') }}",
-  "logo": "{{ asset('assets/images/favicon.ico') }}",
-  "sameAs": [
-    "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
-  ],
-  "founder": {
-    "@type": "Person",
-    "name": "Jakub Owsianka",
-    "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/"
   }
 }
 </script>
 </body>
 </html>
-<!-- =============================================================
-  NOTES:
-  • Replace {YOUR_DOMAIN} and {YOUR_KIT_ID}.
-  • Duplicate <article> card markup via a CMS/SSG loop.
-  • Use line‑clamp utilities (requires @tailwindcss/line-clamp plugin) for description.
-  • Accessible: <article>, <time>, alt texts, aria labels for nav.
-  • SEO: Canonical, meta description, OpenGraph, Blog schema + ItemList.
-  • UI/UX: Card hover zoom, dark theme, grid responsive, search field.
-============================================================= -->
-
-
