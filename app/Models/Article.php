@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\Article\ContentSanitizer;
 use App\Services\Generator\InternalUrlsGenerator;
 use App\Services\Generator\TagForArticleGenerator;
 use Carbon\Carbon;
@@ -162,6 +163,26 @@ class Article extends Model
 
         // Fallback do updated_at
         return $this->updated_at ?? new \DateTime();
+    }
+
+    /**
+     * Zwraca bloki treści oczyszczone tuż przed wyświetleniem
+     * (myślniki em/en -> dywiz, słownik anti-AI). Działa dla artykułów
+     * zarówno z bazy, jak i z plików .md, bo bazuje na $this->contents.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    public function getDisplayContents(): array
+    {
+        $sanitizer = app(ContentSanitizer::class);
+
+        return array_map(function ($content) use ($sanitizer) {
+            if (($content['type'] ?? null) === 'text' && !empty($content['content'])) {
+                $content['content'] = $sanitizer->sanitize((string) $content['content']);
+            }
+
+            return $content;
+        }, $this->contents ?? []);
     }
 
     public function getTimeRead(): int

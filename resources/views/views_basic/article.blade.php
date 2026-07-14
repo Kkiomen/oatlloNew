@@ -355,7 +355,7 @@
   ARTICLE CONTENT
 =========================================================== -->
 <article class="prose prose-invert mx-auto mt-8 max-w-3xl px-4 sm:px-6 lg:px-8" itemprop="articleBody">
-    @foreach($article->contents as $content)
+    @foreach($article->getDisplayContents() as $content)
         @if($content['type'] == 'text' && !empty($content['content']))
             {!! $content['content'] !!}
         @endif
