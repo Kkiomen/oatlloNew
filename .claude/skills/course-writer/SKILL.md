@@ -105,6 +105,38 @@ Write the lesson body in Markdown. It's converted to HTML with CommonMark (GFM):
 - **bold**, *italic*, lists, tables, links — all standard Markdown.
 ```
 
+## Teaching style — IMPORTANT
+
+Write courses the way the **Laravel documentation** is written: **simple, clear and
+approachable, so a complete beginner can follow along.** This is the single most
+important rule of this skill.
+
+- **Plain language.** Short sentences. Explain like you're talking to someone new to
+  the topic. Avoid jargon; when you must use a technical term, define it the first
+  time it appears.
+- **One idea at a time.** Each lesson teaches one small, focused thing. Prefer more
+  short lessons over one long one.
+- **Show, then explain.** Give a minimal code example, then explain what each part
+  does in prose. Keep examples runnable and as small as possible.
+- **Never get ahead of the material — STRICT RULE.** Do **not** use a concept, term,
+  function, class or feature that hasn't been introduced yet in an *earlier* lesson
+  (or in the current one, above the point where you use it). The course must read
+  top-to-bottom with nothing unexplained.
+  - Before using anything, ask yourself: "was this explained in a previous lesson or
+    earlier in this one?" If not, either (a) explain it first, or (b) don't use it yet.
+  - If a concept truly needs something from later, restructure the outline so the
+    prerequisite comes first. Order chapters/lessons by dependency.
+  - It's fine to say "we'll cover X in a later lesson" — but then don't rely on X now.
+- **Build up gradually.** Each lesson should assume only what earlier lessons taught.
+  When you reuse an earlier concept, a one-line reminder is welcome; a forward
+  reference to something not-yet-taught is not.
+- **Beginner-friendly tone.** Encouraging, concrete, no fluff and no showing off.
+  The goal is that *anyone* can understand it.
+
+When outlining a new course, order the chapters and lessons so that every concept is
+introduced before it's used. Sanity-check the finished course by reading it in order
+and confirming nothing appears out of nowhere.
+
 ## Writing conventions
 
 - **Language:** English, to match the public site (welcome/blog/articles are EN).
