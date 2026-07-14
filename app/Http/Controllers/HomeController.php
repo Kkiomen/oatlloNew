@@ -152,6 +152,14 @@ class HomeController extends Controller
         return view('views_basic.sitemap', compact('categories', 'tags', 'articles', 'courses'));
     }
 
+    /**
+     * Strona autora (E-E-A-T). Statyczna – bez zapytań do bazy.
+     */
+    public function aboutUs(): View
+    {
+        return view('views_basic.about');
+    }
+
     // ============== ARTICLE ==============
 
     public function articleWithCategory(Request $request, string $categorySlug, string $articleSlug): View

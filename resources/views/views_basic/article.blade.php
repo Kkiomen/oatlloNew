@@ -337,8 +337,11 @@
         <img decoding="async" src="{{ asset('/assets/images/owsianka_jakub_sm.png') }}" alt="Jakub Owsianka" class="h-16 w-16 flex-none rounded-full object-cover ring-2 ring-rose-500/30" itemprop="image" />
         <div class="flex-1">
             <div class="text-xs uppercase tracking-wide text-rose-400">Written by</div>
-            <h2 class="text-lg font-semibold text-white" itemprop="name">Jakub Owsianka</h2>
-            <p class="mt-1 text-sm text-neutral-400" itemprop="description">PHP &amp; Laravel developer. I write about modern backend, architecture, DevOps and developer tooling.</p>
+            <h2 class="text-lg font-semibold text-white" itemprop="name">
+                <a href="{{ route('about.us') }}" class="hover:text-rose-300" itemprop="url">Jakub Owsianka</a>
+            </h2>
+            <p class="mt-1 text-sm text-neutral-400" itemprop="description">PHP &amp; Laravel developer with 10+ years of experience. I write about modern backend, architecture, DevOps and AI for developers.</p>
+            <a href="{{ route('about.us') }}" class="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-rose-400 hover:text-rose-300">More about the author {!! \App\Support\Icons::svg('arrow-right', 'text-xs') !!}</a>
         </div>
         <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-rose-500 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-400 transition-colors duration-200">
             {!! \App\Support\Icons::svg('linkedin', '') !!} Follow
@@ -448,7 +451,7 @@
   "inLanguage": "{{ $article->language ?? $htmlLang }}",
   "wordCount": {{ $wordCount }},
   "timeRequired": "PT{{ $article->getTimeRead() }}M",
-  "author": { "@type": "Person", "name": "Jakub Owsianka", "url": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/", "sameAs": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/" },
+  "author": { "@type": "Person", "name": "Jakub Owsianka", "url": "{{ route('about.us') }}", "sameAs": "https://www.linkedin.com/in/jakub-owsianka-446bb5213/" },
   "datePublished": "{{ $article->getPublishedDate()->format('Y-m-d\TH:i:sP') }}",
   "dateModified": "{{ $article->updated_at->format('Y-m-d\TH:i:sP') }}",
   "publisher": { "@type": "Organization", "name": "Oatllo", "logo": { "@type": "ImageObject", "url": "{{ asset('assets/images/logo-512.jpg') }}" } },
