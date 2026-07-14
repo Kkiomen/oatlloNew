@@ -17,6 +17,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Katalog z kursami w formacie Markdown (commitowane w repo)
+    |--------------------------------------------------------------------------
+    |
+    | Kursy można deklarować jako pliki .md (folder na kurs, podfoldery na
+    | rozdziały, pliki .md na lekcje) i renderować dynamicznie – bez zapisu do
+    | bazy. Drugie źródło kursów obok bazy (plik ma pierwszeństwo przy tym slug).
+    |
+    */
+
+    'courses_path' => env('COURSES_MD_PATH', resource_path('courses')),
+
+    /*
+    |--------------------------------------------------------------------------
     | Token API do wgrywania artykułów
     |--------------------------------------------------------------------------
     |

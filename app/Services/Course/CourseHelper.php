@@ -27,7 +27,9 @@ class CourseHelper
                     break;
                 }
 
-                if($categoryLesson->id == $lesson->id){
+                // Porównanie po trasie (unikalna: kurs/rozdział/lekcja) zamiast po id,
+                // aby działało też dla kursów z plików .md (id = null).
+                if($categoryLesson->getRoute() === $lesson->getRoute()){
                     $founded = true;
                 }
             }

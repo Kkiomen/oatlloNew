@@ -22,6 +22,18 @@ Wspólny punkt renderu obu źródeł: **`Article::getDisplayContents()`** — tu
 
 Stary `InternalUrlsGenerator` generuje już **tylko `keys_link`** (faza utrwalania linków wyłączona).
 
+**Kursy też mają dwa źródła** (analogicznie do artykułów, `.md` wygrywa po slug):
+- **Baza**: `Course` → `CourseCategory` → `CourseCategoryLesson`.
+- **Pliki `.md`** (commitowane w repo): `App\Services\Course\MarkdownCourseRepository`, katalog
+  `config('articles.courses_path')` (domyślnie `resources/courses/`). Struktura: `{course-slug}/course.md`
+  (frontmatter kursu), `{NN-chapter}/_chapter.md` (rozdział), `{NN-lesson}.md` (lekcja: frontmatter + Markdown
+  → `content_html` przez CommonMark). Prefiks `NN-` ustala kolejność; slug z frontmatteru lub nazwy pliku.
+  Repozytorium buduje niepersystowane modele z ustawionymi relacjami (course↔category↔lesson), więc `getRoute()`
+  działa i renderują się przez te same widoki. Kontrolery kursów rozwiązują kurs przez `HomeController::resolveCourse()`
+  (plik → fallback baza), a `mergedCourses()` scala listy. `CourseHelper::lessonGo` porównuje lekcje po `getRoute()`
+  (nie po `id`, którego pliki nie mają). To NIE to samo co `CourseMarkdownService` (ten importuje `.md` DO bazy przez
+  `php artisan course:process` — starsza ścieżka, nadal działa).
+
 ## CSS / Tailwind (WAŻNE — inaczej „popsują się" style)
 
 Część publiczna **NIE używa** `cdn.tailwindcss.com` (był render‑blocking, FOUC, zły LCP/FCP).

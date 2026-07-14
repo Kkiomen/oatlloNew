@@ -123,9 +123,16 @@ class SitemapService
         }
 
 
-        // Add courses and their content
-        $courses = Course::where('is_published', 1)->get();
-        foreach ($courses as $course){
+        // Add courses and their content (baza + pliki .md, plik wygrywa przy tym samym slug)
+        $mergedCourses = [];
+        foreach (Course::where('is_published', 1)->get() as $c) {
+            $mergedCourses[$c->slug] = $c;
+        }
+        foreach (app(\App\Services\Course\MarkdownCourseRepository::class)->published() as $c) {
+            $mergedCourses[$c->slug] = $c;
+        }
+
+        foreach ($mergedCourses as $course){
             $sitemap->addItem(
                 loc: $course->getRoute(false),
                 priority: '0.7',

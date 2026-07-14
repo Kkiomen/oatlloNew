@@ -14,6 +14,7 @@ use App\Models\Tag;
 use App\Models\TagArticle;
 use App\Services\Article\MarkdownArticleRepository;
 use App\Services\Course\CourseHelper;
+use App\Services\Course\MarkdownCourseRepository;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Mail;
@@ -61,12 +62,8 @@ class HomeController extends Controller
         // Zachowujemy zmienną używaną w starych fragmentach widoku.
         $randomArticles = $sorted->take(6);
 
-        // Kursy (opublikowane, w bieżącym języku) do sekcji "Courses".
-        $courses = Course::where('is_published', true)
-            ->when($strict, fn ($q) => $q->where('lang', $defaultLangue))
-            ->orderBy('id', 'desc')
-            ->take(3)
-            ->get();
+        // Kursy (opublikowane, w bieżącym języku) do sekcji "Courses" – baza + pliki .md.
+        $courses = $this->mergedCourses($strict, $defaultLangue)->take(3)->values();
 
         return view('views_basic.welcome', [
             'featuredArticle' => $featuredArticle,
@@ -87,7 +84,8 @@ class HomeController extends Controller
     public function courses(): View
     {
         $defaultLangue = env('APP_LOCALE');
-        $courses = Course::where('is_published', true)->where('lang', $defaultLangue)->get();
+        // Kursy z bazy + z plików .md (plik wygrywa przy tym samym slug).
+        $courses = $this->mergedCourses(true, $defaultLangue);
 
         return view('home.courses', [
             'courses' => $courses,
@@ -509,11 +507,47 @@ class HomeController extends Controller
 
     // ============== COURSES ==============
 
+    /**
+     * Znajduje kurs po slug: najpierw plik .md (pierwszeństwo), potem baza.
+     * Zwrócony model ma załadowane relacje categories.lessons (obie źródła).
+     */
+    private function resolveCourse(string $slug): ?Course
+    {
+        $file = app(MarkdownCourseRepository::class)->findCourse($slug);
+        if ($file && $file->is_published) {
+            return $file;
+        }
+
+        return Course::where('slug', $slug)->with(['categories.lessons'])->first();
+    }
+
+    /**
+     * Scala kursy z plików .md i z bazy (plik wygrywa przy tym samym slug).
+     *
+     * @return \Illuminate\Support\Collection<int, Course>
+     */
+    private function mergedCourses(bool $strict, string $lang): \Illuminate\Support\Collection
+    {
+        $db = Course::where('is_published', true)
+            ->when($strict, fn ($q) => $q->where('lang', $lang))
+            ->get();
+
+        $md = app(MarkdownCourseRepository::class)->published($strict ? $lang : null);
+
+        $merged = collect();
+        foreach ($db as $c) {
+            $merged->put($c->slug, $c);
+        }
+        foreach ($md as $c) {
+            $merged->put($c->slug, $c);
+        }
+
+        return $merged->values();
+    }
+
     public function course(Request $request, string $courseName): View
     {
-        $course = Course::where('slug', $courseName)
-            ->with(['categories.lessons'])
-            ->first();
+        $course = $this->resolveCourse($courseName);
 
         if(!$course){
             abort(404);
@@ -550,13 +584,13 @@ class HomeController extends Controller
 
     public function chapterPl(Request $request, string $courseName, string $chapter): View
     {
-        $course = Course::where('slug', $courseName)->first();
+        $course = $this->resolveCourse($courseName);
 
         if(!$course){
             abort(404);
         }
 
-        $courseCategory = CourseCategory::where('slug', $chapter)->where('course_id', $course->id)->first();
+        $courseCategory = $course->categories->firstWhere('slug', $chapter);
 
         if(!$courseCategory){
             abort(404);
@@ -573,22 +607,19 @@ class HomeController extends Controller
 
     public function courseLessonPl(Request $request, string $courseName, string $chapter, string $lesson): View
     {
-        $course = Course::where('slug', $courseName)->first();
+        $course = $this->resolveCourse($courseName);
 
         if(!$course){
             abort(404);
         }
 
-        $courseCategory = CourseCategory::where('slug', $chapter)->where('course_id', $course->id)->first();
+        $courseCategory = $course->categories->firstWhere('slug', $chapter);
 
         if(!$courseCategory){
             abort(404);
         }
 
-        $currentLesson = CourseCategoryLesson::where('course_category_id', $courseCategory->id)
-            ->where('slug', $lesson)
-            ->where('is_published', true)
-            ->first();
+        $currentLesson = $courseCategory->lessons->firstWhere('slug', $lesson);
 
         if(!$currentLesson){
             abort(404);
@@ -607,22 +638,19 @@ class HomeController extends Controller
 
     public function courseLessonEn(Request $request, string $courseName, string $chapter, string $lesson): View
     {
-        $course = Course::where('slug', $courseName)->first();
+        $course = $this->resolveCourse($courseName);
 
         if(!$course){
             abort(404);
         }
 
-        $courseCategory = CourseCategory::where('slug', $chapter)->where('course_id', $course->id)->first();
+        $courseCategory = $course->categories->firstWhere('slug', $chapter);
 
         if(!$courseCategory){
             abort(404);
         }
 
-        $currentLesson = CourseCategoryLesson::where('course_category_id', $courseCategory->id)
-            ->where('slug', $lesson)
-            ->where('is_published', true)
-            ->first();
+        $currentLesson = $courseCategory->lessons->firstWhere('slug', $lesson);
 
         if(!$currentLesson){
             abort(404);
@@ -641,13 +669,13 @@ class HomeController extends Controller
 
     public function chapterEn(Request $request, string $courseName, string $chapter): View
     {
-        $course = Course::where('slug', $courseName)->first();
+        $course = $this->resolveCourse($courseName);
 
         if(!$course){
             abort(404);
         }
 
-        $courseCategory = CourseCategory::where('slug', $chapter)->where('course_id', $course->id)->first();
+        $courseCategory = $course->categories->firstWhere('slug', $chapter);
 
         if(!$courseCategory){
             abort(404);
