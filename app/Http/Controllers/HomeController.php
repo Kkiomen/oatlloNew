@@ -95,6 +95,63 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     * Mapa strony (HTML) – hub linkujący do wszystkich kategorii, tagów,
+     * artykułów (baza + .md) i kursów. Poprawia crawlowalność i linkowanie
+     * wewnętrzne (ratuje "osierocone" strony).
+     */
+    public function siteMap(): View
+    {
+        $strict = env('LANGUAGE_MODE') == 'strict';
+        $lang = env('APP_LOCALE');
+
+        // Artykuły z plików .md (drugie źródło).
+        $mdArticles = app(MarkdownArticleRepository::class)->published($strict ? $lang : null);
+
+        // Kategorie z opublikowanymi artykułami (baza + .md).
+        $catIds = Article::whereNotNull('category_id')->where('is_published', true)
+            ->distinct()->pluck('category_id')->all();
+        foreach ($mdArticles as $a) {
+            if (!empty($a->category_id)) {
+                $catIds[] = $a->category_id;
+            }
+        }
+        $categories = Category::whereIn('id', array_unique($catIds))->orderBy('name')->get();
+
+        // Tagi (baza + wyłącznie-.md), scalone po slug.
+        $tags = collect();
+        $dbTagIds = TagArticle::query()->distinct()->pluck('tag_id');
+        Tag::whereIn('id', $dbTagIds)
+            ->when($strict, fn ($q) => $q->where('language', $lang))
+            ->orderBy('name')->get()
+            ->each(fn ($t) => $tags->put($t->slug ?: Str::slug($t->name), (object) ['name' => $t->name, 'slug' => $t->slug ?: Str::slug($t->name)]));
+        foreach ($mdArticles as $a) {
+            foreach ($a->tags as $t) {
+                $slug = $t->slug ?: Str::slug($t->name);
+                $tags->put($slug, (object) ['name' => $t->name, 'slug' => $slug]);
+            }
+        }
+        $tags = $tags->values()->sortBy(fn ($t) => mb_strtolower($t->name))->values();
+
+        // Artykuły (baza + .md), scalone po slug, alfabetycznie.
+        $dbArticles = Article::where('is_published', true)->where('type', 'normal')
+            ->when($strict, fn ($q) => $q->where('language', $lang))->get();
+        $merged = collect();
+        foreach ($dbArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+        foreach ($mdArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+        $articles = $merged->values()->sortBy(fn ($a) => mb_strtolower($a->name))->values();
+
+        // Kursy.
+        $courses = Course::where('is_published', true)
+            ->when($strict, fn ($q) => $q->where('lang', $lang))->get();
+
+        return view('views_basic.sitemap', compact('categories', 'tags', 'articles', 'courses'));
+    }
+
     // ============== ARTICLE ==============
 
     public function articleWithCategory(Request $request, string $categorySlug, string $articleSlug): View

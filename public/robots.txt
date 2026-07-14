@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# API nie jest przeznaczone dla robotów.
+Disallow: /api/
+
+Sitemap: https://oatllo.com/sitemap.xml

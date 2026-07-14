@@ -29,6 +29,10 @@ class SitemapService
 
         $sitemap->addItem('/', '1.0', 'daily', $date);
         $sitemap->addItem(route('blog', [], false), '0.8', 'daily', $date);
+        $sitemap->addItem(route('site.map', [], false), '0.3', 'weekly', $date);
+        if (\Illuminate\Support\Facades\Route::has('about.us')) {
+            $sitemap->addItem(route('about.us', [], false), '0.5', 'monthly', $date);
+        }
 
         // Drugie źródło: artykuły z plików .md.
         $language = env('LANGUAGE_MODE') == 'strict' ? env('APP_LOCALE') : null;

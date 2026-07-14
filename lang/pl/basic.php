@@ -35,6 +35,9 @@ return [
     'lessons_from_courses' => 'Lekcje z kursów',
     'articles' => 'Artykuły',
     'page' => 'Strona',
+    'about' => 'O mnie',
+    'categories' => 'Kategorie',
+    'sitemap' => 'Mapa strony',
 
 
 ];

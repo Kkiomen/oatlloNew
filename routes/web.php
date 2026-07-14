@@ -47,6 +47,7 @@ Route::get('/course/{courseName}/{chapter}/{lesson}', [HomeController::class, 'c
 Route::get('/kursy/lessons', [HomeController::class, 'coursesLessons'])->name('courses_lessons');
 Route::get('/kontakt', [HomeController::class, 'contact'])->name('contact');
 Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about.us');
+Route::get('/mapa', [HomeController::class, 'siteMap'])->name('site.map');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
