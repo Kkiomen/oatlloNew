@@ -2,7 +2,7 @@
 title: "The match Expression in PHP 8+: A Modern Approach to Conditionals"
 slug: php-match-expression-guide
 seo_title: "PHP match Expression Tutorial: Modern Conditional Logic"
-seo_description: "Learn how to use the match expression in PHP 8+. Master strict comparisons, value returns, and modern conditional logic with practical examples."
+seo_description: "The PHP match expression explained: how it differs from switch, strict === comparison, and returning values - clear examples for PHP 8 and up."
 ---
 
 The **match** expression, introduced in **PHP 8**, is a modern construct for matching values and returning results. Unlike `switch`, it is an **expression**, meaning that **match always returns a value** that can be assigned to a variable or returned from a function.

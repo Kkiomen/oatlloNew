@@ -2,7 +2,7 @@
 title: "Getters and Setters in PHP OOP"
 slug: php-getter-setter-guide
 seo_title: "PHP Getters and Setters Tutorial: Encapsulation Guide"
-seo_description: "Learn getters and setters in PHP OOP for encapsulation, validation, fluent setters, and immutability. Master safe object state management with examples."
+seo_description: "Getters and setters in PHP: how to protect object data, add validation, and write clean, fluent setters - beginner-friendly examples included."
 ---
 
 Getters and setters are fundamental concepts in Object-Oriented Programming (OOP) in PHP. They are used for safe reading and modification of an object’s state (class properties/attributes) while preserving encapsulation. With them you can:

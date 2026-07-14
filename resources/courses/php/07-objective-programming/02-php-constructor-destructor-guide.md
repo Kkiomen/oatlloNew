@@ -2,7 +2,7 @@
 title: "Constructor and Destructor in PHP"
 slug: php-constructor-destructor-guide
 seo_title: "PHP Constructor and Destructor Tutorial: Complete Guide"
-seo_description: "Learn how constructors and destructors work in PHP OOP. Master object initialization, cleanup, property promotion, and dependency injection with examples."
+seo_description: "What constructors and destructors do in PHP, when each one runs, and how to use __construct and __destruct - with clear, beginner-friendly examples."
 ---
 
 In Object-Oriented Programming (OOP) in PHP, two special methods play a key role in the lifecycle of an object: **constructor** and **destructor**. The constructor (`__construct`) is used to **initialize the object** right after it is created, while the destructor (`__destruct`) is used to **clean up resources** just before the object is destroyed. Understanding how they work, when they are called, and how to write them according to best practices is essential in everyday PHP programming — especially when working with databases, files, or external APIs.

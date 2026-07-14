@@ -2,7 +2,7 @@
 title: "Function Arguments in PHP: Optional Parameters and Default Values"
 slug: php-function-arguments-guide
 seo_title: "PHP Function Arguments: Optional Parameters and Defaults"
-seo_description: "Learn how to use function arguments in PHP including optional parameters, default values, typing, and named arguments. Master flexible function design."
+seo_description: "Optional parameters, default values, and named arguments in PHP - explained simply with clear examples. Write flexible functions the right way."
 ---
 
 In PHP programming, we often write functions that accept **arguments**. Sometimes not all parameters are required — and that’s a good thing! With **optional parameters** and **default values**, we can create flexible functions that are convenient to use and safe.

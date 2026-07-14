@@ -2,7 +2,7 @@
 title: "Difference Between Single Quotes and Double Quotes in PHP"
 slug: difference-single-double-quotes-php
 seo_title: "PHP Quotes: Single vs Double Quotes Complete Guide"
-seo_description: "Learn the difference between single and double quotes in PHP. Understand string interpolation, escape sequences, and when to use each type."
+seo_description: "Single vs double quotes in PHP: the real difference, when variables get interpolated, escape sequences, and which to use - with side-by-side examples."
 ---
 
 ## Basic Explanation

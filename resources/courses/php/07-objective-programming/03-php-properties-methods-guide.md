@@ -2,7 +2,7 @@
 title: "Properties and Methods in PHP Object-Oriented Programming"
 slug: php-properties-methods-guide
 seo_title: "PHP Properties and Methods Tutorial: OOP Fundamentals"
-seo_description: "Learn properties and methods in PHP OOP including static vs instance, readonly, encapsulation, chaining, and magic methods. Master OOP fundamentals with examples."
+seo_description: "Object properties and methods in PHP explained for beginners: instance vs static, readonly, visibility, and method chaining - with practical examples."
 ---
 
 In this lesson, you’ll learn the fundamentals of Object-Oriented Programming (OOP) in PHP: what **properties** and **methods** are, how to define them, how to use them, and what best practices to follow. These are core concepts of OOP in PHP — without them you cannot build clean and scalable applications. If you already know classes, objects, constructors, and destructors from previous lessons, now you’ll deepen your knowledge of how to store object state and manage it.
