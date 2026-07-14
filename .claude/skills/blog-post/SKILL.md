@@ -3,8 +3,8 @@ name: blog-post
 description: >-
   Create and publish a complete, SEO-optimized blog post for Oatllo (oatllo.com)
   end-to-end and fully autonomously — from topic ideation, through keyword
-  research, SEO writing, anti-AI humanization, to uploading it live via the
-  articles API. Use when the user wants to create, write, or publish a new blog
+  research, SEO writing, anti-AI humanization, to publishing it live by
+  committing to resources/articles/ and deploying via git. Use when the user wants to create, write, or publish a new blog
   article/post for Oatllo, or asks for "a new post", "napisz artykuł na bloga",
   "opublikuj post", etc. This is the orchestrator; it calls the other blog-*
   skills in order.
@@ -21,7 +21,7 @@ for another language.
 
 Mode: **fully autonomous** — run the entire pipeline and publish at the end
 **without stopping for approval**. Only stop if a hard blocker occurs (e.g. the
-upload API returns an error, or required credentials are missing).
+commit/deploy fails, or the live URL does not return 200 after deploy).
 
 ## Pipeline
 
@@ -50,23 +50,23 @@ that skill's guidance (read the skill file if useful) rather than improvising.
      unlikely to be flagged as AI-generated. Rewrite the saved draft in place.
 
 5. **Publish** (`blog-upload`)
-   - Upload `blog-drafts/{slug}.md` to **https://oatllo.com/api/articles**.
-   - Confirm the response, then report the published URL to the user.
+   - Commit `resources/articles/{slug}.md` to the repo and deploy via `git pull`
+     (there is no upload API). Confirm HTTP 200 on the live URL, then report it.
 
 ## Final report
 
 After publishing, give the user a short summary:
 - chosen topic + primary keyword,
 - title and slug,
-- published URL (from the API response),
-- the local draft path.
+- published URL (verified HTTP 200 live),
+- the committed file path (`resources/articles/{slug}.md`).
 
 ## Guardrails
 
 - Never invent facts, benchmarks, or quotes. Prefer accurate, verifiable technical detail.
 - Keep the cover image deterministic if none is provided:
   `https://picsum.photos/seed/{slug}/1200/630`.
-- If `ARTICLE_API_TOKEN` (or the configured upload token) is missing, stop and
-  ask the user for it instead of failing silently.
+- Publishing is commit + `git pull` deploy (no API/token). If the commit or
+  deploy fails, stop and report instead of claiming success.
 - Only set `category:` in frontmatter if that category slug already exists in the
   site's database; otherwise omit it (tags are free-form and always safe).

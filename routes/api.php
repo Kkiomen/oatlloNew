@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AutoPublishController;
-use App\Http\Controllers\Api\ArticleImportController;
 use App\Http\Controllers\Api\CronController;
 
 /*
@@ -28,12 +27,3 @@ Route::post('/auto-publish', [AutoPublishController::class, 'publishOldestUnpubl
 // "Cron tick" uderzany cyklicznie (np. co godzinę z n8n). Publikuje zaplanowane
 // artykuły (których published_at już minął) i regeneruje sitemap. Publiczny GET.
 Route::get('/cron', [CronController::class, 'run'])->name('api.cron');
-
-// Import artykułów w formacie Markdown (dla lokalnego narzędzia / Claude).
-// Autoryzacja: nagłówek "Authorization: Bearer <ARTICLE_API_TOKEN>".
-Route::middleware('article.token')->prefix('articles')->group(function () {
-    Route::get('/', [ArticleImportController::class, 'index'])->name('api.articles.index');
-    Route::post('/', [ArticleImportController::class, 'store'])->name('api.articles.store');
-    Route::get('/{slug}', [ArticleImportController::class, 'show'])->name('api.articles.show');
-    Route::delete('/{slug}', [ArticleImportController::class, 'destroy'])->name('api.articles.destroy');
-});

@@ -153,7 +153,9 @@ class MarkdownArticleParser
         }
 
         if (! mb_check_encoding($raw, 'UTF-8')) {
-            $detected = mb_detect_encoding($raw, ['UTF-8', 'Windows-1250', 'ISO-8859-2', 'Windows-1252', 'ISO-8859-1'], true) ?: 'Windows-1250';
+            // Uwaga: mbstring nie zna nazwy "Windows-1250" (rzuca ValueError) — dla
+            // polskich stron kodowych używamy obsługiwanego ISO-8859-2.
+            $detected = mb_detect_encoding($raw, ['UTF-8', 'ISO-8859-2', 'Windows-1252', 'ISO-8859-1'], true) ?: 'ISO-8859-2';
             $raw = mb_convert_encoding($raw, 'UTF-8', $detected);
         }
 

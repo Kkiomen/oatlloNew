@@ -16,9 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // Prepend = uruchamia się przed resztą, zanim cokolwiek się wyrenderuje.
         $middleware->prepend(\App\Http\Middleware\CanonicalDomain::class);
 
-        $middleware->alias([
-            'article.token' => \App\Http\Middleware\VerifyArticleApiToken::class,
-        ]);
         $middleware->validateCsrfTokens(except: [
             'cmspage/update',
         ]);

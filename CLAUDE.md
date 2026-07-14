@@ -10,7 +10,10 @@ Artykuły pochodzą z **dwóch źródeł**, scalanych po `slug` (**`.md` ma pier
 1. **Baza** — model `App\Models\Article`.
 2. **Pliki `.md`** — `App\Services\Article\MarkdownArticleRepository` (parsowane w pamięci przez
    `MarkdownArticleParser`, `exists=false`, brak wiersza w bazie). Katalog: `config('articles.path')`
-   (domyślnie `storage/app/articles`). Upload/edycja/usuwanie przez API `ArticleImportController`.
+   (domyślnie **`resources/articles/`**, commitowane w repo — jak kursy). **Workflow: twórz/edytuj pliki
+   `.md` lokalnie → commit → deploy przez `git pull`.** Nie ma już API do uploadu — jedynym źródłem plików
+   jest git. Widoczność liczona z frontmattera (`published_at` / `is_published`): plik z datą w przyszłości
+   jest ukryty aż do terminu, bez wiersza w bazie i bez crona. Nazwa pliku = `{slug}.md`.
 
 Wspólny punkt renderu obu źródeł: **`Article::getDisplayContents()`** — tu dzieje się:
 - **`ContentSanitizer`** (`app/Services/Article/ContentSanitizer.php`): em/en dashe → `-` + słownik anti‑AI.
@@ -87,11 +90,10 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
 - **IndexNow** (Bing/Yandex/Seznam): powiadamianie wyszukiwarek o zmianach URL. Klucz w `INDEXNOW_KEY`
   (env), plik weryfikacyjny hostowany dynamicznie pod `/{key}.txt` (trasa `indexnow.key`, `routes/web.php`
   przed łapaczami `/{articleSlug}`). Serwis `App\Services\IndexNowService` (guard: pusty klucz = no‑op,
-  każdy ping w try/catch — nigdy nie wywala operacji na treści). Artykuły `.md` pingują się same przy
-  publikacji/edycji/usunięciu przez `ArticleImportController` (w `app()->terminating()`, po odpowiedzi).
-  Kursy (commit + deploy, brak runtime eventu): komenda `php artisan indexnow:submit-sitemap` — wysyła
-  batch wszystkich URL‑i z `sitemap.xml` (`--regenerate` = najpierw przebuduj mapę). Ten sam klucz musi
-  być na produkcji co w pliku `/{key}.txt`.
+  każdy ping w try/catch — nigdy nie wywala operacji na treści). Artykuły i kursy `.md` publikujesz
+  commitem + deployem (brak runtime eventu), więc po deployu odpal komendę `php artisan indexnow:submit-sitemap`
+  — wysyła batch wszystkich URL‑i z `sitemap.xml` (`--regenerate` = najpierw przebuduj mapę). Ten sam klucz
+  musi być na produkcji co w pliku `/{key}.txt`.
 
 ## Checklist wdrożenia (produkcja)
 
@@ -100,5 +102,7 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
 2. Upewnić się, że **`public/assets/css/tailwind.css`** jest wdrożony (jest w repo — deploy = git pull; nie trzeba budować).
 3. Po dodaniu nowych klas Tailwind: `npm run css:public` + commit przed deployem.
 4. **IndexNow**: ustaw `INDEXNOW_KEY` na produkcji (ten sam co lokalnie). Po deployu z nowymi/zmienionymi
-   kursami: `php artisan indexnow:submit-sitemap --regenerate` (zgłasza lekcje do Bing). Artykuły `.md` idą
-   automatycznie przy uploadzie przez API. Sprawdź raz, że `https://oatllo.com/{INDEXNOW_KEY}.txt` zwraca klucz.
+   artykułami lub kursami: `php artisan indexnow:submit-sitemap --regenerate` (zgłasza URL‑e do Bing).
+   Sprawdź raz, że `https://oatllo.com/{INDEXNOW_KEY}.txt` zwraca klucz.
+5. **Artykuły `.md`** są teraz w `resources/articles/` (commit + `git pull`) — upewnij się, że produkcja
+   nie ma w `.env` starego `ARTICLES_MD_PATH=storage/app/articles` (domyślnie czyta `resources/articles`).

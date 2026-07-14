@@ -1,30 +1,45 @@
-# Artykuły z plików Markdown + API importu
+# Artykuły z plików Markdown (commitowane w repo)
 
-Artykuły mają teraz **dwa źródła**:
+Artykuły mają **dwa źródła**:
 
-1. **Baza danych** – jak dotychczas (model `Article`).
-2. **Pliki `.md`** – w katalogu `storage/app/articles/`, renderowane dynamicznie
-   bez zapisu do bazy.
+1. **Baza danych** – model `Article`.
+2. **Pliki `.md`** – w katalogu **`resources/articles/`**, commitowane w repo i
+   renderowane dynamicznie bez zapisu do bazy (analogicznie do kursów w
+   `resources/courses/`).
 
 Przy tym samym `slug` **plik `.md` ma pierwszeństwo** przed bazą danych.
 
-Cel: lokalny Claude na komputerze może wgrywać artykuły przez API (plik `.md`
-lub jego treść), zamiast robić to ręcznie na serwerze.
+## Workflow (WAŻNE)
 
----
+Nie ma już API do uploadu. Jedynym źródłem plików jest git:
+
+1. Twórz / edytuj plik `resources/articles/{slug}.md` **lokalnie**.
+2. `git add` + `git commit`.
+3. Deploy = `git pull` na produkcji.
+4. Po deployu (opcjonalnie, dla szybszego zgłoszenia do Bing):
+   `php artisan indexnow:submit-sitemap --regenerate`.
+
+Widoczność liczona jest z frontmattera: plik z `published_at` w przyszłości jest
+**ukryty aż do terminu** (bez wiersza w bazie, bez crona). `/api/cron` służy już
+tylko do regeneracji `sitemap.xml` (+ publikacji zaplanowanych artykułów z bazy).
 
 ## Konfiguracja
 
-W `.env`:
+Katalog domyślny: `resources/articles/`. Można nadpisać w `.env`:
 
 ```env
-ARTICLE_API_TOKEN=<sekret>          # token autoryzacyjny API (już wygenerowany)
 # ARTICLES_MD_PATH=/inna/sciezka    # opcjonalnie: własny katalog na pliki .md
 ```
 
-Katalog domyślny: `storage/app/articles/`.
+> Uwaga przy deployu: upewnij się, że produkcja **nie** ma starego
+> `ARTICLES_MD_PATH=storage/app/articles` w `.env` — inaczej czytałaby stary
+> katalog zamiast wersjonowanego `resources/articles/`.
 
----
+## Kodowanie plików
+
+Pliki muszą być **UTF-8** (CommonMark odrzuca inne). Parser próbuje ratować
+pliki nie-UTF-8 (`MarkdownArticleParser::normalizeEncoding`), ale zapisuj w UTF-8,
+żeby uniknąć zepsutych polskich znaków — szczególnie edytując z Windowsa.
 
 ## Format pliku `.md`
 
@@ -34,13 +49,14 @@ Frontmatter YAML + treść w Markdown:
 ---
 name: "Tytuł artykułu"          # WYMAGANE
 slug: tytul-artykulu            # opcjonalne (domyślnie z nazwy pliku lub tytułu)
-short_description: "Krótki opis dla listy blogа i SEO."
+short_description: "Krótki opis dla listy bloga i SEO."
 image: https://.../cover.jpg
 language: en                    # domyślnie APP_LOCALE
 published_at: 2026-07-08 10:00:00
 is_published: true              # domyślnie true
 category: nazwa-kategorii       # opcjonalne (slug istniejącej kategorii w bazie)
 tags: [laravel, php]            # opcjonalne
+keys_link: [fraza-kotwica]      # opcjonalne — frazy do linkowania wewnętrznego
 ---
 
 ## Nagłówek
@@ -48,136 +64,5 @@ tags: [laravel, php]            # opcjonalne
 Treść w **Markdown** – listy, [linki](https://...), bloki kodu itd.
 ```
 
-Slug ustalany jest w kolejności: `slug` z żądania → `slug` z frontmatteru →
-nazwa pliku → `Str::slug(name)`.
-
----
-
-## Endpointy API
-
-Wszystkie wymagają nagłówka: `Authorization: Bearer <ARTICLE_API_TOKEN>`.
-
-| Metoda | Ścieżka                | Opis                                    |
-|--------|------------------------|-----------------------------------------|
-| POST   | `/api/articles`        | Utwórz/zaktualizuj artykuł              |
-| GET    | `/api/articles`        | Lista artykułów `.md`                   |
-| GET    | `/api/articles/{slug}` | Surowa zawartość pliku `.md`            |
-| DELETE | `/api/articles/{slug}` | Usuń plik `.md`                         |
-
-### Upload jako treść (JSON)
-
-```bash
-curl -X POST https://twoja-domena/api/articles \
-  -H "Authorization: Bearer $ARTICLE_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -d '{"content":"---\nname: \"Mój artykuł\"\nslug: moj-artykul\nlanguage: en\n---\n\n## Cześć\n\nTreść."}'
-```
-
-### Upload jako plik `.md` (multipart)
-
-```bash
-curl -X POST https://twoja-domena/api/articles \
-  -H "Authorization: Bearer $ARTICLE_API_TOKEN" \
-  -H "Accept: application/json" \
-  -F "file=@artykul.md"
-```
-
-### Odpowiedź (sukces)
-
-```json
-{
-  "success": true,
-  "message": "Artykuł utworzony.",
-  "data": {
-    "slug": "moj-artykul",
-    "name": "Mój artykuł",
-    "language": "en",
-    "is_published": true,
-    "url": "https://twoja-domena/moj-artykul",
-    "file": ".../storage/app/articles/moj-artykul.md",
-    "created": true
-  }
-}
-```
-
-Kody: `201` utworzony, `200` zaktualizowany/OK, `401` zły token,
-`422` brak treści lub brak `name` we frontmatterze, `404` nie znaleziono.
-
----
-
-## Gdzie pojawiają się artykuły
-
-Artykuły z plików `.md` są scalane z artykułami z bazy we **wszystkich** listach
-i podstronach (plik `.md` ma pierwszeństwo przy tym samym slug):
-
-- **Lista bloga** (`/blog`) – scalone i posortowane po dacie, z paginacją.
-- **Podstrona artykułu** (`/{slug}`) – renderuje plik `.md`, jeśli istnieje; inaczej baza.
-- **Podstrona z kategorią** (`/{categorySlug}/{slug}`) – jw. (gdy artykuł ma `category`).
-- **Strona tagu** (`/blog/tag/{tag}`) – artykuły z bazy i md z danym tagiem. Tag może
-  istnieć wyłącznie w plikach `.md` (nie musi być w tabeli `tags`).
-- **Strona kategorii** (`/blog/lista/{slug}`) – artykuły z bazy i md w danej kategorii.
-- **RSS** (`/feed`) – 20 najnowszych z obu źródeł.
-- **Sitemap** (`public/sitemap.xml`) – artykuły md, ich strony tagów (także tagi
-  istniejące tylko w md) i strony kategorii trafiają do mapy strony przy jej
-  regeneracji (`SitemapService::generateSitemap()`).
-
-### Planowanie publikacji (scheduling) i cron
-
-Artykuł można **zaplanować na przyszłość** przez pole `published_at` we frontmatterze
-(dla plików `.md`) lub kolumnę `published_at` (dla artykułów z bazy):
-
-- **Widoczność liczona po dacie.** Artykuł jest publicznie widoczny tylko gdy
-  `is_published = true` **oraz** `published_at <= teraz` (`Article::isLive()`). Artykuł
-  z przyszłym `published_at` jest ukryty na liście bloga, w RSS, w sitemap i pod
-  bezpośrednim URL (404) aż do nadejścia terminu.
-- **Pliki `.md` publikują się same.** Ich widoczność jest liczona przy każdym żądaniu,
-  więc po przekroczeniu `published_at` pojawiają się automatycznie – bez crona.
-- **Cron potrzebny do dwóch rzeczy:** przełączenia `is_published` dla artykułów z
-  **bazy**, których termin minął, oraz **regeneracji statycznego `sitemap.xml`**
-  (żeby świeżo widoczne artykuły trafiły do mapy strony). RSS (`/feed`) jest dynamiczny
-  i nie wymaga crona.
-
-**Endpoint cron (publiczny GET, bez autoryzacji):**
-
-```
-GET /api/cron
-```
-
-Uderzaj cyklicznie (np. co godzinę z n8n). Odpowiedź JSON:
-
-```json
-{
-  "success": true,
-  "published_count": 1,
-  "published": [{ "id": 12, "slug": "...", "name": "...", "language": "en", "published_at": "..." }],
-  "sitemap_regenerated": true,
-  "timestamp": "2026-07-11T10:00:00+00:00"
-}
-```
-
-Publikacja z bazy jest „lekka" – ustawia tylko `is_published` i zachowuje zaplanowaną
-datę. Świadomie **nie** uruchamia generatorów tagów/linków (`Article::publish`), bo
-wołają zewnętrzne AI – zbyt kosztowne dla endpointu odpalanego co godzinę.
-
-### Kategoria i tagi w pliku `.md`
-
-- `category: <slug>` we frontmatterze jest dopasowywany do istniejącej kategorii w bazie
-  (po `slug`). Dzięki temu artykuł md pojawia się na stronie tej kategorii, a jego URL
-  przyjmuje formę `/{categorySlug}/{slug}`.
-- `tags: [...]` tworzy lekkie tagi w pamięci (nie są zapisywane do bazy), po których
-  działa filtrowanie na stronie tagu.
-
----
-
-## Pliki implementacji
-
-- `config/articles.php` – ścieżka i token.
-- `app/Services/Article/MarkdownArticleParser.php` – parsowanie md → model `Article` (w pamięci).
-- `app/Services/Article/MarkdownArticleRepository.php` – odczyt/zapis plików `.md`.
-- `app/Http/Middleware/VerifyArticleApiToken.php` – autoryzacja tokenem.
-- `app/Http/Controllers/Api/ArticleImportController.php` – endpointy API (import md).
-- `app/Http/Controllers/Api/CronController.php` – endpoint `GET /api/cron` (scheduling + sitemap).
-- `routes/api.php` – rejestracja tras.
-- `app/Http/Controllers/HomeController.php` – scalanie źródeł w `blog()` i `article()`.
-- `app/Models/Article.php` – `Article::isLive()` (widoczność po dacie publikacji).
+Slug ustalany jest w kolejności: `slug` z frontmatteru → nazwa pliku → `Str::slug(name)`.
+Nazwa pliku powinna odpowiadać slugowi: `{slug}.md`.

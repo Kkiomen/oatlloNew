@@ -1,92 +1,72 @@
 ---
 name: blog-upload
 description: >-
-  Upload/publish a finished Markdown article to Oatllo (oatllo.com) via the
-  articles API, and confirm it went live. Use when a .md article is ready to
+  Publish a finished Markdown article to Oatllo by committing it to
+  resources/articles/ and deploying via git. Use when a .md article is ready to
   publish, or when the user asks to "upload/publish the post", "wgraj/opublikuj
   artykuł", "wyślij na oatllo".
 ---
 
-# blog-upload — publish a Markdown article to oatllo.com
+# blog-upload — publish a Markdown article to oatllo.com (git workflow)
 
-Publishes a Markdown article to **https://oatllo.com** through the articles
-import API. The API saves the `.md` file on the server and the site renders it on
-the blog, its own page, tag/category pages, RSS, and sitemap. Full API reference:
-`docs/markdown-articles-api.md`.
+Articles are **committed Markdown files** in `resources/articles/`, exactly like
+courses in `resources/courses/`. There is **no upload API** — the only way to
+publish is to add the `.md` file to the repo and deploy with `git pull`. Full
+reference: `docs/markdown-articles-api.md`.
 
-## Endpoint
-
-```
-POST https://oatllo.com/api/articles
-Authorization: Bearer <ARTICLE_API_TOKEN>
-```
-
-Two ways to send the article (pick one):
-- **file** (multipart) — upload the `.md` file.
-- **content** (JSON) — send the raw Markdown string.
-
-## Token
-
-The request needs a bearer token that **matches `ARTICLE_API_TOKEN` configured on
-the production server** (oatllo.com's `.env`).
-
-Resolve the token in this order:
-1. `OATLLO_ARTICLE_API_TOKEN` environment variable, else
-2. `ARTICLE_API_TOKEN` from the local project `.env`.
-
-If neither is set, **stop and ask the user for the token** — do not proceed.
-
-> Note: the token generated in local `.env` only works locally. For oatllo.com,
-> the same token value must exist in the production server's `.env`. If uploads
-> return 401, the tokens don't match.
+Once committed and pulled on production, the site renders the article on the blog,
+its own page, tag/category pages, RSS, and sitemap. Visibility is driven by
+frontmatter: a `published_at` in the future stays hidden until its time passes —
+no database row, no cron needed.
 
 ## Steps
 
-1. Resolve the target base URL (default `https://oatllo.com`).
-2. Resolve the token (see above).
-3. Upload the draft file. Prefer the **file** form:
+1. **Place the file.** Write the finished article to
+   `resources/articles/<slug>.md`. The filename must equal the slug. Ensure the
+   file is **UTF-8** (CommonMark rejects other encodings).
+
+2. **Sanity-check the frontmatter.** `name` is required. Set `published_at`
+   (past = live now, future = scheduled) and `language`. Confirm the slug is
+   unique (no existing file or DB article with the same slug — `.md` wins on
+   conflict, so a clash silently overrides the DB one).
+
+3. **Verify it parses locally** (optional but recommended):
 
 ```bash
-TOKEN="${OATLLO_ARTICLE_API_TOKEN:-$(grep '^ARTICLE_API_TOKEN=' .env | cut -d= -f2)}"
-curl -sS -X POST https://oatllo.com/api/articles \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Accept: application/json" \
-  -F "file=@blog-drafts/<slug>.md" \
-  -w "\nHTTP %{http_code}\n"
+php artisan tinker --execute="echo app(\App\Services\Article\MarkdownArticleRepository::class)->findBySlug('<slug>')?->name;"
 ```
 
-   If the caller only has the raw Markdown (no file), send it as JSON instead:
+4. **Commit.**
 
 ```bash
-curl -sS -X POST https://oatllo.com/api/articles \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  --data @- <<'JSON'
-{"content": "<escaped markdown here>"}
-JSON
+git add resources/articles/<slug>.md
+git commit -m "Blog: publish <slug>"
 ```
 
-4. **Check the response.**
-   - `201` created / `200` updated → success. Report `data.url`, `data.slug`,
-     `data.is_published`.
-   - `401` → token mismatch (see Token note). Ask the user to align the token.
-   - `422` → validation error (missing content, or frontmatter missing `name`).
-     Fix the article and retry.
-   - Other/non-JSON → report the raw output; do not claim success.
+5. **Deploy** = push + `git pull` on the server (per the project's normal deploy).
+   Only commit/push when the user asks. If on `main`, follow the repo's usual
+   flow.
 
-5. Report the live URL to the user.
+6. **After deploy, ping IndexNow** (optional, speeds up Bing discovery):
 
-## Other operations (same auth)
+```bash
+php artisan indexnow:submit-sitemap --regenerate
+```
 
-- List published `.md` articles: `GET https://oatllo.com/api/articles`
-- Fetch one (raw): `GET https://oatllo.com/api/articles/{slug}`
-- Delete one: `DELETE https://oatllo.com/api/articles/{slug}`
+7. **Confirm live.** Fetch the article URL and check HTTP 200 + the title:
+
+```bash
+curl -sk -o /dev/null -w "%{http_code}\n" https://oatllo.com/<slug>
+```
+
+   A future-dated (scheduled) article correctly returns 404 until its
+   `published_at` passes — that's not an error.
 
 ## Safety
 
 - Publishing is an outward-facing, live action. In autonomous flows (e.g. the
-  `blog-post` pipeline) it's expected to publish directly. Outside those flows,
-  if the user hasn't clearly asked to go live, confirm first.
-- Never print the token value in output or logs.
-- Confirm success from the actual HTTP status/JSON — never assume it worked.
+  `blog-post` pipeline) publishing (commit + deploy) is expected. Outside those
+  flows, if the user hasn't clearly asked to go live, confirm before committing
+  or pushing.
+- Confirm success from the actual git result and the live HTTP status — never
+  assume it worked.

@@ -7,13 +7,13 @@ return [
     | Katalog z artykułami w formacie Markdown
     |--------------------------------------------------------------------------
     |
-    | Artykuły wgrywane przez API są zapisywane jako pliki .md w tym katalogu
-    | i renderowane na stronie dynamicznie (bez zapisu do bazy danych).
-    | To jest drugie źródło artykułów obok bazy danych.
+    | Artykuły to commitowane w repo pliki .md (jak kursy). Tworzone lokalnie,
+    | wysyłane na produkcję przez `git pull` i renderowane dynamicznie (bez
+    | zapisu do bazy danych). To jest drugie źródło artykułów obok bazy danych.
     |
     */
 
-    'path' => env('ARTICLES_MD_PATH', storage_path('app/articles')),
+    'path' => env('ARTICLES_MD_PATH', resource_path('articles')),
 
     /*
     |--------------------------------------------------------------------------
@@ -27,18 +27,6 @@ return [
     */
 
     'courses_path' => env('COURSES_MD_PATH', resource_path('courses')),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Token API do wgrywania artykułów
-    |--------------------------------------------------------------------------
-    |
-    | Sekret używany do autoryzacji endpointu importu artykułów. Lokalny Claude
-    | wysyła go w nagłówku "Authorization: Bearer <token>".
-    |
-    */
-
-    'api_token' => env('ARTICLE_API_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------
