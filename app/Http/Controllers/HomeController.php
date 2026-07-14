@@ -25,28 +25,54 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $postInstagrams = [];
         $defaultLangue = env('APP_LOCALE');
+        $strict = env('LANGUAGE_MODE') == 'strict';
 
-        if(env('LANGUAGE_MODE') == 'strict'){
-            $randomArticles = Article::where('is_published', true)
-                ->where('language', $defaultLangue)
-                ->where('type', 'normal') // Wykluczamy lekcje kursów
-                ->orderBy('id', 'desc')
-                ->take(6)
-                ->get();
-            $postInstagrams = InstagramPost::where('language', $defaultLangue)->orderBy('created_at', 'desc')->take(8)->get();
-        }else{
-            $randomArticles = Article::where('is_published', true)
-                ->where('type', 'normal') // Wykluczamy lekcje kursów
-                ->inRandomOrder()
-                ->take(6)
-                ->get();
+        // Artykuły z bazy (opublikowane, zwykłe, najnowsze).
+        $dbQuery = Article::with(['category', 'tags'])
+            ->where('is_published', true)
+            ->where('type', 'normal');
+
+        if ($strict) {
+            $dbQuery->where('language', $defaultLangue);
         }
 
+        $dbArticles = $dbQuery->orderBy('published_at', 'desc')->orderBy('id', 'desc')->take(12)->get();
+
+        // Artykuły z plików .md (drugie źródło). Scalamy: .md ma pierwszeństwo przy tym samym slug.
+        $mdArticles = app(MarkdownArticleRepository::class)->published($strict ? $defaultLangue : null);
+
+        $merged = collect();
+        foreach ($dbArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+        foreach ($mdArticles as $a) {
+            $merged->put($a->slug, $a);
+        }
+
+        $sorted = $merged->values()
+            ->sortByDesc(fn ($a) => $a->getPublishedDate())
+            ->values();
+
+        // Pierwszy = wyróżniony, kolejne = siatka najnowszych.
+        $featuredArticle = $sorted->first();
+        $latestArticles = $sorted->slice(1, 6)->values();
+
+        // Zachowujemy zmienną używaną w starych fragmentach widoku.
+        $randomArticles = $sorted->take(6);
+
+        // Kursy (opublikowane, w bieżącym języku) do sekcji "Courses".
+        $courses = Course::where('is_published', true)
+            ->when($strict, fn ($q) => $q->where('lang', $defaultLangue))
+            ->orderBy('id', 'desc')
+            ->take(3)
+            ->get();
+
         return view('views_basic.welcome', [
+            'featuredArticle' => $featuredArticle,
+            'latestArticles' => $latestArticles,
             'randomArticles' => $randomArticles,
-            'postInstagrams' => $postInstagrams
+            'courses' => $courses,
         ]);
     }
 
@@ -229,9 +255,18 @@ class HomeController extends Controller
             ['path' => $request->url(), 'query' => $request->query()]
         );
 
+        // Kategorie z opublikowanymi artykułami – do chipsów (wewnętrzne linkowanie SEO).
+        $categoryIds = Article::whereNotNull('category_id')
+            ->where('is_published', true)
+            ->distinct()
+            ->pluck('category_id');
+        $categories = Category::whereIn('id', $categoryIds)->orderBy('name')->get();
+
         return view('views_basic.blog', [
             'articles' => $articles,
-            'searchQuery' => $searchQuery
+            'searchQuery' => $searchQuery,
+            'categories' => $categories,
+            'currentCategory' => null,
         ]);
     }
 
