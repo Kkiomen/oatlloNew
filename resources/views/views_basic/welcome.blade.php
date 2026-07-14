@@ -161,11 +161,11 @@
         <dl class="mx-auto mt-16 grid max-w-2xl grid-cols-3 gap-6 border-t border-white/5 pt-10">
             <div>
                 <dt class="text-sm text-neutral-500">{{ __('basic.articles') }}</dt>
-                <dd class="mt-1 text-3xl font-bold text-white">{{ \App\Models\Article::where('is_published', true)->where('type','normal')->count() }}+</dd>
+                <dd class="mt-1 text-3xl font-bold text-white">{{ $articlesCount ?? 0 }}+</dd>
             </div>
             <div>
                 <dt class="text-sm text-neutral-500">{{ __('basic.courses') }}</dt>
-                <dd class="mt-1 text-3xl font-bold text-white">{{ \App\Models\Course::where('is_published', true)->count() }}</dd>
+                <dd class="mt-1 text-3xl font-bold text-white">{{ $coursesCount ?? 0 }}</dd>
             </div>
             <div>
                 <dt class="text-sm text-neutral-500">Open source</dt>

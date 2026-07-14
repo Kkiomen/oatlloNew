@@ -63,13 +63,17 @@ class HomeController extends Controller
         $randomArticles = $sorted->take(6);
 
         // Kursy (opublikowane, w bieżącym języku) do sekcji "Courses" – baza + pliki .md.
-        $courses = $this->mergedCourses($strict, $defaultLangue)->take(3)->values();
+        $mergedCourses = $this->mergedCourses($strict, $defaultLangue);
+        $courses = $mergedCourses->take(3)->values();
 
         return view('views_basic.welcome', [
             'featuredArticle' => $featuredArticle,
             'latestArticles' => $latestArticles,
             'randomArticles' => $randomArticles,
             'courses' => $courses,
+            // Realne liczby (baza + .md) do statystyk w hero.
+            'articlesCount' => $sorted->count(),
+            'coursesCount' => $mergedCourses->count(),
         ]);
     }
 
