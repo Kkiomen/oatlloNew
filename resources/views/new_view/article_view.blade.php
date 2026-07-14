@@ -336,7 +336,7 @@ use Illuminate\Support\Str;
 
     <!-- Author bio snippet -->
     <div class="mt-14 flex items-start gap-4 border-t border-neutral-800 pt-8" itemscope itemtype="https://schema.org/Person">
-        <img decoding="async" src="{{ asset('/assets/images/owsianka_jakub.png') }}" alt="Jakub Owsianka" class="h-14 w-14 rounded-full object-cover" itemprop="image" />
+        <img decoding="async" src="{{ asset('/assets/images/owsianka_jakub_sm.png') }}" alt="Jakub Owsianka" class="h-14 w-14 rounded-full object-cover" itemprop="image" />
         <div>
             <h3 class="text-lg font-semibold" itemprop="name">Jakub Owsianka</h3>
             <p class="text-neutral-400 text-sm" itemprop="description">Senior PHP developer &amp; open‑source enthusiast. I write about modern backend, DevOps and performance optimisation.</p>
