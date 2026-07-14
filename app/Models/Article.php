@@ -315,6 +315,40 @@ class Article extends Model
     }
 
     /**
+     * Zwraca losowe opublikowane artykuły BEZ użycia ORDER BY RAND()
+     * (który na dużej tabeli z ciężką kolumną `contents` powoduje
+     * "Out of sort memory"). Losujemy identyfikatory w PHP i pobieramy po PK.
+     *
+     * @param int         $limit     ile artykułów zwrócić
+     * @param int|null    $excludeId id do wykluczenia (np. bieżący artykuł)
+     * @param string|null $language  filtr języka (null = bez filtra)
+     */
+    public static function randomPublished(int $limit, ?int $excludeId = null, ?string $language = null): \Illuminate\Database\Eloquent\Collection
+    {
+        $query = static::query()
+            ->where('is_published', true)
+            ->where('type', 'normal');
+
+        if ($language !== null) {
+            $query->where('language', $language);
+        }
+        if ($excludeId !== null) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        // Pobieramy tylko kolumnę id (lekko, indeks PK) i losujemy w PHP.
+        $ids = $query->pluck('id');
+        if ($ids->isEmpty()) {
+            return static::whereRaw('1 = 0')->get();
+        }
+
+        $picked = $ids->count() <= $limit ? $ids : $ids->random($limit);
+        $picked = collect($picked)->values()->all();
+
+        return static::whereIn('id', $picked)->get();
+    }
+
+    /**
      * Zwraca popularne artykuły (najnowsze z największą liczbą wyświetleń)
      * @param int $limit
      * @return \Illuminate\Database\Eloquent\Collection

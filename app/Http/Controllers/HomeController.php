@@ -109,9 +109,7 @@ class HomeController extends Controller
         if(!$article || $article->contents == null){
             abort(404);
         }
-        $randomArticles = Article::where('is_published', true)->where('type', 'normal')
-            ->when($article->id !== null, fn ($q) => $q->where('id', '!=', $article->id))
-            ->inRandomOrder()->take(3)->get();
+        $randomArticles = Article::randomPublished(3, $article->id);
         $category = Category::where('slug', $categorySlug)->first();
 
         return view('views_basic.article', [
@@ -143,22 +141,11 @@ class HomeController extends Controller
             abort(404);
         }
 
-        if(env('LANGUAGE_MODE') == 'strict'){
-            $randomArticles = Article::where('id', '!=', $article->id)
-                ->where('is_published', true)
-                ->where('type', 'normal') // Wykluczamy lekcje kursów
-                ->where('language', $defaultLangue)
-                ->inRandomOrder()
-                ->take(3)
-                ->get();
-        }else{
-            $randomArticles = Article::where('id', '!=', $article->id)
-                ->where('is_published', true)
-                ->where('type', 'normal') // Wykluczamy lekcje kursów
-                ->inRandomOrder()
-                ->take(3)
-                ->get();
-        }
+        $randomArticles = Article::randomPublished(
+            3,
+            $article->id,
+            env('LANGUAGE_MODE') == 'strict' ? $defaultLangue : null
+        );
 
         if (!$article) {
             abort(404, 'Artykuł nie został znaleziony');

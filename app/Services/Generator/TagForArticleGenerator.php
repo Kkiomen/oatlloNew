@@ -21,7 +21,9 @@ class TagForArticleGenerator
     public static function generate(): void
     {
         $currentLanguage = env('APP_LOCALE');
-        $articles = Article::where('language', $currentLanguage)->where('is_published', true)->inRandomOrder()->get();
+        // Bez ORDER BY RAND() – kolejność przetwarzania nie ma znaczenia,
+        // a RAND() na dużej tabeli powoduje "Out of sort memory".
+        $articles = Article::where('language', $currentLanguage)->where('is_published', true)->get();
         $tagsArticles = TagArticle::whereIn('article_id', $articles->pluck('id'))->get();
         // Pobranie ID artykułów, dla których znaleziono TagArticle
         $taggedArticleIds = $tagsArticles->pluck('article_id');
