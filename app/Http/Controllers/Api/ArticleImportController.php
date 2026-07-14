@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Article\InternalLinker;
 use App\Services\Article\MarkdownArticleParser;
 use App\Services\Article\MarkdownArticleRepository;
+use App\Services\IndexNowService;
 use App\Services\SitemapService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -95,6 +96,12 @@ class ArticleImportController extends Controller
 
         $this->regenerateSitemap();
 
+        // Powiadom wyszukiwarki (Bing i spółka) o nowym/zmienionym URL-u.
+        // Tylko dla opublikowanych artykułów — szkice nie mają po co iść do indeksu.
+        if ($article->is_published) {
+            $this->pingIndexNow($article->getRoute());
+        }
+
         return response()->json([
             'success' => true,
             'message' => $existed ? 'Artykuł zaktualizowany.' : 'Artykuł utworzony.',
@@ -157,11 +164,20 @@ class ArticleImportController extends Controller
      */
     public function destroy(string $slug): JsonResponse
     {
+        // Ustal URL PRZED usunięciem (po delete plik już nie istnieje).
+        $article = $this->repository->findBySlug($slug);
+        $url = $article?->getRoute();
+
         $deleted = $this->repository->delete($slug);
 
         if ($deleted) {
             InternalLinker::forget();
             $this->regenerateSitemap();
+
+            // Zgłoś usunięty URL — Bing szybciej wykryje 404/410 i zdejmie go z indeksu.
+            if (! empty($url)) {
+                $this->pingIndexNow($url);
+            }
         }
 
         return response()->json([
@@ -184,6 +200,18 @@ class ArticleImportController extends Controller
             } catch (\Throwable $e) {
                 Log::warning('Nie udało się zregenerować sitemap po zmianie artykułu .md: ' . $e->getMessage());
             }
+        });
+    }
+
+    /**
+     * Powiadamia IndexNow o zmianie URL-a. Wykonywane po wysłaniu odpowiedzi,
+     * aby ping do zewnętrznego API nie opóźniał odpowiedzi klienta. IndexNowService
+     * sam pilnuje, by żaden błąd sieciowy nie przerwał żądania.
+     */
+    private function pingIndexNow(string $url): void
+    {
+        app()->terminating(function () use ($url) {
+            IndexNowService::submit($url);
         });
     }
 }

@@ -38,6 +38,18 @@ Route::get('/courses/{slug}/cover.svg', [\App\Http\Controllers\CourseCoverContro
     ->name('course.cover');
 //Route::get('/blog/', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 
+// IndexNow — plik weryfikacyjny klucza. Bing pobiera https://oatllo.com/{key}.txt
+// i sprawdza, że treść == klucz (dowód własności domeny). Klucz trzymamy w env,
+// nie w repo. Zdefiniowane przed łapaczami /{articleSlug}, żeby nie zostało przez
+// nie przechwycone.
+Route::get('/{indexnowKey}.txt', function (string $indexnowKey) {
+    $key = config('services.indexnow.key');
+    abort_if(empty($key) || ! hash_equals((string) $key, $indexnowKey), 404);
+
+    return response((string) $key, 200)
+        ->header('Content-Type', 'text/plain; charset=utf-8');
+})->where('indexnowKey', '[A-Za-z0-9\-]+')->name('indexnow.key');
+
 
 
 Route::get('/', [HomeController::class, 'index'])->name('index');

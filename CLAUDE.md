@@ -84,6 +84,14 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
 - XML sitemap generuje `App\Services\SitemapService` (artykuły baza+`.md`, kategorie, tagi, kursy, `/mapa`, `/about-us`).
 - HTML „mapa strony": trasa `site.map` → `/mapa` (`HomeController::siteMap`) → `views_basic/sitemap.blade.php`.
 - Wyszukiwarka bloga i puste strony tagów → `noindex`. Paginacja → self‑canonical z `?page=N`.
+- **IndexNow** (Bing/Yandex/Seznam): powiadamianie wyszukiwarek o zmianach URL. Klucz w `INDEXNOW_KEY`
+  (env), plik weryfikacyjny hostowany dynamicznie pod `/{key}.txt` (trasa `indexnow.key`, `routes/web.php`
+  przed łapaczami `/{articleSlug}`). Serwis `App\Services\IndexNowService` (guard: pusty klucz = no‑op,
+  każdy ping w try/catch — nigdy nie wywala operacji na treści). Artykuły `.md` pingują się same przy
+  publikacji/edycji/usunięciu przez `ArticleImportController` (w `app()->terminating()`, po odpowiedzi).
+  Kursy (commit + deploy, brak runtime eventu): komenda `php artisan indexnow:submit-sitemap` — wysyła
+  batch wszystkich URL‑i z `sitemap.xml` (`--regenerate` = najpierw przebuduj mapę). Ten sam klucz musi
+  być na produkcji co w pliku `/{key}.txt`.
 
 ## Checklist wdrożenia (produkcja)
 
@@ -91,3 +99,6 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
    Bez tego stare lekcje mają zepsuty HTML (m.in. kursywa z `UPPER_CASE`).
 2. Upewnić się, że **`public/assets/css/tailwind.css`** jest wdrożony (jest w repo — deploy = git pull; nie trzeba budować).
 3. Po dodaniu nowych klas Tailwind: `npm run css:public` + commit przed deployem.
+4. **IndexNow**: ustaw `INDEXNOW_KEY` na produkcji (ten sam co lokalnie). Po deployu z nowymi/zmienionymi
+   kursami: `php artisan indexnow:submit-sitemap --regenerate` (zgłasza lekcje do Bing). Artykuły `.md` idą
+   automatycznie przy uploadzie przez API. Sprawdź raz, że `https://oatllo.com/{INDEXNOW_KEY}.txt` zwraca klucz.

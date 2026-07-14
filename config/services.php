@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    // IndexNow (Bing / Yandex / Seznam) — powiadamianie wyszukiwarek o zmianach URL.
+    // Klucz weryfikacyjny hostowany dynamicznie pod /{key}.txt (trasa indexnow.key).
+    // Pusty klucz = integracja wyłączona (no-op), więc lokalnie nic nie pinguje.
+    'indexnow' => [
+        'key' => env('INDEXNOW_KEY'),
+        // Endpoint huba IndexNow (przekazuje ping do Bing i pozostałych silników).
+        'endpoint' => env('INDEXNOW_ENDPOINT', 'https://api.indexnow.org/indexnow'),
+    ],
+
 ];
