@@ -27,5 +27,4 @@ yarn-error.log
 /public/sitemap-index.xml
 
 # Wklejane zrzuty ekranu / lokalne obrazki robocze
-/img.png
-/img_1.png
+/img*.png
