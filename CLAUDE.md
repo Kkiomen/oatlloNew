@@ -33,6 +33,9 @@ Stary `InternalUrlsGenerator` generuje już **tylko `keys_link`** (faza utrwalan
   (plik → fallback baza), a `mergedCourses()` scala listy. `CourseHelper::lessonGo` porównuje lekcje po `getRoute()`
   (nie po `id`, którego pliki nie mają). To NIE to samo co `CourseMarkdownService` (ten importuje `.md` DO bazy przez
   `php artisan course:process` — starsza ścieżka, nadal działa).
+  **Jak tworzyć kursy/lekcje z plików**: użyj skilla **`course-writer`** (`.claude/skills/course-writer/SKILL.md`)
+  — zawiera pełny format (struktura katalogów, frontmatter kursu/rozdziału/lekcji, konwencje treści, URL‑e).
+  Przykład wzorcowy w repo: `resources/courses/laravel-basics/`. Nie trzeba żadnej komendy — commit plików i deploy.
 
 ## CSS / Tailwind (WAŻNE — inaczej „popsują się" style)
 
