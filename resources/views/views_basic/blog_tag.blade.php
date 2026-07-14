@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <link rel="canonical" href="{{ route('blogTag', ['tag' => Str::slug($tag->name)]) }}" />
+    <link rel="canonical" href="{{ route('blogTag', ['tag' => $tag->slug ?: Str::slug($tag->name)]) }}" />
 
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
     <link rel="stylesheet" href="{{ asset('/assets/css/article-style.css') }}">
@@ -18,7 +18,7 @@
     <meta property="og:title" content="{{ $tag->title_seo }}">
     <meta property="og:description" content="{{ $tag->description_seo }}">
     {{--    <meta property="og:image" content="{{ $basic_website_structure_op_image_img_file }}">--}}
-    <meta property="og:url" content="{{ route('blogTag', ['tag' => Str::slug($tag->name)]) }}">
+    <meta property="og:url" content="{{ route('blogTag', ['tag' => $tag->slug ?: Str::slug($tag->name)]) }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
