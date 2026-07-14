@@ -56,7 +56,7 @@ Because that third user message arrives with the first two turns as context, the
 
 Three headers are required: `x-api-key`, `anthropic-version`, and `content-type`. `max_tokens` is mandatory too, and `system` is optional but this is where your persona belongs, not stuffed into a user message.
 
-## Storing conversation turns
+## Storing conversation memory (the turns table)
 
 You need somewhere durable to keep turns between HTTP requests to your own app. A simple table does the job.
 

@@ -95,59 +95,16 @@ I got caught by exactly this once: an audit-log observer that worked flawlessly 
 
 ## How events and listeners work
 
-Events are generated separately and carry whatever payload you want:
-
-```bash
-php artisan make:event OrderShipped
-php artisan make:listener SendShipmentNotification --event=OrderShipped
-```
-
-The event is a plain data holder:
+Events aren't tied to a model at all. You define an event as a plain data holder, dispatch it explicitly wherever a domain action completes, and one or more listeners react - each independent, and each queueable by implementing `ShouldQueue`:
 
 ```php
-namespace App\Events;
-
-use App\Models\Order;
-use Illuminate\Foundation\Events\Dispatchable;
-
-class OrderShipped
-{
-    use Dispatchable;
-
-    public function __construct(public Order $order)
-    {
-    }
-}
-```
-
-And the listener does the work. Implement `ShouldQueue` and it runs on your queue instead of blocking the request:
-
-```php
-namespace App\Listeners;
-
-use App\Events\OrderShipped;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
-class SendShipmentNotification implements ShouldQueue
-{
-    public function handle(OrderShipped $event): void
-    {
-        $event->order->customer->notify(
-            new \App\Notifications\ShipmentDispatched($event->order)
-        );
-    }
-}
-```
-
-You fire it wherever the domain action completes:
-
-```php
+// Fire it wherever the action actually happens - API, queued job, admin, webhook:
 OrderShipped::dispatch($order);
 ```
 
-In Laravel 11+, listeners are auto-discovered by their type-hinted event, so there's usually no manual wiring in `EventServiceProvider` anymore.
+In Laravel 11+, listeners are auto-discovered by their type-hinted event, so there's usually no manual wiring in `EventServiceProvider`. The full `make:event` / `make:listener` scaffolding and queued-listener setup are covered step by step in the dedicated [Laravel events and listeners](/blog/laravel-events-listeners) guide, so we won't repeat it here.
 
-The win here is decoupling. `OrderShipped` doesn't care whether the order was shipped via the API, a queued job, an admin action, or a webhook. One event, many listeners, each independent. That's genuinely hard to replicate cleanly with observers because observers are pinned to a single model's persistence.
+The win, for this comparison, is decoupling. `OrderShipped` doesn't care whether the order shipped via the API, a queued job, an admin action, or a webhook. One event, many listeners, each independent - genuinely hard to replicate cleanly with observers, which are pinned to a single model's persistence.
 
 ## Side-by-side comparison
 

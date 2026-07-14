@@ -1,14 +1,14 @@
 ---
 name: "8 VS Code Extensions Every PHP Developer Needs"
 slug: vscode-extensions-php
-short_description: "The 8 VS Code extensions php developers actually keep installed, with real setup notes on when each one earns its spot."
+short_description: "The 8 VS Code extensions PHP developers actually keep installed, with real setup notes on when each one earns its spot."
 language: en
 published_at: 2026-09-16 09:00:00
 is_published: true
 tags: [php, vscode, tooling, laravel]
 ---
 
-I switched from PhpStorm to VS Code about three years ago, mostly to see if I could. What kept me there wasn't the editor itself but the handful of VS Code extensions php work relies on. Out of the box, VS Code treats a `.php` file like a slightly fancier text document. It doesn't know your classes, your namespaces, or that you just typo'd a method name. The right plugins fix that in an afternoon.
+I switched from PhpStorm to VS Code about three years ago, mostly to see if I could. What kept me there wasn't the editor itself but the handful of VS Code extensions PHP work relies on. Out of the box, VS Code treats a `.php` file like a slightly fancier text document. It doesn't know your classes, your namespaces, or that you just typo'd a method name. The right plugins fix that in an afternoon.
 
 Below are the eight I install on every fresh machine before I write a single line of code. Some are obvious. A couple I ignored for months and then wondered how I ever worked without them.
 

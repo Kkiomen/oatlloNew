@@ -23,7 +23,7 @@ People say "cache the LLM" and mean one of two very different things:
 
 They stack. You can do both. But they solve different problems, so let's take them one at a time.
 
-## Layer 1: Application-level response caching
+## Layer 1: Caching LLM responses in your own app
 
 The idea is simple. Hash everything that determines the output (model, the full prompt, and generation parameters) into a cache key. Store the response under that key. On the next identical request, return the stored value.
 

@@ -127,7 +127,7 @@ The defining property is **output smoothing**: downstream sees a perfectly stead
 
 Use leaky bucket when the thing you're protecting genuinely can't handle bursts: a legacy system with a fixed worker pool, or an outbound integration with its own strict limit you must respect. Use token bucket when bursts are fine as long as the average holds. In practice I reach for leaky bucket far less often; most services would rather serve a burst quickly than queue it.
 
-## Comparison
+## Token bucket vs fixed window vs sliding window, compared
 
 | Algorithm | Burst behavior | Smoothness | Memory | Complexity | Good for |
 |---|---|---|---|---|---|

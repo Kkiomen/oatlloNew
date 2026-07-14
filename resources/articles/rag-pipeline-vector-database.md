@@ -1,14 +1,14 @@
 ---
 name: "Building a RAG Pipeline with a Vector Database"
 slug: rag-pipeline-vector-database
-short_description: "Go deep on the vector database layer of a RAG pipeline vector database setup: pgvector vs Pinecone, HNSW vs IVFFlat, hybrid search, and re-ranking."
+short_description: "Go deep on the vector-database layer of a RAG pipeline: pgvector vs Pinecone, HNSW vs IVFFlat, hybrid search, and re-ranking."
 language: en
 published_at: 2027-02-24 09:00:00
 is_published: true
 tags: [rag, php, vector-database, pgvector, ai]
 ---
 
-Most RAG tutorials stop the moment retrieval "works." You embed some text, run a cosine similarity query, get back the top five chunks, and call it a day. Then you ship it, real users ask real questions, and half the answers are subtly wrong because the retrieval layer was never tuned. A production **rag pipeline vector database** is where the quality of your whole app is won or lost, and it deserves a lot more thought than a single `ORDER BY embedding <-> query` line.
+Most RAG tutorials stop the moment retrieval "works." You embed some text, run a cosine similarity query, get back the top five chunks, and call it a day. Then you ship it, real users ask real questions, and half the answers are subtly wrong because the retrieval layer was never tuned. A production **RAG pipeline's vector database layer** is where the quality of your whole app is won or lost, and it deserves a lot more thought than a single `ORDER BY embedding <-> query` line.
 
 This post is the follow-up to [Building a Simple RAG Pipeline in PHP](/blog/rag-pipeline-php). If you haven't read that one, start there: it covers the end-to-end flow (chunk, embed, store, retrieve, generate). Here I'm assuming you already have that skeleton and want to make the vector store itself pull its weight.
 

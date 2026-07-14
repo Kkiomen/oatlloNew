@@ -1,7 +1,7 @@
 ---
 name: "Web Workers in JavaScript: Offloading Heavy Work in the Browser"
 slug: web-workers-javascript
-short_description: "A practical guide to web workers javascript: run CPU-heavy tasks off the main thread, keep the UI responsive, and avoid the common pitfalls."
+short_description: "A practical guide to Web Workers in JavaScript: run CPU-heavy tasks off the main thread, keep the UI responsive, and avoid the common pitfalls."
 language: en
 published_at: 2027-02-15 09:00:00
 is_published: true
