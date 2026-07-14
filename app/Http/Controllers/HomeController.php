@@ -636,7 +636,8 @@ class HomeController extends Controller
             'courseCategory' => $courseCategory,
             'category' => $courseCategory,
             'article' => $currentLesson,
-            'lessonSkip' => CourseHelper::lessonGo($course, $currentLesson)
+            'lessonSkip' => CourseHelper::lessonGo($course, $currentLesson),
+            'faqItems' => \App\Services\Course\LessonFaqExtractor::extract($currentLesson->getDisplayContentHtml()),
         ]);
     }
 
@@ -667,7 +668,8 @@ class HomeController extends Controller
             'courseCategory' => $courseCategory,
             'category' => $courseCategory,
             'article' => $currentLesson,
-            'lessonSkip' => CourseHelper::lessonGo($course, $currentLesson)
+            'lessonSkip' => CourseHelper::lessonGo($course, $currentLesson),
+            'faqItems' => \App\Services\Course\LessonFaqExtractor::extract($currentLesson->getDisplayContentHtml()),
         ]);
     }
 

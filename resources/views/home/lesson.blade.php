@@ -5,6 +5,11 @@
 
     $lessonTitle = trim(strip_tags($article->title));
     $htmlLang    = env('APP_LANG_HTML');
+
+    // Akcent per-kurs (motyw okładki): nazwa palety Tailwind + hex do poświaty tła.
+    $coverService = app(\App\Services\Course\CourseCoverImageService::class);
+    $accent    = $coverService->accentColor($course);
+    $accentHex = $coverService->resolveTheme($course)['accent'];
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $htmlLang }}" class="scroll-smooth">
@@ -59,11 +64,12 @@
     <style>
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .hero-glow-green { background: radial-gradient(60% 50% at 50% 0%, rgba(16,185,129,.16) 0%, rgba(16,185,129,0) 70%); }
+        :root { --accent: {{ $accentHex }}; }
+        .hero-glow-green { background: radial-gradient(42% 70% at 50% -20%, color-mix(in srgb, var(--accent) 12%, transparent) 0%, transparent 70%); }
         .card-hover { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
-        .card-hover:hover { transform: translateY(-4px); border-color: rgba(16,185,129,.5); }
+        .card-hover:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
         .line-clamp-1 { display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
-        #reading-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 60; background: linear-gradient(90deg,#10b981,#34d399); transition: width .1s linear; }
+        #reading-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 60; background: var(--accent); transition: width .1s linear; }
 
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #171717; border-radius: 4px; }
@@ -81,10 +87,10 @@
         .prose ul { list-style:disc; padding-left:1.5rem; margin-bottom:1.15rem; color:#d4d4d8; }
         .prose ol { list-style:decimal; padding-left:1.5rem; margin-bottom:1.15rem; color:#d4d4d8; }
         .prose li { margin-bottom:.5rem; line-height:1.8; }
-        .prose ul > li::marker, .prose ol > li::marker { color:#10b981; }
-        .prose a { color:#34d399; text-decoration:underline; text-underline-offset:2px; }
-        .prose a:hover { color:#6ee7b7; }
-        .prose blockquote { border-left:4px solid #10b981; padding:.25rem 0 .25rem 1.25rem; margin:1.5rem 0; font-style:italic; color:#e5e5e5; background:rgba(16,185,129,.05); border-radius:0 .5rem .5rem 0; }
+        .prose ul > li::marker, .prose ol > li::marker { color: var(--accent); }
+        .prose a { color: var(--accent); text-decoration:underline; text-underline-offset:2px; }
+        .prose a:hover { filter: brightness(1.25); }
+        .prose blockquote { border-left:4px solid var(--accent); padding:.25rem 0 .25rem 1.25rem; margin:1.5rem 0; font-style:italic; color:#e5e5e5; background: color-mix(in srgb, var(--accent) 6%, transparent); border-radius:0 .5rem .5rem 0; }
         .prose img { border-radius:.75rem; margin:1.5rem 0; }
         .prose code { background:#171717; color:#6ee7b7; border-radius:.25rem; padding:.125rem .35rem; font-size:.9em; }
         .prose pre { background:#0f0f0f !important; color:#f5f5f5; border:1px solid #262626; border-radius:.75rem; overflow-x:auto; font-size:.9rem; padding:1rem 1.15rem; margin:1.5rem 0; }
@@ -113,12 +119,12 @@
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
-                <a href="{{ route('index') }}" class="text-sm font-semibold text-neutral-300 hover:text-emerald-400 transition-colors duration-200">{{ __('basic.home') }}</a>
-                <a href="{{ route('blog') }}" class="text-sm font-semibold text-neutral-300 hover:text-emerald-400 transition-colors duration-200">Blog</a>
-                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm font-semibold text-white hover:text-emerald-400 transition-colors duration-200">{{ __('basic.courses') }}</a>
+                <a href="{{ route('index') }}" class="text-sm font-semibold text-neutral-300 hover:text-{{ $accent }}-400 transition-colors duration-200">{{ __('basic.home') }}</a>
+                <a href="{{ route('blog') }}" class="text-sm font-semibold text-neutral-300 hover:text-{{ $accent }}-400 transition-colors duration-200">Blog</a>
+                <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="text-sm font-semibold text-white hover:text-{{ $accent }}-400 transition-colors duration-200">{{ __('basic.courses') }}</a>
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a href="{{ $course->getRoute() }}" class="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors duration-200">
+                <a href="{{ $course->getRoute() }}" class="text-sm font-semibold text-{{ $accent }}-400 hover:text-{{ $accent }}-300 transition-colors duration-200">
                     {!! \App\Support\Icons::svg('graduation-cap', 'mr-1') !!}{{ $course->title_list ?: $course->name }}
                 </a>
             </div>
@@ -139,7 +145,7 @@
                             <a href="{{ route('index') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.home') }}</a>
                             <a href="{{ route('blog') }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">Blog</a>
                             <a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.courses') }}</a>
-                            <a href="{{ $course->getRoute() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-emerald-400 hover:bg-neutral-800">{{ $course->title_list ?: $course->name }}</a>
+                            <a href="{{ $course->getRoute() }}" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-{{ $accent }}-400 hover:bg-neutral-800">{{ $course->title_list ?: $course->name }}</a>
                         </div>
                     </div>
                 </div>
@@ -153,17 +159,17 @@
 <nav aria-label="Breadcrumb" class="mx-auto max-w-7xl px-4 pt-28 sm:px-6 lg:px-8">
     <ol class="flex flex-wrap gap-2 text-sm text-neutral-500" itemscope itemtype="https://schema.org/BreadcrumbList">
         <li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-            <a href="{{ route('index') }}" itemprop="item" class="hover:text-emerald-400"><span itemprop="name">{{ __('basic.home') }}</span></a>
+            <a href="{{ route('index') }}" itemprop="item" class="hover:text-{{ $accent }}-400"><span itemprop="name">{{ __('basic.home') }}</span></a>
             <meta itemprop="position" content="1" />
         </li>
         <li>&#8250;</li>
         <li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-            <a href="{{ \App\Services\HomeService::getRouteCourses() }}" itemprop="item" class="hover:text-emerald-400"><span itemprop="name">{{ __('basic.courses') }}</span></a>
+            <a href="{{ \App\Services\HomeService::getRouteCourses() }}" itemprop="item" class="hover:text-{{ $accent }}-400"><span itemprop="name">{{ __('basic.courses') }}</span></a>
             <meta itemprop="position" content="2" />
         </li>
         <li>&#8250;</li>
         <li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-            <a href="{{ $course->getRoute() }}" itemprop="item" class="hover:text-emerald-400"><span itemprop="name">{{ $course->title_list ?: $course->name }}</span></a>
+            <a href="{{ $course->getRoute() }}" itemprop="item" class="hover:text-{{ $accent }}-400"><span itemprop="name">{{ $course->title_list ?: $course->name }}</span></a>
             <meta itemprop="position" content="3" />
         </li>
         <li>&#8250;</li>
@@ -185,7 +191,7 @@
     <meta itemprop="dateModified" content="{{ $article->updated_at->format('Y-m-d') }}" />
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div class="flex flex-wrap items-center gap-2 text-xs">
-            <a href="{{ $category->getRoute() }}" class="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 font-semibold text-emerald-300 hover:bg-emerald-400/20 transition-colors duration-200">
+            <a href="{{ $category->getRoute() }}" class="inline-flex items-center gap-2 rounded-full border border-{{ $accent }}-400/30 bg-{{ $accent }}-400/10 px-3 py-1 font-semibold text-{{ $accent }}-300 hover:bg-{{ $accent }}-400/20 transition-colors duration-200">
                 {!! \App\Support\Icons::svg('folder-open', '') !!} {{ $category->title }}
             </a>
             <span class="text-neutral-600">·</span>
@@ -228,7 +234,7 @@
             <nav class="mt-8 grid gap-4 sm:grid-cols-2" aria-label="Lesson navigation">
                 @if(!empty($lessonSkip['previous']))
                     <a href="{{ $lessonSkip['previous']['route'] }}" class="card-hover group flex items-center gap-3 rounded-2xl border border-white/10 bg-neutral-900 p-5 text-neutral-300 hover:text-white">
-                        {!! \App\Support\Icons::svg('angle-left', 'flex-none text-emerald-400 transition-transform duration-200 group-hover:-translate-x-1') !!}
+                        {!! \App\Support\Icons::svg('angle-left', 'flex-none text-'.$accent.'-400 transition-transform duration-200 group-hover:-translate-x-1') !!}
                         <div class="min-w-0">
                             <div class="text-xs uppercase tracking-wide text-neutral-500">{{ __('basic.go_to_back_lesson') }}</div>
                             <div class="truncate font-semibold">{{ $lessonSkip['previous']['name'] }}</div>
@@ -244,7 +250,7 @@
                             <div class="text-xs uppercase tracking-wide text-neutral-500">{{ __('basic.go_to_next_lesson') }}</div>
                             <div class="truncate font-semibold">{{ $lessonSkip['next']['name'] }}</div>
                         </div>
-                        {!! \App\Support\Icons::svg('angle-right', 'flex-none text-emerald-400 transition-transform duration-200 group-hover:translate-x-1') !!}
+                        {!! \App\Support\Icons::svg('angle-right', 'flex-none text-'.$accent.'-400 transition-transform duration-200 group-hover:translate-x-1') !!}
                     </a>
                 @else
                     <div></div>
@@ -255,20 +261,20 @@
         <!-- Sidebar: course contents -->
         <aside class="lg:col-span-1">
             <div class="sticky top-24 rounded-2xl border border-white/10 bg-neutral-900 p-5 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto custom-scrollbar">
-                <a href="{{ $course->getRoute() }}" class="mb-5 flex items-center gap-2 text-sm font-semibold text-white hover:text-emerald-400 transition-colors duration-200">
-                    {!! \App\Support\Icons::svg('graduation-cap', 'text-emerald-400') !!}
+                <a href="{{ $course->getRoute() }}" class="mb-5 flex items-center gap-2 text-sm font-semibold text-white hover:text-{{ $accent }}-400 transition-colors duration-200">
+                    {!! \App\Support\Icons::svg('graduation-cap', 'text-'.$accent.'-400') !!}
                     {{ $course->title_list ?: $course->name }}
                 </a>
                 <div class="space-y-5">
                     @foreach($course->categories as $cat)
                         <div>
-                            <a href="{{ $cat->getRoute() }}" class="mb-2 block text-sm font-semibold text-white hover:text-emerald-400 transition-colors duration-200">{{ $cat->title }}</a>
+                            <a href="{{ $cat->getRoute() }}" class="mb-2 block text-sm font-semibold text-white hover:text-{{ $accent }}-400 transition-colors duration-200">{{ $cat->title }}</a>
                             <ul class="space-y-1 border-l border-white/10">
                                 @foreach($cat->lessons as $lesson)
                                     @php($isCurrent = $article->title === $lesson->title)
                                     <li>
-                                        <a href="{{ $lesson->getRoute() }}" class="flex items-center gap-2 border-l-2 -ml-px py-1.5 pl-3 text-sm transition-colors duration-200 {{ $isCurrent ? 'border-emerald-400 text-emerald-400 font-semibold' : 'border-transparent text-neutral-400 hover:text-white' }}">
-                                            {!! \App\Support\Icons::svg($isCurrent ? 'play-circle' : 'play', 'text-xs ' . ($isCurrent ? 'text-emerald-400' : 'text-neutral-600')) !!}
+                                        <a href="{{ $lesson->getRoute() }}" class="flex items-center gap-2 border-l-2 -ml-px py-1.5 pl-3 text-sm transition-colors duration-200 {{ $isCurrent ? 'border-'.$accent.'-400 text-'.$accent.'-400 font-semibold' : 'border-transparent text-neutral-400 hover:text-white' }}">
+                                            {!! \App\Support\Icons::svg($isCurrent ? 'play-circle' : 'play', 'text-xs ' . ($isCurrent ? 'text-'.$accent.'-400' : 'text-neutral-600')) !!}
                                             <span class="line-clamp-1">{{ $lesson->title }}</span>
                                         </a>
                                     </li>
@@ -285,7 +291,7 @@
 <!-- ===========================================================
   FOOTER
 =========================================================== -->
-@include('partials.site_footer', ['accent' => 'emerald'])
+@include('partials.site_footer', ['accent' => $accent])
 
 <!-- ===========================================================
   STRUCTURED DATA – JSON-LD
@@ -320,6 +326,25 @@
   ]
 }
 </script>
+
+@php($faqItems = $faqItems ?? [])
+@if(!empty($faqItems))
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    @foreach($faqItems as $faq)
+    {
+      "@type": "Question",
+      "name": {!! json_encode($faq['question'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!},
+      "acceptedAnswer": { "@type": "Answer", "text": {!! json_encode($faq['answer'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!} }
+    }@if(!$loop->last),@endif
+    @endforeach
+  ]
+}
+</script>
+@endif
 
 <script>
     // Reading progress

@@ -10,6 +10,11 @@
     $lessonCount = $courseCategory->lessons->count();
     $seoTitle   = $courseCategory->title_seo ?: $courseCategory->title;
     $seoDesc    = $courseCategory->description_seo ?: $courseCategory->description;
+
+    // Akcent per-kurs (motyw okładki): nazwa palety Tailwind + hex do poświaty tła.
+    $coverService = app(\App\Services\Course\CourseCoverImageService::class);
+    $accent    = $coverService->accentColor($course);
+    $accentHex = $coverService->resolveTheme($course)['accent'];
 @endphp
 <!DOCTYPE html>
 <html lang="{{ env('APP_LANG_HTML') }}" class="scroll-smooth">
@@ -54,16 +59,17 @@
 <style>
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .hero-glow-green { background: radial-gradient(60% 50% at 50% 0%, rgba(16,185,129,.16) 0%, rgba(16,185,129,0) 70%); }
+        :root { --accent: {{ $accentHex }}; }
+        .hero-glow-green { background: radial-gradient(42% 70% at 50% -20%, color-mix(in srgb, var(--accent) 12%, transparent) 0%, transparent 70%); }
         .card-hover { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
-        .card-hover:hover { transform: translateY(-4px); border-color: rgba(16,185,129,.5); }
+        .card-hover:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
         .prose-invert p { color:#d4d4d8; margin-bottom:1rem; line-height:1.8; }
         .prose-invert strong, .prose-invert b { color:#fff; font-weight:600; }
         .prose-invert h1,.prose-invert h2,.prose-invert h3,.prose-invert h4 { color:#fff; margin-top:1.5rem; margin-bottom:.75rem; font-weight:700; }
         .prose-invert ul { list-style:disc; padding-left:1.5rem; margin-bottom:1rem; color:#d4d4d8; }
         .prose-invert ol { list-style:decimal; padding-left:1.5rem; margin-bottom:1rem; color:#d4d4d8; }
         .prose-invert li { margin-bottom:.5rem; }
-        .prose-invert a { color:#34d399; text-decoration:underline; }
+        .prose-invert a { color: var(--accent); text-decoration:underline; }
         .prose-invert a:hover { color:#6ee7b7; }
         .prose-invert code { background:#171717; color:#6ee7b7; border-radius:.25rem; padding:.125rem .35rem; }
         .prose-invert pre { background:#0f0f0f; border:1px solid #262626; border-radius:.75rem; overflow-x:auto; padding:1rem; margin:1rem 0; }
@@ -87,12 +93,12 @@
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-10">
-                <a href="{{ route('index') }}" class="text-sm font-semibold text-neutral-300 hover:text-emerald-400 transition-colors duration-200">{{ __('basic.home') }}</a>
-                <a href="{{ route('blog') }}" class="text-sm font-semibold text-neutral-300 hover:text-emerald-400 transition-colors duration-200">Blog</a>
-                <a href="{{ $coursesUrl }}" class="text-sm font-semibold text-white hover:text-emerald-400 transition-colors duration-200">{{ __('basic.courses') }}</a>
+                <a href="{{ route('index') }}" class="text-sm font-semibold text-neutral-300 hover:text-{{ $accent }}-400 transition-colors duration-200">{{ __('basic.home') }}</a>
+                <a href="{{ route('blog') }}" class="text-sm font-semibold text-neutral-300 hover:text-{{ $accent }}-400 transition-colors duration-200">Blog</a>
+                <a href="{{ $coursesUrl }}" class="text-sm font-semibold text-white hover:text-{{ $accent }}-400 transition-colors duration-200">{{ __('basic.courses') }}</a>
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a href="{{ $course->getRoute() }}" class="text-sm font-semibold text-emerald-400 hover:text-emerald-300 transition-colors duration-200">
+                <a href="{{ $course->getRoute() }}" class="text-sm font-semibold text-{{ $accent }}-400 hover:text-{{ $accent }}-300 transition-colors duration-200">
                     {!! \App\Support\Icons::svg('graduation-cap', 'mr-1') !!}{{ $course->title_list ?: $course->name }}
                 </a>
             </div>
@@ -111,7 +117,7 @@
                 <a href="{{ route('index') }}" class="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.home') }}</a>
                 <a href="{{ route('blog') }}" class="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">Blog</a>
                 <a href="{{ $coursesUrl }}" class="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-neutral-800">{{ __('basic.courses') }}</a>
-                <a href="{{ $course->getRoute() }}" class="block rounded-lg px-3 py-2 text-base font-semibold text-emerald-400 hover:bg-neutral-800">{{ $course->title_list ?: $course->name }}</a>
+                <a href="{{ $course->getRoute() }}" class="block rounded-lg px-3 py-2 text-base font-semibold text-{{ $accent }}-400 hover:bg-neutral-800">{{ $course->title_list ?: $course->name }}</a>
             </div>
         </div>
     </div>
@@ -127,17 +133,17 @@
     <nav aria-label="Breadcrumb" class="mx-auto mb-8 max-w-5xl px-4 sm:px-6 lg:px-8">
         <ol class="flex flex-wrap gap-2 text-sm text-neutral-500" itemscope itemtype="https://schema.org/BreadcrumbList">
             <li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-                <a href="{{ route('index') }}" itemprop="item" class="hover:text-emerald-400"><span itemprop="name">{{ __('basic.home') }}</span></a>
+                <a href="{{ route('index') }}" itemprop="item" class="hover:text-{{ $accent }}-400"><span itemprop="name">{{ __('basic.home') }}</span></a>
                 <meta itemprop="position" content="1" />
             </li>
             <li>&#8250;</li>
             <li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-                <a href="{{ $coursesUrl }}" itemprop="item" class="hover:text-emerald-400"><span itemprop="name">{{ __('basic.courses') }}</span></a>
+                <a href="{{ $coursesUrl }}" itemprop="item" class="hover:text-{{ $accent }}-400"><span itemprop="name">{{ __('basic.courses') }}</span></a>
                 <meta itemprop="position" content="2" />
             </li>
             <li>&#8250;</li>
             <li itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
-                <a href="{{ $course->getRoute() }}" itemprop="item" class="hover:text-emerald-400"><span itemprop="name">{{ $course->title_list ?: $course->name }}</span></a>
+                <a href="{{ $course->getRoute() }}" itemprop="item" class="hover:text-{{ $accent }}-400"><span itemprop="name">{{ $course->title_list ?: $course->name }}</span></a>
                 <meta itemprop="position" content="3" />
             </li>
             <li>&#8250;</li>
@@ -150,7 +156,7 @@
     </nav>
 
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-        <span class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300">
+        <span class="inline-flex items-center gap-2 rounded-full border border-{{ $accent }}-400/20 bg-{{ $accent }}-400/10 px-4 py-1.5 text-sm font-medium text-{{ $accent }}-300">
             {!! \App\Support\Icons::svg('folder-open', '') !!} {{ __('basic.chapter') }}
         </span>
         <h1 class="mt-5 text-4xl font-extrabold tracking-tight text-white md:text-5xl">{{ $courseCategory->title }}</h1>
@@ -158,8 +164,8 @@
             <p class="mt-4 text-lg text-neutral-400">{{ $courseCategory->description }}</p>
         @endif
         <div class="mt-6 flex flex-wrap gap-3 text-sm">
-            <a href="{{ $course->getRoute() }}" class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300 hover:text-emerald-400 transition-colors duration-200">{!! \App\Support\Icons::svg('graduation-cap', 'text-emerald-400') !!} {{ $course->title_list ?: $course->name }}</a>
-            <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300">{!! \App\Support\Icons::svg('play-circle', 'text-emerald-400') !!} {{ $lessonCount }} {{ __('basic.lessons_from_courses') }}</span>
+            <a href="{{ $course->getRoute() }}" class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300 hover:text-{{ $accent }}-400 transition-colors duration-200">{!! \App\Support\Icons::svg('graduation-cap', 'text-'.$accent.'-400') !!} {{ $course->title_list ?: $course->name }}</a>
+            <span class="inline-flex items-center gap-2 rounded-lg bg-white/5 px-3 py-1.5 text-neutral-300">{!! \App\Support\Icons::svg('play-circle', 'text-'.$accent.'-400') !!} {{ $lessonCount }} {{ __('basic.lessons_from_courses') }}</span>
         </div>
     </div>
 </header>
@@ -170,7 +176,7 @@
         <section class="mt-14">
             <div class="rounded-3xl border border-white/10 bg-neutral-900 p-8">
                 <h2 class="mb-6 flex items-center gap-3 text-2xl font-bold text-white">
-                    {!! \App\Support\Icons::svg('circle-info', 'text-emerald-400') !!} About this chapter
+                    {!! \App\Support\Icons::svg('circle-info', 'text-'.$accent.'-400') !!} About this chapter
                 </h2>
                 <div class="prose-invert max-w-none">{!! $aboutHtml !!}</div>
             </div>
@@ -180,20 +186,20 @@
     <!-- Lessons -->
     <section class="mt-14">
         <h2 class="mb-6 flex items-center gap-3 text-2xl font-bold text-white">
-            {!! \App\Support\Icons::svg('list-check', 'text-emerald-400') !!} {{ __('basic.lessons_from_courses') }}
+            {!! \App\Support\Icons::svg('list-check', 'text-'.$accent.'-400') !!} {{ __('basic.lessons_from_courses') }}
         </h2>
         <ol class="space-y-3">
             @foreach($courseCategory->lessons as $lesson)
                 <li>
                     <a href="{{ $lesson->getRoute() }}" class="card-hover group flex items-start gap-4 rounded-2xl border border-white/10 bg-neutral-900 p-5">
-                        <span class="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-emerald-500/15 text-sm font-bold text-emerald-400">{{ $loop->iteration }}</span>
+                        <span class="flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-{{ $accent }}-500/15 text-sm font-bold text-{{ $accent }}-400">{{ $loop->iteration }}</span>
                         <span class="min-w-0 flex-1">
-                            <span class="block font-semibold text-white transition-colors duration-200 group-hover:text-emerald-300">{{ $lesson->title }}</span>
+                            <span class="block font-semibold text-white transition-colors duration-200 group-hover:text-{{ $accent }}-300">{{ $lesson->title }}</span>
                             @if($lesson->seo_description)
                                 <span class="mt-1 block text-sm text-neutral-400">{{ $lesson->seo_description }}</span>
                             @endif
                         </span>
-                        {!! \App\Support\Icons::svg('play-circle', 'mt-1 flex-none text-emerald-400') !!}
+                        {!! \App\Support\Icons::svg('play-circle', 'mt-1 flex-none text-'.$accent.'-400') !!}
                     </a>
                 </li>
             @endforeach
@@ -206,7 +212,7 @@
             {!! \App\Support\Icons::svg('arrow-left', '') !!} {{ $course->title_list ?: $course->name }}
         </a>
         @if($lessonCount > 0)
-            <a href="{{ $courseCategory->lessons->first()->getRoute() }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition-colors duration-200">
+            <a href="{{ $courseCategory->lessons->first()->getRoute() }}" class="inline-flex items-center justify-center gap-2 rounded-xl bg-{{ $accent }}-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-{{ $accent }}-500/30 hover:bg-{{ $accent }}-400 transition-colors duration-200">
                 {!! \App\Support\Icons::svg('play', '') !!} {{ __('basic.go_to_course') }}
             </a>
         @endif
@@ -216,7 +222,7 @@
 <!-- ===========================================================
   FOOTER
 =========================================================== -->
-@include('partials.site_footer', ['accent' => 'emerald'])
+@include('partials.site_footer', ['accent' => $accent])
 
 <!-- ===========================================================
   STRUCTURED DATA – JSON-LD

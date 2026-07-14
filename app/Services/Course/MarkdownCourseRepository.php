@@ -121,7 +121,10 @@ class MarkdownCourseRepository
         $course->symbol      = $fm['symbol'] ?? strtoupper(str_replace('-', '_', $folder));
         $course->name        = $fm['name'] ?? Str::title(str_replace('-', ' ', $folder));
         $course->lang        = $fm['lang'] ?? config('articles.default_language');
-        $course->image       = $fm['image'] ?? '';
+        // Brak 'image' lub 'auto' -> generowana okładka SVG (motyw "logo technologii").
+        $course->image       = (empty($fm['image']) || ($fm['image'] ?? null) === 'auto')
+            ? route('course.cover', ['slug' => $course->slug])
+            : $fm['image'];
         $course->title_list  = $fm['title_list'] ?? $course->name;
         $course->description_list = $fm['description_list'] ?? ($fm['description'] ?? '');
         $course->title_full  = $fm['title_full'] ?? $course->name;

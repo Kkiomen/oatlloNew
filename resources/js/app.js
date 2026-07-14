@@ -15,7 +15,7 @@ Alpine.start();
 // const urlSegments = window.location.pathname.split('/');
 // const pageId = urlSegments[4]; //
 
-const url = 'https://temp-dashboard.oatllo.pl';
+const url = 'https://temp-dashboard.oatllo.com';
 const urlSegments = window.location.pathname.split('/');
 const pageId = urlSegments[2]; //
 

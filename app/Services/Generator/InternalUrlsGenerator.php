@@ -109,12 +109,12 @@ class InternalUrlsGenerator
             $updatedContents = $content['content'];
 
 
-            if(str_contains($updatedContents, '<a href=\"https://oatllo.pl/abstrakcja-programowanie-php\">PHP</a>')){
-                $updatedContents = str_replace('<a href=\"https://oatllo.pl/abstrakcja-programowanie-php\">PHP</a>', 'PHP', $updatedContents);
+            if(str_contains($updatedContents, '<a href=\"https://oatllo.com/abstrakcja-programowanie-php\">PHP</a>')){
+                $updatedContents = str_replace('<a href=\"https://oatllo.com/abstrakcja-programowanie-php\">PHP</a>', 'PHP', $updatedContents);
                 $hasChanges = true;
             }
-            if(str_contains($updatedContents, '<a href="https://oatllo.pl/abstrakcja-programowanie-php">PHP</a>')){
-                $updatedContents = str_replace('<a href="https://oatllo.pl/abstrakcja-programowanie-php">PHP</a>', 'PHP', $updatedContents);
+            if(str_contains($updatedContents, '<a href="https://oatllo.com/abstrakcja-programowanie-php">PHP</a>')){
+                $updatedContents = str_replace('<a href="https://oatllo.com/abstrakcja-programowanie-php">PHP</a>', 'PHP', $updatedContents);
                 $hasChanges = true;
             }
 

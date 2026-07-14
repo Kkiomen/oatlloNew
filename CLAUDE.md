@@ -33,6 +33,19 @@ Stary `InternalUrlsGenerator` generuje już **tylko `keys_link`** (faza utrwalan
   (plik → fallback baza), a `mergedCourses()` scala listy. `CourseHelper::lessonGo` porównuje lekcje po `getRoute()`
   (nie po `id`, którego pliki nie mają). To NIE to samo co `CourseMarkdownService` (ten importuje `.md` DO bazy przez
   `php artisan course:process` — starsza ścieżka, nadal działa).
+  **Okładki kursów** (og:image + hero): generowane dynamicznie jako SVG (motyw „logo technologii" —
+  duże logo + pigułka „Free course" + kropki rozdziałów, akcent per‑technologia). To odpowiednik okładek
+  artykułów (`config/covers.php`), ale wizualnie inny. Serwis: `App\Services\Course\CourseCoverImageService`,
+  widok `resources/views/covers/course-cover.blade.php`, trasa `/courses/{slug}/cover.svg` (`course.cover`),
+  motywy: `config/course-covers.php`. W `course.md` ustaw `image: auto` (lub pusto) → `MarkdownCourseRepository`
+  podstawi trasę okładki; własny obrazek = pełny URL w `image:`. Nowa technologia = dopisz motyw (keywords +
+  accent + label + logo SVG na kanwie 0 0 100 100, `currentColor`) w `config/course-covers.php`. Podgląd offline:
+  `php artisan course:cover {slug}`. **Kolor per‑kurs**: każdy motyw ma też `accent_color` (nazwa palety
+  Tailwind, np. docker→`sky`, php→`emerald`) — steruje akcentem CAŁEJ strony kursu (course/chapter/lesson)
+  i karty na `/kursy`. Widoki liczą `$accent` (klasy utility) + `$accentHex` (poświata) z
+  `CourseCoverImageService::accentColor()`. Klasy `text-{{ $accent }}-400` są dynamiczne → kolory akcentów są
+  w **`safelist`** w `tailwind.config.js` (tablica `accentColors`); nowy kolor = dopisz tam + `npm run css:public`.
+  Szczegóły w skillu **`course-cover`** (`.claude/skills/course-cover/SKILL.md`).
   **Jak tworzyć kursy/lekcje z plików**: użyj skilla **`course-writer`** (`.claude/skills/course-writer/SKILL.md`)
   — zawiera pełny format (struktura katalogów, frontmatter kursu/rozdziału/lekcji, konwencje treści, URL‑e).
   Przykład wzorcowy w repo: `resources/courses/laravel-basics/`. Nie trzeba żadnej komendy — commit plików i deploy.

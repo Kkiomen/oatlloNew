@@ -154,17 +154,17 @@ Skopiuj kod
       {
         "@type": "ListItem",
         "position": 1,
-        "url": "https://oatllo.pl/litera-o-w-solid"
+        "url": "https://oatllo.com/litera-o-w-solid"
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "url": "https://oatllo.pl/litera-s-w-solid-przyklady"
+        "url": "https://oatllo.com/litera-s-w-solid-przyklady"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "url": "https://oatllo.pl/liskov-substitution-principle-solid"
+        "url": "https://oatllo.com/liskov-substitution-principle-solid"
       }
     ]
   },
@@ -176,19 +176,19 @@ Skopiuj kod
         "@type": "ListItem",
         "position": 1,
         "name": "Strona główna",
-        "item": "https://oatllo.pl"
+        "item": "https://oatllo.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Blog",
-        "item": "https://oatllo.pl/blog"
+        "item": "https://oatllo.com/blog"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Litera \'I\' w SOLID",
-        "item": "https://oatllo.pl/litera-i-w-solid-wyjasnienie-przyklady"
+        "item": "https://oatllo.com/litera-i-w-solid-wyjasnienie-przyklady"
       }
     ]
   },
@@ -203,21 +203,21 @@ Skopiuj kod
     "author": {
       "@type": "Person",
       "name": "Oatllo - Jakub Owsianka",
-      "url": "https://oatllo.pl"
+      "url": "https://oatllo.com"
     },
     "publisher": {
       "@type": "Organization",
       "name": "Oatllo",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://oatllo.pl/assets/images/favicon.ico"
+        "url": "https://oatllo.com/assets/images/favicon.ico"
       }
     },
     "datePublished": "2024-11-07",
     "dateModified": "2024-11-07",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://oatllo.pl/litera-i-w-solid-wyjasnienie-przyklady"
+      "@id": "https://oatllo.com/litera-i-w-solid-wyjasnienie-przyklady"
     }
   }
 ]

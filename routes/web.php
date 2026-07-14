@@ -29,6 +29,13 @@ Route::get('/feed', [\App\Http\Controllers\FeedController::class, 'rss'])->name(
 Route::get('/articles/{slug}/cover.svg', [\App\Http\Controllers\CoverController::class, 'show'])
     ->where('slug', '[A-Za-z0-9\-]+')
     ->name('article.cover');
+
+// Wygenerowana okładka kursu (SVG, motyw "logo technologii"). Ścieżka
+// 3-segmentowa (/courses/{slug}/cover.svg) nie koliduje z /courses ani
+// /kurs|course/{courseName}.
+Route::get('/courses/{slug}/cover.svg', [\App\Http\Controllers\CourseCoverController::class, 'show'])
+    ->where('slug', '[A-Za-z0-9\-]+')
+    ->name('course.cover');
 //Route::get('/blog/', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 
 

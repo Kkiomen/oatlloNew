@@ -18,6 +18,11 @@
     };
 
     $featuredCourse = $courses->first();
+
+    // Akcent per-kurs (motyw okładki) dla kart – chrome strony zostaje emerald.
+    $coverService = app(\App\Services\Course\CourseCoverImageService::class);
+    $accentOf = fn ($course) => $coverService->accentColor($course);
+    $accentHexOf = fn ($course) => $coverService->resolveTheme($course)['accent'];
 @endphp
 <!DOCTYPE html>
 <html lang="{{ env('APP_LANG_HTML') }}" class="scroll-smooth">
@@ -66,8 +71,9 @@
         body { font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif; }
         .glass { background-color: rgba(10,10,10,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .hero-glow-green { background: radial-gradient(60% 50% at 50% 0%, rgba(16,185,129,.16) 0%, rgba(16,185,129,0) 70%); }
+        :root { --accent: #34d399; } /* emerald – domyślny akcent sekcji Kursy; karty nadpisują --accent */
         .card-hover { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
-        .card-hover:hover { transform: translateY(-4px); border-color: rgba(16,185,129,.5); }
+        .card-hover:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
         .line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
         .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
     </style>
@@ -181,24 +187,25 @@
       FEATURED COURSE
     =========================================================== -->
     @if($featuredCourse)
+        @php $accent = $accentOf($featuredCourse); $accentHex = $accentHexOf($featuredCourse); @endphp
         <section class="mx-auto mb-16 max-w-6xl px-4 sm:px-6 lg:px-8">
-            <a href="{{ $courseUrl($featuredCourse) }}" class="card-hover group grid overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 lg:grid-cols-2">
+            <a href="{{ $courseUrl($featuredCourse) }}" style="--accent: {{ $accentHex }}" class="card-hover group grid overflow-hidden rounded-3xl border border-white/10 bg-neutral-900 lg:grid-cols-2">
                 <div class="relative min-h-[16rem] overflow-hidden bg-neutral-800">
                     <img decoding="async" src="{{ $courseImg($featuredCourse) }}" alt="{{ $featuredCourse->title_list ?: $featuredCourse->name }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="eager">
                     <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/70 to-transparent lg:bg-gradient-to-r"></div>
-                    <span class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-emerald-500/30">
+                    <span class="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full bg-{{ $accent }}-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-{{ $accent }}-500/30">
                         {!! \App\Support\Icons::svg('star', '') !!} Featured
                     </span>
                 </div>
                 <div class="flex flex-col justify-center p-8 lg:p-12">
                     <div class="flex flex-wrap items-center gap-3 text-xs text-neutral-400">
-                        <span class="inline-flex items-center gap-1.5">{!! \App\Support\Icons::svg('layer-group', 'text-emerald-400') !!} {{ $featuredCourse->categories->count() }} {{ __('basic.chapter') }}</span>
+                        <span class="inline-flex items-center gap-1.5">{!! \App\Support\Icons::svg('layer-group', 'text-'.$accent.'-400') !!} {{ $featuredCourse->categories->count() }} {{ __('basic.chapter') }}</span>
                         <span>·</span>
-                        <span class="inline-flex items-center gap-1.5">{!! \App\Support\Icons::svg('tag', 'text-emerald-400') !!} Free</span>
+                        <span class="inline-flex items-center gap-1.5">{!! \App\Support\Icons::svg('tag', 'text-'.$accent.'-400') !!} Free</span>
                     </div>
-                    <h2 class="mt-4 text-2xl font-bold text-white transition-colors duration-200 group-hover:text-emerald-300 lg:text-3xl">{{ $featuredCourse->title_list ?: $featuredCourse->name }}</h2>
+                    <h2 class="mt-4 text-2xl font-bold text-white transition-colors duration-200 group-hover:text-{{ $accent }}-300 lg:text-3xl">{{ $featuredCourse->title_list ?: $featuredCourse->name }}</h2>
                     <p class="mt-3 text-neutral-400 line-clamp-3">{{ $featuredCourse->description_list }}</p>
-                    <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-emerald-400 group-hover:gap-3 transition-all duration-200">
+                    <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-{{ $accent }}-400 group-hover:gap-3 transition-all duration-200">
                         {{ __('basic.go_to_course') }} {!! \App\Support\Icons::svg('arrow-right', '') !!}
                     </span>
                 </div>
@@ -216,24 +223,25 @@
         <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             @forelse($courses as $course)
                 @if($loop->first) @continue @endif
-                <article class="card-hover group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-900" itemscope itemprop="itemListElement" itemtype="https://schema.org/Course">
+                @php $accent = $accentOf($course); $accentHex = $accentHexOf($course); @endphp
+                <article class="card-hover group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-neutral-900" style="--accent: {{ $accentHex }}" itemscope itemprop="itemListElement" itemtype="https://schema.org/Course">
                     <a href="{{ $courseUrl($course) }}" class="relative block overflow-hidden" itemprop="url" aria-label="{{ $course->title_list ?: $course->name }}">
                         <div class="aspect-[16/9] w-full overflow-hidden bg-neutral-800">
                             <img decoding="async" src="{{ \App\Services\HomeService::responsiveImage($courseImg($course), 800) }}" alt="{{ $course->title_list ?: $course->name }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" itemprop="image" loading="lazy" />
                         </div>
-                        <span class="absolute left-3 top-3 rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-emerald-500/30">FREE</span>
+                        <span class="absolute left-3 top-3 rounded-full bg-{{ $accent }}-500 px-3 py-1 text-xs font-semibold text-white shadow-lg shadow-{{ $accent }}-500/30">FREE</span>
                     </a>
                     <div class="flex flex-1 flex-col p-6">
-                        <h3 class="text-lg font-bold text-white transition-colors duration-200 group-hover:text-emerald-300" itemprop="name">
+                        <h3 class="text-lg font-bold text-white transition-colors duration-200 group-hover:text-{{ $accent }}-300" itemprop="name">
                             <a href="{{ $courseUrl($course) }}">{{ $course->title_list ?: $course->name }}</a>
                         </h3>
                         <p class="mt-2 flex-1 text-sm text-neutral-400 line-clamp-3" itemprop="description">{{ $course->description_list }}</p>
                         <div class="mt-5 flex items-center justify-between text-sm">
                             <span class="inline-flex items-center gap-2 text-neutral-500">
-                                {!! \App\Support\Icons::svg('layer-group', 'text-emerald-400') !!}
+                                {!! \App\Support\Icons::svg('layer-group', 'text-'.$accent.'-400') !!}
                                 {{ $course->categories->count() }} {{ __('basic.chapter') }}
                             </span>
-                            <span class="inline-flex items-center gap-2 font-semibold text-emerald-400 group-hover:gap-3 transition-all duration-200">
+                            <span class="inline-flex items-center gap-2 font-semibold text-{{ $accent }}-400 group-hover:gap-3 transition-all duration-200">
                                 {{ __('basic.go_to_course') }} {!! \App\Support\Icons::svg('arrow-right', 'text-xs') !!}
                             </span>
                         </div>

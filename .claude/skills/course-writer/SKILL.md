@@ -48,7 +48,7 @@ Rules:
 name: "Course Name"
 slug: course-slug                 # optional; defaults to the folder name
 lang: en                          # matches the site locale (usually en)
-image: https://picsum.photos/seed/course-slug/1200/630
+image: auto                       # auto = generated SVG cover (see below); or a real URL
 title_list: "Short card title"
 description_list: "One-line description shown on course cards/listing."
 title_full: "Full course title shown in the hero"
@@ -67,6 +67,18 @@ page. Say who it's for and what they'll build. Use **bold** for key terms.
 All fields are optional and have sensible defaults (e.g. `name`/titles fall back to
 the folder slug). Provide at least `name`, `title_list`, `description_list`,
 `image`, `title_seo`, `description_seo` for a good page.
+
+### Cover image (`image`)
+
+Prefer **`image: auto`** (or leave it empty): Oatllo then generates the course's
+cover/og:image as a themed SVG (big technology logo + "Free course" badge + chapter
+dots, accent-colored to the topic) served from `/courses/{slug}/cover.svg`. The
+theme is picked automatically from the course name/slug/description — e.g. a Docker
+course gets the Docker whale on a blue accent. To use a custom picture instead, put
+a real URL in `image:`. If the topic is a technology with no theme yet (check
+`config/course-covers.php`), add one via the **`course-cover`** skill
+(`.claude/skills/course-cover/SKILL.md`), which documents how to add a logo and
+preview covers with `php artisan course:cover {slug}`.
 
 ## `_chapter.md` (chapter / section)
 
@@ -168,7 +180,15 @@ sitemap automatically.
    For a new lesson: add `NN-{slug}.md` in the right chapter folder (pick the next
    `NN-` prefix).
 3. Write real, practical content (no fluff) — this is a developer course.
-4. Tell the user the resulting URLs and that they just need to **commit the files
+4. **SEO pass (required, at the end).** Once all lesson files are written, run the
+   **`lesson-seo`** skill over **every lesson file you just created**, one file at a
+   time, in course order (skip `course.md` and `_chapter.md`). That skill finds each
+   lesson's best keywords, optimizes it for Google, and verifies the SEO edits did not
+   hurt teaching quality or the "never get ahead of the material" ordering. Do this
+   after writing (not while drafting) so keywords are chosen with the whole course in
+   view and cross-lesson keyword cannibalization can be spotted. For a single new
+   lesson, run `lesson-seo` on just that one file.
+5. Tell the user the resulting URLs and that they just need to **commit the files
    and deploy** — no artisan command, no upload, nothing to run.
 
 ## Verify (optional, local)
