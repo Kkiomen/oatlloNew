@@ -32,7 +32,7 @@
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/tailwind.css') }}">
     <meta name="author" content="Oatllo - Jakub Owsianka">
 
     @if($searchQuery)
@@ -370,40 +370,7 @@
 <!-- ===========================================================
   FOOTER
 =========================================================== -->
-<footer class="mt-24 border-t border-white/5 bg-neutral-950">
-    <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8">
-        <div class="flex flex-col gap-10 md:flex-row md:justify-between">
-            <div class="max-w-sm">
-                <div class="logo_oatllo">oatllo</div>
-                <p class="mt-4 text-sm text-neutral-400">{{ __('basic.meta_description') }}</p>
-            </div>
-            <div class="grid grid-cols-2 gap-10 sm:grid-cols-2">
-                <div>
-                    <h2 class="text-sm font-semibold text-white">Explore</h2>
-                    <ul class="mt-4 space-y-2 text-sm text-neutral-400">
-                        <li><a href="{{ route('index') }}" class="hover:text-rose-400">{{ __('basic.home') }}</a></li>
-                        <li><a href="{{ route('blog') }}" class="hover:text-rose-400">Blog</a></li>
-                        <li><a href="{{ \App\Services\HomeService::getRouteCourses() }}" class="hover:text-rose-400">{{ __('basic.courses') }}</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="text-sm font-semibold text-white">Connect</h2>
-                    <ul class="mt-4 space-y-2 text-sm text-neutral-400">
-                        <li><a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="hover:text-rose-400">LinkedIn</a></li>
-                        <li><a href="{{ route('feed') }}" class="hover:text-rose-400">RSS</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 sm:flex-row">
-            <p class="text-sm text-neutral-500">&copy; {{ date('Y') }} Oatllo · Jakub Owsianka</p>
-            <div class="flex gap-5">
-                <a href="https://www.linkedin.com/in/jakub-owsianka-446bb5213/" target="_blank" rel="noopener" class="text-neutral-500 hover:text-rose-400" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="{{ route('feed') }}" class="text-neutral-500 hover:text-rose-400" aria-label="RSS"><i class="fa-solid fa-rss"></i></a>
-            </div>
-        </div>
-    </div>
-</footer>
+@include('partials.site_footer')
 
 <!-- ===========================================================
   STRUCTURED DATA – JSON-LD

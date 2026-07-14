@@ -1,0 +1,8 @@
+/*
+ | Wejście dla skompilowanego, statycznego CSS Tailwind dla części PUBLICZNEJ.
+ | Budowane do public/assets/css/tailwind.css (patrz skrypt "css:public" w package.json)
+ | i podpinane zwykłym <link> zamiast cdn.tailwindcss.com (lepszy LCP/FCP, brak FOUC).
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

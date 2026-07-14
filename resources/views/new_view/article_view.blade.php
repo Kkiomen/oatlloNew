@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
     <link rel="alternate" hreflang="en" href="{{ $article->getRoute() }}">
     <link rel="alternate" type="application/rss+xml" title="Oatllo RSS Feed" href="{{ route('feed') }}" />
     <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/tailwind.css') }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
 

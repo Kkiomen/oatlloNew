@@ -11,7 +11,7 @@
     <title>{{ $searchQuery ? 'Search Results for ' . $searchQuery . ' - ' . __('basic.meta_title') : __('basic.meta_title') }}</title>
     <meta name="description" content="{{ $searchQuery ? 'Search results for ' . $searchQuery . '. ' . __('basic.meta_description') : __('basic.meta_description') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/tailwind.css') }}">
     <meta name="robots" content="index, follow">
 
     {!! \App\Services\HomeService::getTagManagerHEAD() !!}
