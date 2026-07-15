@@ -44,12 +44,37 @@ class SocialHealthController extends Controller
             return response()->json(['message' => 'Not found.'], 404);
         }
 
+        $baseUrl = rtrim((string) (config('social.media.base_url') ?: config('app.url')), '/');
+
         return response()->json([
             'auto_publish_enabled' => (bool) config('social.auto_publish.enabled'),
             'zernio'               => $this->zernioHealth(),
-            'media_base_url'       => rtrim((string) (config('social.media.base_url') ?: config('app.url')), '/'),
+            'media_base_url'       => $baseUrl,
+            'media_base_url_hint'  => $this->baseUrlHint($baseUrl),
             'queue'                => $this->queueHealth(),
         ]);
+    }
+
+    /**
+     * Zernio wymaga PUBLICZNYCH URL-i HTTPS. Zła baza to cichy zabójca: grafiki
+     * leżą na serwerze, health świeci na zielono, a posty padają, bo do Zernio
+     * idzie adres, którego nikt nie pobierze.
+     *
+     * Nie jest to przypadek teoretyczny – literówka `httsp://` naprawdę wjechała
+     * do .env (na szczęście lokalnie) i wyglądała dokładnie jak brak plików.
+     */
+    private function baseUrlHint(string $baseUrl): ?string
+    {
+        if (! str_starts_with($baseUrl, 'https://')) {
+            return 'Baza URL-i grafik NIE zaczyna się od https:// – Zernio nie pobierze plików. '
+                . 'Sprawdź SOCIAL_MEDIA_BASE_URL (literówka w schemacie wygląda jak brak grafik).';
+        }
+
+        if (str_contains($baseUrl, 'localhost') || str_contains($baseUrl, '.test')) {
+            return 'Baza URL-i wskazuje na adres lokalny – Zernio nie ma jak tam wejść.';
+        }
+
+        return null;
     }
 
     /**

@@ -187,6 +187,22 @@ class SocialMediaUploadTest extends TestCase
         $this->assertSame([], Storage::disk('public')->allFiles());
     }
 
+    /**
+     * Żądanie bez pliku to zwykły błąd walidacji (422), a NIE "PHP odrzucił
+     * żądanie, podnieś limity" (413).
+     *
+     * Pierwsza wersja strzelała 413 przy każdym braku pliku i kazała podnosić
+     * upload_max_filesize, który na produkcji wynosi 128M – czyli wysyłała
+     * człowieka szukać nieistniejącego problemu.
+     */
+    public function test_a_request_without_a_file_is_a_plain_validation_error(): void
+    {
+        $this->withToken(self::TOKEN)
+            ->postJson('/api/social/media/demo-post', ['index' => 1])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('file');
+    }
+
     public function test_media_store_derives_urls_without_touching_the_markdown(): void
     {
         $store = app(SocialMediaStore::class);

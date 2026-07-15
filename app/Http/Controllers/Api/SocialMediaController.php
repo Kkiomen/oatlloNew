@@ -41,16 +41,23 @@ class SocialMediaController extends Controller
             return response()->json(['message' => 'Not found.'], 404);
         }
 
-        // PHP wycina za duże żądanie ZANIM dojdzie do walidacji: $_FILES i $_POST
-        // są wtedy puste, a `required` powiedziałoby tylko "brak pliku" – i szłoby
-        // się godzinę zastanawiać, czemu reel "nie dochodzi". Reel waży ~2.7 MB,
-        // a domyślny upload_max_filesize PHP to 2M, więc to nie jest przypadek
-        // teoretyczny: to PIERWSZE, co się psuje.
-        if ($request->file('file') === null && (int) $request->server('CONTENT_LENGTH') > 0) {
+        // PHP wycina żądanie większe niż post_max_size ZANIM dojdzie do walidacji:
+        // $_FILES i $_POST są wtedy puste, a `required` powiedziałoby tylko "brak
+        // pliku" – i szłoby się godzinę zastanawiać, czemu reel "nie dochodzi".
+        //
+        // Porównujemy CONTENT_LENGTH z post_max_size, a nie samo "brak pliku przy
+        // niepustym body": ten drugi warunek strzelał przy KAŻDYM żądaniu bez pliku
+        // i kazał podnosić limity, które wynosiły 128M. Mylna diagnoza jest gorsza
+        // niż żadna – wysyła człowieka w tydzień grzebania nie tam, gdzie trzeba.
+        $postMax = $this->iniBytes((string) ini_get('post_max_size'));
+        $length = (int) $request->server('CONTENT_LENGTH');
+
+        if ($request->file('file') === null && $postMax > 0 && $length > $postMax) {
             return response()->json([
-                'message' => 'Plik nie doszedł – PHP odrzucił żądanie przed aplikacją. Podnieś '
-                    . 'upload_max_filesize (jest ' . ini_get('upload_max_filesize') . ') i post_max_size (jest '
-                    . ini_get('post_max_size') . '), a na nginxie client_max_body_size.',
+                'message' => 'Żądanie ma ' . $length . ' B, a PHP przyjmuje najwyżej post_max_size='
+                    . ini_get('post_max_size') . ' – odrzuciło je przed aplikacją. Podnieś post_max_size '
+                    . 'i upload_max_filesize (jest ' . ini_get('upload_max_filesize') . '), a na nginxie '
+                    . 'client_max_body_size.',
             ], 413);
         }
 
@@ -99,6 +106,29 @@ class SocialMediaController extends Controller
             'path'    => $path,
             'url'     => $this->store->url($slug, $name),
         ]);
+    }
+
+    /**
+     * "8M" / "128M" / "1G" -> bajty. ini_get zwraca skrót, a porównywać trzeba
+     * z CONTENT_LENGTH, które jest liczbą.
+     */
+    private function iniBytes(string $value): int
+    {
+        $value = trim($value);
+
+        if ($value === '') {
+            return 0;
+        }
+
+        $number = (int) $value;
+        $suffix = strtolower(substr($value, -1));
+
+        return match ($suffix) {
+            'g'     => $number * 1024 * 1024 * 1024,
+            'm'     => $number * 1024 * 1024,
+            'k'     => $number * 1024,
+            default => $number,
+        };
     }
 
     /**

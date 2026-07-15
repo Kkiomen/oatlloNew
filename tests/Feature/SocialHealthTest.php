@@ -117,6 +117,44 @@ class SocialHealthTest extends TestCase
             ->assertJson(['zernio' => ['reachable' => true, 'hint' => 'Klucz zły albo cofnięty.']]);
     }
 
+    /**
+     * Zła baza URL-i to cichy zabójca: grafiki leżą na serwerze, wszystko świeci
+     * na zielono, a posty padają, bo Zernio dostaje adres, którego nie pobierze.
+     * Literówka `httsp://` naprawdę wjechała do .env i wyglądała jak brak plików.
+     */
+    public function test_flags_a_base_url_that_is_not_https(): void
+    {
+        $this->fakeAccounts([['_id' => 'acc_oatllo', 'platform' => 'instagram', 'username' => 'oatllo_com']]);
+        config(['social.media.base_url' => 'httsp://oatllo.com']);
+
+        $this->withToken(self::TOKEN)
+            ->getJson('/api/social/health')
+            ->assertOk()
+            ->assertJsonPath('media_base_url_hint', fn (?string $h) => $h !== null && str_contains($h, 'https://'));
+    }
+
+    public function test_flags_a_local_base_url_zernio_could_never_reach(): void
+    {
+        $this->fakeAccounts([['_id' => 'acc_oatllo', 'platform' => 'instagram', 'username' => 'oatllo_com']]);
+        config(['social.media.base_url' => 'https://oatllo.test']);
+
+        $this->withToken(self::TOKEN)
+            ->getJson('/api/social/health')
+            ->assertOk()
+            ->assertJsonPath('media_base_url_hint', fn (?string $h) => $h !== null && str_contains($h, 'lokalny'));
+    }
+
+    public function test_a_correct_base_url_raises_no_hint(): void
+    {
+        $this->fakeAccounts([['_id' => 'acc_oatllo', 'platform' => 'instagram', 'username' => 'oatllo_com']]);
+        config(['social.media.base_url' => 'https://oatllo.com']);
+
+        $this->withToken(self::TOKEN)
+            ->getJson('/api/social/health')
+            ->assertOk()
+            ->assertJsonPath('media_base_url_hint', null);
+    }
+
     public function test_without_the_token_the_endpoint_denies_and_calls_nothing(): void
     {
         Http::fake();
