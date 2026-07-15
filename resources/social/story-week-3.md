@@ -7,7 +7,7 @@ topic: php
 status: ready
 publish_at: 2026-08-09 19:00
 hashtags: [php, php8, cleancode]
-caption: |
+notes: |
   Anchor frame. Build the cluster in the app at upload time:
 
   1. this frame (the rendered PNG)

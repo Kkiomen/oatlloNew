@@ -65,7 +65,19 @@ to STARA, działająca galeria kafelków „follow me" trzymana w bazie. **To co
 Nowy moduł żyje wyłącznie pod `Social*`.
 
 **Format pliku**: frontmatter (`type` = `carousel|quote|announce|story`, `topic`, `source`, `link`,
-`formats`, `hashtags`, `caption`) + slajdy rozdzielone **`<!-- slide -->`**.
+`formats`, `hashtags`, `caption`, `notes`) + slajdy rozdzielone **`<!-- slide -->`**.
+
+**`caption` to TEKST DO WKLEJENIA, `notes` to instrukcja dla CIEBIE — i to nie jest kosmetyka.**
+Story **nie ma na Instagramie pola podpisu**, więc `caption:` w story wyglądał na wolne miejsce i wylądowały
+tam notatki produkcyjne („dodaj natywną ankietę przy wrzucaniu") — czyli w polu, które wychodzi do
+`caption.txt` (plik „zaznacz i wklej") i do panelu recenzji jako podpis pod postem. Jedyne dwa miejsca w module,
+które znaczą „to idzie w świat", pokazywały instrukcję dla autora. Dlatego `notes:` ma własny klucz: nigdy nie
+wchodzi do `captionWithHashtags()` (jedyna metoda, której wynik trafia na Instagrama), ląduje w `post.json`
+i w instrukcjach `social:publish`, a panel rysuje je POZA atrapą telefonu, na amber. Tam wpisujesz to, czego
+renderer z definicji nie zrobi, bo to funkcja apki: ankiety, naklejki, cluster ze story.
+**Wymóg niepustego `caption` przy `status: ready` wisi na `formats`, NIE na `type`**: `formats: [story]` =
+nie ma gdzie wkleić, więc pusty podpis jest poprawny, a NIEpusty to WARNING (bezpiecznik na dokładnie ten błąd).
+Kadr 9:16 z `formats: [post]` idzie do feedu i podpisu wymaga normalnie.
 
 **`type` to KSZTAŁT slajdów, `formats` to CO PUBLIKUJESZ** — dwa różne pytania i dlatego dwa pola.
 Jeden plik idzie w świat i jako karuzela w feedzie, i jako reel z tych samych slajdów (`social:video`):

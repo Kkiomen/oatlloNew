@@ -137,6 +137,47 @@ class SocialLintTest extends TestCase
     }
 
     /**
+     * Story nie ma na Instagramie pola podpisu, więc "ready bez captionu" nie jest
+     * tu żadnym brakiem – a bramka eksportu nie ma prawa go z tego powodu blokować.
+     */
+    public function test_story_only_post_does_not_need_a_caption(): void
+    {
+        $issues = $this->lint("type: story\nstatus: ready");
+
+        $this->assertSame([], $this->messages($issues, SocialLintIssue::ERROR));
+    }
+
+    /**
+     * Reguła wisi na `formats` (CO publikujesz), nie na `type` (kształt slajdów):
+     * kadr 9:16 wrzucony do feedu podpis JEDNAK ma gdzie mieć.
+     */
+    public function test_story_shaped_post_published_to_the_feed_still_needs_a_caption(): void
+    {
+        $this->assertHasError($this->lint("type: story\nstatus: ready\nformats: [post]"), 'pusty caption');
+    }
+
+    /**
+     * Bezpiecznik na błąd, który zrodził pole `notes`: notatki produkcyjne autora
+     * ("dodaj ankietę przy wrzucaniu") lądowały w `caption`, bo story nie ma podpisu
+     * i pole wyglądało na wolne – po czym wychodziły w caption.txt i w panelu
+     * recenzji, czyli w jedynych dwóch miejscach znaczących "to wklejasz".
+     */
+    public function test_caption_on_a_story_only_post_is_a_warning(): void
+    {
+        $issues = $this->lint("type: story\nstatus: ready\ncaption: Dodaj ankiete przy wrzucaniu.");
+
+        $this->assertHasWarning($issues, 'nie ma gdzie wkleić');
+        $this->assertSame([], $this->messages($issues, SocialLintIssue::ERROR));
+    }
+
+    public function test_notes_on_a_story_only_post_are_clean(): void
+    {
+        $issues = $this->lint("type: story\nstatus: ready\nnotes: Dodaj ankiete przy wrzucaniu.");
+
+        $this->assertSame([], $issues);
+    }
+
+    /**
      * Limit to 5, nie 30 – Instagram ściął go 18.12.2025 (@creators na Threads:
      * "Starting today, Instagram will allow up to 5 hashtags in a reel or post").
      * Szósty hashtag to ERROR, bo post z nim Instagram po prostu odrzuci, a lint

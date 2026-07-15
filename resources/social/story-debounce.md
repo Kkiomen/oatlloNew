@@ -7,7 +7,7 @@ topic: javascript
 status: ready
 publish_at: 2026-08-04 19:00
 hashtags: [javascript, frontend, webdev]
-caption: |
+notes: |
   Anchor frame. Build the cluster in the app at upload time:
 
   1. this frame (the rendered PNG)

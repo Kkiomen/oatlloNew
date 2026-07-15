@@ -7,7 +7,7 @@ topic: laravel
 status: ready
 publish_at: 2026-07-19 19:00
 hashtags: [laravel, php, webdev]
-caption: |
+notes: |
   Anchor frame. Build the cluster in the app at upload time:
 
   1. this frame (the rendered PNG)

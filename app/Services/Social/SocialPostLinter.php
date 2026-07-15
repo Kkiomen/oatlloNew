@@ -194,6 +194,29 @@ class SocialPostLinter
             );
         }
 
+        // Podpis ma sens tylko tam, gdzie Instagram ma pole podpisu – Story go NIE MA.
+        // Pytamy o `formats` (CO publikujesz), a nie o `type` (kształt slajdów): karuzela
+        // wypuszczana wyłącznie jako story też nie ma gdzie wkleić tekstu, a story-kadr
+        // wrzucony do feedu – ma.
+        $captioned = array_values(array_diff($post->formats, ['story']));
+
+        if ($captioned === []) {
+            // Ta gałąź to bezpiecznik na dokładnie ten błąd, który ją zrodził: notatki
+            // produkcyjne autora („dodaj ankietę przy wrzucaniu") mieszkały w `caption`,
+            // bo story nie ma podpisu i pole wyglądało na wolne. Wychodziły potem
+            // w caption.txt i w panelu recenzji – w jedynych dwóch miejscach, które
+            // znaczą „to wklejasz".
+            if (trim($post->caption) !== '') {
+                $issues[] = SocialLintIssue::warning(
+                    $post->slug,
+                    'Post idzie tylko jako story, a story nie ma na Instagramie pola podpisu – '
+                        . 'tego tekstu nie ma gdzie wkleić. Notatkę dla siebie wpisz w `notes:`.',
+                );
+            }
+
+            return $issues;
+        }
+
         if (trim($post->caption) === '' && $post->isReady()) {
             $issues[] = SocialLintIssue::error($post->slug, 'Post ma status ready, ale pusty caption.');
         }

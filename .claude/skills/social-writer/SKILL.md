@@ -61,8 +61,41 @@ Put `Model::preventLazyLoading()` in a service provider.
 
 Only these frontmatter keys are allowed: `slug`, `type`, `language`, `title`,
 `topic`, `source_type`, `source`, `link`, `publish_at`, `status`, `formats`,
-`hashtags`, `caption`. **Anything else is a lint ERROR** — a silently ignored key
-is the worst possible failure mode.
+`hashtags`, `caption`, `notes`. **Anything else is a lint ERROR** — a silently
+ignored key is the worst possible failure mode.
+
+## `caption` vs `notes` — what ships vs what you do
+
+**`caption` is text that goes out. `notes` is an instruction to the human uploading.
+Never put one in the other's field.**
+
+`caption` is the only field that reaches Instagram: it becomes `caption.txt` (a
+select-all-and-paste file) and renders in the review panel exactly where Instagram
+draws the caption. Anything you park there, you are publishing.
+
+`notes` is for the steps the renderer cannot perform because they are app features —
+poll and question stickers, the story cluster, "reshare this in your story". It never
+enters `captionWithHashtags()`; it surfaces in `post.json`, in `social:publish`
+instructions, and in the review panel on amber, outside the phone mock.
+
+**Story has no caption field on Instagram.** So for `formats: [story]`, leave
+`caption` empty and write the plan in `notes` — a caption there is a lint WARNING,
+because there is nowhere to paste it. This is not hypothetical: 13 story files once
+carried their upload instructions in `caption`, which meant the review panel showed a
+production note where the real caption goes. The empty-caption-on-ready ERROR keys on
+`formats`, not `type` — a 9:16 frame with `formats: [post]` hits the feed and needs a
+caption like anything else.
+
+```yaml
+type: story
+status: ready
+formats: [story]        # -> no caption field on Instagram; leave caption out
+notes: |
+  Build the cluster in the app at upload time:
+  1. this frame (the rendered PNG)
+  2. NATIVE POLL: "N+1" / "419"
+  3. reshare of this week's carousel
+```
 
 ## `type` vs `formats` — different questions
 

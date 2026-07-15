@@ -37,6 +37,17 @@ class FolderPublisher implements SocialPublisher
             "Wklej podpis z: {$export->captionPath}",
         ];
 
+        // Notatka autora idzie tu, a NIE do caption.txt: to jedyne kroki, których
+        // renderer nie zrobi (ankiety, naklejki, cluster ze story), więc ich
+        // miejsce jest w instrukcji dla człowieka, a nie w tekście do wklejenia.
+        if ($post->hasNotes()) {
+            foreach (preg_split('/\R/', trim($post->notes)) ?: [] as $line) {
+                if (trim($line) !== '') {
+                    $instructions[] = $line;
+                }
+            }
+        }
+
         if ($post->link !== null) {
             $instructions[] = "Upewnij się, że link w bio wskazuje na: {$post->link}";
         }

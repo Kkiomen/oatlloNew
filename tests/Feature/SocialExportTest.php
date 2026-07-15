@@ -104,6 +104,27 @@ class SocialExportTest extends TestCase
         $this->assertStringContainsString('#laravel #php', $caption);
     }
 
+    /**
+     * caption.txt to plik "zaznacz wszystko i wklej" – wszystko, co w nim jest,
+     * człowiek wysyła w świat. Notatka produkcyjna trafia obok, do post.json.
+     */
+    public function test_caption_file_never_contains_the_authors_notes(): void
+    {
+        $post = (new MarkdownSocialPostParser())->toPost(
+            "---\ntype: story\nslug: noted\nstatus: ready\nformats: [post]\n"
+            . "caption: The caption.\nnotes: NATIVE POLL przy wrzucaniu.\n---\n\n## A\n\nBody.",
+            'noted',
+        );
+
+        $result = $this->exporter->export($post, $this->outDir, htmlOnly: true);
+
+        $this->assertStringNotContainsString('NATIVE POLL', File::get($result->captionPath));
+
+        $manifest = json_decode(File::get($result->manifestPath), true);
+
+        $this->assertSame('NATIVE POLL przy wrzucaniu.', $manifest['notes']);
+    }
+
     public function test_manifest_describes_the_post(): void
     {
         $result = $this->exporter->export($this->carousel(3), $this->outDir, htmlOnly: true);

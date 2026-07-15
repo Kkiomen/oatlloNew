@@ -123,6 +123,19 @@
         .caption .tags { color: #38bdf8; margin-top: 8px; word-break: break-word; }
         .caption .over { color: var(--red); }
 
+        {{-- Notatka MUSI wyglądać inaczej niż podpis i stać POZA atrapą telefonu.
+             Wcześniej notatki produkcyjne siedziały w `caption` i panel rysował je
+             dokładnie tam, gdzie Instagram rysuje podpis – czyli mówił „to idzie
+             w świat" o instrukcji dla autora. Amber, ikona i ramka, bo jedyne
+             zadanie tego bloku to NIE dać się pomylić z treścią posta. --}}
+        .notes {
+            margin: 12px auto 0; max-width: 400px; display: flex; gap: 8px;
+            padding: 10px 12px; border: 1px dashed #a16207; border-radius: 8px;
+            background: #78350f1a; color: #fcd34d; font-size: 12px; line-height: 1.5;
+        }
+        .notes .what { font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 10px; color: #f59e0b; }
+        .notes .text { white-space: pre-wrap; color: #fde68a; }
+
         .meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
         .meta code { color: #94a3b8; }
         .linky {
@@ -268,6 +281,15 @@
             </div>
         </div>
     </div>
+
+    @if($post->hasNotes())
+        <div class="notes">
+            <div>
+                <div class="what">Przy wrzucaniu &middot; nie idzie w świat</div>
+                <div class="text">{{ $post->notes }}</div>
+            </div>
+        </div>
+    @endif
 
     <div class="meta">
         <span><code>{{ $post->slug }}</code></span>

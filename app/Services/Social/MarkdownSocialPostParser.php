@@ -42,7 +42,7 @@ class MarkdownSocialPostParser
     public const FRONTMATTER_KEYS = [
         'slug', 'type', 'language', 'title', 'topic', 'style',
         'source_type', 'source', 'link',
-        'publish_at', 'status', 'formats', 'hashtags', 'caption',
+        'publish_at', 'status', 'formats', 'hashtags', 'caption', 'notes',
     ];
 
     private FrontMatterParser $frontMatter;
@@ -106,7 +106,8 @@ class MarkdownSocialPostParser
             status: $this->stringOrNull($fm['status'] ?? null) ?? SocialPost::STATUS_DRAFT,
             hashtags: $this->normalizeHashtags($fm['hashtags'] ?? []),
             formats: $this->normalizeFormats($fm['formats'] ?? null, $type),
-            caption: $this->normalizeCaption($fm['caption'] ?? null),
+            caption: $this->normalizeBlock($fm['caption'] ?? null),
+            notes: $this->normalizeBlock($fm['notes'] ?? null),
             slides: $this->splitSlides($body),
         );
     }
@@ -297,10 +298,11 @@ class MarkdownSocialPostParser
         return array_values(array_map('strval', (array) $default));
     }
 
-    private function normalizeCaption(mixed $caption): string
+    /** Wielolinijkowy blok tekstu z frontmattera (caption, notes). */
+    private function normalizeBlock(mixed $value): string
     {
-        if (is_scalar($caption)) {
-            return rtrim((string) $caption);
+        if (is_scalar($value)) {
+            return rtrim((string) $value);
         }
 
         return '';

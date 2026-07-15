@@ -142,6 +142,9 @@ class SocialExporter
             'status'    => $post->status,
             'hashtags'  => $post->hashtags,
             'caption'   => $post->captionWithHashtags(),
+            // Osobny klucz, nie doklejony do `caption`: `caption.txt` to plik
+            // "zaznacz i wklej", a notatka jest instrukcją dla człowieka.
+            'notes'     => $post->notes,
             'slides'    => count($imagePaths),
             'files'     => array_map('basename', $imagePaths),
             'html_only' => $htmlOnly,

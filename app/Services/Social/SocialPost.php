@@ -46,6 +46,19 @@ final readonly class SocialPost
          */
         public array $formats,
         public string $caption,
+        /**
+         * Instrukcja dla CZŁOWIEKA na moment wrzucania – nigdy nie idzie w świat.
+         *
+         * Osobne pole, bo `caption` ma jedno znaczenie: tekst do wklejenia. Notatki
+         * mieszkały wcześniej właśnie w `caption` (story nie ma na Instagramie pola
+         * podpisu, więc wyglądało na wolne miejsce) i wychodziły w `caption.txt`
+         * oraz w panelu recenzji UDAJĄC podpis – czyli w jedynych dwóch miejscach,
+         * które mówią „to wklejasz".
+         *
+         * Tu trafia to, czego renderer z definicji nie zrobi, bo to funkcja apki:
+         * ankiety, naklejki, budowanie clustera ze story.
+         */
+        public string $notes,
         public array $slides,
     ) {
     }
@@ -76,8 +89,15 @@ final readonly class SocialPost
         return $this->slides[0] ?? null;
     }
 
+    public function hasNotes(): bool
+    {
+        return trim($this->notes) !== '';
+    }
+
     /**
      * Podpis gotowy do wklejenia: treść + pusta linia + hashtagi.
+     *
+     * `notes` tu NIE wchodzą – to jedyna metoda, której wynik idzie na Instagrama.
      */
     public function captionWithHashtags(): string
     {

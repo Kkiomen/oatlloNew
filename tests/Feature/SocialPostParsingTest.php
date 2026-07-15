@@ -248,6 +248,34 @@ class SocialPostParsingTest extends TestCase
         $this->assertSame("Line one.\n\n#laravel #php", $post->captionWithHashtags());
     }
 
+    /**
+     * `notes` to instrukcja dla CZŁOWIEKA na moment wrzucania (ankieta, naklejka,
+     * cluster) i NIE MA PRAWA dokleić się do tekstu, który idzie na Instagrama.
+     * `captionWithHashtags()` jest jedyną metodą, której wynik tam trafia –
+     * zarówno jako caption.txt, jak i podpis w panelu recenzji.
+     */
+    public function test_notes_never_leak_into_the_caption(): void
+    {
+        $post = $this->makePost('## A', [
+            'caption'  => '"Line one."',
+            'notes'    => '"NATIVE POLL sticker przy wrzucaniu."',
+            'hashtags' => ['laravel'],
+        ]);
+
+        $this->assertSame('NATIVE POLL sticker przy wrzucaniu.', $post->notes);
+        $this->assertTrue($post->hasNotes());
+        $this->assertStringNotContainsString('POLL', $post->captionWithHashtags());
+        $this->assertSame("Line one.\n\n#laravel", $post->captionWithHashtags());
+    }
+
+    public function test_post_without_notes_has_none(): void
+    {
+        $post = $this->makePost('## A', ['caption' => '"Line one."']);
+
+        $this->assertSame('', $post->notes);
+        $this->assertFalse($post->hasNotes());
+    }
+
     public function test_theme_haystack_prefers_an_explicit_topic(): void
     {
         $post = $this->makePost('## A', ['topic' => 'docker', 'title' => 'Something about Laravel']);

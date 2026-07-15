@@ -184,6 +184,12 @@ Socialinsider, 161,180 Stories:
 > **A single daily frame pays the full 23.8% frame-1 exit penalty every day and never reaches the zone
 > where reach peaks. Cluster 3-5 frames on fewer days.**
 
+**The cluster is built in the app, so it belongs in `notes:` — never in `caption:`.** Polls and stickers
+cannot be rendered to PNG; they are Instagram features you add at upload. `caption` is the paste-this
+field (it becomes `caption.txt` and shows in the review panel as the caption), and story has no caption
+field on Instagram at all — which is exactly how 13 story files ended up displaying their production
+notes as if they were the post's caption. Plan in `notes`, publish from `caption`.
+
 **And stop cloning carousels into stories.** Currently 12 of 24 posts are stories that restate a carousel
 in one line. **Stories are the only surface with native reply mechanics** — polls, questions, quizzes. A
 **story reply is a DM**, and a DM is the relationship that makes a *send* likely later. Buffer excluded
