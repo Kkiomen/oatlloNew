@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AutoPublishController;
 use App\Http\Controllers\Api\CronController;
+use App\Http\Controllers\Api\SocialHealthController;
 use App\Http\Controllers\Api\SocialMediaController;
 
 /*
@@ -42,4 +43,13 @@ Route::get('/cron', [CronController::class, 'run'])->name('api.cron');
 if (trim((string) config('social.media.token')) !== '') {
     Route::post('/social/media/{slug}', [SocialMediaController::class, 'store'])
         ->name('api.social.media');
+}
+
+// Przegląd przedstartowy autopublikacji, pytany z WWW. Nie jest duplikatem
+// `social:accounts`: na hostingu współdzielonym OVH konsola nie ma wyjścia w sieć
+// (cURL error 7), a tick publikuje przez WWW — więc tylko stąd da się sprawdzić,
+// czy Zernio jest w ogóle osiągalne z tego serwera. Nic nie publikuje.
+if (trim((string) config('social.auto_publish.token')) !== '') {
+    Route::get('/social/health', [SocialHealthController::class, 'show'])
+        ->name('api.social.health');
 }
