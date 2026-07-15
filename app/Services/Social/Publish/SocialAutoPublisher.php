@@ -80,6 +80,8 @@ class SocialAutoPublisher
      */
     private function publishDue(CarbonImmutable $now): array
     {
+        $confirmed = $this->confirmSent();
+
         $due = $this->due($now);
         $skipped = $due['skipped'];
         $candidates = $due['candidates'];
@@ -98,7 +100,10 @@ class SocialAutoPublisher
 
             $result = $this->publishOne($post, $format);
 
-            if ($result['status'] === SocialPublishLog::PUBLISHED) {
+            // `sent` to sukces wysyłki: Zernio przyjęło i post jest u nich.
+            // Potwierdzenie, że wyszedł na Instagrama, przychodzi asynchronicznie
+            // i dopina je `confirmSent()` w kolejnym ticku.
+            if (in_array($result['status'], [SocialPublishLog::SENT, SocialPublishLog::PUBLISHED], true)) {
                 $published[] = $result;
             } else {
                 $failed[] = $result;
@@ -115,7 +120,78 @@ class SocialAutoPublisher
             ];
         }
 
-        return $this->report('ran', $published, $failed, $skipped);
+        $report = $this->report('ran', $published, $failed, $skipped);
+        $report['confirmed'] = $confirmed;
+
+        return $report;
+    }
+
+    /**
+     * Dopytuje Zernio o posty, które wysłaliśmy, ale których nie potwierdziliśmy.
+     *
+     * ISTNIEJE, BO "PRZYJĘTE" TO NIE "OPUBLIKOWANE". Zernio odpowiada na POST od
+     * razu, a na Instagrama wypycha asynchronicznie – nasz pierwszy prawdziwy post
+     * miał w chwili odpowiedzi `publishing`, a `published` dopiero po chwili. Bez
+     * tego kroku porażka PO przyjęciu (wygasły token, odrzucone media) byłaby
+     * niewidzialna: dziennik mówiłby "poszło", profil świeciłby pustką.
+     *
+     * Nie ponawiamy tu NICZEGO samoczynnie – nawet gdy Zernio mówi `failed`.
+     * Ich `partial` znaczy, że część platform jednak wyszła, a my nie wiemy,
+     * co dokładnie zobaczyli followersi. Dubel jest gorszy niż brak, więc post
+     * dostaje status i czeka na człowieka.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function confirmSent(): array
+    {
+        $confirmed = [];
+
+        foreach ($this->log->awaitingConfirmation() as $entry) {
+            $slug = (string) $entry['slug'];
+            $format = (string) $entry['format'];
+            $id = (string) $entry['zernio_id'];
+
+            try {
+                $state = $this->zernio->postStatus($id);
+            } catch (RequestException | ConnectionException $e) {
+                // Brak potwierdzenia to nie jest powód do zmiany stanu: post
+                // zostaje `sent` i spytamy w następnym ticku.
+                continue;
+            }
+
+            $status = (string) ($state['status'] ?? '');
+
+            if ($status === 'published') {
+                $this->log->record($slug, $format, SocialPublishLog::PUBLISHED, [
+                    'zernio_id'     => $id,
+                    'zernio_status' => $status,
+                    'confirmed_at'  => CarbonImmutable::now()->toIso8601String(),
+                ]);
+
+                $confirmed[] = ['slug' => $slug, 'format' => $format, 'status' => SocialPublishLog::PUBLISHED];
+
+                continue;
+            }
+
+            if (in_array($status, ['failed', 'partial'], true)) {
+                $this->log->record($slug, $format, SocialPublishLog::UNKNOWN, [
+                    'zernio_id'     => $id,
+                    'zernio_status' => $status,
+                    'error'         => json_encode($state['error'] ?? null),
+                ]);
+
+                Log::error(
+                    "Social: Zernio zgłasza '{$status}' dla {$slug} [{$format}] (id {$id}). "
+                    . 'Sprawdź profil i zdecyduj ręcznie – automat nie ponawia, bo nie wie, co już wyszło.'
+                );
+
+                $confirmed[] = ['slug' => $slug, 'format' => $format, 'status' => $status];
+            }
+
+            // `scheduled` / `publishing` => jeszcze w drodze, pytamy za godzinę.
+        }
+
+        return $confirmed;
     }
 
     /**
@@ -212,18 +288,22 @@ class SocialAutoPublisher
                 $this->contentType($format),
             );
 
-            $remoteId = $response['id'] ?? $response['data']['id'] ?? null;
+            // `_id`, nie `id` – Zernio zwraca mongowe klucze. Pierwsza wersja czytała
+            // `id` i zapisywała null, tracąc JEDYNY uchwyt do posta u nich: bez niego
+            // nie da się potem sprawdzić, czy publikacja doszła do skutku.
+            $remoteId = ZernioClient::idFrom($response);
 
-            $this->log->record($post->slug, $format, SocialPublishLog::PUBLISHED, [
-                'zernio_id'    => $remoteId,
-                'published_at' => CarbonImmutable::now()->toIso8601String(),
-                'media'        => array_column($items, 'url'),
+            $this->log->record($post->slug, $format, SocialPublishLog::SENT, [
+                'zernio_id'     => $remoteId,
+                'zernio_status' => $response['status'] ?? $response['post']['status'] ?? null,
+                'sent_at'       => CarbonImmutable::now()->toIso8601String(),
+                'media'         => array_column($items, 'url'),
             ]);
 
             return [
                 'slug'      => $post->slug,
                 'format'    => $format,
-                'status'    => SocialPublishLog::PUBLISHED,
+                'status'    => SocialPublishLog::SENT,
                 'zernio_id' => $remoteId,
             ];
         } catch (RequestException $e) {

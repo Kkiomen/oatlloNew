@@ -24,8 +24,24 @@ use Illuminate\Support\Str;
  */
 class SocialPublishLog
 {
+    /**
+     * Zernio PRZYJĘŁO żądanie. To NIE znaczy "jest na Instagramie".
+     *
+     * Ich API odpowiada od razu, a wypycha asynchronicznie (`scheduled` ->
+     * `publishing` -> `published`). Nasz pierwszy prawdziwy post w chwili
+     * odpowiedzi miał `publishing`, a `published` dopiero po chwili. Zapisywanie
+     * wtedy "opublikowane" było kłamstwem: gdyby po drodze padło, mielibyśmy
+     * w dzienniku sukces, na profilu nic i zero sygnału.
+     *
+     * `sent` blokuje ponowną wysyłkę tak samo jak `published` – post jest u nich
+     * i drugi POST zrobiłby dubla.
+     */
+    public const SENT = 'sent';
+
+    /** Potwierdzone u Zernio, że poszło na Instagrama. */
     public const PUBLISHED = 'published';
-    public const FAILED    = 'failed';
+
+    public const FAILED = 'failed';
 
     /**
      * Wysyłka poszła, ale nie wiemy z jakim skutkiem (timeout / zerwane
@@ -93,6 +109,19 @@ class SocialPublishLog
     }
 
     /**
+     * Wysłane, ale jeszcze niepotwierdzone – to je dopytuje kolejny tick.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function awaitingConfirmation(): array
+    {
+        return array_values(array_filter(
+            $this->all(),
+            fn (array $e) => ($e['status'] ?? null) === self::SENT && ! empty($e['zernio_id']),
+        ));
+    }
+
+    /**
      * @param  array<string, mixed>  $extra
      */
     public function record(string $slug, string $format, string $status, array $extra = []): void
@@ -127,6 +156,13 @@ class SocialPublishLog
         $entries = [];
 
         foreach (File::files($this->directory()) as $file) {
+            // Tylko .json. W tym katalogu leży też `tick.lock`, który trzymamy
+            // otwarty przez flock – próba jego odczytu wywala się na "Permission
+            // denied" i zabiłaby cały tick przy pierwszym potwierdzaniu wysyłek.
+            if ($file->getExtension() !== 'json') {
+                continue;
+            }
+
             $decoded = json_decode((string) File::get($file->getPathname()), true);
 
             if (is_array($decoded)) {

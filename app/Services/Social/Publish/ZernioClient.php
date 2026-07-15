@@ -54,6 +54,65 @@ class ZernioClient
     }
 
     /**
+     * Id zasobu z odpowiedzi Zernio.
+     *
+     * Ich API zwraca mongowe `_id`, nigdy `id` – sprawdzone na żywo zarówno na
+     * `/accounts`, jak i `/posts`. Pierwsza wersja czytała `id` i zapisywała
+     * `zernio_id: null`, czyli traciła JEDYNY uchwyt do posta po stronie Zernio:
+     * bez niego nie da się potem zapytać, czy publikacja doszła do skutku.
+     *
+     * Warianty zagnieżdżenia zostają, bo POST i GET opakowują odpowiedź inaczej
+     * (`{posts:[...]}` przy liście), a zgadywanie jednego kształtu już raz
+     * kosztowało nas ten null.
+     *
+     * @param  array<string, mixed>  $body
+     */
+    public static function idFrom(array $body): ?string
+    {
+        foreach ([$body, $body['post'] ?? [], $body['data'] ?? []] as $level) {
+            if (! is_array($level)) {
+                continue;
+            }
+
+            $id = $level['_id'] ?? $level['id'] ?? null;
+
+            if (is_string($id) && $id !== '') {
+                return $id;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Stan posta po stronie Zernio (`scheduled` -> `publishing` -> `published`).
+     *
+     * ISTNIEJE, BO "PRZYJĘTE" TO NIE "OPUBLIKOWANE": Zernio odpowiada na POST
+     * od razu, a na Instagrama wypycha ASYNCHRONICZNIE. Nasz pierwszy prawdziwy
+     * post w chwili odpowiedzi miał `status: publishing` i dopiero po chwili
+     * `published`. Gdyby po drodze padł, my mielibyśmy w dzienniku "opublikowane"
+     * i nie dowiedzielibyśmy się nigdy.
+     *
+     * @return array{status: ?string, platform_status: ?string, error: mixed}
+     */
+    public function postStatus(string $id): array
+    {
+        $response = $this->http()->get('/posts/' . $id);
+
+        $response->throw();
+
+        $body = (array) $response->json();
+        $post = $body['post'] ?? $body['data'] ?? $body;
+        $platform = ($post['platforms'] ?? [[]])[0] ?? [];
+
+        return [
+            'status'          => $post['status'] ?? null,
+            'platform_status' => $platform['status'] ?? null,
+            'error'           => $platform['error'] ?? null,
+        ];
+    }
+
+    /**
      * Publikuje NATYCHMIAST (`publishNow`), bo terminy żyją w `.md`.
      *
      * Zernio ma własny scheduler (`scheduledFor`), ale wtedy plan istniałby w

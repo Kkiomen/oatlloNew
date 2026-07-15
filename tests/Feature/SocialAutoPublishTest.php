@@ -125,7 +125,9 @@ class SocialAutoPublishTest extends TestCase
     private function fakeZernioOk(): void
     {
         Http::fake([
-            'zernio.com/*' => Http::response(['id' => 'post_abc', 'status' => 'publishing'], 200),
+            // Ksztalt przepisany z PRAWDZIWEJ odpowiedzi: `_id`, nie `id`,
+            // i status `publishing` -- Zernio wypycha asynchronicznie.
+            'zernio.com/*' => Http::response(['_id' => 'post_abc', 'status' => 'publishing'], 200),
         ]);
     }
 
@@ -143,6 +145,7 @@ class SocialAutoPublishTest extends TestCase
         $this->assertSame('ran', $report['state']);
         $this->assertSame(1, $report['published_count']);
         $this->assertSame('post_abc', $report['published'][0]['zernio_id']);
+        $this->assertSame(SocialPublishLog::SENT, $report['published'][0]['status']);
 
         Http::assertSent(function (Request $request) {
             $body = $request->data();
@@ -229,7 +232,22 @@ class SocialAutoPublishTest extends TestCase
 
         $this->assertSame(1, $first['published_count']);
         $this->assertSame(0, $second['published_count']);
-        Http::assertSentCount(1);
+
+        // Liczymy POSTY, nie wszystkie żądania: drugi tick MA prawo zadzwonić –
+        // dopytuje GET-em o potwierdzenie wysyłki, bo Zernio publikuje
+        // asynchronicznie. Zakazany jest wyłącznie DRUGI POST, bo to on zrobiłby
+        // dubla na profilu.
+        $posts = 0;
+
+        Http::assertSent(function (Request $request) use (&$posts) {
+            if ($request->method() === 'POST') {
+                $posts++;
+            }
+
+            return true;
+        });
+
+        $this->assertSame(1, $posts, 'Drugi POST = dubel na profilu, którego nie da się cofnąć.');
     }
 
     /**
@@ -337,7 +355,7 @@ class SocialAutoPublishTest extends TestCase
 
             return $calls === 1
                 ? Http::response(['message' => 'rate limited'], 429)
-                : Http::response(['id' => 'post_abc'], 200);
+                : Http::response(['_id' => 'post_abc'], 200);
         });
 
         $this->writePost('demo', '2026-07-16 19:00');
@@ -376,7 +394,7 @@ class SocialAutoPublishTest extends TestCase
                 throw new \Illuminate\Http\Client\ConnectionException('timeout');
             }
 
-            return Http::response(['id' => 'post_abc'], 200);
+            return Http::response(['_id' => 'post_abc'], 200);
         });
 
         $this->writePost('demo', '2026-07-16 19:00');
@@ -393,6 +411,97 @@ class SocialAutoPublishTest extends TestCase
 
         $this->assertSame(0, $second['published_count']);
         $this->assertSame(1, $calls, 'Po timeoucie tick nie ma prawa zadzwonić drugi raz – to byłby dubel.');
+    }
+
+    /**
+     * "Przyjęte przez Zernio" to NIE "jest na Instagramie". Ich API odpowiada od
+     * razu, a wypycha asynchronicznie: nasz pierwszy prawdziwy post miał w chwili
+     * odpowiedzi `publishing`, a `published` dopiero po chwili. Dlatego wysyłka
+     * zapisuje `sent`, a dopiero potwierdzenie robi z tego `published`.
+     */
+    public function test_sent_becomes_published_only_after_zernio_confirms(): void
+    {
+        $calls = 0;
+
+        Http::fake(function () use (&$calls) {
+            $calls++;
+
+            // 1. POST /posts -> przyjete, ale jeszcze w drodze
+            // 2. GET /posts/{id} (tick nr 2) -> nadal w drodze
+            // 3. GET /posts/{id} (tick nr 3) -> potwierdzone
+            if ($calls === 1) {
+                return Http::response(['_id' => 'post_abc', 'status' => 'publishing'], 200);
+            }
+
+            return Http::response([
+                'status'    => $calls >= 3 ? 'published' : 'publishing',
+                'platforms' => [['platform' => 'instagram', 'status' => $calls >= 3 ? 'published' : 'processing']],
+            ], 200);
+        });
+
+        $this->writePost('demo', '2026-07-16 19:00');
+        $this->approve('demo');
+        $this->putMedia('demo');
+
+        $log = app(SocialPublishLog::class);
+
+        $this->publisher()->run(CarbonImmutable::parse('2026-07-16 19:30'));
+        $this->assertSame(SocialPublishLog::SENT, $log->get('demo', 'post')['status']);
+        $this->assertSame('post_abc', $log->get('demo', 'post')['zernio_id']);
+
+        $this->publisher()->run(CarbonImmutable::parse('2026-07-16 20:30'));
+        $this->assertSame(SocialPublishLog::SENT, $log->get('demo', 'post')['status'], 'Jeszcze w drodze – nie wolno ogłaszać sukcesu.');
+
+        $report = $this->publisher()->run(CarbonImmutable::parse('2026-07-16 21:30'));
+
+        $this->assertSame(SocialPublishLog::PUBLISHED, $log->get('demo', 'post')['status']);
+        $this->assertSame([['slug' => 'demo', 'format' => 'post', 'status' => 'published']], $report['confirmed']);
+    }
+
+    /**
+     * Porażka PO przyjęciu (wygasły token, odrzucone media) byłaby bez tego
+     * NIEWIDZIALNA: dziennik mówiłby "poszło", a profil świeciłby pustką.
+     * Nie ponawiamy automatycznie – `partial` znaczy, że część mogła wyjść.
+     */
+    public function test_a_failure_after_acceptance_is_surfaced_not_retried(): void
+    {
+        $calls = 0;
+
+        Http::fake(function () use (&$calls) {
+            $calls++;
+
+            if ($calls === 1) {
+                return Http::response(['_id' => 'post_abc', 'status' => 'publishing'], 200);
+            }
+
+            return Http::response([
+                'status'    => 'failed',
+                'platforms' => [['platform' => 'instagram', 'status' => 'failed', 'error' => 'token expired']],
+            ], 200);
+        });
+
+        $this->writePost('demo', '2026-07-16 19:00');
+        $this->approve('demo');
+        $this->putMedia('demo');
+
+        $this->publisher()->run(CarbonImmutable::parse('2026-07-16 19:30'));
+        $report = $this->publisher()->run(CarbonImmutable::parse('2026-07-16 20:30'));
+
+        $log = app(SocialPublishLog::class);
+
+        $this->assertSame(SocialPublishLog::UNKNOWN, $log->get('demo', 'post')['status']);
+        $this->assertSame('failed', $report['confirmed'][0]['status']);
+
+        // I nigdy nie próbuje wysłać drugi raz.
+        $posts = 0;
+        Http::assertSent(function (Request $request) use (&$posts) {
+            if ($request->method() === 'POST') {
+                $posts++;
+            }
+
+            return true;
+        });
+        $this->assertSame(1, $posts);
     }
 
     public function test_disabled_by_default_never_touches_instagram(): void
