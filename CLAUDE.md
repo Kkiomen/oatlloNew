@@ -236,10 +236,63 @@ podstawianym przy otwarciu — bez tego wejście na panel ładowałoby każdy sl
 Odczyt werdyktów: `php artisan social:review [--changes|--approved|--pending] [--json]` (`--changes --json` to
 wejście dla skilla). Panel jest jedynym miejscem w module, które **zapisuje** pliki — i tylko w `reviews/`.
 
-**Publikacja jest RĘCZNA.** `SocialPublisher`/`FolderPublisher` to szew pod Instagram Graph API, ale
-**nie łudźmy się, że to „przepięcie configu"**: Graph API nie przyjmuje plików lokalnych — wymaga publicznych
-URL-i HTTPS do obrazków, konta Business, powiązanej strony FB i długożyciowego tokenu. Hosting obrazków
-to prawdziwa robota, podmiana klasy to najmniejsza część.
+**Publikacja RĘCZNA** (`SocialPublisher`/`FolderPublisher`, `social:publish`) nadal działa i zostaje jako
+ścieżka awaryjna: eksport + checklista do wklepania z ręki.
+
+### Autopublikacja przez Zernio (`/api/cron` + `social:push`)
+
+**Hosting obrazków był „prawdziwą robotą" i to się nie zmieniło — tylko ją zrobiliśmy.** Instagram (i przez
+Graph API, i przez Zernio) nie przyjmuje plików, tylko **publiczne URL-e HTTPS**. PNG-i powstają lokalnie
+z headless Edge, reele z Remotiona, a jedno i drugie jest gitignorowane (wyliczalne z `.md`) — **produkcja
+nie ma grafik i nie umie ich zrobić**. Stąd trzy kroki: renderujesz lokalnie → `social:push {slug}` wysyła
+pliki na serwer → serwer hostuje je pod `/storage/social/{slug}/01.png` → tick podaje te URL-e Zernio.
+
+**Dlaczego nie upload do Zernio** (`/v1/media/presign`, oficjalnie wspierany): ich media leży w temporary
+storage i **wygasa 7 dni od uploadu** („Make sure posts referencing an upload publish within 7 days of
+uploading") — liczone od WGRANIA, nie od publikacji. Przy paczce planowanej na miesiąc wszystko po ~8. dniu
+opublikowałoby się z martwym linkiem. Nasze URL-e nie wygasają.
+
+**Dlaczego tick, skoro Zernio ma własny scheduler** (`scheduledFor`): bo wtedy plan istniałby w dwóch
+miejscach i zmiana `publish_at:` w pliku wymagałaby synchronizacji z ich stanem. Tick godzinowy + `publishNow`
+zostawia **`.md` jedynym źródłem prawdy** — zmiana terminu to commit, jak wszystko inne w tym repo.
+
+**URL-i NIE MA w `.md`** — są wyliczane ze sluga i numeru slajdu (`SocialMediaStore`). Adres i tak wynika
+z nazwy pliku, a edycja `.md` rozjeżdża `fingerprint` i odesłałaby wszystkie posty do ponownej recenzji.
+Inny host = `SOCIAL_MEDIA_BASE_URL`, nie edycja 35 plików.
+
+**Tick publikuje WYŁĄCZNIE zaakceptowane** (zielony werdykt pasujący do aktualnej treści — to samo, co
+pokazuje kalendarz) i **wyłącznie pary (post × format)**, których `publish_at` minął. Post „do poprawy",
+nieoceniony, bez terminu albo bez grafik na serwerze **nie idzie w świat** — każdy z tych przypadków ma test.
+
+**PIĘĆ MIN W AUTOPUBLIKACJI (nie powtarzać):**
+1. **Timeout NIE znaczy „nie poszło".** Żądanie mogło dojść i się wykonać, a urwać się dopiero odpowiedź.
+   Ponowienie robi DUBLA na profilu, którego nie da się cofnąć. Dlatego `ConnectionException` => status
+   `unknown` i para jest **zablokowana do decyzji człowieka**; ponawiamy tylko po jawnym błędzie HTTP
+   (wtedy wiemy, że nic nie wyszło). Kasowanie pliku z `storage/app/social-published/` odblokowuje.
+2. **`upload_max_filesize` PHP to domyślnie 2M, a reel waży ~3 MB.** To PIERWSZE, co się psuje. Gorzej:
+   Laravel na błąd walidacji odpowiada **przekierowaniem** (302), klient idzie za nim, dostaje 200 ze strony
+   głównej i **odrzucona wysyłka melduje sukces**. Dlatego `social:push` wysyła `Accept: application/json`,
+   nie idzie za przekierowaniami i traktuje odpowiedź bez `url` jako błąd. Na serwerze podnieś
+   `upload_max_filesize`, `post_max_size` ORAZ `client_max_body_size` w nginxie.
+3. **Endpoint uploadu wącha MAGIC BYTES, nie nazwę i nie Content-Type** — jedno i drugie pisze klient, a pliki
+   lądują w katalogu serwowanym publicznie. Nazwę skleja serwer z numeru slajdu, slug idzie przez `Str::slug`.
+   Bez tokenu **trasy nie ma w routingu** (jak podgląd za `SOCIAL_PREVIEW`) — wyłączone znaczy „nie istnieje".
+4. **`/api/cron` jest publicznym GET-em i taki zostaje** (nie psujemy działającego n8n), ale część socialowa
+   wymaga `SOCIAL_CRON_TOKEN`. Artykuły mogą być otwarte, bo obcy strzał co najwyżej przyspieszy naszą własną
+   publikację; wysyłka na CUDZĄ platformę pali limity API i zostawia publiczny ślad.
+5. **`max_per_tick` (domyślnie 3) i `grace_minutes` (180) to bezpieczniki, nie kaprys.** Paczka z przeszłymi
+   datami bez limitu wyplułaby na profil wszystko naraz, a post przegapiony przez kilkudniową awarię wyszedłby
+   po naprawie o 4 nad ranem. Nadmiar jest **raportowany**, nie gubiony po cichu.
+
+**Stan wysyłek to pliki w `storage/app/social-published/{slug}__{format}.json`**, nie tabela i nie `status:`
+w `.md`: plik na produkcji jest kopią z gita, więc zapis do niego rozjechałby working tree i pierwszy
+`git pull` by go cofnął albo wywalił konflikt. `storage/app` przeżywa deploy, jest gitignorowane i nie wymaga
+migracji — a testy social dalej nie potrzebują bazy.
+
+**Komendy**: `social:export {slug}` → (`social:video {slug}` dla reela) → `social:push {slug}`.
+Konfiguracja: `SOCIAL_MEDIA_TOKEN` (serwer), `SOCIAL_PUSH_TOKEN` + `SOCIAL_PUSH_TARGET` (twój laptop),
+`ZERNIO_API_KEY` + `ZERNIO_ACCOUNT_ID`, `SOCIAL_AUTO_PUBLISH=true`, `SOCIAL_CRON_TOKEN`.
+**Licencja/koszt Zernio: pierwsze 2 podpięte konta za darmo.**
 
 Skille: **`social-post`** (orkiestrator), `social-ideas`, `social-writer`, `social-carousel`, `social-export`,
 **`social-review`** (bierze posty odesłane w panelu do poprawy i je poprawia — „przejrzałem zaplanowane posty
@@ -372,3 +425,16 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
    Sprawdź raz, że `https://oatllo.com/{INDEXNOW_KEY}.txt` zwraca klucz.
 5. **Artykuły `.md`** są teraz w `resources/articles/` (commit + `git pull`) — upewnij się, że produkcja
    nie ma w `.env` starego `ARTICLES_MD_PATH=storage/app/articles` (domyślnie czyta `resources/articles`).
+6. **Autopublikacja na Instagram** (jednorazowy setup na produkcji):
+   - `php artisan storage:link` — bez tego `/storage/social/...` zwraca 404, a Zernio wymaga URL-a, który
+     oddaje **bajty** z poprawnym Content-Type. Sprawdź: `curl -I https://oatllo.com/storage/social/{slug}/01.png`.
+   - `upload_max_filesize` i `post_max_size` w PHP **≥ 8M** oraz `client_max_body_size 8m;` w nginxie —
+     domyślne 2M odrzuci każdego reela (~3 MB).
+   - `.env`: `SOCIAL_MEDIA_TOKEN` (ten sam sekret co lokalny `SOCIAL_PUSH_TOKEN`), `ZERNIO_API_KEY`,
+     `ZERNIO_ACCOUNT_ID` (z `GET /v1/accounts`), `SOCIAL_CRON_TOKEN`, `SOCIAL_AUTO_PUBLISH=true`.
+     **Dopóki `SOCIAL_AUTO_PUBLISH` nie jest `true`, tick nie dotyka Instagrama** — wdrożenie kodu samo
+     z siebie nigdy nie zacznie publikować.
+   - n8n: do istniejącego godzinowego strzału w `/api/cron` dołóż nagłówek
+     `Authorization: Bearer {SOCIAL_CRON_TOKEN}`. Bez niego artykuły i sitemap działają jak dziś,
+     a social zwraca `unauthorized` (czyli: nic się nie stanie po cichu).
+   - Lokalnie, przed każdą paczką: `social:export {slug}` → `social:video {slug}` (jeśli reel) → `social:push {slug}`.

@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Services\SitemapService;
+use App\Services\Social\Publish\SocialAutoPublisher;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -25,10 +27,22 @@ use Illuminate\Support\Facades\Log;
  * Endpoint jest publiczny (GET, bez autoryzacji). Efektem wywołania jest jedynie
  * przyspieszenie publikacji już zaplanowanych treści oraz odświeżenie sitemap –
  * nie przyjmuje żadnych danych wejściowych.
+ *
+ * WYJĄTEK: publikacja na Instagrama (Zernio) wymaga tokenu.
+ *
+ * Artykuły i sitemap mogą być otwarte, bo najgorsze, co zrobi obcy strzał, to
+ * przyspieszenie publikacji treści, którą i tak zaplanowaliśmy u siebie. Wysyłka
+ * na CUDZĄ platformę to inna waga: pali limity API, zostawia ślad na profilu
+ * i każdy błąd jest publiczny. Otwarte zostaje to, co było otwarte (żeby nie psuć
+ * działającego n8n), a nowa zdolność dostaje własny klucz.
  */
 class CronController extends Controller
 {
-    public function run(): JsonResponse
+    public function __construct(private readonly SocialAutoPublisher $social)
+    {
+    }
+
+    public function run(Request $request): JsonResponse
     {
         $published = $this->publishDueArticles();
 
@@ -39,8 +53,36 @@ class CronController extends Controller
             'published_count' => count($published),
             'published' => $published,
             'sitemap_regenerated' => $sitemapOk,
+            'social' => $this->runSocial($request),
             'timestamp' => Carbon::now()->toIso8601String(),
         ]);
+    }
+
+    /**
+     * Instagram przez Zernio. Każdy błąd jest łapany: tick ma dalej publikować
+     * artykuły i odświeżać sitemap, nawet gdy cudze API leży.
+     *
+     * @return array<string, mixed>
+     */
+    private function runSocial(Request $request): array
+    {
+        $token = (string) config('social.auto_publish.token');
+
+        if (trim($token) === '') {
+            return ['state' => 'no_token_configured'];
+        }
+
+        if (! hash_equals($token, (string) $request->bearerToken())) {
+            return ['state' => 'unauthorized'];
+        }
+
+        try {
+            return $this->social->run();
+        } catch (\Throwable $e) {
+            Log::error('Cron: autopublikacja social wybuchła: ' . $e->getMessage());
+
+            return ['state' => 'error', 'message' => $e->getMessage()];
+        }
     }
 
     /**

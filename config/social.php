@@ -260,6 +260,132 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Mini-cloud: hosting grafik pod publikację
+    |--------------------------------------------------------------------------
+    |
+    | Instagram (przez Zernio, tak samo jak przez Graph API) NIE przyjmuje plików
+    | lokalnych – potrzebuje PUBLICZNEGO URL-a HTTPS. PNG-i powstają na Windowsie
+    | z headless Edge i są gitignorowane, więc produkcja ich nie ma i nie umie
+    | zrobić. Dlatego: renderujesz lokalnie -> `social:push` wysyła pliki na serwer
+    | -> serwer trzyma je pod publicznym URL-em -> Zernio bierze je stamtąd.
+    |
+    | Alternatywą był upload do Zernio (`/v1/media/presign`), ale ich media leży
+    | w temporary storage, które WYGASA PO 7 DNIACH od uploadu ("Make sure posts
+    | referencing an upload publish within 7 days of uploading"). Przy imporcie
+    | paczki raz w miesiącu wszystko po ~8. dniu opublikowałoby się z martwym
+    | linkiem. Nasze URL-e nie wygasają.
+    |
+    | URL jest WYLICZANY ze sluga i nazwy pliku, a nie wpisywany do .md: adres
+    | i tak wynika z nazwy, a edycja pliku rozjeżdża `fingerprint` i odsyła post
+    | do ponownej recenzji. Jawne `media:` we frontmatterze nadpisuje konwencję.
+    |
+    */
+
+    'media' => [
+        // Publiczna baza URL-i. Pusto => APP_URL (produkcja: https://oatllo.com).
+        'base_url' => env('SOCIAL_MEDIA_BASE_URL'),
+
+        // Dysk i katalog. `public` + `php artisan storage:link` => /storage/social/...
+        // Statyczne serwowanie przez nginx, bez PHP na każdy plik.
+        'disk' => env('SOCIAL_MEDIA_DISK', 'public'),
+        'path' => 'social',
+
+        // Token Bearer dla POST /api/social/media/{slug}. PUSTY => endpoint jest
+        // WYŁĄCZONY (nie zarejestrowany), a nie "otwarty dla wszystkich".
+        'token' => env('SOCIAL_MEDIA_TOKEN'),
+
+        // Twardy limit na plik. Slajd 1080x1350 waży ~400 KB, reel ~2 MB.
+        'max_bytes' => (int) env('SOCIAL_MEDIA_MAX_BYTES', 32 * 1024 * 1024),
+
+        // Wyłącznie te typy trafiają na dysk. Lista jest WHITELISTĄ – katalog jest
+        // serwowany publicznie, więc o tym, co w nim ląduje, decyduje serwer,
+        // nigdy nazwa pliku od klienta.
+        'allowed' => [
+            'png' => 'image/png',
+            'mp4' => 'video/mp4',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Wysyłka grafik na serwer (`social:push`) – strona KLIENTA
+    |--------------------------------------------------------------------------
+    |
+    | Osobno od `media`, bo to dwie różne role tego samego sekretu: `media.token`
+    | to czym broni się PRODUKCJA, a `push.token` to czym legitymuje się TWÓJ
+    | laptop. Wartość jest ta sama, ale miejsca życia inne (prod .env vs lokalny
+    | .env) i mieszanie ich w jeden klucz kusiłoby, żeby wgrać produkcyjny sekret
+    | tam, gdzie go być nie musi.
+    |
+    | `target` to serwer, na który leci paczka – lokalnie MUSISZ go ustawić na
+    | https://oatllo.com, bo domyślny APP_URL wskazuje twój Herd.
+    |
+    */
+
+    'push' => [
+        'target' => env('SOCIAL_PUSH_TARGET'),
+        'token'  => env('SOCIAL_PUSH_TOKEN'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Zernio (automatyczna publikacja na Instagram)
+    |--------------------------------------------------------------------------
+    |
+    | https://docs.zernio.com – jedno API do wielu platform. Używamy wyłącznie
+    | `POST /v1/posts` z `publishNow`, bo TERMINY ŻYJĄ W .md. Zernio ma własny
+    | scheduler (`scheduledFor`), ale wtedy plan istniałby w dwóch miejscach:
+    | zmiana `publish_at:` w pliku wymagałaby synchronizacji z ich stanem.
+    | Tick godzinowy + publishNow zostawia `.md` jedynym źródłem prawdy.
+    |
+    | `account_id` bierzesz z `GET /v1/accounts` (patrz `social:accounts`).
+    |
+    */
+
+    'zernio' => [
+        'key' => env('ZERNIO_API_KEY'),
+        'account_id' => env('ZERNIO_ACCOUNT_ID'),
+        'base_url' => env('ZERNIO_BASE_URL', 'https://zernio.com/api/v1'),
+        'timeout' => (int) env('ZERNIO_TIMEOUT', 30),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Autopublikacja (tick z /api/cron)
+    |--------------------------------------------------------------------------
+    |
+    | `enabled=false` => tick w ogóle nie dotyka Instagrama (domyślnie, żeby
+    | wdrożenie kodu NIGDY samo z siebie nie zaczęło publikować).
+    |
+    | `token` chroni socialową część /api/cron. Endpoint istnieje od dawna jako
+    | publiczny GET i to było nieszkodliwe: co najwyżej przyspieszał publikację
+    | już zaplanowanego artykułu. Publikacja na cudzą platformę to inna waga –
+    | bez tokenu każdy znający URL mógłby palić limity API i wywoływać próby
+    | wysyłki. Artykuły i sitemap zostają otwarte, żeby nie psuć obecnego n8n.
+    |
+    | `grace_minutes`: ile spóźnienia wybaczamy. Tick leci co godzinę, więc post
+    | na 19:00 wyjdzie ok. 19:00-19:59. Bez okna post przegapiony przez awarię
+    | serwera wyszedłby po naprawie o losowej porze, np. o 4 w nocy.
+    |
+    */
+
+    'auto_publish' => [
+        'enabled' => (bool) env('SOCIAL_AUTO_PUBLISH', false),
+        'token' => env('SOCIAL_CRON_TOKEN'),
+        'grace_minutes' => (int) env('SOCIAL_AUTO_PUBLISH_GRACE', 180),
+
+        // Ile publikacji maksymalnie na jeden tick. Bezpiecznik na wypadek, gdyby
+        // ktoś wrzucił paczkę z przeszłymi datami – bez tego jeden tick wyplułby
+        // na profil kilkanaście postów naraz.
+        'max_per_tick' => (int) env('SOCIAL_AUTO_PUBLISH_MAX', 3),
+
+        // Format `video` NIE jest tu obsługiwany: to etykieta na materiał
+        // nagrywany poza modułem, więc nie ma pliku do wysłania.
+        'formats' => ['post', 'story', 'reel'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Wideo / Reels (Remotion)
     |--------------------------------------------------------------------------
     |
