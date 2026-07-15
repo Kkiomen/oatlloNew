@@ -53,6 +53,251 @@ Stary `InternalUrlsGenerator` generuje już **tylko `keys_link`** (faza utrwalan
   — zawiera pełny format (struktura katalogów, frontmatter kursu/rozdziału/lekcji, konwencje treści, URL‑e).
   Przykład wzorcowy w repo: `resources/courses/laravel-basics/`. Nie trzeba żadnej komendy — commit plików i deploy.
 
+## Social media / Instagram (moduł `App\Services\Social`)
+
+**Posty to pliki `.md` w `resources/social/`** — dokładnie ta sama architektura co artykuły i kursy:
+commit + deploy, **zero bazy, zero migracji, zero crona**. `MarkdownSocialPostRepository` czyta katalog
+(`config('social.path')`) i zwraca **DTO `SocialPost`** (NIE Eloquent — nie ma tabeli). **`publish_at`
+i `status` NICZEGO NIE PUBLIKUJĄ** — to notatki człowieka; `status` filtruje tylko to, co bierze eksport.
+
+**UWAGA — kolizja nazw:** `App\Models\InstagramPost` + tabela `instagram_posts` + `InstagramPostController`
+to STARA, działająca galeria kafelków „follow me" trzymana w bazie. **To co innego. Nie łączyć, nie ruszać.**
+Nowy moduł żyje wyłącznie pod `Social*`.
+
+**Format pliku**: frontmatter (`type` = `carousel|quote|announce|story`, `topic`, `source`, `link`,
+`formats`, `hashtags`, `caption`) + slajdy rozdzielone **`<!-- slide -->`**.
+
+**`type` to KSZTAŁT slajdów, `formats` to CO PUBLIKUJESZ** — dwa różne pytania i dlatego dwa pola.
+Jeden plik idzie w świat i jako karuzela w feedzie, i jako reel z tych samych slajdów (`social:video`):
+`formats: [post, reel]`. Bez tego pola „reel z karuzeli" nie dałby się w ogóle zapisać. Dozwolone wartości
+w `config('social.formats')` (post/story/reel/video; `reel` renderuje ten moduł, `video` NIE — to etykieta
+na materiał nagrywany poza modułem). Brak pola => zestaw domyślny z typu (`config('social.default_formats')`:
+story→story, reszta→post), więc **istniejące posty nie wymagały edycji ani migracji**. Nieznana wartość =
+ERROR lintu: literówka (`reels`) wypadłaby z kalendarza BEZ ŚLADU, a dzień świeciłby pustką. Separatorem NIE jest `---` (nieodróżnialne
+od frontmattera; `---` w treści ma zostać zwykłym `<hr>`) ani `===` (to setext H1 — zjada poprzednią linię).
+W slajdzie pierwszy `##` = headline, reszta = treść. Pełny format w skillu **`social-writer`**.
+
+**Render: HTML, NIE SVG — i to jest zamierzona rozbieżność wobec okładek.**
+Okładki artykułów/kursów zostają czystym SVG (serwowane po HTTP, mają być małe i cache'owalne).
+Grafiki social celują w RASTER (Instagram nie przyjmie SVG), więc i tak przechodzą przez headless —
+a wtedy przeglądarka **łamie tekst naprawdę** i odpada cała ręczna matematyka z `CourseCoverImageService`
+(`CHAR_WIDTH_RATIO`, `layoutTitle`, `wrap`). Font **Montserrat jest wklejany w base64**
+(`EmbeddedFontProvider`), bo nie jest fontem systemowym Windows i dokument spod `file://` nie doczyta
+zewnętrznego `url(...)` — bez tego headless podmieniłby go na font PROPORCJONALNY i popsuł layout.
+Efekt uboczny: dokument nie ma podzasobów, więc eksport działa bez `php artisan serve` i bez sieci.
+**Widoki social nie używają Tailwinda** → moduł NIGDY nie wymaga `npm run css:public`.
+
+**Motywy technologii są WSPÓŁDZIELONE z kursami**: `App\Services\Theme\TechThemeResolver::fromText()`
+czyta `config/course-covers.php` (12 logo istnieje tylko tam), a `CourseCoverImageService::resolveTheme()`
+do niego deleguje. Dzięki temu kurs o Dockerze i post o Dockerze mają to samo logo i akcent.
+
+**Ale FALLBACK już NIE jest wspólny — i to jest granica tego DRY.** Gdy nic nie pasuje, `fromText()` zwraca
+motyw `default` z `course-covers`: czapkę absolwenta + etykietę **„Free course"**. Na okładce kursu poprawne,
+na poście o cachingu czy code review — nieprawdziwe (etykieta ląduje w pigułce na grafice). Dlatego
+`SocialImageService::theme()` pyta `TechThemeResolver::keyFromText()` (zwraca klucz albo **null**) i przy
+`null` bierze `config('social.fallback_theme')`: **bez logo**, etykieta z `topic:` autora (fallback: „Oatllo"),
+a **akcent ROTOWANY po `crc32(slug)`** z palety — bo inaczej wszystkie luźne posty byłyby emerald i feed
+znudziłby się kolorem tak samo, jak wcześniej znudziłby się stylem. Rotacja dotyczy WYŁĄCZNIE treści bez
+technologii, więc niczyjej marki nie podszywa. Te akcenty trafiają też pod `spotlight` (tekst NA nich), więc
+każdy musi przejść WCAG z `inkFor()` — pilnuje tego test.
+
+**`nginx` ma własny motyw i MUSI stać w configu przed `devops`** — tam `nginx` jest jednym ze słów kluczowych
+(siatka bezpieczeństwa dla starych treści), a wygrywa PIERWSZY trafiony motyw. Przeniesienie go niżej cicho
+odbiera nginxowi markę (firmowa zieleń + heksagon „N”) i przywraca ogólne okno terminala. Test to łapie.
+Okładki ARTYKUŁÓW celowo NIE korzystają z resolvera — mają inny kształt motywu
+(`filename`/`header`/`comment`/`footer`), więc wspólny resolver byłby fałszywym DRY.
+**Dopasowanie jest PODCIĄGOWE i wrażliwe**: haystack MUSI być opakowany spacjami (keywordy `' oop'`,
+`' js'`, `' ts'` udają granicę słowa), keyword `ai` trafia w środek wyrazu („av**ai**lable"), a `compose`
+trafiał w `composer` (naprawione zawężeniem do `docker compose`). Gdy temat nie jest oczywisty — ustaw
+jawny `topic:`.
+
+**Pakiet stylów (10 skórek)**: `midnight` (bazowy), `paper` (jasny), `spotlight` (akcent na całej kanwie),
+`terminal` (okno powłoki), `blueprint` (siatka techniczna), `editorial` (minimalizm + wielki numer),
+`neon` (siatka horyzontu + poświata), `aurora` (mesh gradient), `card` (treść na karcie nad akcentem),
+`brutalist` (jasny, gruba czarna rama, pełny cień).
+Styl to **SKÓRKA CSS** (`resources/views/social/styles/{nazwa}.blade.php`) nakładana na wspólny layout,
+a NIE osobny widok — inaczej byłoby 10 stylów × 4 typy = 40 widoków. Wszystko, co skórka zmienia, jest
+zmienną CSS (`--bg`, `--ink`, `--muted`, `--rule`, `--code-bg`…). Config: `config/social-styles.php`.
+Dobór jest **automatyczny i DETERMINISTYCZNY** (`SocialStyleResolver`): jawny `style:` → język kodu
+(```bash → terminal) → **typ** → temat → rotacja po `crc32(slug)`. **Typ idzie PRZED tematem** — typ mówi
+o formie, temat tylko o treści; przy odwrotnej kolejności zapowiedź kursu Dockera dostawała chrome
+terminala gryzący się z jej własnym logo. Fallback to crc32, **nigdy rand()** — inaczej każdy eksport
+dawałby inną grafikę. Podgląd: `php artisan social:styles [{slug}]`.
+
+**Typ daje PULĘ stylów (`type_rotation`), nie jeden styl — i to jest sedno przy dużym wolumenie.**
+Pojedyncza afinicja typu znaczyła, że KAŻDE story dostaje `spotlight`: przy 24 postach 12 było story,
+czyli połowa feedu to był ten sam kafelek, a rotacja ich nawet nie dotykała (typ rozstrzyga wcześniej).
+Pule dobrane pod formę: story = style, które krzyczą (bez `midnight` — najcichszy w pakiecie), quote =
+style znoszące pustkę, announce = ciemne, bo ma logo jako bohatera (`spotlight` zabarwia kanwę akcentem
+i logo się w nim gubi). Wybór z puli to ten sam `crc32(slug)`. Pusta pula => stary tryb (afinicja `types`).
+**Hash się klastruje przy małej próbce** — to normalne, nie błąd; kto chce przybić wygląd, ustawia `style:`.
+**Dopisanie stylu do rotacji/puli przetasowuje WSZYSTKIE posty** (crc32 % liczba pozycji), także te już
+zaakceptowane w panelu — a że `.md` się nie zmienia, panel NIE poprosi o ponowną ocenę.
+
+**Kolor tekstu na `spotlight` liczy się z luminancji WCAG** (`SocialImageService::inkFor()`), nie na oko:
+akcenty bywają jasne (amber) i ciemne, a wyniki są nieoczywiste — na czerwieni Laravela ciemny tekst daje
+5.66:1, a jasny tylko 3.71:1. Test pilnuje kontrastu ≥3:1 na KAŻDYM akcencie z pakietu.
+
+**CZTERY MINY W SKÓRKACH (nie powtarzać):**
+1. **Nigdy dyrektywa Blade'a wewnątrz komentarza CSS.** Blade ją rozwinie, wklejona sekcja stylów sama
+   zawiera komentarze, a **komentarze CSS SIĘ NIE ZAGNIEŻDŻAJĄ** → pierwszy domykacz zamyka komentarz za
+   wcześnie, osierocony domykacz to błąd parsowania, który **zjada całą regułę skórki**. Objaw: styl działa
+   na jednych typach postów, a na innych nie. Używać `{{-- --}}`.
+2. **Inline `code` w skórce zawsze przez `:not(pre) > code`.** Samo `.body code` ma wyższą specyficzność
+   niż bazowe `.body pre code`, więc przebarwia kod WEWNĄTRZ bloku na kolor tła → blok kodu wychodzi jako
+   pusty prostokąt.
+3. **Zmieniasz geometrię `.stage` — przelicz `.story-footer`.** To jedyny element w pakiecie z
+   `position: absolute` (`bottom: $padBottom - 60`) i kotwiczy się do `.stage`. W stylu `card` `.stage`
+   TO KARTA odsunięta od krawędzi, więc bezpieczny margines story liczył się dwa razy i stopka wjeżdżała
+   pod przycisk „Link in bio". Pilnuje tego test.
+4. **Żadnych dekoracji na stałej wysokości (`bottom: X%`) przez całą kanwę.** `neon` miał linię horyzontu
+   na 30% — na story szła PRZEZ „Link in bio", na quote muskała ostatnią linijkę i czytała się jak
+   przekreślenie. Treść siedzi na różnych wysokościach zależnie od typu i kanwy, więc każdy stały procent
+   w końcu w coś trafi. Miękki gradient/maska — tak, twarda linia — nie.
+
+**Komendy**: `social:list`, `social:lint` (**bramka** — eksport odmawia budowy przy błędach),
+`social:export [--html-only] [--out=]`, `social:styles` (podgląd pakietu), `social:publish` (szew pod przyszłe API).
+Eksport → `storage/app/social-export/{slug}/` (`01.png..NN.png` + `caption.txt` + `post.json`).
+**`storage/app/*` jest gitignorowane — wyeksportowanych grafik NIGDY nie commitujemy**, w gicie żyje tylko `.md`.
+
+**Rasteryzacja**: headless Edge/Chrome, zero nowych zależności. **`--force-device-scale-factor=1` jest
+obowiązkowe** (bez tego HiDPI robi z `--window-size=1080,1350` PNG 2160x2700), a każdy zrzut jest
+weryfikowany `getimagesize()`. Binarka: `SOCIAL_BROWSER_BINARY` lub autodetekcja z `config/social.php`.
+
+**Overflow tekstu to błąd AUTORSKI, nie renderu**: CSS zawija naprawdę, kanwa ma `overflow:hidden`, więc
+nadmiar po prostu znika za krawędzią. Dlatego są budżety w loncie (hook ≤70, headline ≤55, treść ≤180,
+kod ≤8 linii / **≤46 kolumn** — 46 jest policzone, nie zgadnięte). **Skracać tekst, nie zmniejszać fontu.**
+
+**Zakaz `→`/`←`** (U+2192/U+2190 **nie ma** w unicode-range subsetu latin naszego woff2 — wypadają do fontu
+systemowego w środku linii; lint = ERROR). `—`/`–` to tylko WARNING (są w foncie, ale kłócą się ze stylem domu).
+
+**Podgląd** `/social/{slug}/preview` jest za flagą `SOCIAL_PREVIEW` i rejestrowany **warunkowo** — na
+produkcji tras fizycznie nie ma w routingu. Eksport i tak nie potrzebuje HTTP.
+
+**Panel akceptacji** `/social/review` (ta sama flaga `SOCIAL_PREVIEW`, `SocialReviewController`): jeden post
+naraz, wyrenderowany jak w feedzie Instagrama (slajdy w `<iframe>` z prawdziwej kanwy, skalowane transformem —
+to samo co podgląd, więc widać dokładnie to, co zrzuci rasteryzator). Czerwony → modal z powodem, zielony →
+akceptacja. **Werdykt to plik `.md`** w `resources/social/reviews/{slug}.md` (`config('social.reviews_path')`)
+— powód w CIELE pliku, nie we frontmatterze, żeby wielolinijkowy tekst od człowieka nie przechodził przez
+escaping YAML-a. Zero bazy, commitowane jak posty. Katalog `reviews/` leży wewnątrz `resources/social`, ale
+`MarkdownSocialPostRepository` czyta katalog **płasko** (`File::files`, nie `allFiles`) — recenzje nigdy nie
+zostaną wzięte za posty (pilnuje tego test).
+
+**`fingerprint` (sha1 treści posta) domyka pętlę i to jest sedno**: werdykt dotyczy KONKRETNEJ wersji pliku.
+Poprawka posta rozjeżdża odcisk → `SocialReviewQueue` znów pokazuje post do obejrzenia. Dlatego skill **NIE
+kasuje ani nie edytuje pliku recenzji** — sama poprawka odsyła post do ponownej oceny. Bez odcisku
+„zaakceptowane" znaczyłoby „zaakceptowane kiedyś, w nieznanej wersji". W kolejce nie ma `status: published`.
+
+`/social/review` ma **2 segmenty**, więc mieści się we wzorcu łapacza `/{categorySlug}/{articleSlug}` — wygrywa
+tylko dlatego, że blok tras social jest zdefiniowany **przed** łapaczami. Nie przenosić go na koniec pliku.
+
+**Kalendarz** `/social/calendar` (`SocialCalendar` + `SocialCalendarEntry`): co i kiedy jest gotowe.
+**Jednostką jest para (post × format), NIE post** — karuzela z `formats: [post, reel]` to tego samego dnia
+dwie pozycje, bo to dwie osobne publikacje. Pokazuje **wyłącznie zaakceptowane** (zielony werdykt pasujący
+do aktualnej treści): post „do poprawy" nie jest zaplanowany, tylko w robocie. Ale dziura w planie nie może
+być niewidzialna, więc dzień pokazuje też licznik nieocenionych — inaczej dzień z samymi nieocenionymi
+postami wyglądałby jak wolny. Post bez `publish_at` NIE dostaje dnia na siłę, tylko sekcję „Bez terminu"
+(kalendarz ma pokazywać plan, a nie go zmyślać). `?m=YYYY-MM` i `?day=YYYY-MM-DD` bezstanowo w URL-u.
+Nazwy miesięcy wymuszone na `pl` — panel jest narzędziem roboczym po polsku, a `APP_LOCALE` steruje serwisem.
+Klik w pozycję otwiera **podgląd w modalu**, nie przenosi na inną stronę (przeglądając plan nie chcesz gubić
+miesiąca). Pozycje w siatce zostają `<a href>` mimo to — ctrl/środkowy przycisk nadal otwiera kartę. Slajdy
+buduje JS **dopiero po kliknięciu** i czyści je przy zamknięciu: w siatce bywa kilkadziesiąt pozycji, a każdy
+slajd to osobny dokument w `<iframe>`. URL-e slajdów idą do JS jako **szablony z `route()`** (`__SLUG__`),
+bo sklejanie ścieżek z palca rozjeżdża się przy pierwszej zmianie w `routes/web.php`.
+
+Nawigacja w panelu: `?i=N` to **bezstanowy kursor** po kolejce (obejrzenie następnego posta BEZ werdyktu —
+werdykt zdejmuje post z kolejki, więc bez kursora nie dałoby się nic odłożyć). Slajdy: klik w lewą/prawą
+połowę kanwy, strzałki, przeciągnięcie. „Wszystkie slajdy obok siebie" to modal z `<iframe data-src>`
+podstawianym przy otwarciu — bez tego wejście na panel ładowałoby każdy slajd DWA razy.
+
+**TRZY MINY W PANELU (nie powtarzać):**
+1. **Nigdy `disabled` na strefie klikania.** Wyłączony przycisk w Chromium nie generuje ŻADNYCH zdarzeń
+   wskaźnika, a strefy `.nav` przykrywają po 42% kanwy → na pierwszym slajdzie martwa robiła się cała lewa
+   połowa obrazka (klik nic, swipe zaczęty tam nie dostawał nawet `pointerdown`). Wygaszamy klasą `.off`
+   + `aria-disabled`; `show()` i tak przycina zakres.
+2. **`pointerup` dla swipe'a łapiemy na `window`, nie na kanwie.** Kanwa ma ~400px — przeciągnięcie zaczęte
+   przy krawędzi kończy się poza nią i gest ginął.
+3. **Flagę `dragged` kasować w `pointerdown`, nie w handlerze `click`.** Przeciągnięcie ze strefy na kanwę
+   kończy się na innym elemencie, więc `click` W OGÓLE nie leci — flaga zostawała `true` i zjadała następne
+   prawdziwe kliknięcie (objaw: „czasem nie reaguje").
+
+Odczyt werdyktów: `php artisan social:review [--changes|--approved|--pending] [--json]` (`--changes --json` to
+wejście dla skilla). Panel jest jedynym miejscem w module, które **zapisuje** pliki — i tylko w `reviews/`.
+
+**Publikacja jest RĘCZNA.** `SocialPublisher`/`FolderPublisher` to szew pod Instagram Graph API, ale
+**nie łudźmy się, że to „przepięcie configu"**: Graph API nie przyjmuje plików lokalnych — wymaga publicznych
+URL-i HTTPS do obrazków, konta Business, powiązanej strony FB i długożyciowego tokenu. Hosting obrazków
+to prawdziwa robota, podmiana klasy to najmniejsza część.
+
+Skille: **`social-post`** (orkiestrator), `social-ideas`, `social-writer`, `social-carousel`, `social-export`,
+**`social-review`** (bierze posty odesłane w panelu do poprawy i je poprawia — „przejrzałem zaplanowane posty
+i teraz je opracuj").
+
+### Reels / wideo (Remotion) — `php artisan social:video {slug}`
+
+**Reel to NIE nowy byt — to ten sam post `.md`, tylko w ruchu.** Remotion dostaje **dokładnie te dokumenty
+HTML**, które idą na PNG (`SocialImageService::renderPost()`, bit w bit — pilnuje tego test), i dokłada
+**wyłącznie animację**. Wygląd ma jedno źródło (Blade). Alternatywa — odtworzenie designu w React/TSX —
+byłaby forkiem systemu: 10 skórek × 4 typy w dwóch miejscach, rozjeżdżających się przy każdej zmianie skórki.
+Dlatego wstrzykujemy żywy DOM (`dangerouslySetInnerHTML`), a nie gotowe PNG-i: po PNG dałoby się animować
+tylko całe slajdy, a po DOM-ie animują się **pojedyncze elementy** (`.headline`, `.body > *`, `.underline`).
+
+**Podział ról jest sztywny: PHP wie wszystko o TREŚCI, Remotion tylko o RUCHU.** Ile slajdów, jaka skórka,
+jaki akcent, jak długo trzyma się slajd — to `ReelStager` (`app/Services/Social/Video/`), bo inaczej decyzje
+o treści uciekłyby do TSX-a, gdzie nie sięga ani `social:lint`, ani testy PHP. Kontrakt to
+`social-video/public/slides/{slug}/reel.json` + `NN.html` (gitignorowane — **wyliczalne z `.md`**, jak PNG-i).
+
+**Długość slajdu liczy się z objętości treści** (`config('social.video.timing')`), nie na sztywno: slajd
+z kodem czyta się dłużej niż hook, więc stała długość albo urywałaby kod, albo trzymała pusty hook.
+`per_code_line` > `per_word`, bo kod się **skanuje**, nie czyta. Bezpieczniki: 75 kl. (2.5 s) / 210 kl. (7 s).
+
+**Kadr: slajd 4:5 ZOSTAJE 4:5, na podkładzie.** Kusi, żeby rozciągnąć `.canvas` do 1920 (flexowy `.stage`
+sam by się rozłożył), ale moduł jest kalibrowany pod 4:5 — budżety lintu liczono dla tej kanwy, a
+`.story-footer` kotwiczy się do geometrii `.stage` (patrz mina #3 w skórkach). Slajd ma **pełną szerokość**
+kadru, więc typografia na telefonie czyta się tak jak w feedzie — letterbox dokłada tylko pasy, nie zmniejsza.
+Slajd siedzi **wyżej niż środek** (`SLIDE_TOP = 170`): dolne ~390 px zasłania UI Instagrama.
+**`story` jest wyjątkiem** — ma natywnie 1080x1920, więc leci full-bleed, bez podkładu.
+
+**Podkład to TEN SAM HTML** rozciągnięty do 1920 z ukrytą treścią — tło maluje sama skórka, razem ze swoimi
+zmiennymi, więc jasne skórki zostają jasne i nawet `spotlight` (tłem jest `var(--accent)`) trafia tu bez
+linijki w manifeście. Poświaty w podkładzie są **wygaszone**: ma inną wysokość niż kanwa, więc nie trafiłyby
+w te ze slajdu i zaznaczyłyby szew.
+
+**TRZY MINY W REELACH (nie powtarzać):**
+1. **Nie przejmować `.bar` na pasek postępu.** Element jest na górze kanwy i ma dokładnie tę rolę, ale skórki
+   traktują go jak swoją dekorację i **biją specyficznością** `.canvas.style-x .bar` (0,3,0): `aurora` maluje
+   go własnym gradientem, **`card` w ogóle go chowa**, `editorial` ścina do 3px, `brutalist` rozdyma do 18px.
+   Postęp rysuje **sam Remotion**, w pasie letterboxa — tam nie sięga żaden CSS skórki. Tor paska jest
+   z akcentu na niskiej alfie, **nie z bieli**: na `paper`/`brutalist` biały byłby niewidoczny.
+2. **Reguły animacji scopować numerem slajdu** (`.reel-slide-{i}`). Wstrzyknięty `<style>` jest **globalny**,
+   a `useCurrentFrame()` liczy się względem `<Sequence>` — przy dwóch slajdach na ekranie naraz selektor
+   `.reel-slide` trafiłby w OBA i wychodzący animowałby się od nowa klatkami wchodzącego.
+3. **Czekać na `document.fonts.ready`** (`delayRender`). Font jest wklejony w HTML jako base64 `@font-face`;
+   bez czekania pierwsze klatki wyszłyby fontem zastępczym o innych metrykach — ta sama mina, przed którą
+   po stronie PNG chroni `EmbeddedFontProvider`.
+
+`HtmlInCanvas` z docsów Remotiona **nie jest do tego** — to post-processing na canvasie i wymaga Chrome 149+
+z włączoną flagą. Żywy DOM działa zwyczajnie, bo Remotion *jest* przeglądarką.
+
+**Remotion to osobny projekt Node w `social-video/`, NIE zależność Laravela.** Render jest wyłącznie lokalny,
+jak PNG-i — produkcja nie ma `node_modules` i mieć nie będzie (deploy = `git pull`). Tailwinda w nim NIE MA
+(scaffold dokłada go nawet przy `--no-tailwind` — wyrzucony ręcznie), więc moduł nadal nigdy nie wymaga
+`npm run css:public`. **Licencja Remotiona: darmowa dla osób prywatnych i firm do 3 osób**, powyżej płatna.
+
+**Reel jest NIEMY z premedytacją — muzykę dokłada się w Instagramie, przy wrzucaniu.** Biblioteka audio IG jest
+licencjonowana na użycie w aplikacji (nie ma czego atrybuować ani co wyciszać), a dźwięk to **powierzchnia
+odkrywania**: utwór wybrany w apce podpina Reela pod stronę tego utworu, czego wypalona ścieżka nie kupuje w ogóle.
+Doszywanie mp3 do renderu nie jest też „flagą w configu": trzeba `<Audio>` w `Reel.tsx`, pole `music` w manifeście
+(muzyka to TREŚĆ, więc wybiera ją `ReelStager`) i licencji, która przechodzi komercyjnie — „no copyright" na
+Pixabay czy w YouTube Audio Library to konkretna licencja z warunkami, nie domena publiczna. Do tego plik audio,
+w odróżnieniu od PNG-ów i slajdów, **nie jest wyliczalny z `.md`** — musiałby wjechać do repo jako binarka.
+Wracać do tematu tylko, gdy ten sam plik ma iść na YouTube Shorts / TikToka, gdzie nie ma licencjonowanej
+biblioteki w apce.
+
+`social:video {slug}` = lint (ta sama bramka co eksport) → wsad → render → `storage/app/social-export/{slug}/reel.mp4`.
+`--stage-only` buduje sam wsad pod podgląd w Studiu (`cd social-video && npx remotion studio`, slug w panelu
+propsów). Pierwsze uruchomienie: `cd social-video && npm i`.
+
 ## CSS / Tailwind (WAŻNE — inaczej „popsują się" style)
 
 Część publiczna **NIE używa** `cdn.tailwindcss.com` (był render‑blocking, FOUC, zły LCP/FCP).

@@ -36,6 +36,54 @@ Route::get('/articles/{slug}/cover.svg', [\App\Http\Controllers\CoverController:
 Route::get('/courses/{slug}/cover.svg', [\App\Http\Controllers\CourseCoverController::class, 'show'])
     ->where('slug', '[A-Za-z0-9\-]+')
     ->name('course.cover');
+
+// Podgląd grafik social media — TYLKO DEV (SOCIAL_PREVIEW=true).
+//
+// Rejestracja jest WARUNKOWA, nie chroniona middlewarem: przy false tras
+// fizycznie nie ma w tablicy routingu, więc na produkcji nie ma czego sondować
+// ani źle skonfigurować. Eksport (`social:export`) i tak nie potrzebuje HTTP —
+// rasteryzator zrzuca lokalny plik file://. To wyłącznie wygoda przy pracy.
+//
+// Prefiks /social + 3 segmenty => brak kolizji z łapaczami /{articleSlug}
+// i /{categorySlug}/{articleSlug} na końcu tego pliku.
+//
+// WYJĄTEK: /social/review ma 2 segmenty, więc mieści się we wzorcu
+// /{categorySlug}/{articleSlug}. Wygrywa, bo Laravel bierze PIERWSZE dopasowanie,
+// a te trasy są zdefiniowane przed łapaczami — i tylko na devie.
+if (config('social.preview_enabled')) {
+    Route::prefix('social')->group(function () {
+        // Panel akceptacji: jeden post naraz, werdykt do pliku .md. Zdefiniowany
+        // PRZED /{slug}/..., żeby "review" nie zostało wzięte za slug posta.
+        Route::get('/review', [\App\Http\Controllers\SocialReviewController::class, 'index'])
+            ->name('social.review');
+
+        // Kalendarz zaakceptowanych treści. PRZED /review/{slug}, żeby "calendar"
+        // nie zostało wzięte za slug.
+        Route::get('/calendar', [\App\Http\Controllers\SocialReviewController::class, 'calendar'])
+            ->name('social.calendar');
+
+        Route::post('/review/{slug}', [\App\Http\Controllers\SocialReviewController::class, 'store'])
+            ->where('slug', '[A-Za-z0-9\-]+')
+            ->name('social.review.store');
+
+        Route::delete('/review/{slug}', [\App\Http\Controllers\SocialReviewController::class, 'destroy'])
+            ->where('slug', '[A-Za-z0-9\-]+')
+            ->name('social.review.forget');
+
+        Route::get('/{slug}/preview', [\App\Http\Controllers\SocialPreviewController::class, 'index'])
+            ->where('slug', '[A-Za-z0-9\-]+')
+            ->name('social.preview');
+
+        // Galeria: ten sam slajd we wszystkich skórkach z pakietu.
+        Route::get('/{slug}/styles', [\App\Http\Controllers\SocialPreviewController::class, 'styles'])
+            ->where('slug', '[A-Za-z0-9\-]+')
+            ->name('social.styles');
+
+        Route::get('/{slug}/slide/{index}', [\App\Http\Controllers\SocialPreviewController::class, 'slide'])
+            ->where(['slug' => '[A-Za-z0-9\-]+', 'index' => '[0-9]+'])
+            ->name('social.slide');
+    });
+}
 //Route::get('/blog/', [\App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
 
 // IndexNow — plik weryfikacyjny klucza. Bing pobiera https://oatllo.com/{key}.txt

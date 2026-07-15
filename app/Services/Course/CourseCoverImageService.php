@@ -3,7 +3,7 @@
 namespace App\Services\Course;
 
 use App\Models\Course;
-use Illuminate\Support\Str;
+use App\Services\Theme\TechThemeResolver;
 
 /**
  * Generuje okładkę KURSU jako grafikę SVG (motyw "logo technologii").
@@ -30,6 +30,10 @@ class CourseCoverImageService
     private const LINE_HEIGHT_RATIO = 1.16;
 
     private const FONT_SIZES = [66, 58, 52, 46, 40, 36];
+
+    public function __construct(private TechThemeResolver $themes)
+    {
+    }
 
     /**
      * Zwraca SVG (string) okładki dla kursu.
@@ -62,29 +66,22 @@ class CourseCoverImageService
      */
     public function accentColor(Course $course): string
     {
-        return $this->resolveTheme($course)['accent_color']
-            ?? config('course-covers.default.accent_color', 'emerald');
+        return $this->themes->accentColorFromText($this->buildHaystack($course));
     }
 
     /**
-     * Dobiera motyw (accent + label + logo) po słowach kluczowych w nazwie,
-     * slug, symbolu i opisie kursu. Pierwszy pasujący wygrywa; inaczej 'default'.
+     * Dobiera motyw (accent + accent_color + label + logo) po słowach kluczowych
+     * w nazwie, slug, symbolu i opisie kursu.
      *
-     * @return array{accent:string, label:string, logo:string}
+     * Samo dopasowanie żyje w TechThemeResolver – współdzielimy je z modułem
+     * social media, żeby kurs o Dockerze i post o Dockerze wyglądały tak samo.
+     * Wybór PÓL kursu (buildHaystack) zostaje tutaj – to wiedza o kursach.
+     *
+     * @return array{accent:string, accent_color:string, label:string, logo:string}
      */
     public function resolveTheme(Course $course): array
     {
-        $haystack = ' ' . Str::lower($this->buildHaystack($course)) . ' ';
-
-        foreach ((array) config('course-covers.themes', []) as $theme) {
-            foreach ((array) ($theme['keywords'] ?? []) as $keyword) {
-                if ($keyword !== '' && str_contains($haystack, Str::lower((string) $keyword))) {
-                    return $theme;
-                }
-            }
-        }
-
-        return config('course-covers.default');
+        return $this->themes->fromText($this->buildHaystack($course));
     }
 
     private function buildHaystack(Course $course): string

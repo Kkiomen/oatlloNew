@@ -44,8 +44,30 @@ return [
 
     'themes' => [
 
+        // MUSI być przed 'docker': Kubernetes orkiestruje kontenery, więc jego
+        // nazwa i opis prawie zawsze zawierają słowo "container" (keyword Dockera).
+        // Przy odwrotnej kolejności kurs o Kubernetesie dostawał wieloryba Dockera.
+        'kubernetes' => [
+            'keywords' => ['kubernetes', 'k8s', 'helm', 'kubectl', 'orchestration', 'orkiestracja'],
+            'accent'       => '#326ce5',
+            'accent_color' => 'blue',
+            'label'        => 'Kubernetes',
+            // Ster (helm) – siedmioramienne koło.
+            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round">'
+                . '<path d="M50 6 L80 20 L88 52 L68 78 L32 78 L12 52 L20 20 Z"/>'
+                . '<circle cx="50" cy="48" r="12"/>'
+                . '<g stroke-width="4">'
+                . '<path d="M50 16 V34"/><path d="M25 30 L40 44"/><path d="M75 30 L60 44"/>'
+                . '<path d="M33 72 L44 57"/><path d="M67 72 L56 57"/>'
+                . '</g></g>',
+        ],
+
         'docker' => [
-            'keywords' => ['docker', 'dockerfile', 'docker compose', 'compose', 'container', 'kontener', 'konteneryzacja'],
+            // NIE dopisuj tu gołego 'compose' – dopasowanie jest podciągowe, więc
+            // 'compose' trafia w 'composer', czyli w narzędzie PHP. Efekt: każdy
+            // tekst o Composerze dostawał wieloryba Dockera. 'docker compose' jest
+            // jednoznaczne, a samo 'docker' i tak łapie resztę przypadków.
+            'keywords' => ['docker', 'dockerfile', 'docker compose', 'container', 'kontener', 'konteneryzacja'],
             'accent'       => '#2496ed',
             'accent_color' => 'sky', // niebieski Dockera
             'label'        => 'Docker',
@@ -60,21 +82,6 @@ return [
                 . '<path d="M12 45 h78 c-1 8 -5 14 -13 18 c-6 3 -14 4 -24 4 c-18 0 -31 -7 -36 -16 c-1 -2 -2 -4 -5 -6 z"/>'
                 . '<path d="M90 41 c5 -4 12 -3 14 1 c-2 2 -5 2 -8 4 c4 1 7 4 7 8 c-6 2 -12 -2 -14 -7"/>'
                 . '</g>',
-        ],
-
-        'kubernetes' => [
-            'keywords' => ['kubernetes', 'k8s', 'helm', 'kubectl', 'orchestration', 'orkiestracja'],
-            'accent'       => '#326ce5',
-            'accent_color' => 'blue',
-            'label'        => 'Kubernetes',
-            // Ster (helm) – siedmioramienne koło.
-            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round">'
-                . '<path d="M50 6 L80 20 L88 52 L68 78 L32 78 L12 52 L20 20 Z"/>'
-                . '<circle cx="50" cy="48" r="12"/>'
-                . '<g stroke-width="4">'
-                . '<path d="M50 16 V34"/><path d="M25 30 L40 44"/><path d="M75 30 L60 44"/>'
-                . '<path d="M33 72 L44 57"/><path d="M67 72 L56 57"/>'
-                . '</g></g>',
         ],
 
         'laravel' => [
@@ -155,7 +162,25 @@ return [
                 . '</g>',
         ],
 
+        // MUSI stać przed 'devops': tam 'nginx' jest jednym ze słów kluczowych, a
+        // wygrywa PIERWSZY trafiony motyw – po zamianie kolejności nginx wróciłby
+        // do generycznego okna terminala. Własny wpis daje mu markę: firmową zieleń
+        // i heksagon z "N" zamiast ogólnego "DevOps".
+        'nginx' => [
+            'keywords' => ['nginx', 'reverse proxy', 'load balancer', 'load balancing'],
+            'accent'       => '#009639', // firmowa zieleń nginx
+            'accent_color' => 'green',
+            'label'        => 'nginx',
+            // Heksagon z "N" – znak nginxa.
+            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">'
+                . '<path d="M50 8 L86 29 v42 L50 92 L14 71 V29 Z"/>'
+                . '<path d="M38 66 V38 l24 24 V34" stroke-width="6"/>'
+                . '</g>',
+        ],
+
         'devops' => [
+            // 'nginx' zostaje tu CELOWO jako siatka bezpieczeństwa dla starych
+            // treści – motyw 'nginx' wyżej i tak go przechwyci wcześniej.
             'keywords' => ['devops', 'linux', 'bash', 'shell', 'cli', 'terminal', 'nginx', 'server', 'serwer', 'ci/cd', 'deploy'],
             'accent'       => '#22c55e',
             'accent_color' => 'green',

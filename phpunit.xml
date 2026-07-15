@@ -28,6 +28,11 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <!-- Podgląd i panel recenzji social są DEV-only i domyślnie wyłączone.
+             Pinujemy to tutaj, żeby test "tych tras nie ma na produkcji" badał
+             domyślny config, a nie zawartość .env dewelopera (który ma je włączone).
+             Test panelu włącza flagę sam, przed bootem aplikacji. -->
+        <env name="SOCIAL_PREVIEW" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
     </php>
 </phpunit>

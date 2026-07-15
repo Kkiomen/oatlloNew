@@ -1,0 +1,12 @@
+node_modules
+dist
+.DS_Store
+.env
+
+# Ignore the output video from Git but not videos you import into src/.
+out
+
+# Wsad dla Remotiona: HTML slajdów + reel.json, generowane przez
+# `php artisan social:video`. Wyliczalne z .md, więc do repo nie trafiają –
+# dokładnie jak wyeksportowane PNG-i w storage/app.
+public/slides
