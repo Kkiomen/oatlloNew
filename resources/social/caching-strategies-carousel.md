@@ -79,4 +79,4 @@ TTL as the net.
 ## There is no free option
 
 Consistency, latency, complexity - pick which two you are buying. Write-through
-trades latency for fresh reads. Full map linked in bio.
+trades latency for fresh reads.

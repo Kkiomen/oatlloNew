@@ -17,7 +17,9 @@ caption: |
   Copy .env.example, generate the key, health-check MySQL, use 127.0.0.1. Four
   lines that fix most first-build failures.
 
-  Full ci.yml linked in bio.
+  Full ci.
+
+  yml linked in bio.
 
   What broke your first CI run?
 ---
@@ -76,4 +78,4 @@ an hour of chasing a phantom bug.
 
 Turn on branch protection and require the `test` job to pass before merging.
 That one setting turns a nice script into an actual safety net for the team.
-Full ci.yml linked in bio.
+Full ci.

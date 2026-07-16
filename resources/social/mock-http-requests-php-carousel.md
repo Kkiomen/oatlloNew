@@ -15,7 +15,9 @@ caption: |
   Tests that hit the real network are not tests. They are weather reports.
 
   A third-party API goes down for maintenance and your CI goes red while your
-  code sits there unchanged. Fakes, guards and the interface rule are in bio.
+  code sits there unchanged.
+
+  Fakes, guards and the interface rule are in bio.
 
   What took your build down last?
 ---
@@ -85,4 +87,4 @@ network. Put it in your base test case and every mistyped pattern surfaces.
 
 Both helpers pin your tests to Guzzle. Wrap the client behind your own interface
 and mock that - the day you swap vendors, your domain tests survive. Full guide
-in bio.
+

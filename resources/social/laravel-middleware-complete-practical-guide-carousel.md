@@ -89,4 +89,4 @@ singleton if you need continuity.
 ## Order matters more than you expect
 
 Middleware reading `$request->user()` before `StartSession` gets `null`, and you
-chase a ghost. Global auth runs on your login page too. Full guide linked in bio.
+chase a ghost. Global auth runs on your login page too.

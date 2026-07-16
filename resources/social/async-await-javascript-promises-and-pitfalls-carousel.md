@@ -77,4 +77,4 @@ await Promise.allSettled(widgets);
 ## Go find your slowest async path
 
 Check it for a sequential loop. Nine times out of ten the iterations don't
-depend on each other, and `Promise.all` is waiting. Full guide linked in bio.
+depend on each other, and `Promise.all` is waiting.

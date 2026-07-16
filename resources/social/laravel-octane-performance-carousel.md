@@ -15,7 +15,9 @@ caption: |
   Octane keeps your app in memory between requests. Everything you left lying around is still there for the next user.
 
   Static props, singletons that captured the request, boot-time bindings: all
-  harmless under FPM, all leaks under Octane. Full audit list linked in bio.
+  harmless under FPM, all leaks under Octane.
+
+  Full audit list linked in bio.
 
   Which one bit you first?
 ---
@@ -67,5 +69,4 @@ cycles them without dropping in-flight requests.
 ## Test it under load, not one request
 
 A state leak is invisible with one request and obvious with a hundred concurrent
-ones. `--max-requests` is a net for slow growth, not a cure. Full audit linked in
-bio.
+ones. `--max-requests` is a net for slow growth, not a cure.

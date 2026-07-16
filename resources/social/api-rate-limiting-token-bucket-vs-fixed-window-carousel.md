@@ -86,4 +86,4 @@ slows down before it hits the wall.
 ## Keep the counter in a shared store
 
 Two app servers with per-process counters hand a client 2x the limit for free.
-Redis is the point, not a detail. Full comparison linked in bio.
+Redis is the point, not a detail.

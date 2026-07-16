@@ -94,4 +94,4 @@ one code path that needed it. Everything else imports `config`.
 
 `npx madge --circular src/` in CI fails the build the moment one sneaks
 in. Depend downward: routes, controllers, services, models. Never sideways.
-Full guide linked in bio.
+

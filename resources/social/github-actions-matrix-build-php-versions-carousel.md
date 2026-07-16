@@ -80,4 +80,4 @@ exclude:
 ```
 
 Laravel 10 was never built against PHP 8.4, so that job burns a runner for no
-signal. Full workflow linked in bio.
+signal.

@@ -70,4 +70,4 @@ float. Carbon 2 returned an absolute integer.
 ## Fix it once, at the model level
 
 Cast the column to `immutable_datetime` and the trap disappears for every read
-of that date. Store UTC, convert only for display. Full guide linked in bio.
+of that date. Store UTC, convert only for display.

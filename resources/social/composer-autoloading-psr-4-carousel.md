@@ -15,7 +15,9 @@ caption: |
   "Class not found" tells you nothing about why. PSR-4 is mechanical, so the answer is short.
 
   Prefix in, file path out. No scanning, no guessing. Once you can trace it in
-  your head it stops being a mystery. Full walkthrough in bio.
+  your head it stops being a mystery.
+
+  Full walkthrough in bio.
 
   Which one of these ate your afternoon?
 ---
@@ -77,4 +79,4 @@ composer install --no-dev \
 ```
 
 Authoritative skips the filesystem entirely - fast, and fatal to anything
-generated at runtime. Full walkthrough linked in bio.
+generated at runtime.

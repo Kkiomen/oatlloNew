@@ -83,4 +83,4 @@ request for 100 chunks beats 100 requests.
 
 It is fuzzy on purpose, so exact identifiers, error codes and SKUs are where it
 loses to a plain `LIKE`. The strong systems run both and blend the scores.
-Full guide linked in bio.
+

@@ -75,4 +75,4 @@ Count timeouts and connection errors. A `404` is not the dependency being down
 ## An open breaker still needs a plan
 
 No fallback means you swapped a slow failure for a fast one. Cached data, a
-queued job, a sensible default. Full walkthrough linked in bio.
+queued job, a sensible default.

@@ -76,4 +76,4 @@ impossible.
 
 Dispatch a domain event, move one listener onto the queue, watch the
 controller return fast. Reach for a broker when you cross a service
-boundary. Full intro linked in bio.
+boundary.

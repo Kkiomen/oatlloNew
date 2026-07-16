@@ -79,5 +79,4 @@ something you did not mean, you caught a misunderstanding for free.
 ## Generated code is a draft, not a delivery
 
 Read every DB query and every place user input crosses a boundary. Assistants
-pattern-match the insecure examples on the internet too. Full write-up linked in
-bio.
+pattern-match the insecure examples on the internet too.

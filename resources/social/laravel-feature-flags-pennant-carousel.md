@@ -71,4 +71,4 @@ against null, not against the user you meant.
 ## A flag at 100% for two months is debt
 
 Put the removal ticket in the same PR that adds the flag, and add
-`pennant:purge` to the deploy. Full guide linked in bio.
+`pennant:purge` to the deploy.

@@ -82,4 +82,4 @@ itself.
 ## The foreign key lives on the belongsTo side
 
 `profiles.user_id` exists, so Profile belongsTo User. Get it backwards and the
-SQL hunts a column that isn't there. Full deep dive linked in bio.
+SQL hunts a column that isn't there.

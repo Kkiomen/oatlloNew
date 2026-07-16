@@ -83,4 +83,4 @@ Are your only clients your **own** SPA, mobile app or scripts? Sanctum.
 ## Don't upgrade out of insecurity
 
 If you answered Sanctum to everything, stop second-guessing it because Passport
-looks enterprise. Simplicity you can reason about wins. Comparison in bio.
+looks enterprise. Simplicity you can reason about wins.

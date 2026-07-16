@@ -83,4 +83,4 @@ later. Jitter fans the expirations out instead of rebuilding the stampede.
 
 Multiply that by a busy app and you meet `maxmemory` sooner than you would
 like. Set `maxmemory 512mb` and `allkeys-lru` today, not at 3am.
-Full guide linked in bio.
+

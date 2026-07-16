@@ -85,4 +85,4 @@ No hand-rolled `while` loop.
 ## When the server sends Retry-After, it wins
 
 No point rolling dice when the server handed you the answer. Fall back to the
-jittered formula only when the header is missing. Full write-up linked in bio.
+jittered formula only when the header is missing.

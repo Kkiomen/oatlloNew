@@ -95,4 +95,4 @@ Http::preventStrayRequests();
 ```
 
 A mistyped pattern can no longer leak to the real network. You get a loud
-exception naming the URL that escaped. Full guide linked in bio.
+exception naming the URL that escaped.

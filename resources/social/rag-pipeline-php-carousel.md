@@ -84,4 +84,4 @@ a fluent one that guesses.
 
 Too few and you miss the context. Too many and you bury the useful chunk in
 noise and burn tokens. Tune it together with chunk size, never alone. Full
-pipeline linked in bio.
+

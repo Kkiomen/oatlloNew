@@ -79,4 +79,4 @@ $responses = await([
 ```
 
 AMPHP kicks off the non-blocking I/O, suspends for you, and resumes on arrival.
-Each task lives in a fiber. You never touch the class. Full guide in bio.
+Each task lives in a fiber. You never touch the class.

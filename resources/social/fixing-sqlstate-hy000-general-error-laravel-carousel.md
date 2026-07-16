@@ -80,4 +80,4 @@ php artisan config:clear
 ```
 
 Cached config serves yesterday's credentials. People rotate a password and
-stare at a 1045 for twenty minutes. Checklist linked in bio.
+stare at a 1045 for twenty minutes.

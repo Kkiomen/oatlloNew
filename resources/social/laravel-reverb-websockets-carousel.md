@@ -73,4 +73,4 @@ quietly refused on their own channel.
 ## Get the loop working first
 
 One private channel, one `console.log`. Once you see that event land, presence
-channels and live dashboards are the same four pieces. Full guide in bio.
+channels and live dashboards are the same four pieces.

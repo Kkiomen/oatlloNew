@@ -81,4 +81,4 @@ an `if` block the way `require` can.
 ## Pick one and commit
 
 Dual-format packages are a maintenance tax worth paying only if strangers
-consume your library. New project: `"type": "module"`. Full guide linked in bio.
+consume your library. New project: `"type": "module"`.

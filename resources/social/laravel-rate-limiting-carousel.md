@@ -87,4 +87,4 @@ plus `availableIn()` gives you the seconds for `release()`.
 
 Laravel hands your `->response()` callback a `$headers` array with
 `Retry-After` and `X-RateLimit-Reset`. Drop it and clients lose the only signal
-telling them when to come back. Full write-up linked in bio.
+telling them when to come back.

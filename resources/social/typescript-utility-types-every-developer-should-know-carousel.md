@@ -95,4 +95,4 @@ these work on function types, not values.
 ## Pick the one that fails safe
 
 Add a field to `User` and `Omit` passes it through; `Pick` forgets it. Neither
-is right, one is right for you. All seven linked in bio.
+is right, one is right for you.

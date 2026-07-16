@@ -85,4 +85,4 @@ image library loads it into memory.
 ## The bug is a missing link, not a broken one
 
 UUID name, local disk, authorized route. Do those three and you have closed the
-doors that matter. Full checklist linked in bio.
+doors that matter.

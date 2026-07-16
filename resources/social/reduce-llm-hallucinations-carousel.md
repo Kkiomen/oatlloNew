@@ -86,4 +86,4 @@ calibrated probability. As a triage signal it catches a surprising amount.
 
 50-200 real inputs, pass criteria per case, run on every prompt change.
 Every production hallucination becomes a new case so it cannot regress.
-Full field guide linked in bio.
+

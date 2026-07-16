@@ -75,4 +75,4 @@ is changing between calls.
 ## Never cache user context under a shared key
 
 That is not a stale-cache bug. That is one user reading another user's answer.
-Both layers, and the TTL choices, linked in bio.
+

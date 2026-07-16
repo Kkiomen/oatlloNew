@@ -15,7 +15,9 @@ caption: |
   Sail's slowness on a Mac is Docker's VM syncing your vendor folder. It is not a Sail bug.
 
   Which means the speed argument is really a platform argument: on native Linux
-  the gap mostly vanishes. Full comparison linked in bio.
+  the gap mostly vanishes.
+
+  Full comparison linked in bio.
 
   Which one are you running today?
 ---
@@ -54,4 +56,4 @@ the container we deploy".
 
 Herd for the inner loop, Docker for CI and prod-shaped bugs. Let the Herd PHP
 version drift from the container's and you reintroduce the mismatch parity was
-for. Comparison in bio.
+for.

@@ -15,7 +15,9 @@ caption: |
   getProperty(user, "email") is a compile error, not a "cannot read property of undefined" at 2am.
 
   Two type parameters do all of it: K extends keyof T pins the key, T[K] gives
-  back the real type of that field. Full walkthrough linked in bio.
+  back the real type of that field.
+
+  Full walkthrough linked in bio.
 
   Which generic finally made it click for you?
 ---
@@ -82,4 +84,4 @@ and the compiler remembers it.
 ## Write the concrete version first
 
 If a type parameter appears exactly once in a signature, it is doing nothing.
-Generalize on the second copy-paste, not the first. Full walkthrough in bio.
+Generalize on the second copy-paste, not the first.

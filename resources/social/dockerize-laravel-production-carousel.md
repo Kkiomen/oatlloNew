@@ -82,4 +82,4 @@ RUN chown -R www-data:www-data \
 ```
 
 Ninety percent of them are these two paths not being writable. Full multi-stage
-Dockerfile linked in bio.
+

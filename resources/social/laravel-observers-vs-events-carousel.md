@@ -83,4 +83,4 @@ one model.
 
 Observers for model bookkeeping: slugs, cache busting, cascade cleanup.
 Events for business moments and anything queued. Write the assumption
-down. Full comparison linked in bio.
+down.

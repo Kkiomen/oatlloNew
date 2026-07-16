@@ -94,4 +94,4 @@ the build, pointing at the exact spot.
 
 If `status` widens to `string` instead of the literal `"loading"`, narrowing
 collapses. Annotate the target with the union type, or reach for `as const`.
-Full guide linked in bio.
+

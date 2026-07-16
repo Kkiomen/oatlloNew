@@ -17,7 +17,9 @@ caption: |
   The -v drops the named volumes too. Exactly what you want for a clean reset,
   exactly what you don't want when you meant to stop the stack for the night.
 
-  Full compose.yaml linked in bio.
+  Full compose.
+
+  yaml linked in bio.
 
   Ever wiped a local DB on muscle memory?
 ---
@@ -86,4 +88,4 @@ Windows.
 ## Delete the version key while you're in there
 
 `version: "3.8"` predates the current spec and Compose v2 dropped it. If a
-tutorial still opens with it, it predates a lot more. Full stack linked in bio.
+tutorial still opens with it, it predates a lot more.

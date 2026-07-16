@@ -87,4 +87,4 @@ Measure real worker RSS, then divide your RAM budget by it. 60 MB workers and
 ## Then request /.env in a browser
 
 You want a 403. If you get your actual env contents, stop everything and fix
-it now. That one check saves the embarrassing week. Full block in bio.
+it now. That one check saves the embarrassing week.

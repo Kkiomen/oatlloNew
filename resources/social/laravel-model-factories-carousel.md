@@ -15,7 +15,9 @@ caption: |
   Stop hand-writing `User::create([...])` with fifteen fields spelled out in every test.
 
   Describe the model once, ask for as many rows as you need. The same factory
-  then seeds your dev database. Full guide linked in bio.
+  then seeds your dev database.
+
+  Full guide linked in bio.
 
   Which factory trick took you longest to find?
 ---
@@ -86,4 +88,4 @@ Three published, three drafts, alternating. Pass a closure if you need
 ## If a callback never runs, this is why
 
 `afterMaking` fires for `make()`. `afterCreating` fires only after `create()`.
-That mismatch is almost always the answer. Full guide linked in bio.
+That mismatch is almost always the answer.

@@ -81,4 +81,4 @@ Now you parse, validate and default it. And your CDN needs
 
 Log usage per version, ship `Deprecation` and `Sunset` headers, give six
 months. I have kept versions alive past sunset purely for lack of data.
-Full comparison linked in bio.
+

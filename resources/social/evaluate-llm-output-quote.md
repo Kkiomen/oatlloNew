@@ -15,7 +15,9 @@ caption: |
   Spot-checking fails for a boring reason: you check the cases you already expect to work.
 
   Thirty golden cases in a JSON file beats zero by a mile, and it is the whole
-  foundation. Full guide linked in bio.
+  foundation.
+
+  Full guide linked in bio.
 
   How do you catch an LLM regression today?
 ---

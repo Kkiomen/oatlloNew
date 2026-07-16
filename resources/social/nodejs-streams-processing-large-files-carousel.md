@@ -86,4 +86,4 @@ _transform(chunk, encoding, callback) {
 }
 ```
 
-Nothing errors. The pipeline just stalls forever. Full write-up linked in bio.
+Nothing errors. The pipeline just stalls forever.

@@ -79,4 +79,4 @@ DB::transaction(function () {
 
 The second argument reruns the closure on a deadlock, so keep side effects out
 of the body. And an atomic `decrement()` often beats turning the dial at all.
-Full guide linked in bio.
+

@@ -88,4 +88,4 @@ $text = $data['content'][0]['text'] ?? '';
 ```
 
 `content` is an array of blocks, so do not assume there is exactly one forever.
-Log `usage.input_tokens` too. Full guide linked in bio.
+Log `usage.input_tokens` too.

@@ -15,7 +15,9 @@ caption: |
   The first tool I wired up "called" a weather API that existed only in my prompt.
 
   It invented a plausible temperature and moved on. Function calling is the fix:
-  the model asks, you run it, you stay in control. Full guide in bio.
+  the model asks, you run it, you stay in control.
+
+  Full guide in bio.
 
   What was your first real tool?
 ---
@@ -89,4 +91,4 @@ the error and the model adapts or asks.
 ## The API is stateless, so it all travels every call
 
 Tools, system prompt, full history - resent on every request. That is why prompt
-caching matters on a big tool set. Start with one read-only tool. Guide in bio.
+caching matters on a big tool set. Start with one read-only tool.

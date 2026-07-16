@@ -15,7 +15,9 @@ caption: |
   Caching an expensive query is a two-line change. Knowing when the copy went bad is the job.
 
   Model events, cache keys, tags, stampedes. Get invalidation wrong and you have
-  built a very fast way to show wrong numbers. Full guide in bio.
+  built a very fast way to show wrong numbers.
+
+  Full guide in bio.
 
   What served you stale data last?
 ---
@@ -80,4 +82,4 @@ refresh runs, instead of a stampede onto the database.
 
 A missing index turns a lookup into a full table scan, and no cache helps the
 first request or the moment it expires. Index first, cache the fast result.
-Full guide linked in bio.
+

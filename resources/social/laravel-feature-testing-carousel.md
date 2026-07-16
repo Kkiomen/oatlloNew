@@ -81,4 +81,4 @@ The fake swaps the implementation. Too late and there was nothing to swap.
 ## Start with one endpoint
 
 Post data, assert the response, assert the row. That single test catches more
-real regressions than a dozen status-only checks. Full guide linked in bio.
+real regressions than a dozen status-only checks.

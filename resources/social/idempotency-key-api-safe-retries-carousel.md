@@ -15,7 +15,9 @@ caption: |
   The card was charged, the row committed, and then the response got lost. Your client retries. You just double-billed.
 
   Nothing there is a bug. Every component did its job. The fix is a key the
-  client generates once per intent and a unique constraint. Full guide in bio.
+  client generates once per intent and a unique constraint.
+
+  Full guide in bio.
 
   Which endpoint of yours is still safe to retry?
 ---
@@ -82,4 +84,4 @@ no separate lock.
 
 Different payload -> 422. Still in flight -> 409, back off and retry. Completed
 -> replay the stored response with its original status. 24h TTL. Full guide
-linked in bio.
+

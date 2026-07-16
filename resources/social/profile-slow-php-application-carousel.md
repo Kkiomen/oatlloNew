@@ -76,4 +76,4 @@ never the right tool for it.
 
 The 400-query checkout ended as one `with()` call and one index. Eight
 hundred milliseconds gone in two lines, because I stopped guessing. Full
-guide linked in bio.
+

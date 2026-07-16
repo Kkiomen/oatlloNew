@@ -77,4 +77,4 @@ prompt size is the sum of all three usage fields, not `input_tokens` alone.
 ## Freeze the front, let the back move
 
 The volatile bit goes after the marker, or gets sorted, or gets deleted if it
-was doing no real work. Full guide linked in bio.
+was doing no real work.

@@ -79,4 +79,4 @@ Truncate the oldest turns, or summarize them into one. Most bots blend both.
 ## Keep the date out of your system prompt
 
 It feels harmless. It changes the cached prefix on every request and quietly
-kills your prompt cache hits. Full build linked in bio.
+kills your prompt cache hits.

@@ -78,4 +78,4 @@ That is the whole thing.
 
 Batching needs a shared record that many workers update: `database`, `redis`, a
 real driver. Forget the `Batchable` trait and `$this->batch()` throws. Full
-guide linked in bio.
+

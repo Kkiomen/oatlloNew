@@ -15,7 +15,9 @@ caption: |
   A rejected promise is not an exception on a stack. It is a value nobody may be listening to.
 
   That is the whole problem. Empty catch, forEach with await, fetch that never
-  rejects on a 500. Full write-up linked in bio.
+  rejects on a 500.
+
+  Full write-up linked in bio.
 
   Which of these shipped to your prod?
 ---
@@ -94,4 +96,4 @@ process.on('unhandledRejection', (reason) => {
 ```
 
 If this fires in production, a rejection escaped every handler you wrote. That
-is a bug to fix, not a place to recover. Full guide in bio.
+is a bug to fix, not a place to recover.

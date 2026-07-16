@@ -77,4 +77,4 @@ living somewhere else in the file.
 ## Boring is still a real answer
 
 New project? Reach for Pest. Big mixed team wired around class-based tests?
-PHPUnit is defensible. The win is having tests at all. Comparison in bio.
+PHPUnit is defensible. The win is having tests at all.

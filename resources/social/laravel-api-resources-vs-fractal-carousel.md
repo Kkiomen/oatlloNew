@@ -15,7 +15,9 @@ caption: |
   `$user->toArray()` is not an API contract. It is a list of whatever columns exist today.
 
   Add a migration, ship a secret. A serialization layer is where you decide
-  what goes out. Full comparison linked in bio.
+  what goes out.
+
+  Full comparison linked in bio.
 
   Resources or Fractal on your last API?
 ---
@@ -81,4 +83,4 @@ dependency you carry for nothing.
 ## Serialization is never your bottleneck
 
 Queries are. If your JSON endpoints feel slow, look at the database first,
-caching second, serialization approximately never. Full comparison in bio.
+caching second, serialization approximately never.

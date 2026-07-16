@@ -79,4 +79,4 @@ that saves you. Static analysis and CI are the safety net here.
 
 They earn their keep on public APIs, interface constants and base classes that
 teams extend. A throwaway `const MAX = 10;` was already obviously an int. Full
-guide linked in bio.
+

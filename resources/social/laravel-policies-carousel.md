@@ -15,7 +15,9 @@ caption: |
   before() returns false by accident and every user in your app is locked out, admins included.
 
   It runs ahead of every other method in the policy, so whatever it returns is
-  final. null is the branch people forget. Full guide linked in bio.
+  final. null is the branch people forget.
+
+  Full guide linked in bio.
 
   Which of these cost you an afternoon?
 ---
@@ -78,4 +80,4 @@ false.
 ## The ability string must match the method
 
 `authorize('edit', $post)` never finds a method called `update`. Keep the names
-conventional and auto-discovery wires it up for free. Full guide linked in bio.
+conventional and auto-discovery wires it up for free.

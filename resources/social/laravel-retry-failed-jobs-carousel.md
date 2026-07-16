@@ -87,4 +87,4 @@ last value. A single integer gives you a flat delay instead.
 
 It pushes the job back onto its queue and removes the row. With no worker
 consuming that queue, nothing happens. And `queue:flush` deletes instead of
-retrying. Full write-up linked in bio.
+retrying.

@@ -86,4 +86,4 @@ problem and ten more calls just cost money.
 ## Treat model output like an untrusted client
 
 Because functionally that is what it is. Tool call, then schema validation,
-then a bounded retry. Full walkthrough linked in bio.
+then a bounded retry.

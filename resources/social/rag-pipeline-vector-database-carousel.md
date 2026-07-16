@@ -83,4 +83,4 @@ fences, not on a round number of tokens.
 
 Voyage or OpenAI build the vectors; Claude only writes the final answer.
 Store on pgvector until roughly 5M vectors, then pay for a dedicated
-engine. Full deep dive linked in bio.
+engine.

@@ -91,4 +91,4 @@ source row is deleted. Store IDs and the few fields you render.
 
 `Notification::route('mail', 'ops@example.com')->route('slack', $url)`
 notifies a webhook target with no Notifiable model anywhere. Full guide
-linked in bio.
+

@@ -15,7 +15,9 @@ caption: |
   Too many connections is a counting problem, not a database bug. Do the math: workers per server x number of servers.
 
   PHP under FPM is share-nothing, so there is nowhere for a warm pool to live
-  inside the process. The pool has to go outside it. Full write-up in bio.
+  inside the process. The pool has to go outside it.
+
+  Full write-up in bio.
 
   What was your first move when that alert fired?
 ---
@@ -73,4 +75,4 @@ connections.
 
 Anything relying on state across transactions misbehaves, server-side prepared
 statements included, so PDO users switch to emulated prepares. Full write-up
-linked in bio.
+
