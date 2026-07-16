@@ -59,6 +59,11 @@ final readonly class SocialPost
          * ankiety, naklejki, budowanie clustera ze story.
          */
         public string $notes,
+        /**
+         * Pieczątka weryfikacji merytorycznej (Claude), wstawiana ZANIM post
+         * zobaczy człowiek. Lint pilnuje formatu; to pilnuje prawdy.
+         */
+        public ?\App\Services\Social\Review\SocialVerification $verified,
         public array $slides,
     ) {
     }

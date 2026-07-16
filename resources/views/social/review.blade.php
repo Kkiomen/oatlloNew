@@ -136,6 +136,29 @@
         .notes .what { font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 10px; color: #f59e0b; }
         .notes .text { white-space: pre-wrap; color: #fde68a; }
 
+        {{-- Weryfikacja merytoryczna: stan MUSI być czytelny zanim klikniesz zielone.
+             Lint pilnuje formatu, to pilnuje prawdy — a nieaktualna pieczątka jest
+             groźniejsza niż jej brak, bo wygląda jak zielone światło. --}}
+        .verify {
+            margin: 12px auto 0; max-width: 400px; display: flex; gap: 10px;
+            padding: 10px 12px; border-radius: 8px; font-size: 12px; line-height: 1.5;
+            border: 1px solid var(--rule); background: #0f172a;
+        }
+        .verify .mark { font-size: 15px; line-height: 1.2; flex: none; }
+        .verify .what { font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; }
+        .verify .detail { color: var(--muted); margin-top: 3px; }
+        .verify ul { margin: 4px 0 0; padding-left: 16px; color: #94a3b8; }
+        .verify .text { white-space: pre-wrap; color: #cbd5e1; margin-top: 4px; }
+
+        .verify.ok      { border-color: #14532d; background: #052e16; }
+        .verify.ok .what { color: var(--green); }
+        .verify.issues  { border-color: #78350f; background: #2a1405; }
+        .verify.issues .what { color: #fbbf24; }
+        .verify.stale   { border-color: #7f1d1d; background: #2a0a0a; }
+        .verify.stale .what { color: var(--red); }
+        .verify.none    { border-style: dashed; }
+        .verify.none .what { color: var(--muted); }
+
         .meta { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; }
         .meta code { color: #94a3b8; }
         .linky {
@@ -279,6 +302,49 @@
             <div class="{{ $captionLen > $captionMax ? 'over' : '' }}" style="margin-top:8px; font-size:11px; color:{{ $captionLen > $captionMax ? '#ef4444' : '#475569' }};">
                 podpis: {{ $captionLen }}/{{ $captionMax }} znaków &middot; hashtagów: {{ count($post->hashtags) }}
             </div>
+        </div>
+    </div>
+
+    {{-- Stan weryfikacji liczymy z tego samego odcisku, co werdykt człowieka:
+         `SocialReviewItem::$fingerprint` to sha1 treści BEZ bloku `verified:`,
+         czyli dokładnie to, czego dotyczy pieczątka. Tożsamość treści jest jedna. --}}
+    @php($vState = $post->verified === null
+        ? 'none'
+        : (! $post->verified->matches($item->fingerprint)
+            ? 'stale'
+            : ($post->verified->isApproved() ? 'approved' : 'issues')))
+
+    <div class="verify {{ $vState === 'approved' ? 'ok' : ($vState === 'issues' ? 'issues' : ($vState === 'stale' ? 'stale' : 'none')) }}">
+        <div class="mark">{{ ['approved' => '✓', 'issues' => '⚠', 'stale' => '✗', 'none' => '·'][$vState] }}</div>
+        <div>
+            <div class="what">
+                @switch($vState)
+                    @case('approved') Zweryfikowane merytorycznie @break
+                    @case('issues')   Zweryfikowane &mdash; z uwagami @break
+                    @case('stale')    Weryfikacja NIEAKTUALNA &mdash; treść zmieniona po sprawdzeniu @break
+                    @default          Niezweryfikowane
+                @endswitch
+            </div>
+
+            @if($vState === 'none')
+                <div class="detail">Nikt nie sprawdził faktów w tym poście. Lint pilnuje tylko formatu.</div>
+            @elseif($vState === 'stale')
+                <div class="detail">Pieczątka z {{ $post->verified?->at?->format('Y-m-d H:i') }} dotyczy innej wersji. Traktuj jak niezweryfikowane.</div>
+            @else
+                <div class="detail">Claude, {{ $post->verified?->at?->format('Y-m-d H:i') }}</div>
+
+                @if($post->verified?->checks !== [])
+                    <ul>
+                        @foreach($post->verified?->checks ?? [] as $check)
+                            <li>{{ $check }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+
+                @if(trim((string) $post->verified?->notes) !== '')
+                    <div class="text">{{ $post->verified?->notes }}</div>
+                @endif
+            @endif
         </div>
     </div>
 

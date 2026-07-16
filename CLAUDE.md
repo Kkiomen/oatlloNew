@@ -195,6 +195,29 @@ escaping YAML-a. Zero bazy, commitowane jak posty. Katalog `reviews/` leży wewn
 `MarkdownSocialPostRepository` czyta katalog **płasko** (`File::files`, nie `allFiles`) — recenzje nigdy nie
 zostaną wzięte za posty (pilnuje tego test).
 
+### Weryfikacja merytoryczna (`verified:` + skill `social-verify`)
+
+**`social:lint` pilnuje FORMATU, weryfikacja pilnuje PRAWDY — i to są dwie różne bramki.**
+Post może przejść lint idealnie (46 kolumn, wszystkie budżety) i twierdzić, że Xdebug słucha na 9000
+albo że Anthropic ma endpoint embeddings. Lint nie widzi żadnej z tych rzeczy, a publiczność widzi
+i komentuje. Claude czyta post RAZEM z artykułem źródłowym, sprawdza każde twierdzenie, kod, literówki
+i spójność, po czym stempluje plik: `php artisan social:verify {slug} --verdict=approved --check=... --note=...`.
+Komenda **niczego nie sprawdza** — utrwala werdykt; sprawdzanie to czytanie. Panel `/social/review`
+pokazuje stan nad przyciskami akceptacji, więc człowiek wie, czy ktoś patrzył na fakty.
+
+**Pieczątka niesie ODCISK TREŚCI, bo inaczej „zweryfikowane" znaczyłoby „zweryfikowane kiedyś,
+w nieznanej wersji"** — dokładnie ten błąd, który werdykty człowieka rozwiązują `fingerprint`em.
+Poprawka treści unieważnia weryfikację i panel świeci wtedy na CZERWONO („NIEAKTUALNA"), bo martwa
+pieczątka jest groźniejsza niż jej brak: wygląda jak zielone światło.
+
+**Odcisk liczy się z treści BEZ bloku `verified:` — i to jest nieoczywiste, ale konieczne.** Po pierwsze
+byłby cykliczny (wpisanie odcisku zmienia plik, czyli i odcisk). Po drugie **`SocialReviewRepository::fingerprint()`
+też go pomija**: człowiek ocenia TREŚĆ, nie cudzą adnotację o niej. Bez tego dopisanie weryfikacji do 150
+postów skasowałoby wszystkie gotowe zielone werdykty. Dla plików bez bloku `strip()` jest tożsamością,
+więc odciski sprzed tej zmiany zostały nietknięte (pilnuje tego test).
+**Kolejność: Claude weryfikuje → człowiek akceptuje → publikacja.** Odwrotna jest nieszkodliwa, ale bez sensu —
+panel istnieje po to, żeby POKAZAĆ werdykt recenzentowi.
+
 **`fingerprint` (sha1 treści posta) domyka pętlę i to jest sedno**: werdykt dotyczy KONKRETNEJ wersji pliku.
 Poprawka posta rozjeżdża odcisk → `SocialReviewQueue` znów pokazuje post do obejrzenia. Dlatego skill **NIE
 kasuje ani nie edytuje pliku recenzji** — sama poprawka odsyła post do ponownej oceny. Bez odcisku
@@ -295,6 +318,7 @@ Konfiguracja: `SOCIAL_MEDIA_TOKEN` (serwer), `SOCIAL_PUSH_TOKEN` + `SOCIAL_PUSH_
 **Licencja/koszt Zernio: pierwsze 2 podpięte konta za darmo.**
 
 Skille: **`social-post`** (orkiestrator), `social-ideas`, `social-writer`, `social-carousel`, `social-export`,
+**`social-verify`** (sprawdza fakty/kod/literówki i stempluje `verified:` ZANIM post zobaczy człowiek),
 **`social-review`** (bierze posty odesłane w panelu do poprawy i je poprawia — „przejrzałem zaplanowane posty
 i teraz je opracuj").
 

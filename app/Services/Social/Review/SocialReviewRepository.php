@@ -31,10 +31,19 @@ class SocialReviewRepository
 
     /**
      * Skrót treści pliku posta – tożsamość WERSJI, którą recenzent widział.
+     *
+     * POMIJA blok `verified:` (pieczątkę weryfikacji Claude'a), bo człowiek ocenia
+     * TREŚĆ, a nie cudzą adnotację o niej. Bez tego dopisanie weryfikacji do postów
+     * rozjechałoby odcisk każdego z nich i skasowało gotowe zielone werdykty –
+     * a to jest dokładnie ten koszt, który `fingerprint` ma nakładać wyłącznie
+     * wtedy, gdy zmieniła się treść.
+     *
+     * Dla plików bez tego bloku `strip()` jest tożsamością, więc odciski sprzed
+     * jego wprowadzenia zostają nietknięte.
      */
     public static function fingerprint(string $raw): string
     {
-        return sha1(preg_replace('/\R/', "\n", $raw) ?? $raw);
+        return sha1(SocialVerificationStamp::strip($raw));
     }
 
     public function directory(): string

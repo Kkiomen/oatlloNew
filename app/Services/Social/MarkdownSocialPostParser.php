@@ -42,7 +42,7 @@ class MarkdownSocialPostParser
     public const FRONTMATTER_KEYS = [
         'slug', 'type', 'language', 'title', 'topic', 'style',
         'source_type', 'source', 'link',
-        'publish_at', 'status', 'formats', 'hashtags', 'caption', 'notes',
+        'publish_at', 'status', 'formats', 'hashtags', 'caption', 'notes', 'verified',
     ];
 
     private FrontMatterParser $frontMatter;
@@ -108,6 +108,7 @@ class MarkdownSocialPostParser
             formats: $this->normalizeFormats($fm['formats'] ?? null, $type),
             caption: $this->normalizeBlock($fm['caption'] ?? null),
             notes: $this->normalizeBlock($fm['notes'] ?? null),
+            verified: \App\Services\Social\Review\SocialVerification::fromFrontmatter($fm['verified'] ?? null),
             slides: $this->splitSlides($body),
         );
     }
