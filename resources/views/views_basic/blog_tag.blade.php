@@ -6,7 +6,7 @@
     $canonical = route('blogTag', ['tag' => $tagSlug]);
     $pageTitle = $tag->title_seo ?: ($tagName . ' – Blog | Oatllo');
     $pageDesc  = $tag->description_seo
-        ?: ('Artykuły z tagiem „' . $tagName . '" na blogu Oatllo — praktyczne tutoriale i poradniki dla programistów.');
+        ?: ('Artykuły z tagiem „' . $tagName . '" na blogu Oatllo - praktyczne tutoriale i poradniki dla programistów.');
     $count     = is_countable($articles) ? count($articles) : 0;
 @endphp
 <!DOCTYPE html>

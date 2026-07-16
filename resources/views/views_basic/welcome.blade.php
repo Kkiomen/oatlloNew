@@ -300,7 +300,7 @@
             <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Everything you need to <span class="text-rose-400">level up</span>
             </h2>
-            <p class="mt-3 text-neutral-400">Practical, hands-on content on modern backend, architecture and tooling — no fluff.</p>
+            <p class="mt-3 text-neutral-400">Practical, hands-on content on modern backend, architecture and tooling - no fluff.</p>
         </div>
 
         <div class="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -368,11 +368,11 @@
         <div class="mt-12 space-y-4" x-data="{ open: 0 }">
             @php
                 $faqs = [
-                    ['q' => 'What kind of content will I find here?', 'a' => 'In-depth blog posts, practical tutorials, code snippets and cheat sheets — all focused on modern PHP, Laravel, JavaScript, architecture and backend development.'],
+                    ['q' => 'What kind of content will I find here?', 'a' => 'In-depth blog posts, practical tutorials, code snippets and cheat sheets - all focused on modern PHP, Laravel, JavaScript, architecture and backend development.'],
                     ['q' => 'Do I need previous programming experience?', 'a' => 'Not necessarily. Many articles start from the basics and build up gradually, while others go deep for experienced developers. Pick the level that suits you.'],
                     ['q' => 'Are the courses really free?', 'a' => 'Yes. The courses on Oatllo are free and self-paced, with source code available so you can follow along at your own speed.'],
                     ['q' => 'How often do you publish new content?', 'a' => 'New tutorials and deep-dives are published regularly. Follow me on LinkedIn or Instagram so you never miss an update.'],
-                    ['q' => 'Can I request a topic?', 'a' => 'Absolutely — reach out on LinkedIn or Instagram with your idea. Topics that help the community most get prioritised.'],
+                    ['q' => 'Can I request a topic?', 'a' => 'Absolutely - reach out on LinkedIn or Instagram with your idea. Topics that help the community most get prioritised.'],
                 ];
             @endphp
             @foreach($faqs as $i => $faq)
@@ -401,7 +401,7 @@
         <div class="relative overflow-hidden rounded-3xl border border-rose-500/20 bg-gradient-to-br from-rose-500/15 via-neutral-900 to-neutral-900 p-10 text-center sm:p-16">
             <div class="absolute inset-0 -z-10 hero-glow" aria-hidden="true"></div>
             <h2 class="text-3xl font-bold text-white sm:text-4xl">Keep learning with Oatllo</h2>
-            <p class="mx-auto mt-4 max-w-2xl text-neutral-300">Fresh tutorials on PHP, Laravel, architecture and developer tooling — straight to the point.</p>
+            <p class="mx-auto mt-4 max-w-2xl text-neutral-300">Fresh tutorials on PHP, Laravel, architecture and developer tooling - straight to the point.</p>
             <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
                 <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 rounded-xl bg-rose-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-rose-500/30 hover:bg-rose-400 transition-colors duration-200">
                     {!! \App\Support\Icons::svg('book-open', '') !!} {{ __('basic.header_blog') }}

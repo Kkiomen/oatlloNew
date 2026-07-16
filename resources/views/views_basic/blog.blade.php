@@ -324,7 +324,7 @@
                 <h2 class="text-xl font-bold text-white">Practical programming articles for developers</h2>
                 <p class="mt-3 text-neutral-400">
                     The Oatllo blog covers modern <strong class="text-neutral-200">PHP</strong> and <strong class="text-neutral-200">Laravel</strong>,
-                    JavaScript, software architecture, databases, DevOps and developer tooling — hands-on tutorials and deep-dives
+                    JavaScript, software architecture, databases, DevOps and developer tooling - hands-on tutorials and deep-dives
                     you can apply to real projects. New articles are published regularly.
                 </p>
             </div>

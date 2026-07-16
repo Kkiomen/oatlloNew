@@ -38,7 +38,7 @@
         <p class="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-8xl font-extrabold tracking-tight text-transparent sm:text-9xl">500</p>
         <h1 class="mt-4 text-3xl font-bold text-white sm:text-4xl">Coś poszło nie tak</h1>
         <p class="mx-auto mt-4 max-w-md text-neutral-400">
-            Wystąpił nieoczekiwany błąd po naszej stronie. Pracujemy nad tym — spróbuj odświeżyć stronę za chwilę lub wróć na stronę główną.
+            Wystąpił nieoczekiwany błąd po naszej stronie. Pracujemy nad tym - spróbuj odświeżyć stronę za chwilę lub wróć na stronę główną.
         </p>
 
         <div class="mt-10 flex flex-wrap items-center justify-center gap-4">

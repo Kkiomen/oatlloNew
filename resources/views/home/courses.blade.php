@@ -260,7 +260,7 @@
         <div class="mx-auto mt-20 max-w-3xl rounded-2xl border border-white/5 bg-neutral-900/40 p-8 text-center">
             <h2 class="text-xl font-bold text-white">Free, practical programming courses</h2>
             <p class="mt-3 text-neutral-400">
-                Learn modern <strong class="text-neutral-200">PHP</strong> and <strong class="text-neutral-200">Laravel</strong> the hands-on way —
+                Learn modern <strong class="text-neutral-200">PHP</strong> and <strong class="text-neutral-200">Laravel</strong> the hands-on way -
                 structured, self-paced chapters with real code you can follow along and reuse in your own projects. Free to start, no sign-up required.
             </p>
         </div>
@@ -273,7 +273,7 @@
         <div class="relative overflow-hidden rounded-3xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/15 via-neutral-900 to-neutral-900 p-10 text-center sm:p-16">
             <div class="absolute inset-0 -z-10 hero-glow-green" aria-hidden="true"></div>
             <h2 class="text-3xl font-bold text-white sm:text-4xl">Ready to start learning?</h2>
-            <p class="mx-auto mt-4 max-w-2xl text-neutral-300">Pick a course and start building — or read the blog for fresh tutorials on PHP, Laravel and backend development.</p>
+            <p class="mx-auto mt-4 max-w-2xl text-neutral-300">Pick a course and start building - or read the blog for fresh tutorials on PHP, Laravel and backend development.</p>
             <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
                 @if($featuredCourse)
                     <a href="{{ $courseUrl($featuredCourse) }}" class="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition-colors duration-200">

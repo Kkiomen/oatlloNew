@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ __('basic.sitemap') }} | Oatllo</title>
-    <meta name="description" content="Mapa strony Oatllo — wszystkie artykuły, kategorie, tagi i kursy w jednym miejscu.">
+    <meta name="description" content="Mapa strony Oatllo - wszystkie artykuły, kategorie, tagi i kursy w jednym miejscu.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0a0a0a">
     <meta name="robots" content="index, follow">
@@ -19,7 +19,7 @@
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ __('basic.sitemap') }} | Oatllo">
-    <meta property="og:description" content="Mapa strony Oatllo — wszystkie artykuły, kategorie, tagi i kursy.">
+    <meta property="og:description" content="Mapa strony Oatllo - wszystkie artykuły, kategorie, tagi i kursy.">
     <meta property="og:url" content="{{ route('site.map') }}">
     <meta property="og:site_name" content="Oatllo">
     <meta property="og:image" content="{{ asset('assets/images/logo-512.jpg') }}">
