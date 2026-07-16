@@ -139,8 +139,10 @@ return [
 
         // MUSI stac przed 'database' – Redis to tez baza, ale ma wlasna marke
         // (firmowa czerwien + warstwowy "stack" zamiast generycznego walca).
+        // UWAGA: slowa kluczowe MUSZA byc redis-specyficzne. 'cache'/'caching' kolidowaly
+        // z kursem nginx (opis: "...HTTPS, caching...") i podmienialy mu motyw na redisa.
         'redis' => [
-            'keywords' => ['redis', 'cache', 'caching', 'in-memory', 'key-value', 'key value'],
+            'keywords' => ['redis', 'redis-cli'],
             'accent'       => '#DC382D', // firmowa czerwien Redis
             'accent_color' => 'red',
             'label'        => 'Redis',
@@ -158,13 +160,17 @@ return [
             'accent'       => '#FF6600', // firmowy pomarancz RabbitMQ
             'accent_color' => 'orange',
             'label'        => 'RabbitMQ',
-            // Krolik z PROFILU (bok, pyszczek w prawo) - wlasny, czysty znak, evokacja
+            // Siedzacy krolik z PROFILU (pyszczek w prawo) - wlasny, czysty znak, evokacja
             // marki RabbitMQ (NIE oryginalne logo/znak towarowy), jak reszta okladek.
             'logo'     => '<g fill="currentColor">'
-                . '<ellipse cx="42" cy="27" rx="6" ry="19" transform="rotate(-13 42 27)"/>'
-                . '<ellipse cx="55" cy="25" rx="6" ry="19" transform="rotate(-3 55 25)"/>'
-                . '<circle cx="46" cy="56" r="21"/>'
-                . '<ellipse cx="66" cy="55" rx="12" ry="10"/>'
+                // korpus + glowa jako JEDEN gladki path (siedzacy krolik, pyszczek w prawo)
+                . '<path d="M22 84 C10 78 12 52 30 44 C40 40 46 40 54 40 '
+                . 'C56 32 60 24 66 22 C70 26 72 34 74 40 C80 42 88 44 88 50 '
+                . 'C88 56 80 56 74 55 C72 62 70 74 72 82 C74 86 70 88 64 87 '
+                . 'C52 90 34 90 26 88 C23 87 22 86 22 84 Z"/>'
+                // uszy (spiczaste)
+                . '<path d="M60 30 C58 12 62 5 66 5 C69 7 68 22 66 33 Z"/>'
+                . '<path d="M69 30 C69 11 74 4 78 6 C80 10 76 24 74 33 Z"/>'
                 . '</g>',
         ],
 
