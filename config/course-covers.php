@@ -227,6 +227,19 @@ return [
                 . '</g>',
         ],
 
+        'design' => [
+            'keywords' => ['design pattern', 'design patterns', 'solid principles', 'clean code', 'refactoring', 'gang of four', 'gof'],
+            'accent'       => '#3b82f6', // niebieski - projektowanie / architektura kodu
+            'accent_color' => 'blue',
+            'label'        => 'Design',
+            // Zagniezdzone moduly - skojarzenie ze struktura / wzorcami.
+            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">'
+                . '<rect x="16" y="16" width="68" height="68" rx="8"/>'
+                . '<rect x="36" y="36" width="28" height="28" rx="4"/>'
+                . '<path d="M16 50 H36 M64 50 H84 M50 16 V36 M50 64 V84"/>'
+                . '</g>',
+        ],
+
         'ai' => [
             'keywords' => ['ai', 'llm', 'gpt', 'openai', 'claude', 'machine learning', 'sztuczna inteligencja', 'agent', 'prompt'],
             'accent'       => '#10b981',
