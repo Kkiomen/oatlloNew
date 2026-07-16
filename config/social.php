@@ -152,6 +152,40 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Story "nowy artykuł" (`social:article-stories`)
+    |--------------------------------------------------------------------------
+    |
+    | Generator robi jedno story na każdy ZAKOLEJKOWANY artykuł (published_at w
+    | przyszłości) i datuje je na dzień jego publikacji – "Słuchajcie, jest nowy
+    | artykuł". Skórka `announce-article` daje serii stały baner (kicker), więc
+    | ktoś oglądający nasze story regularnie od razu wie, że może wejść i przeczytać.
+    |
+    | Tekst jest po angielsku, jak cała strona i tytuły artykułów. `kicker` czyta
+    | skórka (pseudo-element), `intro` wchodzi jako treść slajdu. Link BUDUJEMY na
+    | `brand.domain` (produkcja: oatllo.com), a NIE z APP_URL – lokalny APP_URL to
+    | Herd (oatllo.test) i wygenerowałby martwe adresy w commitowanym pliku.
+    |
+    | To metadane treści, nie publikacji: samo wygenerowanie niczego nie wysyła.
+    | Story i tak przechodzi przez panel /social/review i (opcjonalnie) autopublikację
+    | jak każdy inny post.
+    |
+    */
+
+    'article_story' => [
+        'kicker'      => env('SOCIAL_ARTICLE_STORY_KICKER', 'New on the blog'),
+        'intro'       => env('SOCIAL_ARTICLE_STORY_INTRO', 'Just published. Link in bio to read the full article.'),
+        'style'       => 'announce-article',
+
+        // Prefiks `story-new-`, NIE `story-`: w resources/social żyje już osobny
+        // gatunek ręcznych story „anchor frame" nazwanych `story-{skrót}` (poll +
+        // reshare karuzeli, do zaangażowania). To co innego niż ogłoszenie „nowy
+        // artykuł". Osobny prefiks trzyma oba zestawy rozłączne (i `ls story-new-*`
+        // pokazuje dokładnie ten wygenerowany) oraz gwarantuje brak kolizji nazw.
+        'slug_prefix' => 'story-new-',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Limity walidacji (social:lint)
     |--------------------------------------------------------------------------
     |

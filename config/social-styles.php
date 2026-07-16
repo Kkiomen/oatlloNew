@@ -167,5 +167,18 @@ return [
                 'types' => ['quote'], // pojedyncza teza znosi (i lubi) dużo pustki
             ],
         ],
+
+        // Dedykowana skórka pod story "nowy artykuł na blogu" (`social:article-stories`).
+        // Stały baner "NEW ON THE BLOG" = znak rozpoznawczy serii; akcent i logo
+        // zmienne per technologia artykułu. CELOWO BEZ afinicji i BEZ obecności
+        // w `rotation`/`type_rotation`: to skórka wyłącznie na jawne `style:`
+        // announce-article. Dopisanie jej do rotacji przetasowałoby style wszystkich
+        // innych postów (crc32 % liczba pozycji) — a tego ta skórka nie dotyczy.
+        'announce-article' => [
+            'label'    => 'Announce (article)',
+            'summary'  => 'Story "nowy artykuł": stały baner NEW ON THE BLOG, tytuł, logo i akcent per technologia.',
+            'chrome'   => null,
+            'affinity' => [],
+        ],
     ],
 ];
