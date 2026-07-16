@@ -77,7 +77,7 @@ class MarkdownCourseRepository
     public function published(?string $language = null): Collection
     {
         return $this->all()
-            ->filter(fn (Course $c) => (bool) $c->is_published)
+            ->filter(fn (Course $c) => $c->isLive())
             ->when($language !== null, fn ($c) => $c->filter(fn (Course $x) => $x->lang === $language))
             ->values();
     }
@@ -134,6 +134,13 @@ class MarkdownCourseRepository
         $course->description_seo = $fm['description_seo'] ?? $course->description_list;
         $course->content_description_offers = $fm['content_description_offers'] ?? $offersHtml;
         $course->is_published = array_key_exists('is_published', $fm) ? (bool) $fm['is_published'] : true;
+
+        // Data planowanej publikacji (opcjonalna). Kurs z datą w przyszłości jest
+        // ukryty aż do terminu (Course::isLive()) - tak jak artykuły .md. Brak pola
+        // = null = żywy od razu, więc istniejące kursy nie wymagają zmian.
+        $course->published_at = array_key_exists('published_at', $fm)
+            ? $this->toDate($fm['published_at'])
+            : null;
 
         $course->source = 'markdown';
         $course->exists = false;
@@ -258,6 +265,30 @@ class MarkdownCourseRepository
     {
         // "01-what-is-php" -> "what-is-php"
         return (string) preg_replace('/^\d+[-_]/', '', $name);
+    }
+
+    /**
+     * Zamienia wartość published_at z frontmattera na Carbon (albo null, gdy pusto
+     * lub nieparsowalne). Akceptuje datę YAML (DateTime), "2026-07-24" czy
+     * "2026-07-24 09:00". Nieparsowalna wartość => null => kurs żywy od razu
+     * (bezpieczniej pokazać niż w nieskończoność ukrywać przez literówkę w dacie).
+     */
+    private function toDate(mixed $value): ?Carbon
+    {
+        if ($value instanceof \DateTimeInterface) {
+            return Carbon::instance($value);
+        }
+
+        $raw = trim((string) $value);
+        if ($raw === '') {
+            return null;
+        }
+
+        try {
+            return Carbon::parse($raw);
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     private function normalizeEncoding(string $raw): string

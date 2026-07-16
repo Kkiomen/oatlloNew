@@ -518,7 +518,7 @@ class HomeController extends Controller
     private function resolveCourse(string $slug): ?Course
     {
         $file = app(MarkdownCourseRepository::class)->findCourse($slug);
-        if ($file && $file->is_published) {
+        if ($file && $file->isLive()) {
             return $file;
         }
 

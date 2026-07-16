@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Services\Course\MarkdownCourseRepository;
+use App\Services\IndexNowService;
 use App\Services\SitemapService;
 use App\Services\Social\Publish\SocialAutoPublisher;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Endpoint "cron tick" uderzany cyklicznie (np. co godzinę z n8n).
@@ -48,6 +51,8 @@ class CronController extends Controller
 
         $published = $this->publishDueArticles();
 
+        $courses = $this->announceDueCourses();
+
         $sitemapOk = $this->regenerateSitemap();
 
         return response()->json([
@@ -55,6 +60,7 @@ class CronController extends Controller
             'retired_count' => $retired,
             'published_count' => count($published),
             'published' => $published,
+            'courses_announced' => $courses,
             'sitemap_regenerated' => $sitemapOk,
             'social' => $this->runSocial($request),
             'timestamp' => Carbon::now()->toIso8601String(),
@@ -164,6 +170,67 @@ class CronController extends Controller
         }
 
         return $published;
+    }
+
+    /**
+     * "Publikuje" zaplanowane kursy .md, których termin (published_at) już minął.
+     *
+     * Kursy .md nie mają flagi w bazie - ich widoczność jest liczona przy renderze
+     * (Course::isLive(): is_published + published_at <= teraz), więc kurs pojawia się
+     * na stronie i w sitemapie SAM, gdy tylko nadejdzie termin (regeneracja sitemap
+     * w tym samym ticku go dołoży). Zadaniem tego kroku jest jedno: gdy kurs właśnie
+     * wszedł na żywo, PINGNĄĆ IndexNow (Bing) jego URL-ami, żeby wyszukiwarki dowiedziały
+     * się od razu, zamiast czekać na kolejny crawl.
+     *
+     * Idempotencja przez plik stanu w storage/app (gitignorowane, przeżywa deploy):
+     * ogłoszony slug zapisujemy i nie pingujemy go ponownie przy każdym ticku.
+     * Cały krok w try/catch - jak reszta ticka, błąd nie może go przerwać.
+     *
+     * @return array<int, string> slugi kursów ogłoszonych w tym ticku
+     */
+    private function announceDueCourses(): array
+    {
+        $stateFile = 'courses-announced.json';
+
+        try {
+            $announced = [];
+            if (Storage::exists($stateFile)) {
+                $decoded = json_decode((string) Storage::get($stateFile), true);
+                $announced = is_array($decoded) ? $decoded : [];
+            }
+
+            $live = app(MarkdownCourseRepository::class)->published();
+            $newlyAnnounced = [];
+
+            foreach ($live as $course) {
+                if (in_array($course->slug, $announced, true)) {
+                    continue;
+                }
+
+                $urls = [$course->getRoute()];
+                foreach ($course->categories as $category) {
+                    $urls[] = $category->getRoute();
+                    foreach ($category->lessons as $lesson) {
+                        $urls[] = $lesson->getRoute();
+                    }
+                }
+
+                IndexNowService::submitMany($urls);
+
+                $announced[] = $course->slug;
+                $newlyAnnounced[] = $course->slug;
+            }
+
+            if ($newlyAnnounced !== []) {
+                Storage::put($stateFile, json_encode(array_values($announced)));
+            }
+
+            return $newlyAnnounced;
+        } catch (\Throwable $e) {
+            Log::warning('Cron: nie udało się ogłosić kursów do IndexNow: ' . $e->getMessage());
+
+            return [];
+        }
     }
 
     /**

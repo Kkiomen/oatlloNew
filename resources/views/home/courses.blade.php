@@ -241,9 +241,9 @@
                                 {!! \App\Support\Icons::svg('layer-group', 'text-'.$accent.'-400') !!}
                                 {{ $course->categories->count() }} {{ __('basic.chapter') }}
                             </span>
-                            <span class="inline-flex items-center gap-2 font-semibold text-{{ $accent }}-400 group-hover:gap-3 transition-all duration-200">
+                            <a href="{{ $courseUrl($course) }}" class="inline-flex items-center gap-2 font-semibold text-{{ $accent }}-400 group-hover:gap-3 transition-all duration-200" aria-label="{{ __('basic.go_to_course') }}: {{ $course->title_list ?: $course->name }}">
                                 {{ __('basic.go_to_course') }} {!! \App\Support\Icons::svg('arrow-right', 'text-xs') !!}
-                            </span>
+                            </a>
                         </div>
                     </div>
                 </article>

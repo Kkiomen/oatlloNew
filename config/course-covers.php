@@ -137,6 +137,22 @@ return [
             'logo'     => '<text x="50" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="52" fill="currentColor">Py</text>',
         ],
 
+        // MUSI stac przed 'database' – Redis to tez baza, ale ma wlasna marke
+        // (firmowa czerwien + warstwowy "stack" zamiast generycznego walca).
+        'redis' => [
+            'keywords' => ['redis', 'cache', 'caching', 'in-memory', 'key-value', 'key value'],
+            'accent'       => '#DC382D', // firmowa czerwien Redis
+            'accent_color' => 'red',
+            'label'        => 'Redis',
+            // Warstwowy "stack" – skojarzenie z magazynem in-memory.
+            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round">'
+                . '<path d="M50 14 L84 30 L50 46 L16 30 Z"/>'
+                . '<path d="M16 44 L50 60 L84 44"/>'
+                . '<path d="M16 58 L50 74 L84 58"/>'
+                . '<path d="M16 30 V58"/><path d="M84 30 V58"/>'
+                . '</g>',
+        ],
+
         'database' => [
             'keywords' => ['sql', 'mysql', 'postgres', 'postgresql', 'database', 'baza danych', 'sqlite', 'mariadb'],
             'accent'       => '#00b4d8',
