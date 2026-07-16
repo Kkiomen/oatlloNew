@@ -1,8 +1,8 @@
 ---
 slug: story-async-javascript-error-handling
 verdict: approved
-reviewed_at: 2026-07-16 06:37
-fingerprint: 2a009b1d6ae56c84842a4beab93c89b2b03209d4
+reviewed_at: 2026-07-16 07:24
+fingerprint: ff504dfeefa04a039db460448014c89aa9d3dd87
 ---
 
 Zaakceptowane w panelu recenzji, bez uwag.
