@@ -18,6 +18,15 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: e8b6d521b87278c97c656cddb30b37362dea11a0
+  checks:
+    - empty retrieval is a real branch every RAG pipeline has to decide on
+    - both poll answers carry an honest cost - a support ticket vs inventing a refund policy
+  notes: |
+    No source article. No numbers or API names to check. The dilemma is real.
 ---
 
 ## Retrieval came back empty. Now what?

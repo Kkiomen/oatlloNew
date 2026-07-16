@@ -19,6 +19,17 @@ caption: |
   Full comparison linked in bio.
 
   Which is guarding your API routes?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:12
+  fingerprint: 8c05fd0aea8c2ba5cca8f81ca43bf834774b4c26
+  checks:
+    - every claim traced to the article, including the faked-OAuth anecdote and both decision questions
+    - code is real Sanctum API, createToken with abilities and read-once plainTextToken
+    - Passport claims hold, auth code grant with PKCE and client credentials exist, password grant discouraged
+    - topic laravel matches, hook and CTA land on the same decision
+  notes: |
+    Nothing version-tied here, safe to sit until the November slot.
 ---
 
 ## A team faked OAuth on Sanctum, then moved to Passport anyway.

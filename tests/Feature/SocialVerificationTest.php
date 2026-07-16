@@ -111,6 +111,54 @@ class SocialVerificationTest extends TestCase
         $this->assertStringNotContainsString('Zły port', $twice);
     }
 
+    /**
+     * NIE JEST TEORETYCZNY. Dwie osobne weryfikacje wpisały w `--check` treść
+     * z backslashem (`Amp\async`, `App\Tests\`). Cudzysłów PODWÓJNY w YAML-u
+     * traktuje `\a` jak sekwencję ucieczki, więc frontmatter przestawał się
+     * parsować — a repozytorium czyta katalog w całości, więc JEDEN zły plik
+     * kładł lint, panel, kalendarz i eksport dla WSZYSTKICH 150 postów.
+     *
+     * @dataProvider nastyChecks
+     */
+    public function test_a_check_with_yaml_metacharacters_does_not_break_the_frontmatter(string $check): void
+    {
+        $stamped = SocialVerificationStamp::apply(
+            $this->raw(),
+            SocialVerification::APPROVED,
+            [$check],
+        );
+
+        $post = (new MarkdownSocialPostParser())->toPost($stamped, 'demo');
+
+        $this->assertSame([$check], $post->verified->checks, "Check '{$check}' nie przetrwał zapisu.");
+    }
+
+    public static function nastyChecks(): array
+    {
+        return [
+            'backslash w nazwie klasy'  => ['kod uzywa Amp\async i Amp\await'],
+            'backslash na koncu'        => ['namespace App\Tests\\'],
+            'dwukropek ze spacja'       => ['kod: skladnia poprawna'],
+            'apostrof'                  => ["Faker's unique() sie przelewa"],
+            'cudzyslow'                 => ['post mowi "truncates", a to nieprawda'],
+            'hash i at'                 => ['#hashtag oraz @handle'],
+            'myslnik na poczatku'       => ['- wyglada jak lista YAML'],
+            'nawiasy klamrowe'          => ['{ wyglada jak mapa YAML }'],
+            'wielolinijkowy znak'       => ['pipe | i > w tresci'],
+        ];
+    }
+
+    public function test_notes_with_yaml_metacharacters_survive(): void
+    {
+        $notes = "Klasa Amp\async: \"cytat\" i 'apostrof'\nDruga linia z # hashem";
+
+        $stamped = SocialVerificationStamp::apply($this->raw(), SocialVerification::ISSUES, [], $notes);
+        $post = (new MarkdownSocialPostParser())->toPost($stamped, 'demo');
+
+        $this->assertStringContainsString('Amp\async', $post->verified->notes);
+        $this->assertStringContainsString('Druga linia z # hashem', $post->verified->notes);
+    }
+
     // -------------------------------------------- współistnienie z werdyktem
 
     /**

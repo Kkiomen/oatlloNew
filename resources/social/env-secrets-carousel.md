@@ -21,6 +21,18 @@ caption: |
   Full write-up linked in bio.
 
   Has .env ever hit your history, or are you about to go and check?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:12
+  fingerprint: 0605afaeef4cd3aa715195d66c72ad9910246c4f
+  checks:
+    - rotation is the fix / scrubbing is housekeeping is the article thesis verbatim, and the post keeps the ordering (rotate first, clean up after)
+    - forks, clones, CI logs and caches already holding a copy - traced to the article leak section and its FAQ answer
+    - git filter-repo --path .env --invert-paths is real, correctly formed syntax and does remove the file from history; filter-repo over the older filter-branch matches the article recommendation
+    - APP_KEY caveat (sessions and encrypted columns tied to the old key stop decrypting, do not fire it on a Friday) is the article line
+    - CTA commit .env.example never .env matches the article baseline section
+  notes: |
+    No numbers to misquote in this one and no version claims that will age. Post is generic secrets hygiene while the source is Laravel-framed, but every slide claim holds outside Laravel too - only the APP_KEY slide is framework-specific and it is labelled as such.
 ---
 
 ## You committed .env once. It is in the history forever.

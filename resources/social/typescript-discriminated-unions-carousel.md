@@ -20,6 +20,17 @@ caption: |
   Full guide linked in bio.
 
   Still juggling isLoading and isError?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:15
+  fingerprint: f07e779ea51da0508254d8234ae009139b17a8bc
+  checks:
+    - every slide traces to the source article - three booleans story, optional-field version, tagged union, by-elimination narrowing, assertNever, widened tag
+    - "TS semantics verified: by-elimination narrowing to SuccessState after ruling out loading and error is real, and never in the default branch does fail the build on an unhandled member"
+    - "assertNever(v: never) parses and compiles - never is assignable to everything, so the template literal is legal"
+    - CTA about a tag widening to string killing narrowing is correct and matches the article pitfall section
+  notes: |
+    Cleanest post in the batch. assertNever uses a template literal where the article used JSON.stringify - both compile, no factual difference. Hook (spinner and error at once) is delivered by the union slide, not a cousin of it.
 ---
 
 ## Three booleans let a spinner and an error message render at once

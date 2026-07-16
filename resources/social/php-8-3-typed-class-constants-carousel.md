@@ -20,6 +20,17 @@ caption: |
   Full guide linked in bio.
 
   Are you on 8.3 yet?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: 1451c38e759570286b9f2b8e14d4d7a13689699b
+  checks:
+    - typed constants really are 8.3, work on class/interface/enum/trait constants, and the type sits between const and the name
+    - "covariance direction correct, narrowing int|string to int is legal and widening to float is a fatal error"
+    - the error string on slide 4 is quoted verbatim from the article and matches the real engine message
+    - fatal-at-link-time not a catchable TypeError, which is why the slide points at CI and static analysis
+  notes: |
+    Version claim is 8.3 and stable, safe for the September slot.
 ---
 
 ## A subclass could silently swap your constant's type before PHP 8.3
@@ -78,5 +89,5 @@ that saves you. Static analysis and CI are the safety net here.
 ## Do not annotate every private one-off
 
 They earn their keep on public APIs, interface constants and base classes that
-teams extend. A throwaway `const MAX = 10;` was already obviously an int. Full
+teams extend. A throwaway `const MAX = 10;` was already obviously an int.
 

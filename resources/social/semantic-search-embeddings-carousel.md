@@ -20,6 +20,17 @@ caption: |
   Full guide linked in bio.
 
   Keyword, semantic, or both in your app?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 9ddb0d515b46432396182b0dff8fc93215f76585
+  checks:
+    - voyage-3 returns 1024 dims and text-embedding-3-small 1536 - correct in the article and in reality; the dim mismatch really does reject the insert
+    - "cosine distance is 1 minus similarity and vector_cosine_ops pairs with <=> - both correct; a mismatched opclass silently skips the index"
+    - input_type document/query and the batched input array match the article
+    - semantic search losing to LIKE on order numbers and SKUs matches the article FAQ
+  notes: |
+    Slide 2 trims title out of the CREATE TABLE but slide 3 selects it. Article schema has title - harmless elision across slides, flagging in case you want the column back.
 ---
 
 ## Anthropic has no embeddings endpoint. Claude writes, Voyage retrieves.

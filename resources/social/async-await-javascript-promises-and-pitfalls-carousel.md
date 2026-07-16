@@ -20,6 +20,17 @@ caption: |
   Full guide linked in bio.
 
   Where's the slowest async path in your project?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:01
+  fingerprint: 07df3aa3eb98ec63d927383f91a97eb81663ec93
+  checks:
+    - 40 profiles / 8 seconds / under one second traced to the article opener and parallel section
+    - loop and Promise.all snippets match the article loadSequential/loadParallel verbatim in substance
+    - the all-rejects-instantly vs allSettled-never-rejects claim matches the article and matches real JS semantics
+    - the async-controls-when-you-wait-not-how-many-run line is quoted correctly from the article pitfall list
+  notes: |
+    Caption says one line fixed it, which is rhetorical - the fix is two lines - but no factual claim is wrong.
 ---
 
 ## Fetching 40 profiles took 8 seconds

@@ -20,6 +20,17 @@ caption: |
   Full map linked in bio.
 
   Which strategy is your app running without naming it?
+verified:
+  verdict: approved
+  at: 2026-07-16 06:54
+  fingerprint: 3c0bafea781a6ba6783397b8dc6c32a375f48be9
+  checks:
+    - write-behind data-loss framing, incrementViews snippet and the 500/sec coalescing all trace to the article
+    - cache-aside snippet matches the article; 'get() returns false, you fall through' is the article's own resilience point
+    - "stampede: 200 simultaneous misses + lock/single-flight fix traced to the article"
+    - TTL 300 'because it felt right' and event-based-eviction-plus-TTL-as-net are the article's wording
+  notes: |
+    CTA's 'pick which two you are buying' is a pick-two framing the article does not use - it describes a consistency/latency/complexity trade-off triangle, not a CAP-style pick-two. Defensible as a slogan and 'write-through trades latency for fresh reads' is correct, but it is the one line that outruns the source.
 ---
 
 ## The cache node dies before the flush. Those writes are gone.

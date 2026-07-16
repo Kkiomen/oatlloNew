@@ -17,6 +17,15 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 7eab8662057f576383af1a016d7845a662ebbf86
+  checks:
+    - switch uses loose comparison so 1 and the string 1 do match, while match is strict - the one of them in the hook points at switch and is correct
+    - match is PHP 8.0+, consistent with the php8 hashtag
+  notes: |
+    The single load-bearing fact (switch is loose, match is strict) is right and is the classic reason to prefer match.
 ---
 
 ## match or switch in new code?

@@ -18,6 +18,20 @@ caption: |
   it. Claiming 8.2 support while only running 8.3 is a promise you cannot keep.
 
   How wide is your matrix?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:17
+  fingerprint: aa51e2cddb5a686ab1e79d5454c4e16b2093a212
+  checks:
+    - "matrix arithmetic is right and matches the article: 3 PHP x 2 Laravel x 2 stability = 12 jobs"
+    - the YAML gotcha is real, not folklore - unquoted 8.10 parses as the float 8.1 and drops the zero; matches the article
+    - fail-fast default really is true in GitHub Actions, so one failure cancels the rest - the slide has the default the right way round
+    - composer update --prefer-lowest and --prefer-stable are real flags and the matrix.stability interpolation produces exactly those; prefer-lowest installing 10.0.0 rather than 10.48 is the article example
+    - exclude block syntax is valid, and Laravel 10 was never built against PHP 8.4 holds against reality - Laravel 10 targets PHP 8.1 and up, PHP 8.4 support arrived in the Laravel 11 line, Laravel 10 was never updated for it
+    - interpolated job name advice traced to the article Reusing the same job name pitfall
+    - caption story (passed on 8.3, broke in an 8.2 pipeline, enum method that shipped later) is the article opening verbatim
+  notes: |
+    One to be aware of rather than fix: this is the post in the batch most exposed to ageing, since it names concrete PHP and Laravel versions. Nothing is wrong today and publish_at is only weeks out, but the 8.2/8.3/8.4 crossed with Laravel 10/11 framing is a snapshot and the exclude slide in particular gets less true as the supported window moves.
 ---
 
 ## 3 PHP versions x 2 Laravel x 2 stability flags equals 12 CI jobs.

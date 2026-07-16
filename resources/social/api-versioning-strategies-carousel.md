@@ -21,6 +21,17 @@ caption: |
   Full comparison linked in bio.
 
   Where do you park your version number?
+verified:
+  verdict: approved
+  at: 2026-07-16 06:53
+  fingerprint: 690ebf055c2d71e7fc66cc74abee7c41df00fc70
+  checks:
+    - full_name->name, three mobile clients, twenty minutes, partner integration all traced to the article opener
+    - Route::prefix('v1')->group + apiResource matches article code; URL-as-cache-key claim matches
+    - "header slide: header('X-API-Version','1'), in_array, 400, Vary: X-API-Version all in article"
+    - Deprecation and Sunset are real HTTP headers; six-month window matches article
+  notes: |
+    No version-pinned or 'latest' claims - ages well despite the October publish_at.
 ---
 
 ## Renaming one JSON field broke three mobile apps in twenty minutes.

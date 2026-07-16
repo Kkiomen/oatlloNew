@@ -18,9 +18,18 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: ff504dfeefa04a039db460448014c89aa9d3dd87
+  checks:
+    - semantyka Promise.all vs allSettled zgodna z artykulem
+    - "arytmetyka: 2 z 3 = dwie trzecie"
+  notes: |
+    POPRAWIONE PO WERYFIKACJI: post mowil 'Three calls. One fails' i zaraz 'allSettled hands you three-quarters of a page'. Dwa z trzech to dwie trzecie, nie trzy czwarte - ta publicznosc sprawdza takie rzeczy w pol sekundy. Poprawione. Wymaga Twojej ostatecznej akceptacji.
 ---
 
 ## Three calls for one dashboard. One fails. What ships?
 
 `Promise.all` hands you the error and discards the two that worked.
-`allSettled` hands you three-quarters of a page. Pick your failure.
+`allSettled` hands you two-thirds of a page. Pick your failure.

@@ -18,6 +18,14 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: d45bbc8435c0cfa384bc465e1d5bdc73d2b75a40
+  checks:
+    - AMPHP single-thread claim is correct - fibers are cooperative concurrency on one thread, not parallelism
+    - the non-blocking drivers caveat is the honest one and is present - blocking drivers defeat the whole thing
+    - queue side is fair - restartable and already installed in a typical Laravel app
 ---
 
 ## Ten API calls: async runtime or a queue?

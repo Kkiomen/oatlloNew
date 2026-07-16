@@ -20,6 +20,17 @@ caption: |
   Full guide linked in bio.
 
   Do you know your production engine's default level?
+verified:
+  verdict: approved
+  at: 2026-07-16 06:59
+  fingerprint: e443dace488631fd1364ce3eb95e4e9e893d07e9
+  checks:
+    - "engine defaults verified against reality, not just the article: MySQL InnoDB really does default to REPEATABLE READ and PostgreSQL to READ COMMITTED"
+    - non-repeatable vs phantom distinction (one row's value vs a result set's membership) is correct and matches the article
+    - SQLSTATE 40001 is the real Postgres serialization_failure code; 'SERIALIZABLE converts bad outcomes into errors, not prevention' is accurate and the article's framing
+    - DB::transaction(closure, 3) second arg is genuinely $attempts and reruns on deadlock; the keep-side-effects-out and atomic-decrement caveats are the article's own
+  notes: |
+    Nightly-report opener traces verbatim to the article. Nothing here ages.
 ---
 
 ## A nightly report summed to a number that never actually existed

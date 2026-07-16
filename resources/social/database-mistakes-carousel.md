@@ -20,6 +20,16 @@ caption: |
   Full write-up linked in bio.
 
   Which one bit you first: FLOAT money, a comma-separated tags column, or MySQL's fake utf8?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:07
+  fingerprint: 92f9b08bb43dc5570e3a8b0f7e1cccabd3fb87c9
+  checks:
+    - utf8 = utf8mb3 (3 bajty) potwierdzone w dokumentacji MySQL, nie tylko w artykule
+    - skladnia CONVERT TO CHARACTER SET utf8mb4 poprawna
+    - composite PK w tabeli laczacej - poprawny SQL
+  notes: |
+    POPRAWIONE PO WERYFIKACJI: slajd mowil, ze insert 'truncates with Incorrect string value' - to sklejenie dwoch roznych trybow awarii. Przy strict mode (domyslnym w MySQL 5.7 i 8) insert jest ODRZUCANY bledem 1366; obcinanie to sciezka non-strict i przychodzi z ostrzezeniem, nie z tym bledem. Zmienione na 'is rejected'. RYZYKO STARZENIA: utf8mb3 jest deprecated, MySQL zapowiada, ze utf8 stanie sie aliasem utf8mb4 - na sierpien OK, ale nie trzymac tego w kolejce latami. Wymaga Twojej ostatecznej akceptacji.
 ---
 
 ## Your invoice totals are off by a cent and nothing threw
@@ -70,7 +80,7 @@ Now it's a plain indexed join. Renaming a tag is a one-row update.
 ## The charset named utf8 lies to you
 
 In MySQL, `utf8` is `utf8mb3`: three bytes per character, max. One emoji in a
-display name and the insert truncates with `Incorrect string value`.
+display name and the insert is rejected: `Incorrect string value`.
 
 <!-- slide role="cta" -->
 

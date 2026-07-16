@@ -20,6 +20,16 @@ caption: |
   Full write-up linked in bio.
 
   Have you ever un-adopted a pattern?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:02
+  fingerprint: 46efc24a9fa15796e80d113942f748c96b4f8edb
+  checks:
+    - every number traces to the article opening paragraph verbatim - eleven-second dashboard, joins across six tables, simple writes, two weeks of plumbing, materialized view in an afternoon
+    - the it-got-fast line matches the article the-dashboard-got-fast; the post does not overclaim that the split failed, only that it was the expensive answer
+    - the caption earns-its-complexity-when-reads-and-writes-diverge line is the article conclusion, and exhaust-the-index-cache-and-view-first matches its when-NOT-to-use section
+  notes: |
+    Single-slide quote, no code, no version-pinned claim - nothing here can age or be misread.
 ---
 
 ## We split reads from writes and burned two weeks

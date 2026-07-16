@@ -20,6 +20,16 @@ caption: |
   Full write-up in bio.
 
   What was your first move when that alert fired?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:08
+  fingerprint: c68e63b8358afe7f828f485fc01e199cf3c84db8
+  checks:
+    - matematyka 50 workerow x 6 serwerow = 300 vs limit 200 - zgodna z artykulem
+    - PgBouncer transaction mode i emulated prepares - zgodne ze zrodlem
+    - "PHP share-nothing: brak wlasnego poola - potwierdzone, nie tylko zrodlowe"
+  notes: |
+    POPRAWIONE PO WERYFIKACJI: slajd CTA urywal sie w pol zdania na 'Full write-up' - to byl MOJ blad z commita f36077f (usuwanie formulki 'link in bio' zatrzymywalo sie na lamaniu linii i zostawialo wstep). Fragment renderowal sie doslownie na ostatnim slajdzie. Usuniety, slajd konczy sie teraz na swojej puencie. Fakty byly OK od poczatku. Wymaga Twojej ostatecznej akceptacji.
 ---
 
 ## 50 workers x 6 servers = 300 connections. The DB allows 200.
@@ -74,5 +84,5 @@ connections.
 ## Transaction mode breaks session state
 
 Anything relying on state across transactions misbehaves, server-side prepared
-statements included, so PDO users switch to emulated prepares. Full write-up
+statements included, so PDO users switch to emulated prepares.
 

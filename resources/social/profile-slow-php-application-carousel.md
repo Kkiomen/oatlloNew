@@ -21,6 +21,17 @@ caption: |
   Full guide linked in bio.
 
   What was your worst hotspot, honestly?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 68ad5b4c9046939e5a5b9098e726bde5b1a1cf48
+  checks:
+    - every number traced to the article - 900ms/40ms wall vs CPU, 412 queries in 780ms, the 400-query checkout fixed with one with() and one index
+    - xdebug config is real, mode=profile and start_with_request=trigger with XDEBUG_TRIGGER is the correct mechanism
+    - inclusive-then-self cost drilling order matches the article and the real cachegrind workflow
+    - hook N+1 story is what the slides deliver, CTA closes the same anecdote
+  notes: |
+    Slide 3 says two built-ins but the code shows microtime plus printf; the article meant microtime plus memory_get_peak_usage, which the post dropped. Reads fine standalone, flagging only so the reviewer knows it was noticed.
 ---
 
 ## One database query fired 400 times, not the loop I rewrote.
@@ -75,5 +86,5 @@ never the right tool for it.
 ## Fix one thing. Measure the same way.
 
 The 400-query checkout ended as one `with()` call and one index. Eight
-hundred milliseconds gone in two lines, because I stopped guessing. Full
+hundred milliseconds gone in two lines, because I stopped guessing.
 

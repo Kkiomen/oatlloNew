@@ -21,6 +21,18 @@ caption: |
   Ten of them are linked in bio.
 
   Which one did you learn embarrassingly late?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: 5db78981a682242dddd068df8f7cbde7feff1034
+  checks:
+    - "every command is real and correctly formed: git switch -c, git switch main, git restore FILE, git restore --staged FILE, git stash, git stash pop, git reflog, git switch -c recovered HEAD@{5}"
+    - the restore distinction is right and is the part most often got backwards - plain restore discards working-tree edits, --staged only unstages and keeps them; matches the article
+    - checkout being overloaded into switch (branches) and restore (files) is accurate git history and matches the article FAQ
+    - reflog recording almost every move of HEAD, and reset --hard being recoverable from it, traced to the article; a couple of months is the article own phrasing and squares with its 90-day gc note (git default gc.reflogExpire is 90 days)
+    - caption says ten commands - the source article is literally 10 Useful Git Commands, count matches
+  notes: |
+    topic git is right. Nothing version-pinned that ages: switch and restore have been stable since git 2.23 and the post never calls them new. Only diff from the source is a shortened branch name (feature/export vs feature/user-export), which changes nothing.
 ---
 
 ## You learned add, commit, push. Then you stopped.

@@ -21,6 +21,17 @@ caption: |
   Full comparison linked in bio.
 
   Which side effect bit you three months later?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:17
+  fingerprint: 6158bd0497460c5258bcc471053b0b9d73d7d3b6
+  checks:
+    - "core claim correct: query-builder update compiles one SQL statement, no model hydrated, no Eloquent event, observer skipped"
+    - "the four bypass methods are all real and all genuinely skip events: saveQuietly, updateQuietly, query-builder delete, DB facade"
+    - headline says four more ways and there are exactly four lines
+    - performance framing (you do not want 50,000 objects instantiated for one UPDATE) is the article own reasoning, not invented
+  notes: |
+    Clean. Audit-log-went-silent story is the article lived example.
 ---
 
 ## Bulk updates skip observers, and your audit log goes silent.

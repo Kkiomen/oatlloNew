@@ -21,6 +21,18 @@ caption: |
   Full write-up linked in bio.
 
   What found yours first: Debugbar, Telescope, or a very slow Monday?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:11
+  fingerprint: 7be1039d2869b2315286734a63d4444237edf5ae
+  checks:
+    - 51 queries for 50 posts, and still 2 queries at 5,000 posts - both numbers are the article numbers, not rounded
+    - Post::with(author) and the select ... where id in (...) shape match the article; with() does an IN query not a JOIN, which the slide correctly shows as two statements
+    - Model::preventLazyLoading(! app()->isProduction()) is a real Laravel API and matches the article snippet verbatim; the dev-throws/prod-quiet claim matches LazyLoadingViolationException behaviour
+    - lazy-by-default explanation traced to the article Why it happens section
+    - "caption details check out: four seconds dashboard and Debugbar/Telescope are both in the article"
+  notes: |
+    topic laravel is right. Nothing version-pinned that ages - preventLazyLoading has been in Eloquent since Laravel 8/9 and is current.
 ---
 
 ## Your Blade loop is running 51 queries

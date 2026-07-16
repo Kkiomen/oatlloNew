@@ -20,6 +20,16 @@ caption: |
   Full write-up linked in bio.
 
   Which key are your API routes actually using?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:17
+  fingerprint: 014c26232bec7705b3b17548e6477ea2d30f286b
+  checks:
+    - throttle:60,1 keys on user id and falls back to IP for guests - correct
+    - array of limits counts independently per by() key; 500 user + 100 IP matches the article
+    - file/array cache means each server counts alone, so 3 servers turn 60 into 180 - matches the article arithmetic
+    - RateLimiter::attempt named args key/maxAttempts/callback are the real parameter names, returns false when over the limit
+    - "429 headers correct: Retry-After and X-RateLimit-Reset are handed to the response() callback"
 ---
 
 ## Three service accounts on one office IP throttled as one client

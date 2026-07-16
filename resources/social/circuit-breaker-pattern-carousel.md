@@ -20,6 +20,17 @@ caption: |
   Full walkthrough linked in bio.
 
   Which dependency would take you down today?
+verified:
+  verdict: approved
+  at: 2026-07-16 06:56
+  fingerprint: 6a2bcf7cd25e7b9f3b6d8d0e6d19b4c1e19e80a2
+  checks:
+    - Friday-sale payment-gateway incident and the 10s-hang/worker-pool mechanics trace to the article
+    - closed/open/half-open plus 'the probe stops the flapping' match the article's state section
+    - share-nothing counter bug and the cache-backed recordFailure snippet match the article's implementation and its Java/Go porting note
+    - CircuitOpenException + cachedFallback usage and the 'no fallback = fast failure instead of slow' CTA both trace to the article
+  notes: |
+    Slide 4 headline says 422 and its body says 404. Both appear in the article and both are correct (neither means the dependency is down), but the slide argues one code and illustrates another.
 ---
 
 ## A slow API is more dangerous than a dead one. It drains your workers.

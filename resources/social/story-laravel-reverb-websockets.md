@@ -18,6 +18,15 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: d6a6ca0749b812014e064a1223eab0f6e4db61d9
+  checks:
+    - broadcasting queued by default confirmed in Illuminate/Broadcasting/BroadcastManager.php queue() - dispatchNow only for ShouldBroadcastNow, everything else goes to the queue
+    - both poll options are real fixes - run a worker, or implement ShouldBroadcastNow which extends ShouldBroadcast
+  notes: |
+    nothing throws is accurate - the event is queued successfully, it just never gets processed without a worker
 ---
 
 ## Your event fires. The browser hears nothing.

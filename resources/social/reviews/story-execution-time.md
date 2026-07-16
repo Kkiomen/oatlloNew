@@ -1,8 +1,8 @@
 ---
 slug: story-execution-time
 verdict: approved
-reviewed_at: 2026-07-15 21:45
-fingerprint: 9189f3753c510a003c810b46462b9f1d474846f2
+reviewed_at: 2026-07-15 23:28
+fingerprint: b4d10caf20afaaa38c77cbf52061a7043b22c673
 ---
 
 Zaakceptowane w panelu recenzji, bez uwag.

@@ -17,6 +17,13 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 766a489ab44ba7f7ac8799d04a90073cf51e127b
+  checks:
+    - CORS is browser-enforced - Postman does not enforce it, so a green Postman request genuinely proves nothing
+    - both poll answers defend as a lived-experience question
 ---
 
 ## Works in Postman. Blocked in the browser.

@@ -18,6 +18,15 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 99485f4ca28683025dc45490c19d594637d4f2d5
+  checks:
+    - invented method that reads plausibly is a real and well-known LLM failure mode
+    - "both poll answers defensible: docs-first vs letting the IDE fail to resolve"
+  notes: |
+    No source article, no checkable numbers or API names. Question stands on its own.
 ---
 
 ## It called a method that does not exist.

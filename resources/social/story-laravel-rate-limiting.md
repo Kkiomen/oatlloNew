@@ -18,6 +18,13 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 479a1a0703046d78209f4470562b77d78140426b
+  checks:
+    - both poll sides genuinely defend themselves - user ID breaks for guests with no ID, IP collapses behind office NAT
+    - RateLimiter keying by user id or IP is standard Laravel practice
 ---
 
 ## Key the limit by user ID or by IP?

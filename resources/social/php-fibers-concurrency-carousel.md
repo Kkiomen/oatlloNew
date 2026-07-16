@@ -20,6 +20,17 @@ caption: |
   Full guide linked in bio.
 
   Have you ever written `new Fiber` in app code?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: 9bad664f2aa4e19d30213b627dffb0a9ccc13dfa
+  checks:
+    - concurrency-not-parallelism, cooperative suspend, the generator contrast and blocking-call caveat all trace to the article
+    - fiber code runs, start() then resume() with suspend() returning the resumed value is the real 8.1 API
+    - Fiber really is PHP 8.1 core, no extension - slide says 8.1 and is right
+    - AMPHP await with two async() calls matches the article v3 example and the real Amp async and Amp Future await functions
+  notes: |
+    AMPHP is a library not core, which the post never blurs. CTA correctly says you benefit without writing new Fiber.
 ---
 
 ## PHP fibers give you concurrency, but never actual parallelism

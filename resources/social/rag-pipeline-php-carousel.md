@@ -20,6 +20,15 @@ caption: |
   Full pipeline linked in bio.
 
   Built RAG in PHP yet?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: e93fb0b063e2d5ffdbf68224139656303c16e1dc
+  checks:
+    - Anthropic has no embeddings endpoint and its docs point at Voyage AI - true in the article and in reality
+    - "pgvector <=> is cosine distance, lower is closer, and HNSW prevents a full scan - all correct"
+    - top-k of 4 matches the article FAQ (start 3-5, usually begin at 4)
+    - about 200 lines matches the article opening
 ---
 
 ## Anthropic has no embeddings API. Claude only generates the answer.
@@ -83,5 +92,5 @@ a fluent one that guesses.
 ## Start at a top-k of 4
 
 Too few and you miss the context. Too many and you bury the useful chunk in
-noise and burn tokens. Tune it together with chunk size, never alone. Full
+noise and burn tokens. Tune it together with chunk size, never alone.
 

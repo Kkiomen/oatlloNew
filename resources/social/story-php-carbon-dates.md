@@ -18,6 +18,13 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: cb09d2b3d5c45f6e9a5234de0331ff0faa43c74c
+  checks:
+    - Carbon is mutable so addDays() mutates in place - the premise is correct
+    - both fixes are real and the contrast is accurate - copy() must be remembered at every call site, CarbonImmutable makes forgetting impossible
 ---
 
 ## addDays() moved a date you needed. Fix it how?

@@ -1,8 +1,8 @@
 ---
 slug: story-week-0
 verdict: approved
-reviewed_at: 2026-07-15 21:44
-fingerprint: 9007959e8e4e7e15afaa2ee858df924913c01628
+reviewed_at: 2026-07-15 23:28
+fingerprint: a0de2bedc1b4b60876f525f3e031f55cbdb5a7bb
 ---
 
 Zaakceptowane w panelu recenzji, bez uwag.

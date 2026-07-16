@@ -1,8 +1,8 @@
 ---
 slug: story-php-course
 verdict: approved
-reviewed_at: 2026-07-15 21:46
-fingerprint: 7d9dde65a3e6ff04e132ca9a1fc1f38abc350bed
+reviewed_at: 2026-07-15 23:29
+fingerprint: 82c4c7f2f7753eb6761a3b26fae3f1089888b797
 ---
 
 Zaakceptowane w panelu recenzji, bez uwag.

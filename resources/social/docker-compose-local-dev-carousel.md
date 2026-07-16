@@ -17,11 +17,14 @@ caption: |
   The -v drops the named volumes too. Exactly what you want for a clean reset,
   exactly what you don't want when you meant to stop the stack for the night.
 
-  Full compose.
-
-  yaml linked in bio.
 
   Ever wiped a local DB on muscle memory?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:10
+  fingerprint: 0a304d9b70667e787008db944254bd34ccccd48f
+  notes: |
+    Caption is broken mid-word: it reads Full compose. / blank line / yaml linked in bio. That is compose.yaml split across a paragraph break on the period - it publishes as two nonsense sentences. Everything else checks out: down -v wiping named volumes, depends_on waits for start not ready, service_healthy, the bind-mount grief on macOS and Windows and the dropped version key all trace to the article. One thing for the human to weigh: the slide 4 healthcheck drops the -p password flag the article carries. mysqladmin ping still exits 0 once the server answers so the check is not false, just shorter than the source.
 ---
 
 ## One docker compose down -v and your DB is gone

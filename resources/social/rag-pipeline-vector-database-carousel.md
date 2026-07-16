@@ -21,6 +21,17 @@ caption: |
   Full deep dive linked in bio.
 
   What fixed your retrieval quality first?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: 8db3c3c4ecea6ebaecbf40215732ac2009d09f12
+  checks:
+    - pre-filter vs post-filter problem, hnsw.ef_search as a per-session dial, partial index and Qdrant filterable payload indexes all match the article
+    - RRF formula 1/(k + rank + 1) matches the article code exactly and fuses by rank so scales never mix
+    - roughly 5M vectors as the pgvector limit is the article number, not a rounding
+    - E4021 and the overlap 10-20 percent chunking advice trace to the article
+  notes: |
+    Ten rows requested, three came back - the 3 is illustrative, not a measurement; the article only says short of LIMIT. Reads as an example, not a benchmark.
 ---
 
 ## Your ANN index returns a full LIMIT of chunks that get filtered away.

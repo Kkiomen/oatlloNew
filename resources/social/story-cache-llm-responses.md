@@ -18,6 +18,14 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 964688820186a054145846d436988696214a628a
+  checks:
+    - exact-match caching really does miss on reworded prompts - the two phrasings hash differently
+    - semantic caching firing on the wrong question is a real, honest failure mode
+    - both poll answers defend
 ---
 
 ## Free-text prompts. Hit rate near zero.

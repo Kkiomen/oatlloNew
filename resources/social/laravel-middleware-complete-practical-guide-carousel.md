@@ -20,6 +20,18 @@ caption: |
   Full guide linked in bio.
 
   Still hunting for Kernel.php?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: 05e54150348a9a64e98d527c7510764c3f82aea6
+  checks:
+    - Kernel.php really is gone from fresh Laravel 11/12 skeletons; registration moved to bootstrap/app.php withMiddleware - correct
+    - append / web() / api() / alias() are the real Middleware methods and map to the old Kernel array scopes as claimed
+    - next is the hinge - before/after split and the blank page from forgetting to return next(request) both correct
+    - terminate() gets a fresh instance by default unless bound as a singleton - correct, matches the docs and the article
+    - ordering claim correct - reading request->user() before StartSession yields null
+  notes: |
+    Version claim is the whole point of the post and it is the right way round.
 ---
 
 ## Kernel.php is gone in Laravel 11. Half of Stack Overflow missed it.

@@ -20,6 +20,15 @@ caption: |
   Full guide linked in bio.
 
   Which factory trick took you longest to find?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: e24ac6f62833266f5dbf58ae5f18fcc5ecccec6b
+  checks:
+    - Faker unique() throws OverflowException once the pool drains - real behaviour, traced to the article
+    - make() vs create(), states, has()/for(), magic hasPosts(3)/forUser(), Sequence - all real APIs, all in the article
+    - afterMaking fires for make() and afterCreating only after create() - correct and matches the article caveat
+    - name states after the concept not the column - article pitfall, reproduced faithfully
 ---
 
 ## Faker's unique() throws OverflowException on big batches.

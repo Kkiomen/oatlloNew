@@ -86,15 +86,31 @@ class SocialVerificationStamp
         return "---\n" . $frontmatter . $block . "---\n" . $body;
     }
 
+    /**
+     * Skalar YAML odporny na treść, której nie kontrolujemy.
+     *
+     * CUDZYSŁÓW POJEDYNCZY, NIE PODWÓJNY – i to jest cała pointa tej metody.
+     * W YAML-u wewnątrz `"..."` backslash zaczyna sekwencję ucieczki, więc check
+     * o treści `Amp\async` albo `App\Tests\` wysypywał parser frontmattera
+     * (`\a`, `\T` to nieznane escape'y). Nie było to teoretyczne: dwie osobne
+     * weryfikacje położyły w ten sposób parsowanie CAŁEGO `resources/social/`,
+     * a z nim lint, panel, kalendarz i eksport – bo repozytorium czyta katalog
+     * w całości i jeden zły plik zabiera wszystkie.
+     *
+     * W `'...'` nie ma żadnych escape'ów: jedynym znakiem specjalnym jest sam
+     * apostrof, podwajany. Backslash, dwukropek, `#`, `@` – wszystko dosłowne.
+     */
     private static function yamlScalar(string $value): string
     {
         $value = trim($value);
 
-        // Cudzysłów tylko gdy trzeba – inaczej YAML dostaje zbędny szum.
-        if (preg_match('/^[\w ()\/\.,:;\'\-\+\#\$\!\?=>&%*]+$/u', $value) && ! str_contains($value, ': ')) {
+        // Bez cudzysłowu tylko dla treści bezspornie bezpiecznej: litery, cyfry,
+        // spacje i kropki. Wszystko inne idzie w apostrofy – taniej niż zgadywać,
+        // który znak akurat dziś jest specjalny.
+        if ($value !== '' && preg_match('/^[\p{L}\p{N} .]+$/u', $value)) {
             return $value;
         }
 
-        return '"' . str_replace('"', '\"', $value) . '"';
+        return "'" . str_replace("'", "''", $value) . "'";
     }
 }

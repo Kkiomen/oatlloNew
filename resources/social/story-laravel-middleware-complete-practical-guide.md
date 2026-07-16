@@ -18,6 +18,14 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: b627d6a3a0859a574a54cb2191440a1fc908ffec
+  checks:
+    - "the factual claim is true: the global middleware stack runs on every request including login and health check routes, the web group only wraps routes in that group"
+    - "poll both-sides: global stack and web group are the two real scopes, and the body names the real cost of global"
+    - Laravel 11 accurate - middleware scope is configured in bootstrap/app.php now, but the frame names no file so nothing is stale
 ---
 
 ## It has to run on every request.

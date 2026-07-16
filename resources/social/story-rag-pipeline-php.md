@@ -18,6 +18,15 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: ee02322c31798bb47fe925d0234daf17a4779fb4
+  checks:
+    - a plain array plus cosine similarity genuinely works at a few hundred chunks
+    - pgvector with HNSW is a real alternative, both poll answers defensible
+  notes: |
+    No source article. Scale qualifier (a few hundred chunks) is what makes the array answer honest rather than bad advice.
 ---
 
 ## A few hundred chunks. No vector database yet.

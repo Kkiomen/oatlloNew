@@ -20,6 +20,17 @@ caption: |
   Full write-up linked in bio.
 
   Which `readFile` call in your codebase is the time bomb?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: 218dc6827505048498282868d461617bf41ba57c
+  checks:
+    - chunk arithmetic recomputed, 2 GB at 64 KB really is about 32,000 data events; 64 KB is the real default highWaterMark for file streams
+    - pipe forwards no errors and cleans up nothing, pipeline destroys the chain, both trace to the article
+    - code runs, once(stream, drain) from node:events/promises is a valid await target and _transform signature is correct
+    - hook 2 GB CSV story pays off, CTA callback stall matches the article pitfall list
+  notes: |
+    Nothing version-pinned beyond Node 18+ behaviour that is not claimed on the slides.
 ---
 
 ## A 2 GB CSV killed a worker that was fine on a 40 MB sample

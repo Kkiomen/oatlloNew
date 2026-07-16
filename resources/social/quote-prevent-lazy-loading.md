@@ -20,6 +20,14 @@ caption: |
   Full write-up linked in bio.
 
   Is this already in your AppServiceProvider, or are you about to add it?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: fd4563539b154b1736b05f468107712d7ee69a2c
+  checks:
+    - Model::preventLazyLoading is a real Eloquent API and the isProduction guard matches the article verbatim
+    - LazyLoadingViolationException is the real exception class name
+    - dev-throws / prod-off behaviour matches the article
 ---
 
 ## Make the silent N+1 loud

@@ -20,6 +20,14 @@ caption: |
   Full guide linked in bio.
 
   Which layer did your app forget?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: cb5c6037c438ade2b1039d1c488fc55f484602c4
+  checks:
+    - lang/ absent until lang:publish on Laravel 11 - correct and traced to the article
+    - Carbon locale is separate from the app locale - correct, App::setLocale does not move Carbon
+    - French users seeing English validation errors is the article own opening story
 ---
 
 ## French users saw English errors: validation was never translated.

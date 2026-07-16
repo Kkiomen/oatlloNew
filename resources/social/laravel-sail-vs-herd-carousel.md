@@ -20,6 +20,17 @@ caption: |
   Full comparison linked in bio.
 
   Which one are you running today?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:17
+  fingerprint: 00d2eb96d4705f1a346648cb3cc8ed946a3777be
+  checks:
+    - 'the causal claim is right and is the whole post: Sail slowness on Mac/Windows is the Docker VM filesystem boundary, not Sail; gap vanishes on native Linux'
+    - 'Herd = native PHP + nginx + .test domains, no VM; Sail = Docker Compose wrapper committed to the repo - both accurate'
+    - 'parity argument correct and not overstated - works on Herd is not works in the container we deploy'
+    - 'topic docker drives the Docker logo, which fits a Sail-vs-Herd post'
+  notes: |
+    Deliberately avoids pinning Herd Pro pricing or feature list, which is the one thing here that would rot in the queue. Good call.
 ---
 
 ## On Mac, Sail's file sync turns instant page loads into laggy ones

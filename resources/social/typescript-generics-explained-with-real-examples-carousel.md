@@ -20,6 +20,17 @@ caption: |
   Full walkthrough linked in bio.
 
   Which generic finally made it click for you?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:15
+  fingerprint: 76747bdc79d072ac7c6747f49c6c7daad519a518
+  checks:
+    - "getProperty<T, K extends keyof T>(obj: T, key: K): T[K] is the article signature verbatim and is valid TypeScript"
+    - the trimmed user object still supports every annotation - name is string, id is number, email errors as not a key
+    - "extends means assignable to, not subclass of, and len([1,2,3]) really does return number[] rather than HasLength - matches the article"
+    - any is contagious and a generic is not - traces to the article FAQ
+  notes: |
+    Slide 3 trims the article user from three fields to two; every comment on it stays true. Slide 4 renames logLength to len but the claim is unchanged. CTA states the appears-exactly-once rule absolutely where the article hedges with usually - it is the canonical phrasing of that rule, so not a defect.
 ---
 
 ## getProperty(user, "email") fails at compile time

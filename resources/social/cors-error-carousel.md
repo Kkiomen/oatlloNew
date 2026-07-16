@@ -20,6 +20,17 @@ caption: |
   Full write-up linked in bio.
 
   How long did you debug the frontend before you realised it was a server header?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:02
+  fingerprint: 9f07d575bb3dfbfb099fe90f95be12e70f8e58ec
+  checks:
+    - the enforced-by-the-browser-configured-on-the-server framing and the Postman-proves-nothing point are the article central claims and correct
+    - JSON Content-Type triggering preflight verified against the CORS spec - application/json is not a safelisted content type
+    - wildcard origin combined with credentials include being rejected outright, and the echo-specific-origin plus Allow-Credentials-true fix, are correct and match the article
+    - config/cors.php allowed_origins plus supports_credentials is the article Laravel fix and the real config shape
+  notes: |
+    Slide 3 states the simple-request case without hedging - the article says the request often reaches the server, because a failed preflight means the real request never runs. Slide 4 covers that case explicitly, so the carousel is right as a whole, but the caption alone repeats the unhedged version.
 ---
 
 ## Your API works in Postman and dies in the browser.

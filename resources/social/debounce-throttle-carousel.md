@@ -20,6 +20,18 @@ caption: |
   Full write-up linked in bio.
 
   Which one does your search box use right now, honestly?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:09
+  fingerprint: c7d0384b2e8ae5f6591246b1499dbd07a8530e6d
+  checks:
+    - "hook math: java = 4 keystrokes = 4 requests, article says 12 for javascript - derivable, not invented"
+    - debounce code matches the article implementation; arrow fn preserves this, clearTimeout on undefined id is safe - would run
+    - slide 2 log sequence is verbatim from the article
+    - debounce vs throttle framing (zero-then-one vs steady drip) traced to the article comparison table
+    - CTA sentence is the article gut-check, hook and payoff line up
+  notes: |
+    topic javascript matches. No version or price claims that could age.
 ---
 
 ## Your search box fires on every keystroke

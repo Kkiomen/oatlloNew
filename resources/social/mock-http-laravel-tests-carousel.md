@@ -20,6 +20,17 @@ caption: |
   Full guide linked in bio.
 
   Is your suite offline by default?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: 401cfd04e3ec39a1fb99226aa4f2a21593c39eb4
+  checks:
+    - fake order-wins, assertSent, ConnectionException timeout and preventStrayRequests all trace to the article
+    - method names are real, preventStrayRequests not preventStray; hasHeader with one arg is valid
+    - cURL error 28 is the genuine timeout string; 201 and 502 branches match the article controller
+    - topic laravel matches, hook CI-vs-local story pays off in the CTA
+  notes: |
+    Slide 3 code uses an undefined $created placeholder, but it reads as illustrative shorthand, not a claim.
 ---
 
 ## A test passed locally, then failed in CI: it hit a real staging API

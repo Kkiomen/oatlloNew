@@ -21,6 +21,12 @@ caption: |
   Full write-up linked in bio.
 
   How big is your production PHP image right now? Run docker history and look.
+verified:
+  verdict: issues
+  at: 2026-07-16 07:10
+  fingerprint: 514dc08cf7eb408f3fe8454cbba3dcbec15e38bc
+  notes: |
+    Number inconsistency inside the post. Slides 1 and 2 and the caption all say 1.4 GB, but the CTA says 1.3 GB in. 140 MB out. Same app. Both numbers are real but they are DIFFERENT images in the article: 1.4 GB is the author anecdote, ~1.3 GB is the Original row of the benchmark table for an internal Laravel service. The post welds them into one story and then asserts Same app, so the seam shows - a reader tracking the number sees the before shrink by 100 MB between the hook and the payoff. Pick one number. Everything else traces cleanly: the .git/node_modules/dev-toolchain/Xdebug list, the .dockerignore savings line, Debian hundreds vs alpine tens plus the musl warning, and the 600/250/140 ladder are all verbatim from the article table. Minor second point: the slide 3 Dockerfile is abridged past the point of running - no WORKDIR and no COPY . . in the builder, so COPY --from=builder /app /app would have no /app to copy. Shape and claim are right, it just would not build as printed.
 ---
 
 ## Your PHP image is 1.4 GB. It doesn't need to be.

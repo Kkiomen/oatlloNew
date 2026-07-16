@@ -19,6 +19,17 @@ caption: |
   Full comparison linked in bio.
 
   Which one is in your newest project?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: 78e7902136dbab562837277459114201bffae10a
+  checks:
+    - Pest wraps PHPUnit, binds $this to the TestCase, incremental migration and the data-provider comparison all trace to the article
+    - code is real, it() with ->with() datasets and $this->assertDatabaseHas inside a Pest test both work
+    - PHPUnit data providers really are static methods plus an attribute, as the slide says
+    - hook is the runner fact and the CTA does not overclaim, it keeps the article's boring-is-defensible line
+  notes: |
+    The article title says 2026, but the post carries no year, so nothing dates it.
 ---
 
 ## Pest tests still run on the PHPUnit engine underneath.

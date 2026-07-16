@@ -21,6 +21,16 @@ caption: |
   Full write-up linked in bio.
 
   What was hiding in the plan the last time you finally ran EXPLAIN?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 70f71cf7567f02b84e8b8f50cad254f1a11d81cd
+  checks:
+    - eleven seconds in prod vs under 40ms locally matches the article opening
+    - type ALL plus key NULL is the real MySQL full-scan signature; ref and rows 37 after the composite index match the article output exactly
+    - EXPLAIN ANALYZE printing estimate next to actual, and ANALYZE TABLE as the fix for diverging stats - both correct for MySQL and stated in the article
+  notes: |
+    rows: 2900000 in the plan block is the articles 2938104 rounded to the 2.9M the article itself quotes. Reads as illustrative output rather than a verbatim paste.
 ---
 
 ## Eleven seconds in prod. 40ms on your laptop.

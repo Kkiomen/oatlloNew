@@ -20,6 +20,12 @@ caption: |
   Full checklist linked in bio.
 
   Where do your uploads live right now?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:15
+  fingerprint: 51a640e7fdeb1e0b2777fa7d2d48dbe37c9f6ad1
+  notes: |
+    Slide 5 (File::image() rejects SVG on purpose) is version-dependent and stated as unconditional fact - on a SECURITY post, which makes it worse than a normal slip. The allowSvg parameter only exists from Laravel 12 (PR 54331, merged Jan 2025). On Laravel 11 - including 11.36.1 that THIS repo runs - Illuminate/Validation/Concerns/ValidatesAttributes::validateImage() is literally validateMimes(..., [jpg, jpeg, png, gif, bmp, svg, webp]): SVG is ALLOWED and File::image() takes no arguments at all. Verified in vendor plus the 12.x source. So a reader on Laravel 11 reads this slide, believes File::image() is blocking the scriptable SVG, and is not protected. Fix: say from Laravel 12 File::image() excludes SVG by default (opt in with allowSvg: true); on 11 and older it does not, use File::types([...]). Same fix needed in the article, which states it unversioned. Rest of the post (uuid name, local disk, authorized route, dimensions bomb) is accurate.
 ---
 
 ## An upload named invoice.php became a working shell on the server.

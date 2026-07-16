@@ -18,6 +18,14 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: 4b3b2e3801c457a1ebb69742e9cd0279db3014e9
+  checks:
+    - "the load-bearing claim is true: Eloquent model observers do not fire on a query builder bulk update, so cache invalidation via observer silently misses it"
+    - shorter TTL is one line and never lies is fair - it bounds staleness without correctness risk
+    - "poll both-sides: TTL and observer are the two real strategies"
 ---
 
 ## Users see stale data. Where does the fix go?

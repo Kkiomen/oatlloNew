@@ -21,6 +21,17 @@ caption: |
   Full write-up linked in bio.
 
   match or switch in new code, and does anything still pull you back to switch?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 52b9c130f2bec8dbe1a4ae98b321aa007f92fa1f
+  checks:
+    - ran the 1e1 example on PHP 8.4 - switch really does match case 10 and match really does fall to default, so the hook is literally true on current PHP
+    - UnhandledMatchError confirmed as the real thrown class, verified by running it
+    - == vs === framing, the $_GET migration risk and the produce-a-value rule all trace to the article
+    - match is 8.0, correctly not claimed as newer
+  notes: |
+    Verified by execution, not by reading. The PHP 8 change to numeric-string comparison does not undermine the example - 1e1 is a numeric string, so it still juggles.
 ---
 
 ## switch thinks '1e1' and 10 are the same thing

@@ -18,6 +18,17 @@ caption: |
   Runnable code in the full guide, linked in bio.
 
   Which one cost you an hour first?
+verified:
+  verdict: approved
+  at: 2026-07-16 06:57
+  fingerprint: c7f0a2f965ed351cafb7a250caca7058a64ea3ac
+  checks:
+    - max_tokens required, POST /v1/messages as the only endpoint, and the three headers (x-api-key, anthropic-version 2023-06-01, content-type) all verified against the real API, not just the article
+    - system as a top-level string outside messages matches the article and the current docs for the initial prompt
+    - Laravel Http default timeout really is 30s, so ->timeout(60) is justified; ->retry(3,200) retries non-2xx, and 429/529 are both documented retryable
+    - "$data['content'][0]['text'] ?? '' and usage.input_tokens are the correct shape and field names"
+  notes: |
+    'Jamming a system role into messages is not how this API works' is the article's line and correct for a persona/system prompt, but Opus 4.8 now does accept mid-conversation {role: system} entries in messages[] (never as messages[0], and top-level system is still the documented home for the initial prompt). Narrow enough not to mislead this post's reader. Slide 2 pins claude-sonnet-5 - currently Active, but it is a model ID, so it is the one line here with a shelf life.
 ---
 
 ## max_tokens is required. Forget it and Claude rejects the request.

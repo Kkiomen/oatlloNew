@@ -20,6 +20,17 @@ caption: |
   Eight habits linked in bio.
 
   What's the worst commit message you've shipped?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:10
+  fingerprint: 945b4a1d57afd3e689390f89bd5002ebeff724d8
+  checks:
+    - 900-line blob titled fixes, forty minutes of git bisect, three commits would have answered in two - all four details traced to the article opening of Commit Small and Often
+    - "caption line nobody reasons about 400 lines matches the article: reviewer reasons about twelve lines, rubber-stamps four hundred"
+    - caption says eight habits - counted the article headings, there are exactly eight, and the article itself says not all eight
+    - topic git fits a post about commits and bisect
+  notes: |
+    No code on this one. Nothing version-tied that could age.
 ---
 
 ## A 900-line commit titled "fixes"

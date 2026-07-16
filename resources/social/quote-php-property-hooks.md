@@ -20,6 +20,16 @@ caption: |
   Full write-up linked in bio.
 
   Are you on 8.4 yet, or still waiting on the hosting?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: 7dacfdf7b7c682eec081447c628f876442fbf17d
+  checks:
+    - get => hook syntax and virtual property (no stored value) match the article verbatim
+    - PHP 8.4 is the correct version for property hooks (shipped Nov 2024)
+    - Ada Lovelace output matches the article example
+  notes: |
+    Snippet elides the constructor that declares first/last (article has the full class). Standard slide elision, syntax is valid 8.4.
 ---
 
 ## The getter that did nothing is gone

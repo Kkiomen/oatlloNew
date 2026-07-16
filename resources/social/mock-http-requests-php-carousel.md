@@ -20,6 +20,16 @@ caption: |
   Fakes, guards and the interface rule are in bio.
 
   What took your build down last?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: 354c6faa79b6d75da79e72b2adc4eecf43e1bcb0
+  checks:
+    - MockHandler FIFO, Throwable thrown not returned, catch-all order and the do-not-mock-what-you-do-not-own rule all trace to the article
+    - RequestException takes message plus request, matches the real Guzzle constructor
+    - assertNotSent framing is the article's own underrated point
+  notes: |
+    Retry-After is 5 on the slide vs 30 in the article; arbitrary example value, not a factual claim.
 ---
 
 ## Tests that hit the real network are weather reports
@@ -86,5 +96,5 @@ network. Put it in your base test case and every mistyped pattern surfaces.
 ## Don't mock what you don't own
 
 Both helpers pin your tests to Guzzle. Wrap the client behind your own interface
-and mock that - the day you swap vendors, your domain tests survive. Full guide
+and mock that - the day you swap vendors, your domain tests survive.
 

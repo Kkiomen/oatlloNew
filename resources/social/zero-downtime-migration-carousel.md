@@ -20,6 +20,18 @@ caption: |
   Full write-up linked in bio.
 
   What is the biggest table you have run a naive ALTER against?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:15
+  fingerprint: baba80dc48fbabbf0b76f5cdd16ba3872eb8e1c4
+  checks:
+    - 40 seconds and 30 million rows are the article numbers exactly, not rounded
+    - nullable, no default being an instant metadata change on MySQL 8 for most cases matches the article and keeps the article hedge - the post also drops after(email), which removes the mid-table add that the article lists as expensive
+    - ALTER TABLE with ADD INDEX plus ALGORITHM=INPLACE, LOCK=NONE is valid MySQL 8 syntax and a secondary index does support INPLACE with LOCK=NONE
+    - LOCK=NONE rejecting the statement rather than silently taking a blocking lock is correct behaviour, verb included - it errors out, it does not downgrade
+    - expand / dual-write / chunked backfill in a queued job / switch reads / drop last is the article five-step order unchanged
+  notes: |
+    Rollback slide (revert one deploy, old column never stopped being current) traces to the article FAQ. Code slide is safer than the article version because it omits after(email).
 ---
 
 ## The migration locked the table. The site was down for 40 seconds.

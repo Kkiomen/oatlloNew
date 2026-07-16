@@ -18,6 +18,13 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:15
+  fingerprint: 3cb5956b902715c47f19ae617c6916b7e637b413
+  checks:
+    - "the load-bearing claim is true: a polymorphic morphMany comments table cannot carry real foreign keys, two plain tables can - so only one lets the database enforce it"
+    - "poll both-sides: morphMany and two tables both ship, framing is fair to each"
 ---
 
 ## Comments on posts AND videos. Pick one.

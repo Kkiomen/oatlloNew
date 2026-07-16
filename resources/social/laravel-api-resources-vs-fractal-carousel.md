@@ -20,6 +20,19 @@ caption: |
   Full comparison linked in bio.
 
   Resources or Fractal on your last API?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:18
+  fingerprint: 34d0c22b050f1cb234f194520c3644555fb43664
+  checks:
+    - 'the leak premise is the article premise: skip serialization and the contract becomes whatever columns are in the table today, which is how a migration exposes a password reset token'
+    - 'JsonResource toArray(Request): array is the real signature, and this->id works because the base class forwards property access to the wrapped model - the article says exactly this and it is true of JsonResource'
+    - 'when() and whenLoaded() are real APIs used correctly; whenLoaded the quiet hero and refusing to serialize a relation that was not eager-loaded is the article verbatim'
+    - 'Fractal side is accurate: availableIncludes is a real TransformerAbstract property, include=posts.comments nested parsing is Fractal first-class behaviour, and Resources genuinely have no built-in ?include= parsing (article FAQ confirms you write that yourself)'
+    - 'the two-questions slide matches the article two cases for Fractal - serialization needed outside Laravel (CLI, Symfony) and include control central to the product'
+    - 'CTA is the article performance note verbatim: queries first, caching second, serialization approximately never'
+  notes: |
+    topic laravel is right. Nothing here ages - no version numbers, and the post wisely leaves behind the article only dated line (its FAQ asks whether Fractal is worth learning in 2026). One hair worth noting: the post says whenLoaded means a resource cannot quietly fire a wall of extra queries, slightly firmer than the article, which adds that Resources make the mistake easy to spot but do not prevent it on their own. Scoped to a field actually guarded by whenLoaded the post claim is true, so not a defect.
 ---
 
 ## toArray() forgot one column and your API leaked a reset token.

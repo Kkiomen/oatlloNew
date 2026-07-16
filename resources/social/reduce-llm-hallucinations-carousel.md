@@ -21,6 +21,15 @@ caption: |
   Full field guide linked in bio.
 
   What is your worst hallucination story?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: d216bb7ea2466ca74659a3d932b816f74b27dd68
+  checks:
+    - the refund-policy story, next-token framing, ONLY plus I-dont-know escape hatch, citation check and confidence enum all trace to the article
+    - in_array citation check and the schema enum fragment are valid PHP and match the article code
+    - 50-200 eval inputs matches the article eval loop exactly
+    - you can reduce but not eliminate hallucinations - the article says the same
 ---
 
 ## A support bot once invented a refund policy that never existed.

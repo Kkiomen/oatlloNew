@@ -20,6 +20,17 @@ caption: |
   Full write-up linked in bio.
 
   Which of these shipped to your prod?
+verified:
+  verdict: approved
+  at: 2026-07-16 06:54
+  fingerprint: 9d1a552311c775d2287c4c1eaee44747b4520d65
+  checks:
+    - empty catch / broken webhook / six hours / payment retry loop traced to article opener
+    - fetch not rejecting on 500 and the res.ok fix are correct JS and match the article
+    - forEach-swallows-the-promise explanation is accurate; AbortSignal.timeout(5000) is a real Node API
+    - unhandledRejection handler code matches article and the 'tripwire not strategy' framing is the article's own
+  notes: |
+    finally slide abbreviates the controller to 'c' and destructures 'signal' without showing either declaration - readable as an excerpt, but it is the one snippet that would not run standalone.
 ---
 
 ## An empty catch block hid a broken webhook for six hours.

@@ -17,6 +17,12 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: e36d9939e93e517e6bf79203d68f2d5f0584cf78
+  checks:
+    - open question sticker with no factual claim to check - A month of bugs that never throw matches the run of silent-failure stories in this batch
 ---
 
 ## What should we take apart next?

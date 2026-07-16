@@ -21,6 +21,14 @@ caption: |
   Full write-up linked in bio.
 
   What is the strangest duplicate your app has ever created?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: 61b641e2b36560fb87b1574b6b7349e4d58441fc
+  checks:
+    - SELECT-then-if-then-INSERT snippet and the atomic UPDATE ... WHERE remaining > 0 both match the article verbatim
+    - check-then-act framing, the double-click duplicate charge and the unique-constraint CTA all trace to the article
+    - SQL parses, the guard genuinely closes the read-write gap
 ---
 
 ## Two clicks. One order. Two charges.

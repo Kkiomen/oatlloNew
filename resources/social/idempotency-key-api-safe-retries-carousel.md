@@ -20,6 +20,19 @@ caption: |
   Full guide in bio.
 
   Which endpoint of yours is still safe to retry?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:17
+  fingerprint: 988fda715597d10dd862e72c89532b5bb06c30b6
+  checks:
+    - 'the double-charge timeline (charge, commit, response lost, client retries, charge again) and Nothing here is a bug - every component did its job are the article verbatim'
+    - 'key generated OUTSIDE the retry loop with randomUUID, reused on every attempt - matches the article client snippet and its warning that regenerating per attempt defeats the pattern; the key represents intent not a single TCP attempt is the article line'
+    - 'check-then-act race slide is the article DON''T snippet, and the reasoning (both SELECTs return not-found before either INSERT) is correct concurrency, not hand-waving'
+    - 'UNIQUE KEY uniq_scope (user_id, idem_key) is lifted from the article schema, including the important part - scoped to user_id, not idem_key alone'
+    - 'insert-first-catch-the-violation claim is right: only one request wins the INSERT, the rest land in catch, database serializes atomically with no separate lock - article verbatim'
+    - 'CTA branch table matches the article step 4 exactly: different payload 422, in flight 409 back off and retry, completed replay stored response with original status, and 24h TTL is the article default'
+  notes: |
+    Code is sound on both slides - the JS is valid and puts the key in the right place, the PHP is explicitly labelled DON'T and illustrates the race correctly. No versions, vendors or prices, so nothing ages. topic php is fine given the server snippet, though the post is really transport-agnostic API design.
 ---
 
 ## A lost response after a successful charge is how you double-bill
@@ -83,5 +96,5 @@ no separate lock.
 ## Branch on the collision, don't guess
 
 Different payload -> 422. Still in flight -> 409, back off and retry. Completed
--> replay the stored response with its original status. 24h TTL. Full guide
+-> replay the stored response with its original status. 24h TTL.
 

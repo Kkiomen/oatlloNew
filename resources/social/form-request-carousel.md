@@ -20,6 +20,12 @@ caption: |
   Full write-up linked in bio.
 
   How long is your longest controller method, no lying?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:15
+  fingerprint: cf0d1e72b88f09687b8e7376835f3d359b6cd123
+  notes: |
+    The payoff contradicts the source article, and the article is right. Slide 3 and the caption say the fix is One class, shared by store and update - type-hinting StoreArticleRequest in both. The article says the opposite, twice: its Reusing rules section opens with Duplicated rules between StoreArticleRequest and UpdateArticleRequest are where drift creeps in and prescribes TWO thin request classes sharing a trait, and its FAQ (required only on create but optional on update) answers Split them into StoreArticleRequest and UpdateArticleRequest, with update using sometimes for partial PATCH payloads. So the post advises the thing the source specifically routes around, and it is not just a taste difference: a class literally named StoreArticleRequest, whose rules are required, cannot serve a PATCH that sends a partial payload - it would reject every partial update. The carousel opens on store/update drift and closes by prescribing a shape the article treats as the cause of a different bug. Not traceable to the source and a Laravel dev will say so. Verified positively and worth keeping: the authorize() slide is CORRECT and I checked it against reality rather than the article - vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/request.stub on this repo (Laravel 11.36.1) does return false, so a fresh form request really does reject everything until changed. Also clean: Laravel resolving the class then running authorize() then rules before the controller body, and validated() returning only ruled keys to keep stray input out of mass assignment - both are the article verbatim.
 ---
 
 ## Thirty lines of validate(). Then again in update().

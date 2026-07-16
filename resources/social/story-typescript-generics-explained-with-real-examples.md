@@ -18,6 +18,15 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: e46d6059f3ea323b3b96aea706b3384068833fd0
+  checks:
+    - "as Promise<T> is an assertion and not a runtime check - traces to the generics article verbatim"
+    - fair trade on an endpoint you own matches the article honesty note about internal endpoints
+  notes: |
+    Listed as sourceless but the claim traces cleanly to the generics article. Type-level assertion claim is correct.
 ---
 
 ## fetchJson<T> lies if the API lies

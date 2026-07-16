@@ -19,6 +19,17 @@ caption: |
   Full guide linked in bio.
 
   Which silent failure cost you an afternoon?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:17
+  fingerprint: b043bbfa85597835bb8ec306e130b654567cc68b
+  checks:
+    - 'broadcasting is queued by default and fails silently with no worker - correct, and the silence is the real symptom'
+    - 'ShouldBroadcastNow sends in-process, losing queue buffering - correct trade-off, matches the article'
+    - 'leading dot in listen(.order.shipped) tells Echo it is a broadcastAs name; without it Echo listens for the FQCN - correct'
+    - 'channel auth string vs int denial and the (int) cast on both sides - matches the article and routes/channels.php pattern'
+  notes: |
+    Slide 2 code fence mixes a shell line and a PHP fragment under one php tag - deliberate as a two-fixes illustration, and lint owns fences anyway. Nothing factually wrong.
 ---
 
 ## Broadcasting is queued by default. No worker means silence.

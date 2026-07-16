@@ -20,6 +20,12 @@ caption: |
   Full guide in bio.
 
   What served you stale data last?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:15
+  fingerprint: 79182e7a4bd4a1aaccd79e53a41b69f02844cd56
+  notes: |
+    Wrong verb on slide 4 (Tags need a driver that can do them). It says file and database throw BadMethodCallException the moment you FLUSH a tag. They do not - Illuminate/Cache/Repository::tags() throws it itself, before flush() is ever reached (verified in vendor, Laravel 11.36: tags() checks supportsTags() and throws This cache store does not support tagging). This matters, it is not pedantry: as written a reader concludes tagging WRITES work on file cache and only flushing breaks, so Cache::tags([...])->remember(...) looks safe. It is not - it throws too. Fix: throw the moment you TAG anything. The source article contradicts itself - its body says it right (call Cache::tags(...) on them and you will get a BadMethodCallException) and its FAQ says it wrong; the post copied the FAQ version, so fix the article FAQ too. Everything else on the post traces cleanly and Cache::flexible with [60,120] is real.
 ---
 
 ## A seeder bulk-inserted rows and our cache stayed wrong all afternoon.

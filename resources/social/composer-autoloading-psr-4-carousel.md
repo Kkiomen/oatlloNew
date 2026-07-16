@@ -20,6 +20,17 @@ caption: |
   Full walkthrough in bio.
 
   Which one of these ate your afternoon?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:02
+  fingerprint: 199ca9b1efea57d5b7d6294d53ed805ac0385561
+  checks:
+    - PSR-4 algorithm (strip prefix, backslash becomes slash, append .php) plus longest-prefix-wins, where the App-Tests prefix is matched before the shorter App prefix, match the article and the PSR-4 spec
+    - case-sensitivity trap is real - macOS and Windows are case-insensitive, Linux ext4 is not - matching the article works-on-my-machine section
+    - the two legitimate dump-autoload triggers and the PSR-4-computes-the-path-at-runtime point match the article exactly
+    - composer install --no-dev --optimize-autoloader --classmap-authoritative is the article own deploy line, and authoritative skipping the filesystem while being fatal to runtime-generated classes is accurate
+  notes: |
+    Slides 2 and 3 fence a name-to-path mapping illustration as PHP, but the content is not PHP and would not parse if run. Cosmetic only, no false claim; other posts in this set use a plain text fence for the same job.
 ---
 
 ## Your class loads on Windows, then explodes when you deploy to Linux.

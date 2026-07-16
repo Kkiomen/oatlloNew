@@ -18,6 +18,15 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: d7ce878abd735b3e736d2b8011a40d1ceeb769ce
+  checks:
+    - both leak paths are real documented Octane hazards - static properties and container singletons persist across requests in a long-lived worker
+    - Neither throws a thing is accurate - state bleed is silent, there is no exception
+  notes: |
+    hook asks which leaks first while the body says both leak; that is the poll provocation, not a contradiction - the body states it openly
 ---
 
 ## Which one leaks first under Octane?

@@ -18,6 +18,13 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: b092d0eaf095fdd9583311796a452c72380a6551
+  checks:
+    - truncate loses the earliest turns, summarize costs an extra API call - both accurate
+    - both poll answers defend; the frame says so explicitly and does not pick a side
 ---
 
 ## The chat is filling the context window

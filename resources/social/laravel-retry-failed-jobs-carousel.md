@@ -20,6 +20,16 @@ caption: |
   Full write-up linked in bio.
 
   What is sitting in your failed_jobs table right now?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:17
+  fingerprint: 3e75982906ab569d1c69b33bfff53a634fa51c22
+  checks:
+    - 'the load-bearing number is real: I checked vendor, WorkCommand signature is tries=1 by default, so one shot is accurate not rhetoric'
+    - 'retryUntil() takes precedence over $tries - correct, worker checks the clock first'
+    - '$tries counts every attempt including releases and timeouts, $maxExceptions counts only uncaught exceptions - correct, and 25 vs 3 matches the article'
+    - 'backoff() array [10,30,120] with the last value reused when attempts exceed entries - correct'
+    - 'queue:retry re-pushes and removes the row but runs nothing without a worker; queue:flush deletes - both correct'
 ---
 
 ## Without --tries set, a worker gives every job just one shot

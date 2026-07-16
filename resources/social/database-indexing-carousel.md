@@ -21,6 +21,17 @@ caption: |
   Full write-up linked in bio.
 
   What is the worst full table scan you have found in production?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:02
+  fingerprint: 154dbdbf6765fa5e2ccf95dd9a50450f2a9a7e4f
+  checks:
+    - the fine-on-100-dev-rows-full-scan-at-100-million hook is the article own line, and the B-tree sorted-copy framing matches
+    - leftmost-prefix rule verified - the composite on (customer_id, status, created_at) serves customer_id and customer_id plus status, but not status alone - correct per the rule and the article
+    - YEAR(created_at) defeating an index on created_at while the range rewrite keeps it is correct SQL and matches the article silent-killer section
+    - EXPLAIN ANALYZE plus MySQL type ALL and Postgres Seq Scan as scan indicators are accurate and match the article
+  notes: |
+    Phone-book analogy compresses the article last-name-then-first-name version but keeps the logic intact. No version-pinned claims.
 ---
 
 ## Fine on 100 dev rows. A full scan at 100 million.

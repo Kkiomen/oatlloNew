@@ -21,6 +21,17 @@ caption: |
   Full guide linked in bio.
 
   Which channel did you bolt on last?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: ac0dc0a9a5a832c8ca453c155eb40ecdfeccbc86
+  checks:
+    - "via() returning [mail, slack, database] plus one to{Channel} method each - correct"
+    - toArray() is the shared fallback for database AND broadcast, split with an explicit toDatabase() - correct
+    - ShouldQueue + Queueable needs no call-site change, and the sync driver still runs inline - correct
+    - Notification::route(...)->route(...) on-demand needs no Notifiable model - real API
+  notes: |
+    Slide 3 is actually MORE correct than the source article, which says my email and my broadcast payloads needed to differ - email uses toMail() and never reads toArray(). The post says the two payloads (database and broadcast), which is right. Worth fixing in the article, not here.
 ---
 
 ## One class sends the same message to mail, Slack and a bell icon.
@@ -90,5 +101,5 @@ source row is deleted. Store IDs and the few fields you render.
 ## The recipient does not need a table row
 
 `Notification::route('mail', 'ops@example.com')->route('slack', $url)`
-notifies a webhook target with no Notifiable model anywhere. Full guide
+notifies a webhook target with no Notifiable model anywhere.
 

@@ -20,6 +20,18 @@ caption: |
   Full guide linked in bio.
 
   Which queue bug cost you the most?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: df9dc4f66850acb9d4f99519cb5263e3d5e129ba
+  checks:
+    - "numbers check out: 3 corrupt of 10,000 leaves 9,997 - matches the article arithmetic"
+    - allowFailures() semantics correct, including the trap that then will NOT fire if anything failed, use hasFailures()
+    - cancel is cooperative - cancel() sets a flag, queued jobs still get picked up; SkipIfBatchCancelled middleware is a real class
+    - "batch API names are real: Bus::findBatch, progress() 0-100, finished(), failedJobs, Batchable trait"
+    - sync driver cannot run a batch - matches the article and the reason (shared record many workers update)
+  notes: |
+    Clean. CTA doubles as a pitfall slide rather than a call to action, but that is a taste call, not a defect.
 ---
 
 ## One failed job kills the whole batch without allowFailures()
@@ -77,5 +89,5 @@ That is the whole thing.
 ## The sync driver will not run a batch
 
 Batching needs a shared record that many workers update: `database`, `redis`, a
-real driver. Forget the `Batchable` trait and `$this->batch()` throws. Full
+real driver. Forget the `Batchable` trait and `$this->batch()` throws.
 

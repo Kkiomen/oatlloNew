@@ -18,6 +18,17 @@ caption: |
   further down, and the numbers quietly go wrong with no error to point at.
 
   How long did that one take you to find?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: d83767662bb41c07a7821253f47841ab7245c5d2
+  checks:
+    - mutability example verified, both variables really do print 2026-01-08 because Carbon mutates in place
+    - "Carbon 3 diff methods are signed floats where Carbon 2 returned an absolute int; absolute: true is the real named argument"
+    - copy() and CarbonImmutable are both real fixes; immutable_datetime is a real Eloquent cast
+    - hook mutation claim is what every slide delivers
+  notes: |
+    Carbon 3 ships with Laravel 11 matches the article. Laravel 11 allows ^2.72.2|^3.0, so a fresh install resolves to Carbon 3 - true, but it is the one claim tied to a version if the slot slips far.
 ---
 
 ## addDays() mutates the date you meant to keep

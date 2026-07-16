@@ -20,6 +20,17 @@ caption: |
   Full write-up linked in bio.
 
   enum or string for status columns, and what talked you into it?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 0b4d36302930f45b0fb56f457b1b48a634795c45
+  checks:
+    - from() throws ValueError and tryFrom() returns null, both real and correctly assigned to trusted vs untrusted input
+    - backed enum syntax valid; Eloquent $casts with an enum class is a real cast that returns the case
+    - the in_array guard and manual cast the CTA says you stop writing are the article's own list
+    - topic php matches, hook typo story is what every slide serves
+  notes: |
+    Enums are 8.1 and stable. Post has no formats field, so it defaults to post - intentional or not, worth a glance.
 ---
 
 ## Your status column takes any string you can typo

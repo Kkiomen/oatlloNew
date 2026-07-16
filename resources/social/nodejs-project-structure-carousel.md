@@ -21,6 +21,16 @@ caption: |
   Full guide linked in bio.
 
   Layered or feature based in your repo?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: b04bb468d1206ae20d345816e7ba662a850b179c
+  checks:
+    - layered-vs-feature tradeoff, the rm -rf deletion test, service without req, config read once and madge --circular all trace to the article
+    - JS is valid, optional chaining with ?.length and ?? default are correct modern Node
+    - hook promises the deletion test and the slides deliver exactly that
+  notes: |
+    No versions or numbers to age. Post-only format, no reel.
 ---
 
 ## Deleting a feature folder is the real test of your structure.

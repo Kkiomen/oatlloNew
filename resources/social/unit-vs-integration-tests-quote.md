@@ -20,6 +20,17 @@ caption: |
   Full write-up linked in bio.
 
   Pyramid or trophy in your repo?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:15
+  fingerprint: d71e26afe9ad736f595b6b5a791e946a060d32c0
+  checks:
+    - 11-minute suite letting a broken checkout ship is the article opening, not a rounded or invented number
+    - mountain of unit tests never caught it traces verbatim to the pyramid section
+    - the three wiring bugs (route, validation rule that never fires, query that N+1s into a timeout) are the article three, unaltered
+    - caption four seconds and caught almost nothing is verbatim, and the logic/wiring rule matches the article dividing line
+  notes: |
+    Quote post, every line traces. topic testing has no theme so it takes the no-logo fallback with a rotated accent - that is the intended path, not a miss.
 ---
 
 ## An 11-minute suite let a broken checkout ship

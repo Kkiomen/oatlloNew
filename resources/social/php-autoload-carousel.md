@@ -21,6 +21,12 @@ caption: |
   Full write-up linked in bio.
 
   Which one got you last: a stale map, or a namespace that didn't match the folder?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:15
+  fingerprint: 4dadc1900f9f55c0cdb57ffbfa4d2a049a7b71a3
+  notes: |
+    Slide 4 (The map doesnt know the file yet) is wrong in the context the post builds. It says Composer caches the class to file map and a class you just wrote stays invisible until you regenerate it - but slides 2 and 3 establish PSR-4, and under PSR-4 a brand-new class in an already-mapped namespace loads immediately, with no dump-autoload. I verified this by hand: registered a PSR-4 prefix, created a class file seconds later that exists in no classmap, and class_exists() returned true (classMapAuthoritative false). The claim is true for CLASSMAP dirs (Laravel database/seeders, database/factories), for a NEW namespace prefix or an edited autoload block, and for production --optimize / --classmap-authoritative. It is not true for the plain PSR-4 case the slide is sitting next to. The source article says both things - the dump-autoload section states it broadly, then the classmap section and the FAQ correct it (PSR-4 can find new files on the fly in development) - and the post inherited the broad version without the correction. This is a PHP audience; the reply this earns is PSR-4 does not need dump-autoload for that. Suggested fix: reframe the slide around what actually goes stale - a classmapped dir, a changed autoload block, or an optimized production autoloader - rather than any newly written class.
 ---
 
 ## The class is right there. PHP says it doesn't exist.

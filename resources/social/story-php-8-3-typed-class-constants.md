@@ -18,6 +18,14 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 3f83c1d320cc1fc3127df7c762b0c85e3c52470d
+  checks:
+    - typed class constants are genuinely PHP 8.3, version in the post matches the feature
+    - the setup is the real pre-8.3 hole - an untyped const int could be overridden with a string in a subclass with no error
+    - topic php and the php83 hashtag match the content
 ---
 
 ## Your base class says the constant is an int.

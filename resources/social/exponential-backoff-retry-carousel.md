@@ -20,6 +20,19 @@ caption: |
   Full write-up linked in bio.
 
   Does your retry loop have a cap on the delay?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: cccdc7772528a0f82008243e1e457986bdfabcec
+  checks:
+    - Http::retry(times:, sleepMilliseconds:, when:) - all three named arguments are the real Laravel HTTP client signature, and sleepMilliseconds genuinely accepts a closure, so passing a jitter closure works as shown; matches the article snippet
+    - delay = min(cap, base * 2 ** attempt) matches the article formula, and PHP precedence is right (** binds tighter than *, so base * (2 ** attempt))
+    - full jitter as random_int(0, ceil) matches both the article fullJitterDelay() and the AWS definition; equal jitter described correctly as half fixed, half random with a guaranteed minimum gap
+    - "thundering-herd arithmetic checks out and is the article example verbatim: fail at T=0, all wait 100ms, all retry T=100, all wait 200ms, collide again T=300"
+    - retryable list (timeouts, connection resets, DNS blips, 429, 5xx) and non-retryable (400, 422, 401, 403) match the article; payload still wrong on attempt five is the article reasoning
+    - Retry-After wins over the formula, fall back to jitter when absent - article FAQ says exactly this
+  notes: |
+    topic php fits. Two-second hiccup and the self-inflicted outage story are the article opening verbatim. No versions or prices to age; the Laravel retry API is stable.
 ---
 
 ## A 2-second API hiccup, then our own retries kept it down for good

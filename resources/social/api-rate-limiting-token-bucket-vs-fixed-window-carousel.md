@@ -20,6 +20,17 @@ caption: |
   Full comparison linked in bio.
 
   Which limiter is sitting in front of your API right now?
+verified:
+  verdict: approved
+  at: 2026-07-16 06:53
+  fingerprint: a987f4665ddf276ffb43d2480d72a7076ea4491c
+  checks:
+    - boundary burst 2x/200-in-one-second traced to article
+    - TokenBucket named args match the article class signature (capacity, refillRate)
+    - hMGet/hMSet are real phpredis methods; race + Lua EVAL caveat matches article
+    - 429 + Retry-After + X-RateLimit-Remaining match article's response block
+  notes: |
+    Stripe/AWS token bucket claim is the article's and holds up. Slide 4 headline is about the race while the body explains lazy refill - both true, slightly divergent focus.
 ---
 
 ## A fixed window limiter lets clients push 2x your rate limit for free.

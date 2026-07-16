@@ -20,6 +20,17 @@ caption: |
   Full guide linked in bio.
 
   What was hiding in your prefix?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 0c2a558f0aef0c117019c3d64747415f780bbe70
+  checks:
+    - byte-exact prefix match, tools then system then messages render order, and the silent-invalidator list all trace to the article
+    - cache_control ephemeral is the real field; cacheReadInputTokens is the PHP SDK camelCase the article uses, not invented
+    - the sum-of-three-usage-fields point is the article's own and is correct - input_tokens is only the uncached remainder
+    - no prices, no token thresholds, no lifetimes on the slides - the article deliberately withholds those and the post did not reinvent them
+  notes: |
+    Good restraint on aging claims. Nothing here goes stale if Anthropic changes cache pricing or TTLs before the September slot.
 ---
 
 ## One changed character before your marker kills the whole cache.

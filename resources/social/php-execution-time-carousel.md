@@ -20,6 +20,12 @@ caption: |
   Full write-up linked in bio.
 
   Be honest: do you raise the limit, or go looking for why?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:15
+  fingerprint: 2f7316c5bca54873490234ea8ad710ed567d5352
+  notes: |
+    Slide 5 is headlined Three knobs, not one and then shows two. It gives php.ini max_execution_time and ini_set(), and the body text names exactly those two (The ini file sets the baseline. ini_set() changes one script). The third knob never appears anywhere in the post. In the source article the three knobs are max_execution_time, ini_set() AND set_time_limit() - and set_time_limit() is the one the article calls the one most people actually want, because it is the one with the surprising behaviour: it RESETS the counter to zero and grants N seconds from that moment, rather than adding to a budget already spent. That is the most useful fact in the whole article (it is what makes set_time_limit(60) inside a chunk loop work) and the post drops it while still promising three. Either restore set_time_limit() as the third knob - it is also the strongest slide material here - or retitle to Two knobs. Everything else in the post checks out: the Linux claim that time blocked in a system call has traditionally not counted against the timer is correct and correctly hedged, the tight-loop vs slow-query contrast is right, and the smoke-alarm framing and the CLI-is-not-a-web-request CTA both trace to the article.
 ---
 
 ## Maximum execution time exceeded

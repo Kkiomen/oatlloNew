@@ -20,6 +20,15 @@ caption: |
   Full guide linked in bio.
 
   Which cache bug cost you a weekend?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: f90b492e346a856f65cea4a0b32a795c1ae4e265
+  checks:
+    - SETNX-then-EXPIRE race and the atomic SET key val EX 10 NX fix match the article and real Redis semantics
+    - Redis is single-threaded for command execution - stated in the article and true
+    - five hundred requests stampede, the 3600 + rand(0, 300) jitter and the maxmemory 512mb / allkeys-lru CTA all trace to the article
+    - Cache::lock -> get / release in a finally is valid Laravel
 ---
 
 ## SETNX then EXPIRE has a race that can lock everyone out forever

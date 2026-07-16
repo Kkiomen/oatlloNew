@@ -20,6 +20,17 @@ caption: |
   Full write-up linked in bio.
 
   What is the worst thing an assistant confidently invented for you?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: 7ca516b98a0642fbd6b0937272ff08aa4ff03519
+  checks:
+    - front-load context, name the edge case, hallucinated APIs, ask for tests in the same prompt and the security read all trace to the article
+    - the good-prompt example matches the article, PHP 8.2 with the same three accepted formats and InvalidArgumentException
+    - no tool or model names claimed, nothing to age
+    - hook vague-prompt promise is what every slide delivers, CTA draft-not-delivery is the article's own line
+  notes: |
+    Deliberately tool-agnostic, which is also what the article's FAQ argues. Safe.
 ---
 
 ## A vague prompt gets code that breaks on the second edge case

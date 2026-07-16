@@ -20,6 +20,12 @@ caption: |
   Full guide linked in bio.
 
   Which flag outlived its ticket the longest?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:15
+  fingerprint: c771cedf4a48a4fb3205adeb4da0142300102327
+  notes: |
+    FALSE PREMISE - the whole hook and slide 2 rest on a trap that does not exist. Pennant Drivers/Decorator::resolve() does: value = value instanceof Lottery ? value() : value - it INVOKES the Lottery and stores the resulting bool. Verified in laravel/pennant source on both 1.x and master. So Feature::value() never returns a Lottery object, and a ternary on Lottery::odds(1,2) gives a real 50/50 split, not everyone green. The source article laravel-feature-flags-pennant.md repeats the same wrong claim (section Rich values, not just on/off), so the article needs the fix too. Note Laravel own Pennant docs use Lottery::odds() as the default arm of Feature::active() - which only works BECAUSE Pennant resolves it. Rest of the post (purge, null scope, dead flags) is accurate.
 ---
 
 ## Lottery::odds(1,2) is truthy. A ternary hands everyone green.

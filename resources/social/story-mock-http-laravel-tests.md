@@ -18,6 +18,13 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:14
+  fingerprint: f607d7f83ce0c11a63ad0d90f13347f33475026c
+  checks:
+    - Http::fake is the real Laravel API name and needs nothing running, so Only one needs nothing running is correct
+    - hook and body line up - provider staging down, both options keep CI green
 ---
 
 ## The provider's staging API is down. CI is red.

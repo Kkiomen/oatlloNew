@@ -21,6 +21,19 @@ caption: |
   Five causes and five fixes, linked in bio.
 
   Which one was yours: missing @csrf, or a session that quietly died?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:17
+  fingerprint: ab16879552e4cf774010ce5d0949532910855a25
+  checks:
+    - '419 really is not a standard HTTP status - it is unassigned in the IANA registry and Laravel uses it for TokenMismatchException out of VerifyCsrfToken; matches the article and reality'
+    - 'the page is fine, a token did not match, and read it that way and the fixes stop feeling like guesswork - article verbatim'
+    - 'CSRF running as middleware before the controller, hence nothing of yours in the logs - correct middleware ordering, and the article says the request never reaches your controller'
+    - 'blade form with @csrf is correct and would work; the directive does expand to a hidden _token input as the article states'
+    - 'SESSION_DOMAIN and SESSION_SECURE_COOKIE breaking the cookie round-trip, and JS needing X-CSRF-TOKEN attached manually - both traced to the article fixes 2 and 3'
+    - 'the count holds: caption says five causes and five fixes, and the article Why the CSRF token mismatch happens lists exactly five (missing @csrf, session expired, cookie not read, AJAX no header, stale cache) against five numbered fixes - the CTA promise of five is real'
+  notes: |
+    topic laravel is right. Post renumbers the causes relative to the article (its Cause 2 is the article third, Cause 3 the article fourth) but never claims to mirror the article order, and only shows three while explicitly sending the reader to the write-up for all five - so the hook and the CTA agree. Nothing version-pinned that ages.
 ---
 
 ## Your form worked. Then it returned 419.

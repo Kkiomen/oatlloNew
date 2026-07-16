@@ -20,6 +20,16 @@ caption: |
   Full walkthrough linked in bio.
 
   What was the weirdest thing your model wrapped a payload in?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: ae68c05227716cadb0a45d1d9961e4850061d772
+  checks:
+    - tool_choice forcing, tool_use input already decoded, additionalProperties false and the two-or-three retry cap all trace to the article
+    - code is real Messages API shape; input is an array, no fence stripping needed
+    - hook and CTA agree, untrusted-client framing is the article's own
+  notes: |
+    Hook states the 3% flatly while the article hedges it as maybe 3%. It is the article's own anecdotal number, not invented, but it reads as a measured stat on the slide. Reviewer may want to soften if that bothers them.
 ---
 
 ## json_decode returns null on 3% of requests. Prompts will not fix it.

@@ -20,6 +20,12 @@ caption: |
   Full guide linked in bio.
 
   How many of your tests assert the status and stop?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:16
+  fingerprint: 1a0b87741128920bc927f83bac46f25c9f682eba
+  notes: |
+    The point of slide 3 (getJson, not get, on an API) is right and traces to the article, but the code annotation is false as written: this->getJson(/api/articles) // 422 JSON. A GET listing endpoint returns 200, never 422 - 422 is a validation failure, which needs a POST with a bad payload. The article gets this right and splits it: getJson(/api/articles) is its assertOk() example, while 422 + assertInvalid comes from postJson(/api/articles, [...]) with a missing title. The post glued the listing URL onto the validation comment. A dev audience will notice; since when does GET /api/articles 422 is a comment waiting to happen. Fix: make the pair post/postJson to /api/articles so the 422 comment is true (the slide body already talks about assertInvalid never matching, which is a POST story). Everything else on the post is accurate.
 ---
 
 ## A green 200 can hide a controller that drops data

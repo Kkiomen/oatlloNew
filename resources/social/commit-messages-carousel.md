@@ -20,6 +20,17 @@ caption: |
   Full write-up linked in bio.
 
   What is the worst commit message in your history, and be honest: was it yours?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:01
+  fingerprint: 87461d332d5cddea1f9b0dab7d5f304bf86a6ff1
+  checks:
+    - the sleep(200) stale-reads why-not-what example and the fix-vs-Fix-tap-target-overlap pair are the article own
+    - the if-applied-this-commit-will imperative rule and the Merge-branch/Revert precedent are correct Git conventions, not just article claims
+    - semantic-release mapping verified - fix bumps patch, feat bumps minor, BREAKING CHANGE bumps major - and both slide examples are valid Conventional Commits syntax
+    - the CTA do-not-rewrite-pushed-history point matches the article FAQ
+  notes: |
+    Nothing here is version-pinned or time-sensitive; ages indefinitely.
 ---
 
 ## Your git log reads: fix, fix2, final fix, actually fix

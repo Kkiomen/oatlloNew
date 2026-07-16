@@ -19,6 +19,17 @@ caption: |
   Full production block linked in bio.
 
   What did your last 502 turn out to be?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: 040480d970d5a692d318de6b16f544eb76eb83e2
+  checks:
+    - root at public, query_string, try_files =404 as a security line, upload-dir PHP deny and the /.env 403 check all trace to the article
+    - max_children arithmetic verified, 2.5 GB over 60 MB workers really does land near 40
+    - nginx directives are real and correctly spelled; regex locations do match in order, first hit wins
+    - topic nginx matches, which also keeps the nginx theme rather than the generic devops one
+  notes: |
+    Slide 5 shows max_children = 20 in the sample pool while the text works an example landing near 40. Same pairing as the article (generic block vs sizing method), so not false, but a reader could ask why 20.
 ---
 
 ## root at the project folder, not public/. Your .env is now live.

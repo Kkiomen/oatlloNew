@@ -20,6 +20,16 @@ caption: |
   Full audit list linked in bio.
 
   Which one bit you first?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:17
+  fingerprint: 73aba4b1d6d5d720bf4cdba17e32f7ddb6f6c0c4
+  checks:
+    - "state leak premise correct: FPM tears the process down per request, Octane keeps the worker warm so static props persist"
+    - singleton capturing the request at construction freezes it for later requests - correct, and the fix given (resolve lazily) is the article fix
+    - octane:reload is real and does cycle workers gracefully without dropping in-flight requests
+    - max-requests framed as a net for slow growth, not a cure - matches the article, does not oversell it
+    - no version or benchmark number that can rot in the queue
 ---
 
 ## A static array leaks one user's rows into another's

@@ -20,6 +20,12 @@ caption: |
   Full deep dive linked in bio.
 
   Which convention caught you out first?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:12
+  fingerprint: c804b36215dc7ec0180ff2ad4ca53264767a34ea
+  notes: |
+    The hook is false, and it is false in the exact way the source article avoids. Slide 1 says role_user works. user_role silently does not, and the caption says Eloquent looks for role_user. Your table is called user_roles. Nothing throws. A wrong pivot table name does NOT fail silently - Eloquent builds a query against a table that does not exist and MySQL throws SQLSTATE 42S02 Base table or view not found. It fails loudly on the first access. The article is careful here and the post is not: its pitfalls list gives no error thrown / silently absent ONLY to the withPivot bullet (line 260), while the non-alphabetical pivot name bullet (line 261) just says it will not be found. The post has borrowed the silence from the withPivot pitfall and attached it to the naming pitfall - two different failure modes welded into one. Slide 3 uses silent correctly, which is what makes the hook look plausible. Fix: the naming bug is a loud crash, sell it as that. Everything else traces clean - alphabetical convention and role_user, the belongsToMany(Role::class, user_roles) override, withPivot(granted_by, expires_at) + withTimestamps, property-vs-method filtering in PHP vs SQL, the stale relation after sync needing load(), and the foreign key living on the belongsTo side with profiles.user_id. Minor and separate: the caption says user_roles where slide 1 says user_role. Both appear in the article but they are different examples.
 ---
 
 ## role_user works. user_role silently does not.

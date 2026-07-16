@@ -20,6 +20,17 @@ caption: |
   Full guide in bio.
 
   What was your first real tool?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:13
+  fingerprint: fbce2c1f0f60197180c36e3b3050b612986019de
+  checks:
+    - all five slides trace to the article, stop_reason tool_use, mixed text and tool_use blocks, is_error, stateless resend
+    - tool shape correct, name plus description plus input_schema; loop break on non tool_use matches the article code
+    - tool_use id toolu_01A follows the real Anthropic id format; no invented field names
+    - topic ai matches, hook promise of ask-then-wait is what the slides deliver
+  notes: |
+    No model IDs or prices on the slides, so nothing here ages before the September slot.
 ---
 
 ## The model never runs your code. It just asks, in JSON, then waits.

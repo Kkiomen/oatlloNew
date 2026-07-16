@@ -20,6 +20,20 @@ caption: |
   Full checklist linked in bio.
 
   Which of them cost you the most hours?
+verified:
+  verdict: approved
+  at: 2026-07-16 07:15
+  fingerprint: 92082705e97c42830586c8ab139025122dedbfd7
+  checks:
+    - "every driver code is correct against MySQL reality, not just the article: 2002 client cannot connect, 1045 access denied, 1049 unknown database, 2006 server has gone away, 1364 field has no default value"
+    - "the premise holds for a non-obvious reason worth stating: 1045 and 1049 have their own native SQLSTATEs (28000 and 42000), but PDO reports connect-phase failures as SQLSTATE[HY000] [nnnn], which is exactly the format Laravel users see - so grouping them under HY000 is right"
+    - localhost forcing a Unix socket while 127.0.0.1 forces TCP is real MySQL client behaviour, and No such file or directory as the socket flavour of 2002 matches the article
+    - in-container 127.0.0.1 pointing at the app container not MySQL - matches the article Docker/Sail note
+    - 1364 via mass assignment silently dropping a column missing from  is real Eloquent behaviour and is the article first fix
+    - config:clear serving yesterday credentials and the twenty minutes staring at a 1045 is the article anecdote verbatim
+    - slide 3 vocabulary line is the article closing sentence verbatim, same five codes in the same order
+  notes: |
+    One thing to eyeball, resolvable but loose. The hook says six different bugs while slide 3 (labelled the whole vocabulary, in one slide, thats the entire skill) lists five codes. Six is defensible - the article checklist has six error rows because 2002 splits into a TCP flavour and a socket flavour, and slide 4 does cover that split - so it is bugs, not codes. But a reader who counts slide 3 gets five and the reconciliation only arrives a slide later. The article itself says a dozen unrelated ones wearing the same coat, so six is the posts own arithmetic, not a quote.
 ---
 
 ## HY000 is six different bugs in one costume

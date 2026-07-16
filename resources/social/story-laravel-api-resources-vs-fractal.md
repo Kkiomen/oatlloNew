@@ -18,6 +18,14 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:16
+  fingerprint: 2c070fa7e822133184c7ec541fc10490298bb3ba
+  checks:
+    - "both claims about Fractal are real: league/fractal parses nested includes with dot notation via parseIncludes, and ?include=posts.comments is its documented syntax"
+    - Resources are already installed is true (Illuminate ships JsonResource) and pagination comes free is true (ResourceCollection emits meta and links)
+    - poll both-sides, and the post says so itself
 ---
 
 ## New Laravel API. Which serializer do you reach for?

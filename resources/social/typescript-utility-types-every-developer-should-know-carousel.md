@@ -19,6 +19,12 @@ caption: |
   Seven that earn their place - linked in bio.
 
   Which utility type do you reach for most?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:15
+  fingerprint: a3d1f5d2541f20b67babb5d2665552e5cc1b6263
+  notes: |
+    Slide 2 code does not do what its own comment and the hook claim. Given type A = Omit<User, createdAt | typo>, TypeScript evaluates Pick<User, Exclude<keyof User, createdAt|typo>>, so createdAt IS dropped correctly and typo names nothing - no field stays. But the comment reads: compiles. typo ignored. Field stays. And slide 1 promises the field you meant to drop is still there. The snippet never demonstrates that. The article is careful here (it says the type compiles and just gives you User minus createdAt, and keeps the why is this field still here bug as a separate sentence); the post compressed the two into one claim and it came out false about the visible code. The underlying fact - Omit takes K extends keyof any so it never checks keys, while Pick constrains to keyof T - is correct and worth posting. To deliver the hook the typo has to REPLACE the real key (e.g. Omit<User, creatdAt>), so the field you meant to drop actually survives. Everything else checks out: Pick erroring on typo, Partial being shallow with no built-in deep version, Record<Role,...> exhaustiveness, ReturnType<typeof getUser> giving Promise<...> and Awaited peeling it, and the CTA on Omit passing new fields through while Pick forgets them.
 ---
 
 ## Omit with a typo'd key compiles clean and hides your bug.

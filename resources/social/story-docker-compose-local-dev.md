@@ -18,6 +18,13 @@ notes: |
   Stickers cannot be rendered to PNG - they are an Instagram feature added in
   the app. A lone frame pays the 23.8% frame-1 exit rate and never reaches
   frames 6-13, where reach peaks.
+verified:
+  verdict: approved
+  at: 2026-07-16 07:15
+  fingerprint: b28c26f8d05292cd98b09eab7741dbb305ed6e5f
+  checks:
+    - multi-stage with dev and prod targets is a real Docker pattern and does keep the base layers shared
+    - "poll both-sides: one multi-stage file and two separate files are both genuinely defensible, no strawman"
 ---
 
 ## One Dockerfile for local and prod?

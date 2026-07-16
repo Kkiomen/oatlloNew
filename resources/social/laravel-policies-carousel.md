@@ -20,6 +20,12 @@ caption: |
   Full guide linked in bio.
 
   Which of these cost you an afternoon?
+verified:
+  verdict: issues
+  at: 2026-07-16 07:16
+  fingerprint: 44e2aef5503f54f7f75b0b966b30e00c92e9e2b8
+  notes: |
+    Facts are all fine - before() semantics (true/false/null), Gate::authorize vs $this->authorize on Laravel 11 (base controller dropped AuthorizesRequests - correct), @can is UX not security, ability string must match the method. One wording defect: slide 5 headline reads 403 for the owner is usually a type - a word is missing and it renders that way on the graphic. The article says a type COMPARISON (FAQ: Nine times out of ten it is a type comparison) and the slide body then talks about string vs int and check types, so the headline is a truncation, not a style choice. It is not a budget problem either: 403 for the owner is usually a type comparison is 45 chars, under the 55 headline budget. Fix the headline and this one is good to go.
 ---
 
 ## A stray false in before() locks out every user, including admins
