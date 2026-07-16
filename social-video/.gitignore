@@ -10,3 +10,8 @@ out
 # `php artisan social:video`. Wyliczalne z .md, więc do repo nie trafiają –
 # dokładnie jak wyeksportowane PNG-i w storage/app.
 public/slides
+
+# Wsad clipów: clip.json + audio narracji, generowane przez `php artisan
+# clip:stage`. Też wyliczalne ze scenariusza .md (audio z cache TTS) – do repo
+# trafia tylko .md w resources/clips, nigdy wyrenderowany wsad.
+public/clips

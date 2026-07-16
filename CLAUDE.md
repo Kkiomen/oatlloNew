@@ -322,6 +322,33 @@ Skille: **`social-post`** (orkiestrator), `social-ideas`, `social-writer`, `soci
 **`social-review`** (bierze posty odesłane w panelu do poprawy i je poprawia — „przejrzałem zaplanowane posty
 i teraz je opracuj").
 
+### Story „nowy artykuł" (`social:article-stories` + skill `social-article-story`)
+
+**Osobne story ogłaszające KAŻDY publikowany artykuł — „Słuchajcie, jest nowy artykuł".** Artykuły `.md`
+publikują się ~3/tydzień z `published_at` w przyszłości, więc `php artisan social:article-stories` robi jedno
+story na każdy **zakolejkowany** artykuł (data w przyszłości), datowane na dzień jego publikacji → naturalnie
+3–4 dodatkowe story tygodniowo. To zwykłe `.md` w `resources/social/` (commit + deploy, zero bazy); generator
+**niczego nie publikuje** — story idą przez lint, panel `/social/review` i autopublikację jak każdy post.
+
+**Plik: `story-new-{slug-artykułu}.md`** — `type: story`, `formats: [story]`, `style: announce-article`,
+`title`/`link` WYLICZONE z artykułu (`link` na `brand.domain` = `oatllo.com`, **nie** z `APP_URL` — lokalnie
+to Herd), `publish_at` = `published_at` artykułu, `status: ready` + pieczątka `verified: approved` (tytuł/link
+są z artykułu, więc fakt jest poprawny z definicji; odcisk liczy ta sama metoda co `social:verify`, więc panel
+świeci zielono). **Idempotentny**: istniejącego story NIE nadpisuje (bez `--force`) — ręczne poprawki
+przeżywają ponowne uruchomienie, a korekta artykułu nie rusza story (dwa osobne pliki). Flagi: `--all`
+(też opublikowane), `--limit=N`, `--dry-run`.
+
+**Skórka `announce-article`** (`resources/views/social/styles/announce-article.blade.php`) to skin CSS ze
+STAŁYM banerem „New on the blog" (pseudo-element na `.stage`) jako znakiem rozpoznawczym serii; akcent i logo
+zmienne per technologia (kolor mówi O CZYM jest artykuł). Baner używa `var(--accent-ink)` (WCAG), więc jest
+czytelny na każdym akcencie. Stosowana **wyłącznie** przez jawne `style:` — **CELOWO nie ma jej w `rotation`
+ani `type_rotation`** (dopisanie tam przetasowałoby `crc32 % liczba` style wszystkich innych postów). Teksty:
+`config('social.article_story')` (`kicker`, `intro`, `slug_prefix`).
+
+**NIE MYLIĆ z pollowymi story `story-{skrót}`** (np. `story-cors`, `story-enums`): to inny gatunek — prowokacyjne
+pytanie + natywna ankieta + reshare karuzeli, do ZAANGAŻOWANIA, nie do ogłaszania artykułu. Prefiks `story-new-`
+trzyma oba zestawy rozłączne i gwarantuje brak kolizji nazw. Nie łączyć.
+
 ### Reels / wideo (Remotion) — `php artisan social:video {slug}`
 
 **Reel to NIE nowy byt — to ten sam post `.md`, tylko w ruchu.** Remotion dostaje **dokładnie te dokumenty
@@ -386,6 +413,68 @@ biblioteki w apce.
 `social:video {slug}` = lint (ta sama bramka co eksport) → wsad → render → `storage/app/social-export/{slug}/reel.mp4`.
 `--stage-only` buduje sam wsad pod podgląd w Studiu (`cd social-video && npx remotion studio`, slug w panelu
 propsów). Pierwsze uruchomienie: `cd social-video && npm i`.
+
+### Clip / narrowane wideo (`php artisan clip:render {slug}`) — moduł `App\Services\Clip`
+
+**Clip to INNY gatunek wideo niż reel — i to jest sedno, nie pomylić.** Reel to niema karuzela w ruchu
+(muzyka dokładana w IG, zero bespoke animacji, timing z objętości treści). Clip to **narrowany explainer**
+pod TikToka/Shorts/Reels: scenariusz → narracja ElevenLabs → Remotion składa animowane sceny zsynchronizowane
+z głosem → napisy karaoke + SFX → MP4 1080x1920. Odwrotność reela na każdym punkcie, więc to **drugi,
+niezależny pipeline OBOK niego**, nie przeróbka `Reel.tsx`. Pełna architektura: `docs/narrated-video-architecture.md`.
+
+**Scenariusze to pliki `.md` w `resources/clips/`** — ta sama DNA co posty/kursy/artykuły: commit + deploy,
+zero bazy, zero crona. `MarkdownClipRepository` → DTO `Clip` + `ClipScene[]`. Format: frontmatter globalny
+(`slug`, `title`, `topic`, `voice`, `source`, `music`, `platforms`, `caption`, `hashtags`) + **sceny
+rozdzielone `<!-- scene -->`, każda to blok YAML** (nie Markdown — scena to spec animacji, nie proza;
+`highlight: [3]`, `items: [...]`, `code: |` idą naturalnie w YAML). Separator `<!-- scene -->` jak
+`<!-- slide -->` w postach — NIE `---` (nieodróżnialne od frontmattera).
+
+**Zasada nadrzędna: SCENA = (narracja, wizual). Każda scena MA `narration`** — to jednocześnie tekst do
+ElevenLabs, **wyznacznik długości sceny** (scena trwa tyle, ile jej audio) i źródło napisów. To kręgosłup
+synchronizacji. Brak `narration` = ERROR lintu (scena bez głosu nie ma z czego liczyć długości ani napisów).
+
+**Biblioteka scen (8 typów) w `social-video/src/clip/scenes/`**: `title`, `code-reveal`, `bullets`,
+`statement`, `compare`, `terminal`, `callout`, `outro`. Nowa scena = komponent + wpis w `registry.ts` +
+typ w `config('clip.scene_types')` (test `ClipRegistryTest` pilnuje zgodności obu list — nieznany typ w
+scenariuszu = ERROR lintu, „dodałem typ do configu, zapomniałem komponentu" łapie `ClipRegistryTest`).
+Sceny to natywny React (nie wstrzyknięty Blade jak w reelu) — dlatego mają własny lekki `theme.ts`
+(neutral-950 + akcent + Montserrat). To druga, świadoma powierzchnia designu; zgodność wizualna, nie
+współdzielony kod (kinetic type nie da się wyrenderować z Blade'a slajdów).
+
+**Audio to ARTEFAKT, nie źródło** (jak PNG-i i reele): narracja wyliczalna ze scenariusza, ale kosztuje API,
+więc cache po `sha1(provider+głos+tekst)` w `storage/app/clip-audio` (gitignorowane). Zmiana narracji = nowy
+hash = regeneracja; provider wchodzi do hashu, żeby zmiana mock→elevenlabs unieważniła ciszę. `social-video/public/clips`
+też gitignorowane (wsad wyliczalny). W gicie żyje tylko `.md`.
+
+**TTS za interfejsem `TtsProvider` (driver w `config('clip.tts.driver')`):**
+- `MockTtsProvider` (domyślny) — **cisza WAV o oszacowanej długości** (słowa÷tempo) + syntetyczne timestampy.
+  Dzięki temu **cały pipeline renderuje BEZ klucza ElevenLabs** — dostajesz niemy film z poprawnym timingiem
+  i napisami. Głos podmieniasz później zmieniając driver, reszta się nie rusza.
+- `ElevenLabsTtsProvider` — realny głos przez endpoint `with-timestamps` (audio + wyrównanie znakowe →
+  słowa). Guard: pusty `ELEVENLABS_API_KEY` = wyjątek z jasnym komunikatem.
+
+**MINY W REELACH PRZENOSZĄ SIĘ NA CLIPY** (patrz sekcja reeli wyżej): reguły animacji scopować numerem sceny
+(`.clip-scene-{i}`; wstrzyknięty `<style>` jest globalny), czekać na `document.fonts.ready` (`useFonts` +
+`delayRender`; font base64), żadnych dekoracji na stałej wysokości przez cały kadr (dolne ~470px zasłania UI
+platformy — `SceneFrame` trzyma treść w górnych 1180px, napisy w pasie 1210+, jak `SLIDE_TOP` w reelu).
+**Dodatkowo: font MONO MUSI mieć ligatury OFF** (`MONO_STYLE`) — inaczej Cascadia/Fira renderują `->` jako
+`→` (fałszuje kod I jest to zakazany glif spoza subsetu). Font kodu skaluje się do najdłuższej linii
+(`codeFontSize`), żeby nie wyjechać za panel.
+
+**Napisy karaoke** (`Captions.tsx`, główny driver retencji na TikToku) — aktualne słowo akcentem, z
+timestampów; na mocku słowa rozłożone równo, więc działają i bez głosu. Czas liczony z offsetem `leadIn`
+(głos startuje kilka klatek po scenie, żeby wizual wjechał).
+
+**Motyw** (akcent + logo) z `TechThemeResolver` — współdzielony z kursami i postami (kurs o Dockerze i clip
+o Dockerze mają to samo logo). Slug wchodzi do haystacka, więc uważaj na podciągi (`clip`→devops przez `cli`).
+
+**Komendy**: `clip:lint {slug}` (**bramka** formatu — nieznany typ sceny / brak narracji / glif spoza fontu
+= ERROR), `clip:tts {slug} [--force]` (grzeje cache narracji), `clip:stage {slug}` (manifest `clip.json` +
+audio do `public/clips`), `clip:render {slug} [--stage-only] [--skip-lint]` (orkiestrator: lint → stage →
+render → `storage/app/social-export/{slug}/clip.mp4`). Config: `CLIP_TTS_DRIVER`, `ELEVENLABS_API_KEY`,
+`CLIP_VOICE_EN`. **SFX** (`config('clip.sfx')`) i **muzyka** — okablowane (stager + `Clip.tsx`), ale wymagają
+plików CC0 w `social-video/public/sfx`; puste = clip gra bez efektu (WARNING lintu). **Publikacja: render
+MP4 + ręczny upload** — TikTok/YT API (OAuth) świadomie poza v1; Zernio jest tylko dla IG.
 
 ## CSS / Tailwind (WAŻNE — inaczej „popsują się" style)
 
