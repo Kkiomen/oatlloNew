@@ -17,7 +17,7 @@ export default {
     // (config/course-covers.php -> accent_color). Dodając NOWY kolor akcentu kursu,
     // dopisz go tutaj do `accentColors`.
     safelist: (() => {
-        const accentColors = ['emerald', 'rose', 'sky', 'blue', 'red', 'green', 'amber', 'cyan', 'orange'];
+        const accentColors = ['emerald', 'rose', 'sky', 'blue', 'red', 'green', 'amber', 'cyan', 'orange', 'violet'];
         const variants = (c) => [
             `bg-${c}-400/10`, `bg-${c}-500`, `bg-${c}-500/15`,
             `border-${c}-400`, `border-${c}-400/20`, `border-${c}-400/30`, `border-${c}-500/20`,

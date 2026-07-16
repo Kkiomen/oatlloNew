@@ -97,11 +97,14 @@ return [
 
         'php' => [
             'keywords' => ['php', 'composer', 'symfony', ' oop', 'php 8'],
-            'accent'       => '#34d399', // PHP: zielony (życzenie) – hex też zielony, by okładka i strona były spójne
-            'accent_color' => 'emerald',
+            'accent'       => '#777BB4', // PHP "elephant purple" – firmowy fiolet PHP
+            'accent_color' => 'violet',
             'label'        => 'PHP',
-            // Bez znaku – czysta, minimalistyczna okładka (życzenie: kurs PHP bez logo).
-            'logo'     => '',
+            // Owal z italic "php" – klasyczny znak PHP (styl spójny z Node).
+            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5">'
+                . '<ellipse cx="50" cy="50" rx="45" ry="27"/>'
+                . '<text x="50" y="60" text-anchor="middle" font-family="Arial, sans-serif" font-style="italic" font-weight="700" font-size="30" fill="currentColor" stroke="none">php</text>'
+                . '</g>',
         ],
 
         'node' => [
