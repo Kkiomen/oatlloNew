@@ -16,7 +16,7 @@ If you can predict the output of a handful of `console.log` calls, you understan
 
 JavaScript executes on a single thread. There's one **call stack** — a pile of function calls — and the engine runs whatever is on top until the stack is empty. When you call `a()` which calls `b()`, `b` sits on top of `a`; when `b` returns, it pops off, and `a` continues. Synchronous, boring, predictable.
 
-The interesting part is what happens when nothing is on the stack. The engine doesn't just sit there. It asks: is there any queued work waiting to run? That question, asked over and over, *is* the event loop. It's a loop that says "run everything on the stack, then pull the next piece of pending work, then repeat."
+The interesting part is what happens when nothing is on the stack. The engine doesn't just sit there. It asks: is there queued work waiting to run? That question, asked over and over, *is* the event loop. Run everything on the stack, pull the next piece of pending work, repeat.
 
 Here's the part that trips people up: `setTimeout`, `fetch`, DOM events, and `Promise.then` don't run their callbacks immediately. They hand a callback to the runtime and return right away. The callback runs later, when the stack is clear and it's that callback's turn. "Later" and "its turn" are two different things, and the difference is the whole game.
 
@@ -67,7 +67,7 @@ Both `console.log('1')` and `console.log('4')` are plain synchronous code, so th
 
 Now the stack is empty. Before the engine will even look at the task queue, it drains microtasks — and the resolved Promise's callback is a microtask. So `3: promise` prints. Only after the microtask queue is empty does the engine pull one task: the timeout callback, `2: timeout`.
 
-`setTimeout(fn, 0)` does not mean "run now." It means "queue this as a task, as soon as possible." A resolved Promise's `.then` is a microtask, and microtasks jump the whole task queue. The `0` was never a lie — it just measures a different line than the one I thought I was standing in.
+`setTimeout(fn, 0)` does not mean "run now." It means "queue this as a task, as soon as possible." A resolved Promise's `.then` is a microtask, and microtasks jump the whole task queue. The `0` was never a lie. It just measures a different line than the one I thought I was standing in.
 
 ## await is just microtasks wearing a suit
 
@@ -124,7 +124,7 @@ breathe();
 setTimeout(() => console.log('I run fine'), 0);
 ```
 
-This churns forever too, but it's polite. Each iteration is one task, so between iterations the engine drains microtasks and, in a browser, gets a chance to render and handle input. The lesson I've actually used on production code: **if you're chunking heavy work, yield with `setTimeout` or `MessageChannel`, never with a Promise chain.** A Promise chain won't give the browser a paint slot.
+This churns forever too, but it's polite. Each iteration is one task, so between iterations the engine drains microtasks and, in a browser, gets a chance to render and handle input. I learned this the hard way chunking a big CSV parse across a Promise chain to "keep the UI responsive" — the spinner never even painted. The rule I've used since: **if you're chunking heavy work, yield with `setTimeout` or `MessageChannel`, never with a Promise chain.** A Promise chain won't give the browser a paint slot.
 
 ## Where rendering fits (browser only)
 

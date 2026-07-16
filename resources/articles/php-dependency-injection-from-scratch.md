@@ -176,7 +176,7 @@ $container = new Container();
 $orders = $container->get(OrderService::class);
 ```
 
-The container walks the constructor of `OrderService`, sees it needs a `PaymentGateway`, tries to build that, and so on down the tree. Anything with a plain class type-hint just works. This is the exact behavior frameworks give you - Laravel's container does precisely this, plus a lot of production hardening. Under the hood it's Reflection reading your constructor, same as above.
+The container walks the constructor of `OrderService`, sees it needs a `PaymentGateway`, tries to build that, and so on down the tree. Anything with a plain class type-hint just works. This is the exact behavior frameworks give you - Laravel's container does precisely this, plus a lot of production hardening you'd rather not write yourself.
 
 Two things to notice. `isBuiltin()` is what separates `PaymentGateway` (recurse) from `int $amount` (can't recurse - needs a default or an explicit binding). And the `RuntimeException` on unresolvable scalars matters: without it you get a silent `TypeError` deep in a stack trace instead of a message that names the parameter and the class.
 

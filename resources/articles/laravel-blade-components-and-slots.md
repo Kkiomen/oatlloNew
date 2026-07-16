@@ -109,7 +109,7 @@ Inside the component, `{{ $slot }}` renders `Your payment went through.` That co
 
 The `<x-slot:title>` block becomes the `$title` variable; everything else stays in `$slot`. Named slots are how you keep structure in the component and let callers fill the pieces.
 
-There's a subtlety worth knowing: **slots carry their own attributes**. A slot is a rendered object, so you can attach attributes to it and read them inside the component via `$title->attributes`:
+Here's a corner most people never touch: **slots carry their own attributes**. A slot is a rendered object, so you can attach attributes to it and read them inside the component via `$title->attributes`:
 
 ```blade
 <x-slot:title class="text-lg">Heads up</x-slot:title>

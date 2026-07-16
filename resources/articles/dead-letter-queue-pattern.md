@@ -73,7 +73,7 @@ One RabbitMQ gotcha worth knowing: classic RabbitMQ doesn't natively count deliv
 
 ## The equivalent in Laravel queues
 
-Laravel doesn't call it a dead letter queue, but the `failed_jobs` table is exactly that: a quarantine for jobs that exhausted their attempts. Understanding the mapping makes the pattern click.
+Laravel doesn't call it a dead letter queue, but the `failed_jobs` table is exactly that: a quarantine for jobs that exhausted their attempts. Once you see the mapping, the SQS wiring and the Laravel worker stop looking like two different problems.
 
 A job fails when it throws an uncaught exception and runs out of tries. `$tries` (or `--tries` on the worker) is your `maxReceiveCount`. When the attempts are used up, Laravel writes a row to `failed_jobs` and stops touching the job — it does not redeliver forever. That row *is* the dead-lettered message. It stores the connection, the queue, the serialized payload, and the exception.
 
@@ -129,7 +129,7 @@ A DLQ that nobody watches is just a slower way to lose data. The whole value of 
 
 **Inspect.** Read the payload and the exception before you do anything else. The DLQ preserves the original message, which is your evidence. Is it a schema mismatch (bad producer)? A deleted reference (a race between two services)? A genuine bug (the same stack trace across many messages)? The shape of what's in the DLQ tells you where the fix belongs, and it's usually not in the consumer that happened to crash.
 
-**Replay.** Once the root cause is fixed — you deployed a patch, the referenced row is back, the producer stopped sending garbage — you push the messages back to the main queue to be processed. That's `queue:retry` in Laravel, redrive in SQS, or a small consumer that republishes from the DLQ in RabbitMQ. Replay is what makes a DLQ a quarantine rather than a graveyard: nothing is lost, it's just deferred until it can succeed.
+**Replay.** Once the root cause is fixed — you deployed a patch, the referenced row is back, the producer stopped sending garbage — you push the messages back to the main queue to be processed. That's `queue:retry` in Laravel, redrive in SQS, or a small consumer that republishes from the DLQ in RabbitMQ. Replay is the whole reason the message got parked instead of dropped: nothing is lost, it's just deferred until it can succeed.
 
 ## Idempotency on replay is not optional
 

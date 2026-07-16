@@ -24,7 +24,7 @@ The mental model that stuck for me: a volume is a managed disk you rent from Doc
 
 ## When each one actually fits
 
-Rules of thumb are only useful if they're specific, so here are the ones I follow.
+Vague advice helps nobody here, so these are specific on purpose.
 
 **Database data → named volume, always.** Postgres, MySQL, Redis persistence, Elasticsearch indices. You want Docker to manage the storage, you want it decoupled from any host path, and you never need to open those files in an editor. A bind mount for a database also drags you straight into the permission mess I'll get to below.
 
@@ -38,7 +38,7 @@ A quick way to remember it: if a human types the file, bind mount it. If a servi
 
 ## The syntax, three ways
 
-Let's make it concrete. A named volume on the CLI:
+Start with a named volume on the CLI:
 
 ```bash
 # Create a volume once, reuse it across containers

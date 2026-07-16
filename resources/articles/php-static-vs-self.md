@@ -113,7 +113,7 @@ PHP Fatal error:  Uncaught Error: Call to undefined method QueryBuilder::without
 
 Trace it. `SoftDeleteBuilder::make()` runs the parent's `make()`, which does `new self()` — and `self` in that file is `QueryBuilder`. So you now hold a plain `QueryBuilder`. `->where('active', 1)` returns `$this`, still a `QueryBuilder`. Then `->withoutTrashed()` looks for a method that exists on the child but not on the object you actually have. Undefined method.
 
-The maddening part is that the method is visibly defined. Your eyes are on `SoftDeleteBuilder`, but the object never was one. The fix is two edits:
+The maddening part is that the method is visibly defined. I kept re-reading the child class before it occurred to me to open the parent's factory — which is where the actual object was being built. Your eyes are on `SoftDeleteBuilder`, but the object never was one. The fix is two edits:
 
 ```php
 public static function make(): static

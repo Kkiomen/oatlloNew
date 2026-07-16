@@ -10,7 +10,7 @@ tags: [architecture, php, laravel, ddd, patterns]
 
 We integrated a payment provider whose API returned a field called `txn_st` that could be `"0"`, `"1"`, `"P"`, or the string `"CANCELLED_BY_MERCHANT_OR_TIMEOUT"`. All four meant something my code had to react to. Within a month, `txn_st === '1'` checks were scattered across three controllers, a job, and a Blade view. When the provider renamed the field in v2 of their API, we changed it in eleven places and still missed one.
 
-That is the exact failure the Anti-Corruption Layer prevents. It is a translation boundary you put between your domain and someone else's model, so their concepts never touch your code. This article shows what it is, how it differs from a plain adapter, and how to build one in Laravel for a genuinely hostile API.
+That is the exact failure the Anti-Corruption Layer prevents. It is a translation boundary you put between your domain and someone else's model, so their concepts never touch your code. Below I'll pin down what it actually is, why it's more than a plain adapter, and how to wire one up in Laravel against an API that fights you.
 
 ## The problem: a foreign model leaking into yours
 

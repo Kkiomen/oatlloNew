@@ -10,7 +10,7 @@ tags: [nodejs, javascript, devops, architecture]
 
 I once shipped a Node API to a 16-core box and watched it flatline at roughly 6% CPU under load. The requests were slow, the machine was almost idle, and for a while I blamed the database. The database was fine. The problem was that my perfectly healthy application was politely using one core out of sixteen and ignoring the rest.
 
-That gap between "the server has cores" and "my app uses them" is what this article is about. We'll cover why one Node process sticks to a single core, how the built-in cluster module spreads work across all of them, and the two things that bite people afterwards: session stickiness and in-process state.
+That gap between "the server has cores" and "my app uses them" is what this article is about. Why one Node process sticks to a single core, how the built-in cluster module spreads work across all of them, and then the two things that bite people once they get there: session stickiness and in-process state.
 
 ## Why one process gets one core
 

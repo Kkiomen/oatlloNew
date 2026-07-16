@@ -137,7 +137,7 @@ You know you're actually done when the legacy upstream serves zero requests for 
 
 ## The costs, stated plainly
 
-None of this is free. During the overlap you carry real, ongoing costs:
+None of this is free. During the overlap you carry:
 
 - **Two deployment pipelines**, two sets of logs, two runtimes to keep patched.
 - **A proxy layer** that is now a critical piece of infrastructure — if it goes down, everything does, so it needs the monitoring and care of a production service.

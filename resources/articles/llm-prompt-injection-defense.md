@@ -70,7 +70,7 @@ messages = [
 
 Two things earn their keep here. Wrapping the untrusted content in an explicit delimiter (`<ticket>...</ticket>`) gives the model a clearer signal about where data starts and ends — and lets *you* detect tampering. If `ticket_body` contains `</ticket>`, strip or escape it before interpolating; otherwise an attacker can "close" your fence and start writing outside it. That escaping step is the part people forget, and it's the same delimiter-injection thinking as SQL or shell escaping.
 
-Be honest about the ceiling: structure reduces confusion, it does not grant immunity. It buys you maybe a meaningful reduction in success rate, not zero. Everything below is what you lean on when this fails — and you should assume it will.
+Be honest about the ceiling: structure reduces confusion, it does not grant immunity. It lowers the attack's hit rate, it doesn't drive it to zero. Everything below is what you lean on when this fails — and you should assume it will.
 
 ## The defenses that actually move the needle
 

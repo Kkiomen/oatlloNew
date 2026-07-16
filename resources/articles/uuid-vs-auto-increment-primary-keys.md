@@ -8,7 +8,7 @@ is_published: true
 tags: [database, mysql, laravel, php]
 ---
 
-The first time a random UUID primary key hurt me, the table had about 40 million rows and inserts had quietly slowed from a few thousand a second to a few hundred. Nothing in the app code had changed. The culprit was the primary key: we had switched from `BIGINT AUTO_INCREMENT` to `CHAR(36)` UUIDs for "security," and InnoDB was punishing us for it on every single write. This article is about that trade-off — why random UUIDs are expensive in a clustered index, how time-ordered IDs (UUIDv7, ULID) give you most of the safety without the write penalty, and what to actually pick.
+The first time a random UUID primary key hurt me, the table had about 40 million rows and inserts had quietly slowed from a few thousand a second to a few hundred. Nothing in the app code had changed. The culprit was the primary key: we had switched from `BIGINT AUTO_INCREMENT` to `CHAR(36)` UUIDs for "security," and InnoDB was punishing us for it on every single write. So let's take that apart — why random UUIDs are expensive in a clustered index, how time-ordered IDs (UUIDv7, ULID) give you most of the safety without the write penalty, and what to actually pick.
 
 ## Why the storage engine cares about your key order
 
@@ -18,7 +18,7 @@ With `AUTO_INCREMENT`, every new key is larger than the last. So every insert la
 
 A random UUIDv4 lands *anywhere*. Each insert targets a different leaf page, scattered across the whole key space. That page probably isn't in the buffer pool, so InnoDB has to read it from disk before it can modify it — a read-before-write you never wanted. And because you're stuffing a value into the middle of an already-full page, you trigger **page splits**: InnoDB takes a full 16 KB page, allocates a new one, and moves roughly half the rows over to make room. Splits fragment the tree and leave pages ~50% full instead of ~94%.
 
-The compounding effects:
+Three things compound from there:
 
 - **Write amplification.** One logical insert becomes multiple page reads, a split, and extra dirty pages to flush.
 - **Buffer pool thrashing.** Random access means your working set is effectively the whole index, not just the tail. Once the index outgrows RAM, hit rate collapses.

@@ -10,7 +10,7 @@ tags: [laravel, php, http, testing]
 
 The first time it bit me, a payment webhook had been silently failing for two days. The code called a partner API, got the response, read `$response->json()['id']`, and moved on. The partner had started returning `422` with an error body. No exception was thrown, `json()` returned an array without an `id` key, and the record was saved with a null reference. Everything looked green in the logs.
 
-That is the single most important thing to understand about Laravel's HTTP client: **a `4xx` or `5xx` response is not an error as far as your code is concerned.** The request completed. You got a response. Whether that response is useful is your job to check. This guide walks through the parts of the client that matter once you go past a happy-path `Http::get()` — building requests, retrying transient failures without hammering the server, running calls in parallel, and testing all of it without touching the network.
+That is the single most important thing to understand about Laravel's HTTP client: **a `4xx` or `5xx` response is not an error as far as your code is concerned.** The request completed. You got a response. Whether that response is useful is your job to check. Everything below is the stuff you hit once you leave a happy-path `Http::get()` behind — building requests, retrying transient failures without hammering the server, running calls in parallel, and testing all of it without touching the network.
 
 ## It is Guzzle, with the sharp edges filed off
 
@@ -55,7 +55,7 @@ Http::timeout(10)          // total time for the whole request
     ->get('https://api.example.com/status');
 ```
 
-The distinction matters. `connectTimeout` fires when the host is unreachable or DNS is slow — you want to fail fast there, because no amount of waiting will fix a dead host. `timeout` covers the full round trip including the response body. A dependency that is up but slow trips the second one. If you only set one, set both; a generous total timeout with no connect timeout still lets a black-holed host stall you.
+The distinction matters. `connectTimeout` fires when the host is unreachable or DNS is slow — fail fast there, because no amount of waiting fixes a dead host. `timeout` covers the full round trip including the response body, so a dependency that is up but slow trips that one instead. Set both. A generous total timeout with no connect timeout still lets a black-holed host stall you for the full thirty seconds, which is the exact scenario you were trying to avoid.
 
 ## retry(): useful, but read the defaults
 

@@ -195,7 +195,7 @@ toggleDebug($config);
 var_dump($config['debug']); // bool(true)
 ```
 
-I reach for these rarely. The pass-by-reference behaviour is occasionally exactly what you need, but it also surprises people who expect PHP's copy-on-write array semantics, so I'd rather be explicit with a real value object most of the time.
+I reach for these rarely. The pass-by-handle behaviour is occasionally exactly what you need, but it also trips up anyone expecting PHP's usual copy-on-write array semantics - they pass the config into a function, it mutates underneath them, and now there's a bug that only shows up two calls later. Most of the time I'd rather be explicit with a real value object.
 
 ## When to just use an array
 
@@ -228,4 +228,4 @@ Not directly - array keys must be `int` or `string`, so `$map[$object]` fails. `
 ### Do I need to install anything to use SPL?
 No. SPL is part of the PHP core and has been enabled by default since PHP 5.3. Every class here - `SplStack`, `SplQueue`, `SplPriorityQueue`, the heaps, `SplFixedArray`, `SplObjectStorage` - is available out of the box with no Composer package and no extension flag.
 
-The takeaway I'd leave you with: don't rewrite your codebase around SPL, and don't dismiss it as academic. Next time you catch yourself writing a comment like "// this array is really a queue" or hand-rolling a sort-on-every-insert, that's the signal. Pick the structure that already means what you're trying to say, and let the type carry the intent.
+So: don't rewrite your codebase around SPL, and don't file it under academic trivia either. Next time you catch yourself writing a comment like "// this array is really a queue" or hand-rolling a sort-on-every-insert, that's the signal. Pick the structure that already means what you're trying to say, and let the type carry the intent.

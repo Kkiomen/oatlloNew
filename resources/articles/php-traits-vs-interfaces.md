@@ -44,7 +44,7 @@ class Invoice implements Exportable
 
 The payoff isn't the interface itself. It's that anywhere in your codebase you can now write `function download(Exportable $item)` and accept *any* class that fulfills the contract, without knowing or caring which one. The interface is a type. It participates in `instanceof`, in type-hints, in return types, in union types. That's its entire reason to exist.
 
-Since PHP 8.1 interfaces can also hold constants, and they can extend multiple other interfaces. But they never carry logic you can inherit. If you find yourself wishing an interface had a default method body — that itch is the trait talking.
+Interfaces can also hold constants and extend several other interfaces at once. But they never carry logic you can inherit. If you find yourself wishing an interface had a default method body, that itch is the trait talking.
 
 ## A trait is copy-paste the compiler does for you
 
@@ -196,7 +196,7 @@ function record(HasTimestamps $thing): void { /* ... */ }
 
 A trait is not a type. It has no identity at runtime — after compilation, its methods live inside the using classes and the trait itself is gone from the object's type. `$comment instanceof HasTimestamps` is a fatal error, because there's nothing to be an instance *of*. Traits answer "what code does this class contain?" Types answer "what is this object?" Type-hints are a question about identity, and traits have none.
 
-This limitation is the exact reason the next section exists.
+That limitation is exactly why traits and interfaces work best together, which is where this goes next.
 
 ## Combine them: the interface + trait pattern
 

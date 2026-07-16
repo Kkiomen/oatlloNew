@@ -10,11 +10,11 @@ tags: [laravel, php, devops, performance]
 
 The first time it happened to me, the site had been green for weeks. Then a routine deploy, and suddenly every outbound email was going nowhere and Stripe was rejecting keys. Nothing in the code had changed around those features. What changed was that someone finally ran `php artisan config:cache` on the server, and half a dozen `env()` calls scattered through the app quietly started returning `null`. That failure mode is the price of admission for Laravel's production caches, and once you understand it, you never get bitten by it again.
 
-Laravel gives you a set of "compile it once" commands for production: `config:cache`, `route:cache`, `view:cache`, and `event:cache`. They exist because parsing config files, resolving routes, and compiling Blade templates on every single request is wasted work when none of it changes between requests. Cache the results once at deploy time and the framework skips that work forever after. The speedup is real, but two of these commands change how your app behaves, not just how fast it runs. This is about that difference.
+Laravel gives you a set of "compile it once" commands for production: `config:cache`, `route:cache`, `view:cache`, and `event:cache`. They exist because parsing config files, resolving routes, and compiling Blade templates on every single request is wasted work when none of it changes between requests. Cache the results once at deploy time and the framework skips that work forever after. The speedup is real. But two of these commands change how your app behaves, not just how fast it runs, and that's the half nobody warns you about until it's already 2am and the payments queue is on fire.
 
 ## What each command actually compiles
 
-These four commands look similar but do genuinely different things, and it helps to know exactly what artifact each one writes to disk.
+They look interchangeable. They aren't — each one writes a different artifact to disk, and the artifact is what tells you why two of them can bite.
 
 - **`config:cache`** reads every file in `config/`, merges them into one big array, and serializes that array to `bootstrap/cache/config.php`. On boot, Laravel loads that single file instead of `require`-ing 30 separate config files and running their logic.
 - **`route:cache`** resolves your entire route table and writes the compiled result to `bootstrap/cache/routes-v7.php`. The router loads that instead of re-executing `routes/web.php` and `routes/api.php` on every request.
@@ -172,7 +172,7 @@ Without a config cache, Laravel `require`s every file in `config/` on each boot,
 
 Route caching is similar. Without it, the router executes your route files on every request — every `Route::get`, every group, every middleware assignment — and builds the route collection from scratch. With the cache, it deserializes a pre-built collection. Apps with hundreds of routes feel this the most; the router setup can be a meaningful slice of the request lifecycle before it's cached.
 
-These aren't micro-optimizations you have to squint to measure. Config and route caching together typically shave a real, noticeable chunk off boot time on a route-heavy app, and it costs you nothing at runtime — the work moves to deploy time, where it happens once. That's the ideal shape for an optimization: pay once, benefit on every request. The only tax is the discipline around `env()` and closures, and now you know both.
+This isn't the kind of optimization you squint at a profiler to justify. On a route-heavy app under real traffic, config and route caching together take a visible bite out of per-request boot overhead, and they cost nothing at runtime — the work just moves to deploy time and happens once. Pay once, benefit on every request. The only tax is the discipline around `env()` and closures, and you've now seen both.
 
 ## FAQ
 

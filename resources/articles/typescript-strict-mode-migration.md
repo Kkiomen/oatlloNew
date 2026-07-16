@@ -117,7 +117,7 @@ If `response.data` ever gets a real type and `.total` becomes valid, that commen
 
 ## Ratchet it in CI so it can't slide back
 
-Getting to zero errors is only half the job. The other half is making sure the number never climbs again. On a team, someone will add an untyped parameter the week after you finish, and without a guard you're back to death by a thousand small regressions.
+Getting to zero errors is the part everyone celebrates. Keeping it at zero is the part that actually matters. On a team, someone will add an untyped parameter the week after you finish, and without a guard you're back to death by a thousand small regressions.
 
 The simplest ratchet: once a flag is at zero, it's non-negotiable in CI.
 

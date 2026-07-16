@@ -76,7 +76,7 @@ type FirstArg<T> = T extends (first: infer A, ...rest: any[]) => any ? A : never
 type P = FirstArg<(name: string, age: number) => void>; // string
 ```
 
-One detail that trips people up: when the same `infer` variable appears in multiple positions, TypeScript infers a union in a covariant position and an intersection in a contravariant one. You rarely lean on that on purpose, but it explains the occasional surprise where `infer` gives you `A | B` instead of the `A` you expected.
+One detail that trips people up: put the same `infer` variable in two spots and TypeScript infers a union in a covariant position and an intersection in a contravariant one. You almost never do that deliberately. But it explains the occasional head-scratcher where `infer` hands you `A | B` and you were expecting a plain `A`.
 
 ## Distribution: the behavior that surprises everyone
 
@@ -196,7 +196,7 @@ A few habits that have saved me:
 - **Name any conditional that nests more than once.** If you can't describe a branch in three words, it deserves its own alias.
 - **Add `type` test cases right below the utility**, the way I've done throughout this article. They are free documentation and they fail loudly when a refactor breaks the inference.
 - **Reach for a mapped or utility type first.** Conditional types are powerful, but a lot of what people write as a conditional is really a job for [the built-in utility types](/typescript-utility-types-every-developer-should-know) or a mapped type, which read far more plainly.
-- **When the compiler says `never` and you don't know why**, check for accidental distribution or a `never` input flowing through.
+- **When the compiler says `never` and you don't know why**, suspect accidental distribution before you suspect your logic - that empty-union behavior from earlier bites more often than the branch itself.
 
 The honest rule I use: a conditional type should make the *caller's* life simpler than the alternative. If the type is harder to read than the overloads or the manual annotations it replaced, it is not paying rent.
 

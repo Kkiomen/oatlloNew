@@ -10,7 +10,7 @@ tags: [php, performance, iterators]
 
 I once watched a nightly export job get killed by the OOM reaper for three weeks straight. The script read a 900 MB CSV of orders, built an array of every row, then looped over that array to write a report. On my laptop it ran fine against a trimmed sample. On production, with `memory_limit = 512M`, PHP got maybe a third of the way through the file before the process died with `Allowed memory size of 536870912 bytes exhausted`. The fix wasn't a bigger box. It was one keyword: `yield`.
 
-That's what this article is about. Generators let you loop over a sequence without ever holding the whole thing in memory. I'll show you what `yield` actually does, the memory difference against a real file, `yield from`, keys, using a generator as a two-way channel with `send()`, return values, and the cases where reaching for a generator is the wrong call.
+Generators let you loop over a sequence without ever holding the whole thing in memory. Below I'll walk through what `yield` actually does, the memory difference against a real file, `yield from`, keys, using a generator as a two-way channel with `send()`, return values, and the cases where reaching for a generator is the wrong call.
 
 ## What yield actually does
 

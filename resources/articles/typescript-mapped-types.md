@@ -10,7 +10,7 @@ tags: [typescript, javascript, types]
 
 I once spent an afternoon writing a `FormErrors` type by hand — one optional `string` field for every field on a `User` model. Then someone renamed `emailAddress` to `email`, and my error type happily kept `emailAddress` around with zero complaints from the compiler. That's the bug mapped types kill on sight. Instead of copying a shape and letting it rot, you derive one type from another and the compiler keeps them in lockstep forever.
 
-This walks through the actual syntax — `{ [K in keyof T]: ... }` — then the modifiers, key remapping with `as`, and how to rebuild `Partial`, `Pick` and `Record` from scratch so the built-ins stop being magic.
+Below is the actual syntax — `{ [K in keyof T]: ... }` — then the modifiers, key remapping with `as`, and how to rebuild `Partial`, `Pick` and `Record` from scratch, because once you can write them yourself you stop reaching for a docs tab every time.
 
 ## The core loop: `[K in keyof T]`
 

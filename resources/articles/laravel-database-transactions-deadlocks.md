@@ -10,7 +10,7 @@ tags: [laravel, php, database, mysql]
 
 The first time a deadlock took down one of my endpoints, the logs were almost useless. A single line, `SQLSTATE[40001]: Serialization failure: 1213 Deadlock found when trying to get lock; try restarting transaction`, showing up maybe forty times an hour under load and nowhere else. No stack trace worth reading, no obvious bad query. The code looked fine. That's the frustrating part about deadlocks: the individual queries are usually correct, and the bug only exists when two of them run at the same time.
 
-This article covers how transactions actually work in Laravel, why deadlocks happen at the database level, and the concrete patterns that make them go away — automatic retries, consistent lock ordering, and pessimistic locking with `lockForUpdate`.
+So this is a piece about the patterns that eventually made those 1213s go away for me: how transactions actually behave in Laravel, why InnoDB starts killing them, and the three fixes that hold up under load — automatic retries, consistent lock ordering, and pessimistic locking with `lockForUpdate`.
 
 ## What a transaction actually guarantees
 
@@ -114,7 +114,7 @@ A range query like `WHERE created_at > ? AND status = 'pending'` can lock a rang
 
 ## Retries: the pragmatic first line of defense
 
-Here's the thing about deadlocks — even with perfect lock ordering, you can't drive them to zero on a busy system. Lock-wait timeouts, gap locks, and the occasional contended hot row will still produce the odd 1213. So you design for it: make the transaction safe to run again, and let it run again.
+Even with perfect lock ordering, you won't drive deadlocks to zero on a busy system. Lock-wait timeouts, gap locks, and the occasional contended hot row will still throw the odd 1213 at you. So you design for it: make the transaction safe to run again, and let it run again.
 
 That's what the second argument does:
 

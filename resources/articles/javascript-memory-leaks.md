@@ -8,7 +8,7 @@ is_published: true
 tags: [javascript, node, performance, debugging, frontend]
 ---
 
-The tab was using 1.4 GB. It was a dashboard that people left open all day, and by mid-afternoon Chrome would start swapping and the whole thing crawled. Nobody had "done anything" — you just navigated between a few views and let it sit. That slow, one-directional climb in memory, the kind that never comes back down, is the signature of a leak. This article is about how the garbage collector decides what to keep, the handful of patterns that quietly defeat it, and how to prove which one you have instead of guessing.
+The tab was using 1.4 GB. It was a dashboard that people left open all day, and by mid-afternoon Chrome would start swapping and the whole thing crawled. Nobody had "done anything" — you just navigated between a few views and let it sit. That slow, one-directional climb in memory, the kind that never comes back down, is the signature of a leak. So here's how the garbage collector decides what to keep, the handful of patterns that quietly defeat it, and how to prove which one you've got instead of guessing.
 
 ## What the garbage collector actually keeps
 
@@ -150,7 +150,7 @@ Two shortcuts worth knowing. Filter the snapshot for **"Detached"** to jump stra
 
 ## Leaks in Node.js
 
-The browser at least reloads eventually. A Node process runs for weeks, so a leak that adds a few kilobytes per request is a restart-at-3am problem. The usual culprits are server-flavored versions of the same patterns: an emitter you add listeners to on every request (watch for the `MaxListenersExceededWarning` — it's often the first sign), a module-level array or Map that accumulates per-request data, or a closure captured in a route handler that pins a large object.
+The browser at least reloads eventually. A Node process runs for weeks, so a leak that adds a few kilobytes per request is a restart-at-3am problem. The usual culprits are server-flavored versions of the same patterns: an emitter you add listeners to on every request (watch for the `MaxListenersExceededWarning`, which fires once you cross the default cap of 10 listeners — often the first sign), a module-level array or Map that accumulates per-request data, or a closure captured in a route handler that pins a large object.
 
 You get the same tooling. Start the process with the inspector:
 

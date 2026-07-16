@@ -18,7 +18,7 @@ These three get mixed up constantly, and picking the wrong one wastes months.
 
 **Replication** copies the *same* data to multiple machines. A primary takes writes, replicas serve reads. It buys you read throughput and failover. It does nothing for write load or for a dataset too big to fit on one disk, because every replica holds the full copy.
 
-**Partitioning** (in the Postgres/MySQL sense) splits one table into pieces that still live inside *one* database server. `PARTITION BY RANGE (created_at)` lets the engine prune to the relevant partition and makes dropping old data an instant `DROP PARTITION` instead of a slow `DELETE`. It helps query planning and data lifecycle. It does not spread load across machines — the CPU and disk are still one box.
+**Partitioning** (in the Postgres/MySQL sense) splits one table into pieces that still live inside *one* database server. `PARTITION BY RANGE (created_at)` lets the engine prune to the relevant partition and makes dropping old data an instant `DROP PARTITION` instead of a slow `DELETE`. It speeds up planning and makes data lifecycle cheap. It does not spread load across machines — the CPU and disk are still one box.
 
 **Sharding** splits data across *separate* database servers, each holding a disjoint subset. Shard 1 has some customers, shard 2 has others. This is the only one of the three that scales writes and total dataset size horizontally. It's also, by a wide margin, the most expensive to operate.
 
@@ -40,7 +40,7 @@ There's a real tension here. The key that gives perfect distribution is rarely t
 
 ## The three ways to map a key to a shard
 
-Once you've picked the key, you need a function that turns a key value into a shard. There are three families.
+Once you've picked the key, you need a function that turns a key value into a shard. Three families of them, each trading away something different.
 
 ### Range-based
 

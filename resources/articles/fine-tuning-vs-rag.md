@@ -60,7 +60,7 @@ There's also a subtler latency win for fine-tuning that people forget: because t
 
 ## When to combine both
 
-The teams getting real value usually run both, because they're solving different halves of the problem.
+The teams that get real mileage usually run both. Retrieval and fine-tuning aren't competing answers to one question - they solve different halves of it.
 
 Picture a support assistant that must (a) answer using your current help center and (b) always reply in a specific structured format with your brand's clipped, no-fluff tone. RAG handles (a): retrieve the relevant articles, inject them, ground the answer in real content. Fine-tuning handles (b): the model reliably emits your schema and voice without a giant prompt babysitting it.
 

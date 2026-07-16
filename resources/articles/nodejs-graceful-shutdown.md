@@ -10,7 +10,7 @@ tags: [nodejs, devops, express, docker]
 
 The first time I noticed the problem, it was a stream of 502s in the load balancer logs during a deploy. Nothing was broken. The new pods were healthy, the old ones were gone, and yet for about eight seconds every rollout leaked a handful of failed requests. The service was being killed mid-request because it never bothered to shut down properly. It just died the instant the orchestrator told it to.
 
-That's the gap this article closes. When Docker or Kubernetes stops a container, it doesn't yank the power cord — it sends a signal and gives you a few seconds to behave. A Node process that ignores that window drops connections. A process that handles it finishes what it started and exits clean. Below is exactly how to do the second thing, with runnable `http`/Express code you can paste into a service today.
+Here's the thing nobody tells you until it bites: when Docker or Kubernetes stops a container, it doesn't yank the power cord. It sends a signal and gives you a few seconds to behave. A Node process that ignores that window drops connections. One that handles it finishes what it started and exits clean. The rest of this is how to build the second kind, with `http`/Express code you can lift straight into a service.
 
 ## What actually happens when a container stops
 

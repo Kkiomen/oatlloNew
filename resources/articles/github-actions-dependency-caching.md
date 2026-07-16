@@ -19,7 +19,7 @@ The path is the part people get wrong first. You do **not** cache `vendor/` or `
 - Composer downloads to `~/.composer/cache/files` (or `$COMPOSER_HOME/cache`). Cache that, and `composer install` skips the network and unpacks locally.
 - npm keeps a content-addressable store in `~/.npm`. Restore it and `npm ci` installs from disk instead of the registry.
 
-Why the download cache rather than the installed folder? Because `node_modules` is platform-specific and huge, and restoring a stale one can leave you with a broken partial install if the lockfile moved. The download cache is just tarballs keyed by integrity hash - install still runs, it just doesn't hit the network. It's the safer default. I'll show the `vendor`-caching variant too, because for pure-PHP projects it's genuinely faster and there's no native code to worry about.
+Why the download cache rather than the installed folder? `node_modules` is platform-specific and huge, and restoring a stale one can leave you with a broken partial install if the lockfile moved out from under it. The download cache is just tarballs keyed by integrity hash - install still runs, it just doesn't hit the network. Safer default. I'll show the `vendor`-caching variant too, because for pure-PHP projects it's genuinely faster and there's no native code to worry about.
 
 ## The key is everything
 
@@ -100,7 +100,7 @@ jobs:
         run: php artisan test
 ```
 
-Two things to notice. `actions/setup-node` with `cache: 'npm'` handles the entire npm side for you - it finds `package-lock.json`, hashes it, and caches `~/.npm` with sensible restore-keys. You write one line instead of a `cache` block. It also supports `cache: 'yarn'` and `cache: 'pnpm'` if that's your stack.
+Two things worth pointing at here. `actions/setup-node` with `cache: 'npm'` handles the entire npm side for you - it finds `package-lock.json`, hashes it, and caches `~/.npm` with sensible restore-keys. You write one line instead of a `cache` block. It also supports `cache: 'yarn'` and `cache: 'pnpm'` if that's your stack.
 
 For Composer I'm caching `vendor` directly here rather than the download cache. For a Laravel app with no compiled extensions, that's the faster path - `composer install` becomes almost a no-op when `vendor` is restored and the lock matches. The `--prefer-dist` flag matters: it pulls zipped distributions instead of cloning git repos, which is both faster and friendlier to the cache.
 

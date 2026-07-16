@@ -10,7 +10,7 @@ tags: [typescript, javascript]
 
 I had a config object with a list of allowed statuses and a function that took a `status` argument. The function accepted any string. TypeScript never complained when I passed `"pendign"` with a typo, because the array holding those statuses had inferred `string[]` and my parameter was just `string`. The fix was two words at the end of the array: `as const`. Suddenly the typo was a compile error, the union type was derived from the same array I was already reading at runtime, and I stopped maintaining a hand-written `type Status = ...` next to a list that said the same thing.
 
-That is the whole pitch for const assertions. They tie the type back to the value so you have one source of truth instead of two that drift apart. Below is what `as const` actually changes in the inferred type, the patterns worth reaching for, and the one behavior that will surprise you when you least expect it.
+That is the whole pitch for const assertions. They tie the type back to the value, so you keep one source of truth instead of two that drift apart. Here is what `as const` actually does to the inferred type, the patterns I keep reaching for, and the one behavior that has burned me more than once.
 
 ## What widening is, and why `as const` turns it off
 

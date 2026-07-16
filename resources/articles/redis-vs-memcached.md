@@ -171,7 +171,7 @@ Run down this list and stop at the first line that fits:
 - **You genuinely need to saturate many cores with raw throughput on one node** → Memcached's threading helps.
 - **None of the above / greenfield project** → Redis. It's the safer default because it grows with you.
 
-Redis is the "grows with you" default; Memcached is the specialist that shines when your needs are narrow and stay narrow.
+Redis is the default that grows with you; Memcached is the specialist that shines when your needs are narrow and stay narrow.
 
 ## FAQ
 
@@ -189,4 +189,4 @@ Because the default `maxmemory-policy` is `noeviction`. Set `maxmemory` and an e
 
 ## Where this lands
 
-Pick Memcached when your needs are narrow — a big, fast, disposable key/value cache of uniform small values — and you want the least to operate. Pick Redis for basically everything else, and especially for anything that will one day want a queue, a lock, or a counter that has to be right under concurrency. If you're starting fresh on Laravel, save yourself the future migration and start with Redis. Then go set `maxmemory-policy` before you forget, because the default will bite you.
+Pick Memcached when your needs are narrow — a big, fast, disposable key/value cache of uniform small values — and you want the least to operate. Pick Redis for anything that will one day want a queue, a lock, or a counter that has to be right under concurrency, which in practice is most apps. Starting fresh on Laravel, save yourself the future migration and start with Redis. Then go set `maxmemory-policy` before you forget, because the default will bite you.

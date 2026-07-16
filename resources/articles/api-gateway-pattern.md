@@ -10,7 +10,7 @@ tags: [architecture, devops, api, microservices]
 
 The first time it bit me, we had four services and every one of them re-implemented JWT validation. Slightly differently. One trimmed the `Bearer ` prefix, one didn't; one checked the `exp` claim in seconds, another in milliseconds. A token that worked against the orders service got a 401 from billing, and the mobile team spent an afternoon proving it wasn't their bug. That afternoon is the whole argument for the pattern this article is about — pulling the cross-cutting stuff out of every service and putting it in one place clients talk to first.
 
-I'll go through what a gateway centralizes, why people confuse it with a reverse proxy and a load balancer (they're related but not the same), the backends-for-frontends variant, and the two costs nobody mentions on the marketing pages: it's a single point of failure and it adds a network hop. And I'll be direct about when you shouldn't reach for one at all.
+I'll go through what a gateway centralizes, why people confuse it with a reverse proxy and a load balancer (they're related but not the same), the backends-for-frontends variant, and the two costs you actually pay for it: it's a single point of failure and it adds a network hop. And I'll be direct about when you shouldn't reach for one at all.
 
 ## The problem: clients talking to services directly
 

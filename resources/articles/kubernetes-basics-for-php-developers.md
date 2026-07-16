@@ -203,7 +203,7 @@ Add a lightweight health route to Laravel. Laravel 11 ships one at `/up` out of 
 
 The subtle part is shutdown. When Kubernetes removes a pod it sends `SIGTERM`, waits for the pod's `terminationGracePeriodSeconds` (default 30), then sends `SIGKILL`. For the web tier, `php-fpm` needs to finish in-flight requests before exiting. For queue workers, `queue:work` catches `SIGTERM` and stops after the current job rather than mid-job — Laravel supports this, but only if the signal actually reaches the process, so make sure your container's entrypoint uses exec form (`command: ["php", ...]`) rather than a shell wrapper that swallows the signal.
 
-Readiness and graceful shutdown are two halves of one story: readiness stops new traffic arriving, graceful shutdown lets existing work finish. Skip either and rollouts drop requests.
+Readiness and graceful shutdown attack the same problem from opposite ends: readiness stops new traffic reaching a pod that's on its way out, graceful shutdown lets the work already in flight finish. Skip either one and your rollouts quietly drop requests — the kind of bug that shows up as a handful of 502s during every deploy and gets shrugged off as "the network."
 
 ## The migration trap
 

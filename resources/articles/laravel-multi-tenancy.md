@@ -14,7 +14,7 @@ That is the whole story of multi-tenancy in one paragraph. The hard part is almo
 
 ## The three models
 
-Every tenancy setup is a variation on how much you physically separate customers' data. There are exactly three shapes, and the choice cascades into everything else.
+Every tenancy setup is really one question: how much do you physically separate customers' data? There are three answers, and the one you pick cascades into everything else - routing, migrations, backups, how hard a compliance audit gets.
 
 **Single database, shared tables (a `tenant_id` column).** Every row from every tenant lives in the same `invoices` table, tagged with a `tenant_id`. Isolation is purely a matter of always filtering by that column. This is the cheapest to run and by far the easiest to operate - one database, one migration run, one backup. The cost is that isolation is *your* responsibility on every single query. Forget the filter once and you leak.
 
@@ -34,7 +34,7 @@ Notice the tension. The model with the weakest isolation (shared DB) is the one 
 
 ## Resolving which tenant this request belongs to
 
-Before any query runs, you need to know *who* is asking. There are four common strategies, and they are not mutually exclusive.
+Before any query runs, you need to know *who* is asking. Four strategies show up in practice, and plenty of apps use more than one at once.
 
 - **Subdomain**: `acme.yourapp.com`. The most common for B2B SaaS. You need a wildcard DNS record and a wildcard TLS cert.
 - **Custom domain**: `app.acme-corp.com` pointing at you. Great for white-label products, more setup per tenant.

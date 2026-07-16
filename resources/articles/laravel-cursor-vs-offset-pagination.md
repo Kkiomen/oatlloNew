@@ -10,7 +10,7 @@ tags: [laravel, php, database, performance]
 
 We had an admin table of audit logs that grew past four million rows, and someone noticed that page 1 loaded instantly while page 9,000 took almost two seconds. Same query, same indexes, same everything - just a bigger `OFFSET`. That gap is the whole story of why cursor pagination exists, and it's the thing nobody tells you when you reach for `paginate()` out of habit.
 
-This article walks through what actually happens in the database when you skip rows, the three pagination methods Laravel ships, how keyset (cursor) pagination avoids the slowdown, and - just as important - when it's the wrong tool and plain offset is fine.
+Most of the time we ignored it. Page 9,000 of an audit log isn't a page anyone clicks by hand. But the same shape shows up in exports and infinite-scroll feeds, where deep pages are the normal case, not the edge, and there it stops being ignorable. So let's start with why the database slows down at all, then look at what Laravel actually hands you to fix it - and where reaching for the fix is a mistake.
 
 ## Why OFFSET gets slower as you go deeper
 
@@ -115,7 +115,7 @@ Cursor pagination is immune to this. The cursor is anchored to a specific row's 
 
 ## What this means for your API design
 
-The trade-offs land squarely on how you shape a paginated endpoint.
+This is where the choice stops being academic, because it dictates the shape of your endpoint.
 
 If you expose numbered pages - `?page=5`, a footer with "1 2 3 ... 412", a "jump to last page" link - you are committed to offset. Cursor pagination has no concept of page 5. You can only go forward and backward from where you are, because the cursor *is* your position. There's no total either, so you can't render "412 pages" without a separate count query that defeats the point.
 

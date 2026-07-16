@@ -17,7 +17,7 @@ That whole class of failure disappears when the thing you pass around isn't a `f
 Three properties, and all three matter:
 
 - **Identity by value, not by id.** Two `Money` objects holding `1000` cents in `USD` are equal, full stop. There is no "which one" — unlike a `User`, where two rows with the same name are still two different people. If you find yourself wanting an `id`, you have an entity, not a value object.
-- **Immutable.** Once built, it never changes. Need a different value? You get a new instance. This is the property people underrate and it's the one that pays off most.
+- **Immutable.** Once built, it never changes. Need a different value? You get a new instance. This is the one people skip — "eh, I'll just be careful" — and the one that saves you the day a method three layers down decides to be helpful and mutate the thing you handed it.
 - **Self-validating.** An instance that exists is, by definition, valid. A `Email` object cannot hold `"not-an-email"` because the constructor would have thrown before the object came into being. You validate once, at the edge, and every function downstream can stop asking "but is this actually an email?"
 
 That last point is the whole game. The moment a value passes the constructor, its correctness stops being a question anyone else has to answer.

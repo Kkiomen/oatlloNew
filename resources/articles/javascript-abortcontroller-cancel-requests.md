@@ -64,7 +64,7 @@ One controller is single-use. Once you've called `abort()`, that signal is spent
 
 ## AbortError vs. a real error
 
-This is the part people get wrong, and it's worth slowing down on. When a `fetch` fails, you have to distinguish three situations:
+This is the part I've watched people get wrong in code review over and over. When a `fetch` fails, you have to distinguish three situations:
 
 - **You aborted it** — expected, do nothing.
 - **The network failed** — connection dropped, DNS died, CORS rejected. `fetch` rejects with a `TypeError`.
@@ -127,7 +127,7 @@ const res = await fetch('/api/upload', {
 userCancel.abort();
 ```
 
-This composes cleanly. You keep a long-lived controller tied to component lifetime, mix in a per-request timeout, and never have to manually chain listeners between them. If you were doing this by hand you'd be adding an `abort` listener on one signal that calls `abort()` on another — `AbortSignal.any()` is exactly that, done correctly.
+You keep a long-lived controller tied to component lifetime, mix in a per-request timeout, and never have to manually chain listeners between them. Do this by hand and you end up adding an `abort` listener on one signal that calls `abort()` on another, then remembering to detach it so you don't leak — `AbortSignal.any()` is exactly that, done correctly.
 
 ## It's not just for fetch
 

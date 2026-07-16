@@ -10,7 +10,7 @@ tags: [ai, rag, embeddings, python]
 
 The first RAG demo I shipped answered "what's our refund window?" with a chunk that was half a shipping policy and half a footer disclaimer. The embedding model was fine. The vector database was fine. The chunker had sliced a 400-word policy page every 500 characters, and the sentence that actually said "30 days" landed split across two chunks — so neither one retrieved cleanly. That bug taught me the thing nobody says loudly enough: **retrieval quality is decided at chunk time, not at query time.** Everything downstream just inherits whatever the splitter handed it.
 
-This is a practical tour of how to cut documents for retrieval — the strategies that move the needle, the ones that look clever and don't, and how to actually measure whether your choice helped.
+So this is a walkthrough of how to cut documents for retrieval — the strategies that earn their keep, the ones that look clever in a blog post and quietly hurt in production, and how to measure whether your choice actually helped instead of arguing about it.
 
 ## Why the chunk boundary is the whole game
 
@@ -18,7 +18,7 @@ A retriever can only return what exists as a unit. If the answer to a question s
 
 So chunking is really answering one question: *what is the smallest self-contained span that could answer a query on its own?* Too big and you dilute the embedding — a 1,500-token chunk about "our API" has a vector that means everything and therefore matches nothing precisely. Too small and you decapitate the context: a chunk that says "It expires after 90 days" is useless if "it" lived in the previous chunk.
 
-Most teams reach for a character count because it's the default in every tutorial. It works until it doesn't, and when it fails it fails silently — you don't get an error, you get a slightly-wrong answer that looks confident.
+Most teams reach for a character count because it's the default in every tutorial. It works until it doesn't. And when it breaks, it breaks quietly: no stack trace, no warning, just a slightly-wrong answer delivered with total confidence — which is the worst kind of bug, because nobody notices for weeks.
 
 ## Fixed-size chunking: the honest baseline
 
@@ -175,7 +175,7 @@ def recall_at_k(eval_set, retrieve, k=5):
     return hits / len(eval_set)
 ```
 
-Run this once per chunking strategy and the argument stops being about taste. In one internal knowledge base, switching from fixed-500-char to recursive-splitting-with-heading-prefix moved recall@5 from the low seventies into the nineties — same embedding model, same database, just better cuts. That's the entire value of chunking in one number, and you only see it if you measure. Frameworks like Ragas can automate the fancier metrics later, but a hand-rolled `recall@k` loop is enough to make good decisions today.
+Run this once per chunking strategy and the argument stops being about taste. On one internal knowledge base I worked on, switching from fixed-500-char to recursive-splitting-with-heading-prefix pulled recall@5 from the low seventies up into the nineties. Same embedding model, same database, just better cuts. That's the whole value of chunking sitting in one number — and you only get to see it if you bothered to measure. Frameworks like Ragas can automate the fancier metrics later; a hand-rolled `recall@k` loop is enough to make good decisions today.
 
 ## Where I'd actually start
 

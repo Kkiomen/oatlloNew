@@ -16,7 +16,7 @@ Networking is where Docker stops being "just run the container" and starts havin
 
 When you install Docker, you get a network called `bridge`. Every container you start with plain `docker run` — no `--network` flag — lands there. It works: containers get an IP, they can reach the internet, you can talk to them from the host through published ports.
 
-What it does *not* give you is DNS between containers. On the default bridge, one container cannot resolve another by name. You'd have to dig out the raw IP address, which changes every time the container restarts. This is the single fact that trips up almost everyone starting out.
+What it does *not* give you is DNS between containers. On the default bridge, one container cannot resolve another by name. You'd have to dig out the raw IP with `docker inspect`, hardcode it somewhere, and watch it break the next time the container restarts and gets a new one. That single gap is behind most of the "but it works on the other network" confusion I see from people new to Docker.
 
 ```bash
 docker run -d --name db postgres:16
@@ -127,7 +127,7 @@ services:
 
 ## A quick word on overlay networks
 
-Everything above is single-host. The moment you spread containers across *multiple* machines — Docker Swarm, or a cluster — bridge networks don't span hosts. That's what the **overlay** driver is for: it creates a virtual network that sits on top of the physical network so containers on different machines can talk by service name as if they were local. You rarely create these by hand; Swarm and orchestrators manage them. If you're on a single box, you'll never need overlay — but it's good to know the word so multi-host networking doesn't feel like a different universe. (In Kubernetes this job is handled by the CNI plugin instead, which is a whole separate topic.)
+Everything above is single-host. The moment you spread containers across *multiple* machines — Docker Swarm, or a cluster — bridge networks stop at the machine's edge; they don't span hosts. That's what the **overlay** driver is for: it stretches a virtual network across the physical one so containers on different machines talk by service name as if they were sitting on the same box. You rarely create these by hand — Swarm and orchestrators manage them for you. On a single box you'll never touch overlay, but knowing the word means multi-host networking won't read like a different universe when you get there. Kubernetes solves the same problem with a CNI plugin instead, which is its own rabbit hole.
 
 ## The debugging story: "why can't my app reach the database?"
 
@@ -178,6 +178,6 @@ Because Docker only wires it up automatically on Docker Desktop. On Linux, add `
 **Can containers on two different `docker network create` networks talk to each other?**
 Not by default — that's the isolation working as intended. A container can be attached to multiple networks (`docker network connect`), which is how you deliberately bridge two otherwise-separate groups of services.
 
-## Wrapping up
+## The three questions that solve most of it
 
-Almost every Docker networking headache reduces to three questions: are these containers on the same user-defined network, does the name resolve, and is the port actually open? Get in the habit of running that check — `getent hosts`, then `nc -zv` — before you touch a single config file. The next time an app can't reach its database, you'll spend two minutes confirming where it's actually looking instead of forty minutes assuming the database is down.
+Almost every Docker networking headache reduces to three questions: are these containers on the same user-defined network, does the name resolve, and is the port actually open? Build the habit of running that check — `getent hosts`, then `nc -zv` — before you touch a single config file. The next time an app can't reach its database, you'll spend two minutes confirming where it's actually looking instead of the forty I burned assuming the database was down.

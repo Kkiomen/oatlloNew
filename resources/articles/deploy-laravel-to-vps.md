@@ -78,7 +78,7 @@ This is the line that separates a dev checkout from a deploy:
 composer install --no-dev --optimize-autoloader --no-interaction
 ```
 
-`--no-dev` skips PHPUnit, Faker, and friends — you don't test on the production box, and shipping those is dead weight and extra attack surface. `--optimize-autoloader` builds a class map so PHP resolves classes by array lookup instead of stat-ing the filesystem on every autoload. On a real app the difference is measurable per request. If your app never runs `artisan` at build time, add `--classmap-authoritative` to skip filesystem checks entirely, but only if you're sure nothing loads classes generated at runtime.
+`--no-dev` skips PHPUnit, Faker, and friends — you don't test on the production box, and shipping those is dead weight and extra attack surface. `--optimize-autoloader` builds a class map so PHP resolves classes with an array lookup instead of walking PSR-4 directories and stat-ing the filesystem on every autoload. On a fat framework that's the difference between one hash lookup and dozens of disk checks for the classes a single request touches. If your app never runs `artisan` at build time, add `--classmap-authoritative` to skip filesystem checks entirely, but only if you're sure nothing loads classes generated at runtime.
 
 ## Environment and the app key
 

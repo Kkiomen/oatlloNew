@@ -10,7 +10,7 @@ tags: [architecture, database, laravel, devops]
 
 A user updated their profile name, hit save, saw the green toast, and then the page reloaded with the old name. They filed a bug. There was no bug in the write path. The write had committed to the primary database, and the reload had been served by a read replica that was about a second behind. That gap between "the write happened" and "everybody can see it" has a name, and once you learn to spot it you start seeing it everywhere in your stack.
 
-This article is about that gap: what eventual consistency really is, the specific user-visible failures it produces, the handful of techniques that fix each one, and how to explain the trade-off to a product owner who just wants the save button to work.
+Nothing in the write path was wrong. That gap between "committed" and "visible everywhere" is eventual consistency, and it's worth pinning down properly: what it actually is, the two bugs it throws into your tracker, the cheap fixes for each, and how to sell the trade-off to a product owner who just wants the save button to work.
 
 ## Strong vs eventual consistency, without the hand-waving
 
@@ -78,14 +78,14 @@ public function update(Request $request, User $user)
 {
     $user->update($request->only('name'));
 
-    // Redirect target reads from a replica that may lag. Two honest options:
+    // The redirect target reads from a replica that may lag. Two honest options:
 
-    // 1) Force this particular read onto the primary.
-    $fresh = User::on('mysql')->getConnection()->transaction(
-        fn () => User::query()->useWritePdo()->find($user->id)
-    );
+    // 1) Force this one read onto the primary:
+    $fresh = User::query()->useWritePdo()->find($user->id);
 
-    // 2) Or don't re-read at all — you already know what you just wrote.
+    // 2) Or skip the re-read entirely — you already know what you just wrote:
+    //    return redirect()->route('profile')->with('user', $user);
+
     return redirect()->route('profile')->with('user', $fresh);
 }
 ```

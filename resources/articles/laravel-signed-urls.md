@@ -10,7 +10,7 @@ tags: [laravel, php, security, urls]
 
 A client once asked me to build an "unsubscribe" link that worked without logging in. Easy enough — put the user ID in the URL. Then someone noticed you could change `?user=204` to `?user=205` and unsubscribe a stranger. That kind of thing is exactly what signed URLs exist to stop. Laravel ships this out of the box, and once you understand what the signature actually protects, you stop reinventing token tables for every "click this link from your email" feature.
 
-This post covers how the signing works under the hood, how to validate the links, the expiry and proxy traps that bite people in production, and the one mistake that makes every signed link in your app suddenly return a 403.
+Here's what the signature actually protects, how to validate it, and the two traps that will have you staring at a wall of 403s in staging while everything works fine on your laptop.
 
 ## What a signed URL actually is
 

@@ -37,7 +37,7 @@ class Uppercase implements ValidationRule
 
 The signature is worth reading slowly. There is no `passes()` returning a boolean anymore — you call `$fail` when the value is wrong and simply return otherwise. `$attribute` is the field name (`email`, `settings.timezone`), `$value` is what the user submitted, and `$fail` is a closure you invoke with a message. Calling `$fail` more than once is allowed and records multiple errors.
 
-The `:attribute` placeholder gets replaced with the humanized field name. That is the same substitution the framework does everywhere, so your custom message reads like a native one.
+The `:attribute` placeholder gets swapped for the humanized field name — the same substitution the framework runs on its own messages, so yours reads like a native one instead of an obvious bolt-on.
 
 Generate the skeleton with Artisan rather than typing it out:
 
@@ -384,7 +384,7 @@ Implement `DataAwareRule`, add a `setData(array $data)` method that stores the i
 
 Only for backward compatibility with older Laravel or third-party packages. On any supported version, implement `ValidationRule` with its single `validate($attribute, $value, $fail)` method — it is what `make:rule` generates and where the framework is going.
 
-## Wrapping up
+## When it's worth writing your own
 
 The framework's built-in rules cover the boring 90%. The interesting failures — disposable domains, regulator-mandated password policies, "required only when shipping" — are exactly the ones no generic rule can know about, and they are the ones users find first. A rule object gives that logic a name, a test, and a single home so it stops drifting between forms.
 

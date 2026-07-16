@@ -10,7 +10,7 @@ tags: [database, laravel, php, architecture, devops]
 
 The first time replicas bit me, a user updated their profile, the page reloaded, and the old name was still there. Refresh again and it was correct. No error, no exception, nothing in the logs. The write went to the primary, the reload read from a replica that hadn't caught up yet, and for about 40 milliseconds the database lied. That gap has a name — replication lag — and it's the thing nobody warns you about when they tell you to "just add a read replica."
 
-This article is about what actually happens when you split reads and writes across a primary and its replicas: how the topology works, the lag trap you'll hit first, how Laravel routes queries, when to force a query back to the primary, and where replication stops being the right tool and sharding takes over.
+Here's the whole arc: how the topology fits together, the lag trap you'll hit within a week of turning replicas on, how Laravel decides which host a query lands on, when to yank a read back onto the primary, and the point where replication runs out of road and sharding takes over.
 
 ## Why split reads from writes at all
 

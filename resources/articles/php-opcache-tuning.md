@@ -125,7 +125,7 @@ If you'd rather not write your own, `cachetool` gives you the same numbers from 
 
 ## The JIT: mostly not your win
 
-PHP 8 added a JIT compiler, exposed through `opcache.jit` and `opcache.jit_buffer_size`, and it's the setting people ask about most and benefit from least.
+PHP 8 added a JIT compiler, exposed through `opcache.jit` and `opcache.jit_buffer_size`. It's the feature I get asked about most, and the one that pays back least.
 
 ```ini
 ; JIT — measure before you assume this helps

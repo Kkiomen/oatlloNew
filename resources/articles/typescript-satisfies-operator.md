@@ -10,7 +10,7 @@ tags: [typescript, javascript, tooling]
 
 I had a config object with about thirty entries, each one a `string | number | boolean`, and I wanted TypeScript to yell at me if I ever typed a value that wasn't one of those. So I annotated it: `const config: Record<string, string | number | boolean> = {...}`. It caught the bad values. It also threw away everything useful: `config.timeout` was now `string | number | boolean` instead of the `30` I'd written, and `config.debug` was no longer a literal `false`. The annotation validated the object by *becoming* its type, and in doing so it flattened every value down to the wide union.
 
-That is the exact gap `satisfies` was built to close. It landed in TypeScript 4.9 (November 2022), and once you understand what it does to inference you reach for it constantly. This is the tradeoff between checking a value and widening it, and how to get the check without the widening.
+That is the exact gap `satisfies` was built to close. It landed in TypeScript 4.9 (November 2022), and once the inference behavior clicks you stop annotating literals altogether. What follows is why annotations widen, what `satisfies` does instead, and where it beats both an annotation and `as`.
 
 ## The problem: a type annotation validates by replacing
 
@@ -121,7 +121,7 @@ const colors = {
 
 Without `as const`, `rose` would infer as `number[]`, which isn't assignable to the tuple type `RGB`, and the `satisfies` would error. With `as const`, it infers as the exact tuple and passes. You end up with the tightest possible types that are also proven to match `Named`. I use this combo for anything that's effectively a constant lookup table.
 
-Heads up: `as const` makes things `readonly`, so if some consumer wants to mutate the object, the readonly tuples will fight you. That's usually a sign the data shouldn't be mutated, but know the constraint before you reach for it.
+Heads up: `as const` makes things `readonly`, so any consumer that tries to mutate the object gets a compile error on the readonly tuples. Usually that's a sign the data shouldn't be mutated anyway. Just know the constraint before you reach for it.
 
 ## Where it actually earns its keep
 
@@ -146,7 +146,7 @@ const routes = {
 
 ## When not to reach for it
 
-`satisfies` is not free real estate. Skip it when:
+It isn't a default you should apply on autopilot. Skip it when:
 
 - **You genuinely want the wide type.** If a function parameter or a mutable variable should be `string | number` and you don't care which one a specific literal is, a plain annotation is clearer and communicates intent. Don't narrow what you'll immediately widen.
 - **The value comes from outside your program.** `JSON.parse`, an API response, `process.env` — these are `any`/`unknown` and *not* checked at runtime. `satisfies` is a compile-time check on a literal you wrote; it does nothing for data you didn't author. Validate untrusted input with a runtime schema (zod, valibot, a hand-written guard), not `satisfies`.

@@ -14,7 +14,7 @@ That's the thing about a reverse proxy: the happy path is trivial, and the detai
 
 ## What "reverse proxy" actually buys you
 
-A reverse proxy is a server that accepts client requests and forwards them to one or more backend servers, then relays the response back. "Reverse" because it fronts *your* servers, not the client's outbound traffic. In practice you reach for one because your app server shouldn't be doing the jobs nginx is better at:
+A reverse proxy takes the client's request, hands it to one of your backend servers, and passes the reply back. "Reverse" because it fronts *your* servers, not the client's outbound traffic. You reach for one because your app server shouldn't be spending its time on jobs nginx does better:
 
 - **TLS termination.** nginx holds the certificate, decrypts HTTPS, and talks plain HTTP to your app over the loopback. Your Node process never touches a cert. One place to renew, one place to configure ciphers.
 - **A single entry point.** Port 443 goes to nginx. Behind it you can run an app on `:3000`, an admin panel on `:3001`, and static files off disk — all under one hostname, routed by path.

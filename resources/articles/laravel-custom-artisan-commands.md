@@ -229,7 +229,7 @@ Two design choices carry this command. The `--dry-run` flag is not optional in s
 - `Command::FAILURE` — `1`
 - `Command::INVALID` — `2`
 
-This is the difference between a monitored job and a silent one. A cron wrapper, a CI step, or a `&&` chain in a deploy script all key off the exit code. Return `SUCCESS` from a command that actually failed and your monitoring stays green while the work never happened. If you forget to return anything, PHP returns `null`, which Laravel treats as `0` — so an uncaught "return nothing on error" path reports success. Be deliberate about the return.
+Get this wrong and a failed job passes for a healthy one. A cron wrapper, a CI step, or a `&&` chain in a deploy script all key off the exit code. Return `SUCCESS` from a command that actually failed and your monitoring stays green while the work never happened. If you forget to return anything, PHP returns `null`, which Laravel treats as `0` — so an uncaught "return nothing on error" path reports success. Be deliberate about the return.
 
 ## Calling one command from another
 

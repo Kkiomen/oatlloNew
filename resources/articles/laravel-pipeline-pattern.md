@@ -117,6 +117,8 @@ class WrapInTransaction
 
 Put that first in `through()` and every pipe after it is transactional. Try expressing "wrap the next N steps in a DB transaction" with a flat array of callbacks - you can't, because a callback in a `reduce` only sees its own step.
 
+Order bites you here, though. If `ChargePayment` runs inside that transaction and a pipe after it throws, the database rolls back but Stripe already took the money - external side effects don't care about your rollback. Keep the irreversible steps last, or move them after the transaction closes. This is the one place the "just reorder the array" freedom will hurt you if you're not paying attention.
+
 **Decorating the result.** A logging or timing pipe can measure the entire remaining chain:
 
 ```php

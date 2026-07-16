@@ -81,7 +81,7 @@ $total = $lineItems->reduce(
 
 That said, don't reach for `reduce` when a named method exists. If you're summing a single field, `$lineItems->sum(fn ($i) => $i->price * $i->quantity)` says the same thing more plainly. I keep `reduce` for genuinely custom accumulation, like building a running balance or merging structures.
 
-## partition, pipe, and tap: the flow-control trio
+## tap, pipe, when: keeping side logic inside the chain
 
 `tap` runs a side effect and returns the original collection untouched. It's for logging or debugging mid-chain without breaking the fluent flow:
 
