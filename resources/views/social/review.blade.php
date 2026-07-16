@@ -47,6 +47,30 @@
 
         /* Karta "posta" – proporcje i chrom podpatrzone z feedu Instagrama:
            header z autorem, kanwa 4:5 (albo 9:16 dla story), pasek akcji, podpis. */
+        {{-- Kanwa i przesłanki obok siebie. Przy 150 postach w kolejce każde
+             zbędne przewinięcie do przycisku mnoży się przez 150, więc werdykt
+             ma zapadać bez ruszania stroną. --}}
+        .deck { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+        .side { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+
+        @media (min-width: 1100px) {
+            .deck {
+                flex-direction: row; align-items: flex-start; justify-content: center;
+                gap: 28px; width: auto;
+            }
+            {{-- Kanwa nie może się kurczyć: iframe ma sztywne wymiary i skalę
+                 policzoną w kontrolerze, więc flex-shrink zrobiłby z niej kadr
+                 przycięty, a nie mniejszy. --}}
+            .card { flex: none; }
+            .side {
+                width: 420px; align-items: stretch;
+                position: sticky; top: 32px;
+            }
+            .side .verify, .side .notes { margin: 0; max-width: none; }
+            .side .meta { justify-content: flex-start; }
+            .side .actions { margin-top: 4px; }
+        }
+
         .card {
             width: {{ ($canvas['width'] ?? 1080) * ($scale ?? 0.37) }}px;
             background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
@@ -259,6 +283,11 @@
         &middot; <a href="{{ route('social.calendar') }}" style="text-transform: none; letter-spacing: 0;">kalendarz</a>
     </div>
 
+    {{-- Na szerokim ekranie kanwa i weryfikacja stoją OBOK SIEBIE, nie jedna pod
+         drugą. Powód jest arytmetyczny: przy 150 postach w kolejce każde zbędne
+         przewinięcie do przycisku mnoży się przez 150. Werdykt ma się wydawać
+         bez ruszania stroną. Poniżej ~1100px wraca kolumna. --}}
+    <div class="deck">
     <div class="card">
         <div class="card-head">
             <div class="avatar">O</div>
@@ -304,6 +333,8 @@
             </div>
         </div>
     </div>
+
+    <div class="side">
 
     {{-- Stan weryfikacji liczymy z tego samego odcisku, co werdykt człowieka:
          `SocialReviewItem::$fingerprint` to sha1 treści BEZ bloku `verified:`,
@@ -368,6 +399,8 @@
         <a href="{{ route('social.styles', ['slug' => $post->slug]) }}" target="_blank">ten post we wszystkich stylach</a>
     </div>
 
+    {{-- Przyciski w PRAWEJ kolumnie, pod weryfikacją: decyzja ma zapadać tam,
+         gdzie leżą przesłanki, i bez sięgania niżej niż kanwa. --}}
     <div class="actions">
         <button class="btn red" data-open-modal>Do poprawy</button>
         <form method="POST" action="{{ route('social.review.store', ['slug' => $post->slug]) }}">
@@ -376,6 +409,9 @@
             <button class="btn green" type="submit">OK, nadaje się</button>
         </form>
     </div>
+
+    </div>{{-- .side --}}
+    </div>{{-- .deck --}}
     {{-- Oglądanie kolejnych postów BEZ werdyktu. Werdykt zdejmuje post z kolejki,
          więc te linki są jedynym sposobem, żeby coś odłożyć na później. --}}
     <div class="posts">
