@@ -12,25 +12,18 @@ that two lines of work met. Rebase pretends they never diverged.
 
 ## The setup
 
-Say you branched off `main` to build a feature. While you worked, a teammate pushed
-two commits to `main`. Now the history has split:
+Say you branched off `main` to build a feature and made two commits, `D` and `E`.
+While you worked, a teammate pushed two commits of their own, `X` and `Y`, to `main`.
+The two lines have now diverged:
 
 ```text
-        D - E        <- your feature branch
+        D - E            <- feature (your two commits)
        /
-A - B - C            <- main (moved on without you)
+A - B - C - X - Y        <- main (moved on without you)
 ```
 
-You made commits `D` and `E`. Meanwhile `main` gained... nothing yet in this picture -
-let's say `main` is at `C` and someone added `X - Y` on top. It looks like this:
-
-```text
-        D - E            <- feature
-       /
-A - B - C - X - Y        <- main
-```
-
-Your branch and `main` have diverged. Both merge and rebase reunite them.
+Both merge and rebase reunite these lines. They just leave you with a different-shaped
+history.
 
 ## Merge: keep both lines, add a merge commit
 

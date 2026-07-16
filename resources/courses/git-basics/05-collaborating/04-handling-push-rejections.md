@@ -7,11 +7,11 @@ seo_description: "Git push rejected with '! [rejected] ... (non-fast-forward)'? 
 
 ## The error you just hit
 
-A **Git push rejected** with `non-fast-forward` is one of the first errors every
-collaborator meets. You run `git push` and Git refuses:
+A **Git push rejected** is one of the first errors every collaborator meets. You run
+`git push` and Git refuses, usually with `(fetch first)`:
 
 ```text
-! [rejected]        main -> main (non-fast-forward)
+! [rejected]        main -> main (fetch first)
 error: failed to push some refs to 'github.com:you/project.git'
 hint: Updates were rejected because the remote contains work that you do
 hint: not have locally. This is usually caused by another repository pushing
@@ -19,7 +19,11 @@ hint: to the same ref. You may want to first integrate the remote changes
 hint: (e.g., 'git pull ...') before pushing again.
 ```
 
-Nothing is broken. This is Git protecting you.
+You will also meet its close cousin, `(non-fast-forward)`. Git prints `(fetch first)`
+when the remote has commits you have not downloaded yet, and `(non-fast-forward)` once
+you have them but your branch still can't move forward in a straight line. In practice
+they mean the same thing and both are fixed the same way. Nothing is broken - this is
+Git protecting you.
 
 ## What it means
 
