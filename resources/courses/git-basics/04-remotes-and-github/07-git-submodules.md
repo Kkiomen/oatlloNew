@@ -67,7 +67,7 @@ Without that commit, the update lives only on your machine and nobody else gets 
 
 ## Common mistake: the empty-folder trap
 
-If a teammate clones the project and the submodule folder is empty, the fix is almost always the missing recurse step: run `git submodule update --init --recursive`. Remember that the parent tracks a **commit**, not a branch, so pulling the parent does not automatically move the submodule - you update it explicitly and commit the new pointer. Treating a submodule like a normal folder (editing its files and expecting the parent to just save them) is the usual source of confusion.
+A teammate clones the project and the submodule folder sits there empty. The fix is almost always the missing recurse step: run `git submodule update --init --recursive`. Keep one rule in mind. The parent tracks a **commit**, not a branch, so pulling the parent does not move the submodule on its own. You advance it yourself and commit the new pointer. Editing a submodule's files and expecting the parent to just save them is the usual source of confusion.
 
 ## FAQ
 
