@@ -16,7 +16,7 @@ return [
     'header_blog' => 'Blog',
     'header_sub_blog' => 'Od podstawowych zagadnień, przez wskazówki dla zaawansowanych, po nowości ze świata technologii.',
     'meta_title' => 'Oatllo – blog o programowaniu, projekty, kursy, wskazówki.',
-    'meta_title_blog' => 'Oatllo.pl - Blog o programowaniu. Porady, tutoriale, analizy',
+    'meta_title_blog' => 'Oatllo.com - Blog o programowaniu. Porady, tutoriale, analizy',
     'meta_description_blog' => 'Blog - Odkryj fascynujący świat programowania z naszym blogiem. Znajdziesz tu profesjonalne porady, poradniki i analizy',
     'about_me_description' => 'Programista PHP, Pasjonat programowania',
     'about_me_content' => 'Jestem pasjonatem programowania, który od lat zgłębia tajniki nowoczesnych technologii. Na tej stronie znajdziesz wartościowe artykuły, poradniki i wskazówki dotyczące najnowszych trendów oraz dobrych praktyk programistycznych. To miejsce stworzone dla osób, które chcą rozwijać swoje umiejętności i poznawać praktyczne aspekty programowania.',

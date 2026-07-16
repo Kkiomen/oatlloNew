@@ -16,7 +16,7 @@ return [
     'header_blog' => 'Blog',
     'header_sub_blog' => 'From basic concepts and advanced tips to the latest technology news.',
     'meta_title' => 'Oatllo – programming blog, projects, courses, tips.',
-    'meta_title_blog' => 'Oatllo.pl - Programming Blog. Tips, tutorials, analyses',
+    'meta_title_blog' => 'Oatllo.com - Programming Blog. Tips, tutorials, analyses',
     'meta_description_blog' => 'Blog - Discover the fascinating world of programming with our blog. You will find professional tips, guides, and analyses here.',
     'about_me_description' => 'PHP Developer, Programming Enthusiast',
     'about_me_content' => 'I am a programming enthusiast who has been exploring the intricacies of modern technologies for years. On this site, you will find valuable articles, guides, and tips on the latest trends and best programming practices. This place is created for those who want to develop their skills and discover practical aspects of programming.',
