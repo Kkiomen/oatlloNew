@@ -1,0 +1,6 @@
+Przyczyna,Źródło,Weryfikacja,Strony
+Błąd serwera (5xx),Strona internetowa,Nie rozpoczęto,1
+"Duplikat, wyszukiwarka Google wybrała inną stronę kanoniczną niż użytkownik",Systemy Google,Nie rozpoczęto,5
+"Strona zeskanowana, ale jeszcze nie zindeksowana",Systemy Google,Rozpoczęto,71
+Alternatywna strona zawierająca prawidłowy tag strony kanonicznej,Strona internetowa,Nie dotyczy,0
+Strona wykryta – obecnie niezindeksowana,Systemy Google,Powodzenie,132
