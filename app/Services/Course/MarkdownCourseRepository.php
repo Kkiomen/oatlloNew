@@ -248,6 +248,7 @@ class MarkdownCourseRepository
         }
 
         $raw    = $this->normalizeEncoding($raw);
+        $raw    = $this->normalizeDashes($raw);
         $result = $this->converter->convert($raw);
 
         $fm = [];
@@ -265,6 +266,22 @@ class MarkdownCourseRepository
     {
         // "01-what-is-php" -> "what-is-php"
         return (string) preg_replace('/^\d+[-_]/', '', $name);
+    }
+
+    /**
+     * Kursy (inaczej niż artykuly) NIE przechodza przez ContentSanitizer, wiec pilnujemy
+     * tu jednej rzeczy: zaden "ladny" myslnik nie trafia na strone - ani w tresci, ani w
+     * naglowkach/SEO (frontmatter jest parsowany z tego samego $raw). Wywolane w parse()
+     * PRZED konwersja, wiec obejmuje wszystkie pola. Zamieniamy tylko myslniki (em/en/
+     * figure/horizontal-bar oraz znak minus), nic wiecej - zeby nie ruszac kodu ani terminow.
+     */
+    private function normalizeDashes(string $raw): string
+    {
+        return str_replace(
+            ["\u{2014}", "\u{2013}", "\u{2012}", "\u{2015}", "\u{2212}"],
+            '-',
+            $raw
+        );
     }
 
     /**

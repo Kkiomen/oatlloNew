@@ -158,13 +158,13 @@ return [
             'accent'       => '#FF6600', // firmowy pomarancz RabbitMQ
             'accent_color' => 'orange',
             'label'        => 'RabbitMQ',
-            // Krolik - znak rozpoznawczy RabbitMQ (dwa ucha + glowa).
-            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">'
-                . '<path d="M40 46 C34 30 33 16 40 14 C47 16 46 32 44 46"/>'
-                . '<path d="M60 46 C66 30 67 16 60 14 C53 16 54 32 56 46"/>'
-                . '<circle cx="50" cy="64" r="24"/>'
-                . '<circle cx="42" cy="60" r="2.5" fill="currentColor"/>'
-                . '<circle cx="58" cy="60" r="2.5" fill="currentColor"/>'
+            // Krolik z PROFILU (bok, pyszczek w prawo) - wlasny, czysty znak, evokacja
+            // marki RabbitMQ (NIE oryginalne logo/znak towarowy), jak reszta okladek.
+            'logo'     => '<g fill="currentColor">'
+                . '<ellipse cx="42" cy="27" rx="6" ry="19" transform="rotate(-13 42 27)"/>'
+                . '<ellipse cx="55" cy="25" rx="6" ry="19" transform="rotate(-3 55 25)"/>'
+                . '<circle cx="46" cy="56" r="21"/>'
+                . '<ellipse cx="66" cy="55" rx="12" ry="10"/>'
                 . '</g>',
         ],
 
