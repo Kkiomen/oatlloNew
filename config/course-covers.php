@@ -153,6 +153,21 @@ return [
                 . '</g>',
         ],
 
+        'rabbitmq' => [
+            'keywords' => ['rabbitmq', 'amqp', 'message broker', 'message queue', 'messaging', 'brokers'],
+            'accent'       => '#FF6600', // firmowy pomarancz RabbitMQ
+            'accent_color' => 'orange',
+            'label'        => 'RabbitMQ',
+            // Krolik - znak rozpoznawczy RabbitMQ (dwa ucha + glowa).
+            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">'
+                . '<path d="M40 46 C34 30 33 16 40 14 C47 16 46 32 44 46"/>'
+                . '<path d="M60 46 C66 30 67 16 60 14 C53 16 54 32 56 46"/>'
+                . '<circle cx="50" cy="64" r="24"/>'
+                . '<circle cx="42" cy="60" r="2.5" fill="currentColor"/>'
+                . '<circle cx="58" cy="60" r="2.5" fill="currentColor"/>'
+                . '</g>',
+        ],
+
         'database' => [
             'keywords' => ['sql', 'mysql', 'postgres', 'postgresql', 'database', 'baza danych', 'sqlite', 'mariadb'],
             'accent'       => '#00b4d8',
