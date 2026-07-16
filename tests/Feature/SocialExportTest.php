@@ -125,6 +125,39 @@ class SocialExportTest extends TestCase
         $this->assertSame('NATIVE POLL przy wrzucaniu.', $manifest['notes']);
     }
 
+    /**
+     * NIE JEST TEORETYCZNY. `deleteDirectory` na katalogu eksportu skasowało trzy
+     * gotowe reele w trakcie jednego `social:export --status=ready` — po cichu,
+     * bo eksport meldował sukces. PNG powstaje w sekundy, reel w minuty, a leżą
+     * obok siebie.
+     */
+    public function test_export_does_not_delete_the_rendered_reel(): void
+    {
+        $dir = $this->outDir . '/demo';
+        File::ensureDirectoryExists($dir);
+        File::put($dir . '/reel.mp4', 'drogie-minuty-renderu');
+
+        $this->exporter->export($this->carousel(3), $this->outDir, htmlOnly: true);
+
+        $this->assertFileExists($dir . '/reel.mp4');
+        $this->assertSame('drogie-minuty-renderu', File::get($dir . '/reel.mp4'));
+    }
+
+    /**
+     * Ale sieroty po skróconej karuzeli dalej muszą znikać — inaczej stare 05.png
+     * pojechałoby na Instagrama jako szósty slajd.
+     */
+    public function test_export_still_removes_orphan_slides(): void
+    {
+        $this->exporter->export($this->carousel(5), $this->outDir, htmlOnly: true);
+        $this->assertFileExists($this->outDir . '/demo/05.html');
+
+        $this->exporter->export($this->carousel(3), $this->outDir, htmlOnly: true);
+
+        $this->assertFileDoesNotExist($this->outDir . '/demo/05.html');
+        $this->assertFileExists($this->outDir . '/demo/03.html');
+    }
+
     public function test_manifest_describes_the_post(): void
     {
         $result = $this->exporter->export($this->carousel(3), $this->outDir, htmlOnly: true);

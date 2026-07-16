@@ -40,10 +40,16 @@ class SocialExporter
         $outDir ??= (string) config('social.export_path');
         $dir = rtrim($outDir, '/\\') . DIRECTORY_SEPARATOR . $post->slug;
 
-        // Czyścimy folder, żeby po skróceniu karuzeli nie zostały sieroty
-        // (np. stare 05.png przy nowych czterech slajdach).
-        File::deleteDirectory($dir);
+        // Kasujemy WYŁĄCZNIE to, co sami produkujemy, a nie cały folder.
+        //
+        // `deleteDirectory` było tu przez chwilę i zjadało `reel.mp4`: eksport PNG
+        // trwa sekundy, render reela minuty, a leżą w tym samym katalogu. Jeden
+        // `social:export --status=ready` skasował 3 gotowe reele, ZANIM ktokolwiek
+        // zauważył – po cichu, bo eksport meldował sukces. Sieroty po skróconej
+        // karuzeli (stare 05.png przy nowych czterech slajdach) trzeba usuwać dalej,
+        // ale to nie jest powód, żeby czyścić czyjąś pracę z sąsiedztwa.
         File::ensureDirectoryExists($dir);
+        $this->removeOwnArtifacts($dir);
 
         $canvas = $post->type->canvas();
         $documents = $this->images->renderPost($post, $styleOverride);
@@ -124,6 +130,23 @@ class SocialExporter
     private function slideName(int $index): string
     {
         return sprintf('%02d', $index + 1);
+    }
+
+    /**
+     * Usuwa poprzednie wyjście TEGO eksportu: slajdy, podpis i manifest.
+     *
+     * Wszystko inne w katalogu zostaje – `reel.mp4` z `social:video` jest tu
+     * gościem, ale gościem, którego wyprodukowanie kosztuje minuty renderu.
+     */
+    private function removeOwnArtifacts(string $dir): void
+    {
+        foreach (File::files($dir) as $file) {
+            $name = $file->getFilename();
+
+            if (preg_match('/^\d+\.(png|html)$/', $name) || in_array($name, ['caption.txt', 'post.json'], true)) {
+                File::delete($file->getPathname());
+            }
+        }
     }
 
     /**
