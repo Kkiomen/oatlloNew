@@ -227,6 +227,18 @@ return [
                 . '</g>',
         ],
 
+        'architecture' => [
+            'keywords' => ['architecture', 'ddd', 'domain-driven', 'domain driven', 'hexagonal', 'ports and adapters', 'clean architecture', 'bounded context', 'microservices'],
+            'accent'       => '#06b6d4', // cyan - architektura oprogramowania
+            'accent_color' => 'cyan',
+            'label'        => 'Architecture',
+            // Dwa heksagony - rdzen domeny w srodku (hexagonal architecture).
+            'logo'     => '<g fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">'
+                . '<path d="M50 8 L86 29 V71 L50 92 L14 71 V29 Z"/>'
+                . '<path d="M50 34 L68 44 V64 L50 74 L32 64 V44 Z"/>'
+                . '</g>',
+        ],
+
         'design' => [
             'keywords' => ['design pattern', 'design patterns', 'solid principles', 'clean code', 'refactoring', 'gang of four', 'gof'],
             'accent'       => '#3b82f6', // niebieski - projektowanie / architektura kodu
