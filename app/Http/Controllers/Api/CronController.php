@@ -44,18 +44,54 @@ class CronController extends Controller
 
     public function run(Request $request): JsonResponse
     {
+        $retired = $this->retireLegacyArticles();
+
         $published = $this->publishDueArticles();
 
         $sitemapOk = $this->regenerateSitemap();
 
         return response()->json([
             'success' => true,
+            'retired_count' => $retired,
             'published_count' => count($published),
             'published' => $published,
             'sitemap_regenerated' => $sitemapOk,
             'social' => $this->runSocial($request),
             'timestamp' => Carbon::now()->toIso8601String(),
         ]);
+    }
+
+    /**
+     * Wygasza stare artykuły SEO-first (config: articles.retired_slugs).
+     *
+     * Idempotentne: kolejny strzał znajdzie 0 do zmiany i zwróci 0. Siedzi w ticku,
+     * a nie tylko w komendzie, bo to jednorazowe sprzątanie, o którym łatwo
+     * zapomnieć – a tick i tak chodzi co godzinę.
+     *
+     * Kolejność ma znaczenie tylko kosmetycznie (publishDueArticles i tak pomija
+     * te slugi), ale wygaszamy PRZED publikacją, żeby raport z jednego ticka nie
+     * pokazywał artykułu naraz jako opublikowanego i wygaszonego.
+     *
+     * Błąd nie może przerwać ticka – publikacja i sitemap są ważniejsze.
+     */
+    private function retireLegacyArticles(): int
+    {
+        /** @var array<int, string> $slugs */
+        $slugs = config('articles.retired_slugs', []);
+
+        if ($slugs === []) {
+            return 0;
+        }
+
+        try {
+            return Article::whereIn('slug', $slugs)
+                ->where('is_published', true)
+                ->update(['is_published' => false]);
+        } catch (\Throwable $e) {
+            Log::warning('Cron: nie udało się wygasić starych artykułów: ' . $e->getMessage());
+
+            return 0;
+        }
     }
 
     /**
@@ -94,11 +130,19 @@ class CronController extends Controller
      * zewnętrzne AI – to zbyt kosztowne i zawodne dla publicznego endpointu
      * odpalanego co godzinę. Tagi/linki powstają przy tworzeniu artykułu.
      *
+     * `retired_slugs` SĄ POMIJANE I TO NIE JEST OZDOBNIK. Warunek publikacji to
+     * "is_published = false + data w przeszłości", czyli DOKŁADNIE stan, w jakim
+     * wygaszony artykuł zostaje (ich daty są sprzed miesięcy). Bez tego wykluczenia
+     * tick cofałby własne wygaszenie co godzinę, a `articles:retire-legacy`
+     * meldowałby sukces, po którym artykuły wracałyby na stronę. Na tej stronie
+     * is_published = false znaczy "opublikuj mnie", nie "ukryj mnie".
+     *
      * @return array<int, array<string, mixed>>
      */
     private function publishDueArticles(): array
     {
         $due = Article::where('is_published', false)
+            ->whereNotIn('slug', config('articles.retired_slugs', []))
             ->whereNotNull('published_at')
             ->where('published_at', '<=', Carbon::now())
             ->orderBy('published_at', 'asc')

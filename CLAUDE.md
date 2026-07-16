@@ -406,6 +406,31 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   generowanie `description` jest wyłączone, widok go nie renderuje, sitemap nie zawiera `/blog/tag/*`.
   Pilnuje tego test `tests/Feature/SitemapTagExclusionTest.php`. Kolumna `tags.description` została
   w bazie jako martwe dane (nic jej nie czyta).
+- **Stare artykuły SEO‑first wycofane (`config/articles.php` → `retired_slugs`, WAŻNE — nie cofać):**
+  44 artykuły z **bazy**, jedyne, co stało na produkcji przed harmonogramem `.md`. Pisane pod algorytm:
+  marka wciśnięta w treść („Oatllo, a name synonymous with digital business continuity" — w tekście
+  o backupach), fraza z tytułu wepchnięta w zdanie, CTA w każdym meta description. **Nie jest to kwestia
+  gustu: wg GSC (2026‑07‑14) dają RAZEM 9 kliknięć z 94 na całej domenie, a 88% ruchu robi kurs PHP —
+  pisany bez żadnego SEO.** Kanibalizowały też własnych następców (`master-php-enums-use-cases-tips`
+  vs `php-enums-complete-guide.md`). Wygaszone (`is_published = false`), **nie skasowane** — nie mają
+  plików `.md`, więc nie da się ich odtworzyć z gita.
+  **MINA — `is_published = false` NIE ZNACZY TU „UKRYTY", tylko „opublikuj mnie jak najszybciej".**
+  `CronController::publishDueArticles()` publikuje wszystko z `is_published = false` + datą w przeszłości,
+  a te artykuły mają daty sprzed miesięcy. Dlatego lista ma **dwóch konsumentów i obaj są konieczni**:
+  tick ją wygasza (idempotentnie) **i** pomija ją przy publikacji (`whereNotIn`). Bez tego drugiego
+  `articles:retire-legacy` melduje sukces, po którym artykuły **wracają na stronę w ciągu godziny**.
+  Pilnuje tego `tests/Feature/RetireLegacyArticlesTest.php` (test oblewa po usunięciu `whereNotIn`).
+  Przywrócenie artykułu = usuń slug z configu, deploy, potem `--restore` (samo `--restore` nie wystarczy).
+  **`site-map` NIE jest na liście** — wygląda jak slug artykułu i jest w sitemapie, ale to prawdziwa mapa
+  strony (trasa `site.map`, `/mapa` na nią przekierowuje); wyłączenie zabrałoby nawigację. Też ma test.
+- **Tempo publikacji: ~3 artykuły/tydzień i nie przyspieszamy.** 101 plików `.md` jest rozłożonych po
+  ~13/miesiąc do lutego 2027 (`published_at` we frontmatterze — bez crona, bez bazy). Google nie karze za
+  tempo, tylko za jakość, więc 3/tydzień nie jest spamem. Ale wąskim gardłem nie jest prędkość pisania
+  (artykuły są gotowe) — tylko to, że **domena ma 48 z 257 stron w indeksie**. Dosypywanie URL‑i tego nie
+  naprawi. Za to **przyspieszenie** mogłoby zaszkodzić: zrzut 97 artykułów na stronie, która miała ich 45,
+  to skok wolumenu ×20. Wrócić do tematu dopiero, gdy nowe artykuły zaczną wchodzić do indeksu w kilka dni.
+  **Kursy to inna sprawa — dodajemy w całości**: kurs to spójna hierarchia (kurs→rozdział→lekcja), Google
+  oczekuje kompletu, a dowód jest własny — 86 podstron kursu PHP dodanych naraz to 88% ruchu domeny.
 - **IndexNow** (Bing/Yandex/Seznam): powiadamianie wyszukiwarek o zmianach URL. Klucz w `INDEXNOW_KEY`
   (env), plik weryfikacyjny hostowany dynamicznie pod `/{key}.txt` (trasa `indexnow.key`, `routes/web.php`
   przed łapaczami `/{articleSlug}`). Serwis `App\Services\IndexNowService` (guard: pusty klucz = no‑op,

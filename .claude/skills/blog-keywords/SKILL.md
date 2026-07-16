@@ -33,14 +33,21 @@ For the given topic, produce:
 4. **Semantic / LSI terms** — entities and terms Google expects to co-occur with
    the topic (libraries, functions, concepts). Covering them signals depth.
 
-5. **Placement plan** — where each keyword goes:
-   - `name` (title/H1): include the primary keyword near the front, kept readable.
+5. **Placement plan** — deliberate placement happens in **two** fields only:
+   - `name` (title/H1): primary keyword near the front, readable out loud.
    - `slug`: short, hyphenated, primary keyword.
-   - `short_description` (meta description, ≤155 chars): primary + one secondary,
-     written to earn the click.
-   - First 100 words: use the primary keyword once, naturally.
-   - H2/H3 headings: secondary + long-tail variants.
-   - Image `alt` / captions: a secondary keyword where natural.
+
+   Everywhere else, keywords are an **input, not a target**. They tell the writer
+   which problem to solve and which subtopics a searcher expects — then the writer
+   uses whatever wording is natural:
+   - `short_description` (≤155 chars): describe what the article answers. No CTA,
+     no exclamation mark, and never a paraphrase of the opening paragraph.
+   - Body / first 100 words: **do not prescribe a keyword placement.** The topic
+     names itself when you describe it. Prescribing "use the primary keyword in
+     the first 100 words" is what produced this site's worst surviving tic —
+     bolded search strings pasted into prose ("the first time you hit
+     **sqlstate hy000 laravel**…"). Concepts get their real name and real casing.
+   - H2/H3 headings: derived from the subtopics, phrased as a human would say them.
 
 ## Output format
 

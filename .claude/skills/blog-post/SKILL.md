@@ -1,9 +1,9 @@
 ---
 name: blog-post
 description: >-
-  Create and publish a complete, SEO-optimized blog post for Oatllo (oatllo.com)
+  Create and publish a complete, expert-level blog post for Oatllo (oatllo.com)
   end-to-end and fully autonomously — from topic ideation, through keyword
-  research, SEO writing, anti-AI humanization, to publishing it live by
+  research, writing, anti-AI humanization, to publishing it live by
   committing to resources/articles/ and deploying via git. Use when the user wants to create, write, or publish a new blog
   article/post for Oatllo, or asks for "a new post", "napisz artykuł na bloga",
   "opublikuj post", etc. This is the orchestrator; it calls the other blog-*
@@ -18,6 +18,24 @@ JavaScript, architecture, DevOps, tooling, and AI *for developers*).
 
 Content language: **English** (`language: en`) unless the user explicitly asks
 for another language.
+
+## The standard this site is held to
+
+Write **what an experienced PHP/Laravel developer knows**. It ranks because it is
+that — not the other way round.
+
+Oatllo's own Search Console data settles the argument: ~45 legacy articles written
+SEO-first earn **9 clicks combined**, while the PHP course — written purely to
+teach — earns **88% of the domain's traffic**. Writing for the algorithm did not
+just read badly; it failed at ranking, which was its only purpose.
+
+So: **SEO is a constraint, never the goal.** Keywords pick the problem and its
+name. They never shape a sentence. Topics stay inside real expertise (PHP,
+Laravel, JS/TS, architecture, databases, DevOps, AI for developers) — refuse
+career/motivational/business topics, which is what every zero-click failure was.
+
+`blog-writer` carries the full rules and the specific banned patterns. Follow it;
+do not improvise a looser standard here.
 
 Mode: **fully autonomous** — run the entire pipeline and publish at the end
 **without stopping for approval**. Only stop if a hard blocker occurs (e.g. the
