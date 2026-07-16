@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ env('APP_LANG_HTML') }}" class="scroll-smooth">
+<html lang="{{ env('APP_LANG_HTML', 'en') }}" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <title>{{ __('basic.meta_title') }}</title>
@@ -22,7 +22,7 @@
     <meta property="og:url" content="{{ route('index') }}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Oatllo">
-    <meta property="og:locale" content="{{ env('APP_LANG_HTML') }}">
+    <meta property="og:locale" content="{{ env('APP_LANG_HTML', 'en') }}">
     <meta property="og:image" content="{{ asset('assets/images/logo-512.jpg') }}">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
@@ -428,7 +428,7 @@
   "@type": "WebSite",
   "name": "Oatllo",
   "url": "{{ route('index') }}",
-  "inLanguage": "{{ env('APP_LANG_HTML') }}",
+  "inLanguage": "{{ env('APP_LANG_HTML', 'en') }}",
   "publisher": { "@type": "Organization", "name": "Oatllo", "url": "{{ route('index') }}" },
   "potentialAction": {
     "@type": "SearchAction",

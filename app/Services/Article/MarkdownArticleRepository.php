@@ -4,6 +4,7 @@ namespace App\Services\Article;
 
 use App\Models\Article;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
@@ -91,8 +92,11 @@ class MarkdownArticleRepository
             return collect();
         }
 
-        return collect(File::files($dir))
+        $files = collect(File::files($dir))
             ->filter(fn ($file) => strtolower($file->getExtension()) === 'md')
+            ->values();
+
+        $build = fn () => $files
             ->map(function ($file) {
                 $raw = File::get($file->getPathname());
                 $slugFallback = $file->getFilenameWithoutExtension();
@@ -100,6 +104,23 @@ class MarkdownArticleRepository
                 return $this->parser->toArticle($raw, $slugFallback);
             })
             ->values();
+
+        // Render CommonMark każdego pliku (przy 150+ artykułach ~3 s) leciał przy KAŻDYM
+        // requeście strony głównej/bloga/listy kursów — a listingi używają z artykułu tylko
+        // metadanych (tytuł, data, opis, czas czytania), nie renderują ciała. Cache'ujemy więc
+        // całą sparsowaną listę. Klucz zawiera podpis katalogu (nazwa+mtime+rozmiar każdego
+        // pliku), więc DEPLOY (git pull aktualizuje mtime) unieważnia cache SAM — bez ręcznego
+        // czyszczenia, bez crona, zgodnie z modelem "commit + git pull". Każdy błąd cache
+        // (np. limit pakietu MySQL) => budujemy wprost: strona nigdy nie pada przez cache.
+        try {
+            $signature = $files
+                ->map(fn ($file) => $file->getFilename().':'.$file->getMTime().':'.$file->getSize())
+                ->implode('|');
+
+            return Cache::remember('md_articles:all:'.md5($signature), now()->addDay(), $build);
+        } catch (\Throwable $e) {
+            return $build();
+        }
     }
 
     /**

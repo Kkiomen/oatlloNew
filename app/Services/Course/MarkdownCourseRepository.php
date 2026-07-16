@@ -7,6 +7,7 @@ use App\Models\CourseCategory;
 use App\Models\CourseCategoryLesson;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use League\CommonMark\Environment\Environment;
@@ -64,9 +65,34 @@ class MarkdownCourseRepository
 
         return collect(File::directories($dir))
             ->sort()
-            ->map(fn ($courseDir) => $this->buildCourse($courseDir))
+            ->map(fn ($courseDir) => $this->buildCourseCached($courseDir))
             ->filter()
             ->values();
+    }
+
+    /**
+     * buildCourse() renderuje CommonMark KAŻDEJ lekcji (400+ plików ~2 s) — leciało przy
+     * każdym requeście strony głównej i /kursy, choć listingi używają tylko metadanych kursu.
+     * Cache'ujemy PER KURS (nie jedną wielką paczką — bezpieczniej dla limitu pakietu i lżejszy
+     * przy wzroście liczby lekcji). Klucz = podpis plików danego kursu (nazwa+mtime+rozmiar),
+     * więc deploy (git pull zmienia mtime) unieważnia tylko zmienione kursy. Błąd cache =>
+     * budujemy wprost (strona nigdy nie pada przez cache).
+     */
+    private function buildCourseCached(string $courseDir): ?Course
+    {
+        try {
+            $signature = collect(File::allFiles($courseDir))
+                ->map(fn ($file) => $file->getRelativePathname().':'.$file->getMTime().':'.$file->getSize())
+                ->implode('|');
+
+            return Cache::remember(
+                'md_course:'.md5($courseDir.'|'.$signature),
+                now()->addDay(),
+                fn () => $this->buildCourse($courseDir)
+            );
+        } catch (\Throwable $e) {
+            return $this->buildCourse($courseDir);
+        }
     }
 
     /**
