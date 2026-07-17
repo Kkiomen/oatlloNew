@@ -97,7 +97,9 @@ The high-level code (`OrderController`) depends on an abstraction (`SmsSender`).
 low-level detail (`TwilioSmsSender`) also depends on that abstraction by implementing it.
 Neither points at the other directly - the container sits in the middle and connects them.
 That is exactly the shape dependency inversion describes, and Laravel gives it to you for
-free.
+free. It's also the same move that
+[keeps the domain at the center](/course/software-architecture/hexagonal-architecture/the-domain-at-the-center)
+in hexagonal architecture: the core owns the contract, and the infrastructure plugs into it.
 
 ## A common mistake
 
@@ -107,7 +109,7 @@ Reaching for the `app()` helper or `App::make()` *inside* your classes to fetch 
 $sms = app(SmsSender::class); // works, but hides the dependency
 ```
 
-This is the *service locator* anti-pattern. It works, but the class's real dependencies are
+This is the *service locator* [anti-pattern](/course/design-patterns/refactoring-and-anti-patterns/anti-patterns). It works, but the class's real dependencies are
 now hidden inside methods instead of declared in the constructor. Prefer constructor
 injection: it makes dependencies visible, and it's what makes testing easy.
 

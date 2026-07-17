@@ -21,7 +21,7 @@ Laravel, to MySQL, to HTTP.
 That welding hurts later. You cannot test a rule without booting the framework. You cannot
 switch from MySQL to something else without rewriting business code. You cannot even find
 the rules, because they're scattered across controllers and models. Chapter 1 called this
-the domain-vs-infrastructure split; hexagonal architecture is a concrete way to enforce it.
+the [domain-vs-infrastructure split](/course/software-architecture/what-is-software-architecture/domain-vs-infrastructure); hexagonal architecture is a concrete way to enforce it.
 
 ## The idea: a center and an edge
 
@@ -43,7 +43,7 @@ databases, mail servers, message queues.
 
 The center never reaches out to the edge directly. Instead, it defines **ports** (plain
 interfaces) that say what it needs and what it offers. The outside world provides
-**adapters** that plug into those ports. Ports are covered in lesson 3, adapters in lesson
+**adapters** that plug into those ports. [Ports](/course/software-architecture/hexagonal-architecture/ports) are covered in lesson 3, [adapters](/course/software-architecture/hexagonal-architecture/adapters) in lesson
 4; for now just hold the shape.
 
 ## Why a hexagon?

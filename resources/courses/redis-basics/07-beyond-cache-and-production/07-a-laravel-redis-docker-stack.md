@@ -168,7 +168,7 @@ runs an internal DNS that resolves those names to the right container.
 So from the `app` and `worker` containers, the Redis host is literally `redis` - the name
 of the service in the compose file. Not `localhost`, not an IP address. `localhost`
 inside the `app` container means the `app` container itself, where no Redis is running.
-This is the single most common Docker + Redis mistake, and it is why the
+This is the single most common [Docker](/course/docker-basics) + Redis mistake, and it is why the
 [troubleshooting lesson](/course/redis-basics/beyond-cache-and-production/troubleshooting)
 opens with `Connection refused`.
 

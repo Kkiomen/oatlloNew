@@ -78,15 +78,15 @@ shared word is a coincidence, not a contract - resist the urge to fold them toge
 
 ## How this maps to code
 
-In practice a bounded context often lines up with a **module** (in a modular monolith,
-which you met in Chapter 2) or a **service** (in microservices). Each has its own domain
+In practice a bounded context often lines up with a **module** (in a [modular monolith](/course/software-architecture/monolith-and-beyond/the-modular-monolith),
+which you met in Chapter 2) or a **service** (in [microservices](/course/software-architecture/monolith-and-beyond/microservices-overview)). Each has its own domain
 model, its own database tables, and ideally its own team. The boundary is where you decide
 what stays private and what is shared.
 
 Contexts still need to work together - a support agent needs to know who the customer is.
 They connect through defined seams (an API, events, an id), not by reaching into each
 other's tables. How those connections are structured is the subject of the next lesson,
-context mapping.
+[context mapping](/course/software-architecture/ddd-strategic-design/context-mapping).
 
 ## Common mistake
 

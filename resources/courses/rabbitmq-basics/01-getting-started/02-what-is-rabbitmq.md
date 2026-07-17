@@ -34,7 +34,7 @@ RabbitMQ does three jobs:
 
 That third job - routing - is where RabbitMQ is smarter than a plain list. It can
 decide which queue a message should go to based on rules you set up. We'll cover
-routing in detail in a later chapter; for now, just know that RabbitMQ can do more
+[routing](/course/rabbitmq-basics/core-concepts/exchanges) in detail in a later chapter; for now, just know that RabbitMQ can do more
 than dump every message into one line.
 
 ## AMQP: the protocol it speaks
@@ -58,7 +58,7 @@ application connects to it over the network, even if "the network" is just your 
 computer.
 
 Because it's a separate process, RabbitMQ has to be running *before* your app tries to
-talk to it. This trips up almost everyone once: a "connection refused" error is rarely
+talk to it. This trips up almost everyone once: a [connection refused](/course/rabbitmq-basics/real-world-and-troubleshooting/connection-refused) error is rarely
 a bug in your code, it usually just means the broker isn't up yet. Start the broker
 first, then the app.
 

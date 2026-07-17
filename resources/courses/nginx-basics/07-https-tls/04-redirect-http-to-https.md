@@ -53,7 +53,7 @@ Rule of thumb: use `return` when the destination is fixed, `rewrite` only when y
 
 ## Common mistake
 
-**Redirect loop behind a proxy or load balancer.** If nginx sits behind something that already terminated HTTPS (a load balancer, Cloudflare), nginx sees plain HTTP on port 80 even when the visitor came over HTTPS. A blind `return 301 https://...` then redirects forever. In that case, redirect based on the forwarded header instead:
+**[Redirect loop](/course/nginx-basics/common-errors-and-fixes/too-many-redirects) behind a proxy or load balancer.** If nginx sits behind something that already terminated HTTPS (a load balancer, Cloudflare), nginx sees plain HTTP on port 80 even when the visitor came over HTTPS. A blind `return 301 https://...` then redirects forever. In that case, redirect based on the forwarded header instead:
 
 ```nginx
 server {
@@ -66,7 +66,7 @@ server {
 }
 ```
 
-On a normal single server without a proxy in front, the simple version is correct - there is no loop because the HTTPS request is handled by the separate `listen 443 ssl` block.
+On a normal single server without a proxy in front, the simple version is correct - there is no loop because the HTTPS request is handled by [the separate `listen 443 ssl` block](/course/nginx-basics/https-tls/listen-443-ssl).
 
 **Redirecting to a hardcoded host.** Writing `return 301 https://example.com$request_uri` forces `www` visitors onto the bare domain (or the reverse). Use `$host` unless you deliberately want to merge them.
 

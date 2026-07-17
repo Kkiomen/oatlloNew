@@ -45,7 +45,7 @@ error_page 500 502 503 504 /50x.html;
 
 One `/50x.html` covers all four. This is such a common pattern that the default nginx config already ships with it.
 
-Keep in mind that each status code needs its own `error_page` entry. A `404` line does nothing for a `403 Forbidden`, which is the code you get when a folder has no index file and no directory listing. If you want a custom page there too, add `error_page 403 /403.html;` as a separate line; nginx will not reuse the 404 page for it.
+Keep in mind that each status code needs its own `error_page` entry. A `404` line does nothing for a [`403 Forbidden`](/course/nginx-basics/common-errors-and-fixes/403-forbidden), which is the code you get when a folder has no index file and no directory listing. If you want a custom page there too, add `error_page 403 /403.html;` as a separate line; nginx will not reuse the 404 page for it.
 
 ## Making the error page internal
 

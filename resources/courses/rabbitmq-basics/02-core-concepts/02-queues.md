@@ -49,7 +49,7 @@ chapters. For now, picture a simple, orderly line.
 
 A queue holds messages, and it also has a **name** so producers and consumers can refer
 to it - for example `emails` or `image-processing`. Beyond the name, a queue has a few
-properties that control how it behaves: whether it survives a broker restart, whether it
+properties that control how it behaves: whether it [survives a broker restart](/course/rabbitmq-basics/first-producer-and-consumer/durability-and-persistence), whether it
 deletes itself when unused, and so on. We'll set those properties deliberately when we
 create queues in code, so don't worry about them yet.
 
@@ -72,7 +72,7 @@ We introduce acknowledgements later in
 A very common early assumption is that producers publish **straight into a queue**. In
 the simplest examples it can even look that way. But that is not how RabbitMQ actually
 works: producers publish to an **exchange**, and the exchange decides which queue (or
-queues) the message lands in. That's the subject of the next lesson, and it is the single
+queues) the message lands in. That's the subject of the [next lesson](/course/rabbitmq-basics/core-concepts/exchanges), and it is the single
 most important idea in this chapter.
 
 ## FAQ

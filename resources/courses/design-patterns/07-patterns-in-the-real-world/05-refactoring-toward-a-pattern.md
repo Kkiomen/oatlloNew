@@ -116,7 +116,7 @@ enter healthy codebases.
 Refactoring in one giant leap with no safety net. Reshaping code toward a pattern should be
 a series of tiny, behavior-preserving steps, ideally with tests green the whole way. If you
 rewrite everything at once, you can't tell whether the pattern or a fresh bug changed the
-output. The next chapter covers these refactoring techniques in depth.
+output. The next chapter covers these [refactoring techniques](/course/design-patterns/refactoring-and-anti-patterns/refactoring-techniques) in depth.
 
 ## FAQ
 

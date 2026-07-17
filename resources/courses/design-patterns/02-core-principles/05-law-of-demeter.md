@@ -25,7 +25,7 @@ balance in something else - and this line breaks, along with every other line th
 same path.
 
 Each `->` after the first is a step into a stranger. The caller is now coupled to objects it
-was never handed, which is exactly the kind of coupling that makes code hard to change.
+was never handed, which is exactly the kind of [coupling](/course/design-patterns/why-design-matters/coupling-and-cohesion) that makes code hard to change.
 
 ## Tell, don't ask
 

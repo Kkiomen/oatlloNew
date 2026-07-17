@@ -81,4 +81,4 @@ Because the page is a static file. Nginx reads it from disk on each request, so 
 
 ### Can I add more pages?
 
-Yes. Drop another file like `about.html` into `/var/www/html`, then visit `http://localhost/about.html`. How nginx picks files and folders for different addresses is what we build on in the next chapters.
+Yes. Drop another file like `about.html` into `/var/www/html`, then visit `http://localhost/about.html`. [How nginx picks files and folders for different addresses](/course/nginx-basics/serving-static-content/root-and-index) is what we build on in the next chapters.

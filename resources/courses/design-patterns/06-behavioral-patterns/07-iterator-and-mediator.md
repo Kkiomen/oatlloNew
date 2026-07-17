@@ -126,7 +126,7 @@ ends up.
 
 ### What is the difference between the mediator and observer pattern?
 
-Observer is one-to-many and one-directional: a subject broadcasts to listeners that don't
+[Observer](/course/design-patterns/behavioral-patterns/observer) is one-to-many and one-directional: a subject broadcasts to listeners that don't
 talk back through it. Mediator is many-to-many and bidirectional: peers send messages to the
 hub and the hub coordinates them in every direction. Observer decouples an event from its
 reactions; Mediator decouples peers from each other.

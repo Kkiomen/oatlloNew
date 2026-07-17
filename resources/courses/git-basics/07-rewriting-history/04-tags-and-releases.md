@@ -70,8 +70,9 @@ git show v1.0.0
 
 ## Tags are not pushed automatically
 
-This trips up almost everyone. When you `git push`, your tags **do not** go with your
-commits. You have to push them explicitly.
+This trips up almost everyone. When you
+[`git push`](/course/git-basics/remotes-and-github/pushing-changes), your tags **do not**
+go with your commits. You have to push them explicitly.
 
 Push a single tag:
 
@@ -140,8 +141,9 @@ to the exact commit you put it on.
 ### How do I check out the code at a tag?
 
 `git switch --detach v1.0.0` (or `git checkout v1.0.0`) puts your files in the state of
-that release. You'll be in "detached HEAD", which just means you're looking at a commit
-directly rather than a branch.
+that release. You'll be in
+["detached HEAD"](/course/git-basics/real-world-and-troubleshooting/detached-head), which
+just means you're looking at a commit directly rather than a branch.
 
 ### Does GitHub need anything special to show a release?
 

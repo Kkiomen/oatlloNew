@@ -113,7 +113,7 @@ stand-in. Adapter converts; proxy substitutes.
 
 ### Isn't lazy loading built into ORMs already?
 
-Yes - lazy-loaded relations in an ORM are the proxy pattern under the hood. A later chapter
+Yes - lazy-loaded relations in an ORM are the proxy pattern under the hood. A [later chapter](/course/design-patterns/patterns-in-the-real-world/patterns-you-already-use-in-laravel)
 returns to this framework example. Knowing the pattern helps you recognize what's happening
 when a property "magically" loads on first access - and why that magic bites you in a loop:
 each iteration triggers the proxy's real call, which is exactly how the N+1 query problem

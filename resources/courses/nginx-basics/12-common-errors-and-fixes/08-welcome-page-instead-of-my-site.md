@@ -62,7 +62,7 @@ A trap worth knowing: `sites-available` and `sites-enabled` are a Debian and Ubu
 
 ### The default_server catch
 
-If two blocks listen on port 80 and neither is marked `default_server`, or the default one is, nginx uses the first matching or the default block for a request whose `Host` does not match any `server_name`. Making sure your `server_name` matches, and removing the default site, sends the request to the right place.
+If [two blocks listen on port 80](/course/nginx-basics/serving-static-content/server-blocks) and neither is marked `default_server`, or the default one is, nginx uses the first matching or the default block for a request whose `Host` does not match any `server_name`. Making sure your `server_name` matches, and removing the default site, sends the request to the right place.
 
 ## FAQ
 

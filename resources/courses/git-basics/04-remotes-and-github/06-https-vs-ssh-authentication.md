@@ -12,8 +12,9 @@ fighting authentication prompts.
 
 ## The two URL styles
 
-The choice starts with the URL you clone from. On GitHub's green **Code** button you'll
-see both:
+The choice starts with the URL you
+[clone from](/course/git-basics/remotes-and-github/cloning-a-repository). On GitHub's
+green **Code** button you'll see both:
 
 ```text
 HTTPS:  https://github.com/yourname/your-repo.git

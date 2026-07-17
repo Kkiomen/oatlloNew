@@ -40,7 +40,7 @@ It feels clumsy until the first time an auditor asks what changed and when.
 ## Rebuild state by replaying events
 
 To get the current state, you start from empty and apply each event in order. This is called
-**replaying** or building a **projection** of the events.
+**replaying** or building a **[projection](/course/software-architecture/event-driven-architecture/read-models-and-cqrs)** of the events.
 
 ```php
 final class Account

@@ -111,7 +111,7 @@ faster than rebuilding: it skips whatever expensive work the constructor would r
 ### When should I use prototype instead of a factory or builder?
 
 Use prototype when the *starting point* is an object you already have, not a fresh set of
-inputs. A factory or builder makes an object from parameters; prototype copies a live one
+inputs. A [factory](/course/design-patterns/creational-patterns/factory-method) or [builder](/course/design-patterns/creational-patterns/builder) makes an object from parameters; prototype copies a live one
 and tweaks the difference. It shines for "give me another one just like this" cases -
 duplicating a configured template, or snapshotting an object's current state to branch from.
 For a plain object built from a few values, a constructor is clearer than cloning.

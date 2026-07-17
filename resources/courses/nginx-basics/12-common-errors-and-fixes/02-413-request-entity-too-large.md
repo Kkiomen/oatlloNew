@@ -70,7 +70,7 @@ Keep `post_max_size` a little larger than `upload_max_filesize`, since the POST 
 
 Raising `client_max_body_size` but forgetting PHP. The upload now passes nginx, then PHP rejects it. Both limits must be raised for the upload to work end to end.
 
-There is a subtler version that catches people who use Certbot. Certbot splits your site into a plain port 80 block and a separate port 443 block. If you added `client_max_body_size` to the HTTP block by hand, the HTTPS block does not have it, and real uploads over HTTPS still 413. Put the directive in the `http` block, or in `server`, so both listeners inherit it.
+There is a subtler version that catches people who use Certbot. Certbot [splits your site into a plain port 80 block and a separate port 443 block](/course/nginx-basics/https-tls/redirect-http-to-https). If you added `client_max_body_size` to the HTTP block by hand, the HTTPS block does not have it, and real uploads over HTTPS still 413. Put the directive in the `http` block, or in `server`, so both listeners inherit it.
 
 ## FAQ
 

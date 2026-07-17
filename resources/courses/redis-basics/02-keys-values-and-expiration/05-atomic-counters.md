@@ -118,7 +118,7 @@ EXPIRE requests:user:42 60
 The first `INCR` creates the key at `1`, and `EXPIRE` gives it a 60-second life. Every
 request in that minute bumps the number; after 60 seconds the key vanishes and the next
 request starts fresh at `1`. That pattern - a self-expiring counter - is the whole basis
-of **rate limiting**, which we will build properly in a later chapter.
+of [rate limiting](/course/redis-basics/beyond-cache-and-production/rate-limiting-with-redis), which we will build properly in a later chapter.
 
 ## Common mistake: resetting the TTL on every request
 

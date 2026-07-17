@@ -79,8 +79,9 @@ empty directory - your projects folder, for example - and let Git make the subfo
 
 ### What's the difference between cloning and forking?
 
-Cloning copies a repository to *your machine*. Forking (covered later in the course)
-makes a copy under *your GitHub account* first. You often fork on GitHub, then clone
+Cloning copies a repository to *your machine*.
+[Forking](/course/git-basics/collaborating/forking-a-repository) (covered later in the
+course) makes a copy under *your GitHub account* first. You often fork on GitHub, then clone
 your fork to your machine.
 
 ### Do I need to run git init after cloning?

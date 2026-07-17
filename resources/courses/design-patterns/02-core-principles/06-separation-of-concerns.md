@@ -105,8 +105,8 @@ presentation all together - often because each addition felt small at the time. 
 is the word "and": if describing a class needs "it calculates the total **and** saves it
 **and** renders it", that's three concerns wearing one name.
 
-This idea is the backbone of the SOLID principles in the next chapter, especially the single
-responsibility principle - separation of concerns is the same instinct, applied class by
+This idea is the backbone of the SOLID principles in the next chapter, especially the [single
+responsibility principle](/course/design-patterns/solid/single-responsibility) - separation of concerns is the same instinct, applied class by
 class.
 
 ## FAQ

@@ -25,9 +25,9 @@ $posts = Cache::remember('posts.latest', 600, function () {
 });
 ```
 
-Here is what happens. The first call runs the query, stores the result in Redis with a 600-second TTL, and returns it. Every call for the next 10 minutes skips the database entirely and hands back the cached result. Once the TTL expires, the next call runs the query again and refreshes the cache.
+Here is what happens. The first call runs the query, stores the result in Redis with a 600-second [TTL](/course/redis-basics/keys-values-and-expiration/expiration-and-ttl), and returns it. Every call for the next 10 minutes skips the database entirely and hands back the cached result. Once the TTL expires, the next call runs the query again and refreshes the cache.
 
-You will reach for `remember` far more than anything else. The theory behind it (it goes by cache-aside) gets its own treatment in the next chapter; here you just learn the API. One detail worth internalizing now: the closure runs only on a miss, so anything expensive inside it - a heavy query, an API call - is paid once per TTL window, not once per request.
+You will reach for `remember` far more than anything else. The theory behind it (it goes by [cache-aside](/course/redis-basics/caching-patterns-and-invalidation/the-cache-aside-pattern)) gets its own treatment in the next chapter; here you just learn the API. One detail worth internalizing now: the closure runs only on a miss, so anything expensive inside it - a heavy query, an API call - is paid once per TTL window, not once per request.
 
 You can also use an arrow function, which reads cleanly for short queries:
 
@@ -80,7 +80,7 @@ if (Cache::add('report:daily:lock', true, 60)) {
 
 ## increment and decrement: atomic counters
 
-Because Redis counts atomically (you saw `INCR` in the counters lesson), `Cache::increment` gives you a safe counter with no race between reading and writing.
+Because Redis counts atomically (you saw `INCR` in the [counters lesson](/course/redis-basics/keys-values-and-expiration/atomic-counters)), `Cache::increment` gives you a safe counter with no race between reading and writing.
 
 ```php
 Cache::put('downloads', 0);

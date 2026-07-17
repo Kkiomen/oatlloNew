@@ -30,7 +30,7 @@ The difference matters:
 - **proxy_pass** sends an HTTP request to something that is itself an HTTP server (a Node or Python app).
 - **fastcgi_pass** sends a FastCGI request to PHP-FPM, which is not an HTTP server. It only speaks FastCGI.
 
-So you do not use `proxy_pass` for PHP. You use `fastcgi_pass`. That is the next lesson.
+So you do not use `proxy_pass` for PHP. You use `fastcgi_pass`. That is [the next lesson](/course/nginx-basics/nginx-and-php/fastcgi-pass).
 
 ## The PHP request flow, step by step
 
@@ -63,7 +63,7 @@ Nginx reaches it in one of two ways, both covered next lesson:
 - A **Unix socket**, a special file like `/run/php/php8.4-fpm.sock`.
 - A **TCP port** on localhost, like `127.0.0.1:9000`.
 
-In Docker, PHP-FPM usually runs in its own container and nginx reaches it over TCP by service name. The idea is identical; only the address changes.
+In [Docker](/course/docker-basics), PHP-FPM usually runs in its own container and nginx reaches it over TCP by service name. The idea is identical; only the address changes.
 
 Because the two are separate services, they restart separately. Reloading nginx does not touch PHP-FPM, and a new `.env` or a changed opcache setting needs `systemctl reload php8.4-fpm`, not `reload nginx`. People chase a "stale config" bug for a long time before noticing they kept reloading the wrong service.
 

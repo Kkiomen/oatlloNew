@@ -7,7 +7,7 @@ seo_description: "A modular monolith is one deployment with strong internal modu
 
 The [plain monolith](/course/software-architecture/monolith-and-beyond/what-is-a-monolith)
 is simple to run but tends to rot: over years, everything ends up calling everything, and
-you get the "big ball of mud". The **modular monolith** keeps the simple deployment and
+you get the ["big ball of mud"](/course/software-architecture/what-is-software-architecture/boundaries-and-coupling). The **modular monolith** keeps the simple deployment and
 adds discipline inside.
 
 ## One deployment, strong internal boundaries
@@ -56,7 +56,7 @@ Boundaries only help if they are actually enforced. A few practical mechanisms:
   other modules are allowed to call.
 - **No reaching into another module's models or tables.** The `Orders` module never queries
   the `Billing` tables directly. It asks the `Billing` module.
-- **Communicate through interfaces and simple data (DTOs).** Modules pass plain data, not
+- **Communicate through interfaces and simple data ([DTOs](/course/software-architecture/application-layer-and-use-cases/dtos-and-mapping)).** Modules pass plain data, not
   live Eloquent models loaded from another module's tables.
 
 ```php

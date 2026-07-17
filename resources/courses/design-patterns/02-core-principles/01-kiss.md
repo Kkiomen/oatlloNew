@@ -64,8 +64,9 @@ they read it. Reach for the compact form only when it is genuinely clearer, not 
 looks more advanced.
 
 The other trap is solving problems you don't have yet. Adding layers, options and
-abstractions "just in case" is the opposite of KISS. That habit has its own name, YAGNI,
-and gets its own lesson later in this chapter.
+abstractions "just in case" is the opposite of KISS. That habit has its own name,
+[YAGNI](/course/design-patterns/core-principles/yagni), and gets its own lesson later in
+this chapter.
 
 ## FAQ
 

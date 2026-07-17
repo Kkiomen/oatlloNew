@@ -36,7 +36,7 @@ right place, and **hand** them to consumers when they are ready.
 Think of the broker as a very organised post office. It accepts letters, sorts them,
 holds them in the right mailbox, and delivers them - but it never writes a letter of
 its own. All the intelligence about *where* a message should go lives inside the broker,
-in the exchanges and bindings we'll meet later in this chapter.
+in the [exchanges](/course/rabbitmq-basics/core-concepts/exchanges) and bindings we'll meet later in this chapter.
 
 ## The consumer
 

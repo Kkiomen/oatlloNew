@@ -32,7 +32,7 @@ So `example.com/images/logo.png` maps to `/var/www/media/images/logo.png`, while
 A few everyday reasons:
 
 - Serve one folder (like `/images/` or `/downloads/`) from a different disk location.
-- Turn a setting on for one path only, such as a directory listing (the autoindex lesson uses a location).
+- Turn a setting on for one path only, such as a directory listing (the [autoindex lesson](/course/nginx-basics/serving-static-content/autoindex) uses a location).
 - Give one URL its own error page or its own rules.
 
 You do not need a location for a plain static site. The server block alone serves files fine. Reach for a location when one part of the site needs to behave differently from the rest.

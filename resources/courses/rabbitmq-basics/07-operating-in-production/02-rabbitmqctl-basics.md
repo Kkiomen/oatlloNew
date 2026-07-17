@@ -47,14 +47,14 @@ run `list_queues` with no arguments you get just names and total message counts;
 names gives you the detail you want.
 
 `list_exchanges` shows every exchange and whether it's direct, fanout, topic or headers - handy
-for confirming your routing setup matches what you declared in chapter 4.
+for confirming your routing setup matches what you [declared in chapter 4](/course/rabbitmq-basics/core-concepts/exchanges).
 
 `list_connections` shows who is currently connected and as which user - the first place to look
 when you suspect a consumer died or a client never connected.
 
 A trap that catches people once: `list_queues` reports the **default vhost** (`/`) unless you add
-`-p <vhost>`. Vhosts are separate named spaces inside one broker, and you'll set them up in the
-next lesson. Once queues live in their own vhost, one can be perfectly healthy yet absent from
+`-p <vhost>`. Vhosts are separate named spaces inside one broker, and you'll [set them up in the
+next lesson](/course/rabbitmq-basics/operating-in-production/users-vhosts-permissions). Once queues live in their own vhost, one can be perfectly healthy yet absent from
 this output simply because it lives elsewhere. If a queue you know exists doesn't show up, check
 the vhost before you check the code.
 

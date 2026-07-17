@@ -15,7 +15,7 @@ The course is built around two kinds of ideas, and it helps to keep them separat
 **Principles guide.** A principle is a general rule of thumb for good design - things
 like "keep it simple" or "a class should have one responsibility". Principles don't tell
 you exactly what to write. They tell you which direction is better. We cover these first,
-in the chapters on core principles and SOLID.
+in the chapters on core principles and [SOLID](/course/design-patterns/solid/what-is-solid).
 
 **Patterns are named solutions.** A design pattern is a proven, named way to solve a
 specific, recurring problem - for example, "I need to swap out an algorithm at runtime".
@@ -62,7 +62,7 @@ So the honest rule is:
 - The simplest thing that works and reads well usually wins.
 
 We'll return to this directly in the chapter on patterns in the real world, in the lesson
-on when *not* to use a pattern.
+on [when *not* to use a pattern](/course/design-patterns/patterns-in-the-real-world/when-not-to-use-a-pattern).
 
 ## How the chapters build
 

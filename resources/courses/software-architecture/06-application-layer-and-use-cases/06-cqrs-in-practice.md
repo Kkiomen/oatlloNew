@@ -70,7 +70,7 @@ This is the misconception worth killing. CQRS only says "separate the read and w
 models". It says nothing about *how* you store data. The example above uses one normal
 database and the same `orders` table for both sides. No events, no event store.
 
-Event sourcing (the event-driven architecture chapter, later) is a separate choice that
+[Event sourcing](/course/software-architecture/event-driven-architecture/event-sourcing) (the event-driven architecture chapter, later) is a separate choice that
 happens to pair well with CQRS. You can do either without the other. Most CQRS in the
 wild is the plain kind you just saw.
 
@@ -82,7 +82,7 @@ CQRS is a dial, not a switch:
   the time.
 - **Same database, dedicated read models** - a denormalized table or a database view kept
   in sync, so the read is a single fast `SELECT`.
-- **A separate read database** - updated asynchronously from the write side, for
+- **A separate [read database](/course/software-architecture/event-driven-architecture/read-models-and-cqrs)** - updated asynchronously from the write side, for
   read-heavy systems at scale. This is where eventual consistency enters.
 
 Start at the top. Move down only when a real read problem pushes you there.

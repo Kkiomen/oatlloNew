@@ -29,7 +29,7 @@ and [fair dispatch / prefetch](/course/rabbitmq-basics/first-producer-and-consum
 
 ## Publish/subscribe (fanout)
 
-**Problem:** one event, many independent reactions. An order is placed and you want to
+**Problem:** [one event, many independent reactions](/course/software-architecture/event-driven-architecture/what-is-event-driven-architecture). An order is placed and you want to
 email the customer, update analytics and warm a cache - all from the same event.
 
 **Shape:** the producer publishes to a **fanout** exchange, which copies the message to

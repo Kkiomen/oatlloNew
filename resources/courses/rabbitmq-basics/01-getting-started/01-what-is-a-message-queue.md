@@ -54,7 +54,8 @@ one side writes to and the other side works through.
   processed steadily, instead of hammering the mail server all at the same instant.
 
 This "do it later, in the background" pattern is called **asynchronous** processing,
-and it's the core idea behind everything in this course.
+and it's the core idea behind everything in this course, and the foundation of
+[event-driven architecture](/course/software-architecture/event-driven-architecture/what-is-event-driven-architecture).
 
 One catch worth knowing up front: "instant response" and "instant delivery" are not
 the same thing. The user gets their page immediately, but the email now lands a second
@@ -71,7 +72,7 @@ You'll hear "queue", "message", "producer" and "consumer" a lot. For now:
 - The part that adds messages is the **producer**; the part that reads them is the
   **consumer**.
 
-We'll define these properly in the next chapter. For now, just hold the picture: one
+We'll define these properly in the [next chapter](/course/rabbitmq-basics/core-concepts/producers-consumers-broker). For now, just hold the picture: one
 side hands off work, the other side picks it up later.
 
 ## FAQ

@@ -84,7 +84,7 @@ Now "overnight" shipping is a brand new class - `OvernightShipping implements
 ShippingMethod` - and `ShippingCalculator` never changes. The old, tested classes stay
 closed; the system stays open to new methods.
 
-This is exactly the shape of the **Strategy** pattern, which you'll meet later in
+This is exactly the shape of the [**Strategy** pattern](/course/design-patterns/behavioral-patterns/strategy), which you'll meet later in
 Chapter 6. For now,
 just notice the move: behavior that varies becomes a set of interchangeable objects behind
 one interface.
@@ -130,7 +130,7 @@ $methods = $this->app->tagged('shipping_methods'); // iterable of instances
 
 Either way a new `OvernightShipping` is one new class plus a tag - the calculator, the
 provider, and every existing method stay untouched. This is how you build plugin-style,
-extensible apps that follow OCP end to end. (The container itself is covered in Chapter 7;
+extensible apps that follow OCP end to end. (The [container itself](/course/design-patterns/patterns-in-the-real-world/dependency-injection-and-the-container) is covered in Chapter 7;
 the pattern behind these interchangeable classes is Strategy, in Chapter 6.)
 
 ## A worked example: pick a handler by context

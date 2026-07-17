@@ -53,7 +53,7 @@ The default exchange is convenient for one-queue examples, but it is deliberatel
 
 The moment you want the same message in two queues, or want to route by topic or
 severity, you need your own exchange. That's what the rest of this chapter is about,
-starting with the direct exchange next.
+starting with the [direct exchange](/course/rabbitmq-basics/exchanges-and-routing/direct-exchange) next.
 
 One detail that trips people up: the automatic queue-name bindings never show up in the
 management UI's Bindings tab. They are real, but the broker keeps them implicit, so

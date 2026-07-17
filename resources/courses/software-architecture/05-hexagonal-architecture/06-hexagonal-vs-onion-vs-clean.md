@@ -71,7 +71,7 @@ adapters" names the pieces most plainly.
 A caution when you read a codebase: the label on the README rarely predicts the folders. A
 project that calls itself "clean architecture" often ships plain `Domain/`, `Application/`
 and `Infrastructure/` directories - the same three you would draw for hexagonal. Trust the
-direction of the dependencies over the name in the ADR.
+direction of the dependencies over the name in the [ADR](/course/software-architecture/evolving-the-architecture/documenting-architecture-adr-c4).
 
 ## Common mistake: treating them as rival frameworks to pick between
 

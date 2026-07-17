@@ -69,7 +69,7 @@ in the code the same day, before the old name sets like concrete across five cla
 ## The language lives inside a boundary
 
 A ubiquitous language is not global across a whole company. It is consistent within one
-**bounded context** - the boundary you'll learn about in the next lesson. Inside "Sales",
+**[bounded context](/course/software-architecture/ddd-strategic-design/bounded-contexts)** - the boundary you'll learn about in the next lesson. Inside "Sales",
 "Customer" means one thing; inside "Support", it can mean another. Each context has its own
 ubiquitous language, precise within that boundary. Trying to force one giant company-wide
 dictionary is where this idea breaks down, which is exactly why bounded contexts exist.

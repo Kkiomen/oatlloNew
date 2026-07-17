@@ -94,7 +94,7 @@ Push each executed command onto a stack, and undo becomes popping the stack and 
 ## When to use it
 
 Reach for Command when an action needs a life beyond "run it now": queued jobs, task
-scheduling, an audit trail, retryable operations, or undo/redo. Laravel's queued jobs are
+scheduling, an audit trail, retryable operations, or undo/redo. [Laravel's queued jobs](/course/design-patterns/patterns-in-the-real-world/patterns-you-already-use-in-laravel) are
 commands - a `handle()` method plus the data, serialized and run later. For a plain call
 that never needs any of that, wrapping it in a command is needless ceremony.
 
@@ -107,7 +107,7 @@ a closure passed in as a field simply won't come back from the queue intact.
 
 Letting the command *decide* things instead of just carrying them out. A command should
 capture a request and know how to run it - not contain the business logic for choosing
-whether to run. Keep decision-making with the caller (or a strategy); keep the command a
+whether to run. Keep decision-making with the caller (or a [strategy](/course/design-patterns/behavioral-patterns/strategy)); keep the command a
 self-contained, replayable action.
 
 ## FAQ

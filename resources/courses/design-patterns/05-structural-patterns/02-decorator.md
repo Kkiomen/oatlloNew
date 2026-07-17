@@ -116,7 +116,7 @@ that caches *and* logs *and* validates is just the subclass mess wearing a new h
 
 Inheritance fixes behavior at compile time and multiplies classes for each combination. A
 decorator composes behavior at runtime from small, single-purpose wrappers you can mix in
-any order. It follows the open/closed principle: you add features without editing existing
+any order. It follows the [open/closed principle](/course/design-patterns/solid/open-closed): you add features without editing existing
 classes.
 
 ### Decorator vs adapter?

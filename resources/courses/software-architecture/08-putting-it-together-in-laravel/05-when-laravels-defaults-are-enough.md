@@ -81,7 +81,7 @@ thing to unit-test, without an entity, a port, or a mapping layer. Most modules 
 Adding repositories, value objects and a framework-free domain to a simple CRUD app because
 a conference talk did it is cargo-culting - you get the ceremony without the payoff, and a
 codebase that is *harder* to change than the plain version would have been. Over-engineering
-is a real cost, and Chapter 9 will name it directly.
+is a real cost, and [Chapter 9 will name it directly](/course/software-architecture/evolving-the-architecture/when-not-to-use-ddd).
 
 The honest rule: **add structure in response to pain, not in anticipation of prestige.**
 Start with the defaults. When a module's rules start slipping through the cracks, when the

@@ -56,7 +56,7 @@ wait for a reply. Events let the pieces move independently.
 
 In a single process, "publishing an event" can be a simple in-memory dispatch (you saw the
 seed of this with [domain events](/course/software-architecture/ddd-tactical-patterns/domain-events)).
-Across services or processes, the events usually travel through a **message broker** - a
+Across services or processes, the events usually travel through a **[message broker](/course/rabbitmq-basics/getting-started/what-is-a-message-queue)** - a
 piece of infrastructure like **RabbitMQ** or Kafka that receives published messages and
 delivers them to subscribers. The broker is what buys you time decoupling: it holds the
 message until a consumer is ready.
@@ -77,7 +77,7 @@ final class PlaceOrder
 
 `PlaceOrder` has no reference to email, invoicing, or analytics. It hands one fact to the
 bus and moves on. Whether that bus is an in-memory dispatcher or a RabbitMQ connection is
-an infrastructure detail. (Oatllo has a separate **RabbitMQ course** if you want to carry
+an infrastructure detail. (Oatllo has a separate **[RabbitMQ course](/course/rabbitmq-basics/getting-started/what-is-rabbitmq)** if you want to carry
 these events over a real broker; here we stay at the architecture level.)
 
 One thing that surprises people the first time: most brokers deliver **at least once**, not

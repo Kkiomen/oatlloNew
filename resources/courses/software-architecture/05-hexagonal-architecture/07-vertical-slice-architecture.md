@@ -12,7 +12,7 @@ many apps that is a simpler cut than layering.
 
 ## The problem with slicing by layer
 
-Layered and hexagonal code is usually grouped by **technical role**: all controllers here,
+[Layered](/course/software-architecture/what-is-software-architecture/the-layered-architecture) and [hexagonal](/course/software-architecture/hexagonal-architecture/what-is-hexagonal-architecture) code is usually grouped by **technical role**: all controllers here,
 all repositories there, all domain classes somewhere else. To add one feature you open five
 folders and add a piece to each.
 
@@ -104,7 +104,7 @@ namespace/dependency rule (Deptrac or similar) that forbids one `Features/*` fol
 referencing another, so the boundary is checked in CI instead of trusted to review.
 
 Vertical slice and hexagonal are not enemies. A common blend keeps a shared domain core
-(hexagonal, with ports and adapters) and organizes the application layer around it as
+(hexagonal, with ports and adapters) and organizes the [application layer](/course/software-architecture/application-layer-and-use-cases/the-application-layer) around it as
 vertical slices per use case. You get isolated features on the outside and one protected
 domain in the middle.
 

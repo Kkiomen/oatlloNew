@@ -52,7 +52,7 @@ final class Robot implements Worker
 
 The `Robot` is forced to implement `eat()` and `attendMeeting()` even though they make no
 sense. Those `throw`s are a warning sign: the class is depending on methods it doesn't use,
-and any code that calls them on a robot breaks. (Notice this is also an LSP problem - the
+and any code that calls them on a robot breaks. (Notice this is also an [LSP problem](/course/design-patterns/solid/liskov-substitution) - the
 robot can't safely stand in for a `Worker`.)
 
 ## Small, focused interfaces
@@ -118,7 +118,7 @@ supports.
 
 ### How is ISP different from the Single Responsibility Principle?
 
-SRP is about a class having one reason to change; ISP is about interfaces staying small and
+[SRP](/course/design-patterns/solid/single-responsibility) is about a class having one reason to change; ISP is about interfaces staying small and
 focused. They're related - a focused interface usually reflects a single responsibility - but
 ISP is specifically about the contracts clients depend on.
 

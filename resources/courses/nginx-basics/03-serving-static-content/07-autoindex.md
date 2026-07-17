@@ -5,7 +5,7 @@ seo_title: "Nginx autoindex: Show a Directory Listing of Files"
 seo_description: "Turn on nginx autoindex to show a directory listing when a folder has no index file, when it is genuinely useful, and why to keep it off."
 ---
 
-When a URL points at a folder that has no index file, nginx returns a 403 Forbidden by default. Turn on `autoindex` and nginx shows a directory listing of the folder instead. This lesson covers when that listing actually helps and when to leave it off.
+When a URL points at a folder that has no index file, nginx returns a [403 Forbidden](/course/nginx-basics/common-errors-and-fixes/403-forbidden) by default. Turn on `autoindex` and nginx shows a directory listing of the folder instead. This lesson covers when that listing actually helps and when to leave it off.
 
 ## What autoindex is for
 

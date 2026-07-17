@@ -61,7 +61,7 @@ system, and that bill is large:
   [the cost of distributed systems](/course/software-architecture/monolith-and-beyond/the-cost-of-distributed-systems).
 - **No easy transactions.** You cannot wrap a change across `Orders` and `Billing` in one
   database transaction, because they are different databases. Keeping data consistent
-  becomes real design work (eventual consistency, sagas - named later in the course).
+  becomes real design work (eventual consistency, [sagas](/course/software-architecture/event-driven-architecture/the-saga-pattern) - named later in the course).
 - **Operational overhead.** Many deploy pipelines, dashboards, log streams and alerts
   instead of one. You need real infrastructure maturity - monitoring, tracing, automated
   deploys - just to keep the lights on.

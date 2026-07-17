@@ -112,8 +112,8 @@ domain offers one use case; many adapters can drive it.
 ## How the wiring happens
 
 Ports and adapters only meet at one place: where the app starts up and decides which
-adapter fills each port. In Laravel that is a service provider binding an interface to an
-implementation. This "assembly point" is the only code that knows both sides at once,
+adapter fills each port. In Laravel that is a [service provider binding an interface to an
+implementation](/course/design-patterns/patterns-in-the-real-world/dependency-injection-and-the-container). This "assembly point" is the only code that knows both sides at once,
 which is exactly why the domain can stay ignorant of the adapters.
 
 Forgetting this binding is the classic first-run stumble. Type-hint `OrderRepository`

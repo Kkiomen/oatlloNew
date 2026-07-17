@@ -86,7 +86,7 @@ we'll show how to catch it later.
 
 ### If producers publish to exchanges, how did my "publish to a queue" example work?
 
-Through the **default exchange**. RabbitMQ ships with a nameless direct exchange that is
+Through the **[default exchange](/course/rabbitmq-basics/exchanges-and-routing/the-default-exchange)**. RabbitMQ ships with a nameless direct exchange that is
 pre-bound to every queue by the queue's own name. So "publishing to a queue called
 `emails`" is really publishing to the default exchange with routing key `emails`. It's a
 convenient shortcut, and we cover it in chapter 4.

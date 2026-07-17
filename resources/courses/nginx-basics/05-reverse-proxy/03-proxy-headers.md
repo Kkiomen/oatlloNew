@@ -19,7 +19,7 @@ The fix is to have nginx pass the real information along in request headers, usi
 
 ## The standard proxy_set_header block
 
-This block is on almost every reverse proxy in the world. Learn it as one unit:
+This block is on almost every [reverse proxy](/course/nginx-basics/reverse-proxy/what-is-a-reverse-proxy) in the world. Learn it as one unit:
 
 ```nginx
 location / {

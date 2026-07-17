@@ -57,7 +57,7 @@ One detail that surprises people: the cache lives on its own Redis database (`1`
 
 ## There is much more to queues
 
-This lesson only shows you the switch. Queues are a big topic on their own: delayed jobs, retries, failed jobs, multiple queues, and running workers in production. All of that gets a proper treatment in the next chapter. Here you just need to know that `QUEUE_CONNECTION=redis` makes Redis the backend.
+This lesson only shows you the switch. Queues are a big topic on their own: delayed jobs, retries, failed jobs, multiple queues, and running workers in production. All of that gets a proper treatment in [the next chapter](/course/redis-basics/beyond-cache-and-production/queues-and-background-jobs). Here you just need to know that `QUEUE_CONNECTION=redis` makes Redis the backend.
 
 ## Common mistake
 

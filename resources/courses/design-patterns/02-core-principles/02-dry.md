@@ -82,7 +82,7 @@ is cheap to fix later; a bad shared abstraction spreads its wrong shape into eve
 and untangling it is far more work than the copy-paste ever was.
 
 If two things drift for different reasons, that's a sign they were never one concern to
-begin with - a theme separation of concerns picks up later in this chapter.
+begin with - a theme [separation of concerns](/course/design-patterns/core-principles/separation-of-concerns) picks up later in this chapter.
 
 ## FAQ
 

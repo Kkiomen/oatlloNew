@@ -109,7 +109,7 @@ contract as small as the varying behavior.
 ### What is the difference between the strategy and state pattern?
 
 They look identical in code - both delegate to an interface. The intent differs. Strategy
-picks an algorithm from the outside and rarely changes it; the object doesn't decide. State
+picks an algorithm from the outside and rarely changes it; the object doesn't decide. [State](/course/design-patterns/behavioral-patterns/state)
 (later in this chapter) is about an object changing its own behavior as it moves through a
 lifecycle, and states often trigger the next state.
 
@@ -121,6 +121,6 @@ dependencies, or shared setup - anything more than a single expression.
 
 ### Doesn't Strategy just move the switch somewhere else?
 
-Something still decides which strategy to build (often a factory or the DI container). But
+Something still decides which strategy to build (often a [factory](/course/design-patterns/creational-patterns/factory-method) or the DI container). But
 that choice now lives in one place, made once, instead of being repeated inside every method
 that needs the behavior - and adding a strategy no longer edits working code.

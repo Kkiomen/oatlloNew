@@ -93,8 +93,8 @@ on. Whenever a task must not be lost, declare the queue **durable** and publish 
 Persistence makes loss *very unlikely*, not impossible. There's a tiny window between
 RabbitMQ accepting a message and actually writing it to disk. If the broker dies inside
 that window, that one message can still be lost, because a plain `basic_publish` doesn't
-wait for confirmation that the write happened. Closing that last gap needs **publisher
-confirms**, which the course covers later. For most work queues, durable + persistent is
+wait for confirmation that the write happened. Closing that last gap needs **[publisher
+confirms](/course/rabbitmq-basics/reliability-and-delivery/publisher-confirms)**, which the course covers later. For most work queues, durable + persistent is
 the right level of safety.
 
 ## FAQ

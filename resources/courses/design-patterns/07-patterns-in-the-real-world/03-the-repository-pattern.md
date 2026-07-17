@@ -80,7 +80,8 @@ its place when:
   used in ten places, so it lives in one named method instead of being copy-pasted. (Note:
   a query scope or a dedicated query class can do this too.)
 - **You must keep the domain free of the framework.** Large systems that deliberately avoid
-  leaking Eloquent everywhere use repositories to draw that line.
+  leaking Eloquent everywhere use [repositories](/course/software-architecture/ddd-tactical-patterns/repositories)
+  to draw that line.
 
 For a typical Laravel CRUD app, none of these apply, and Eloquent directly is the simpler,
 honest choice - which is exactly what [KISS](/course/design-patterns/core-principles/kiss)
@@ -89,7 +90,7 @@ and [YAGNI](/course/design-patterns/core-principles/yagni) recommend.
 ## A common mistake
 
 Adding a repository for *every* model on principle, "because clean architecture". That's
-speculative abstraction: you pay for flexibility you may never use, and the next lesson is
+speculative abstraction: you pay for flexibility you may never use, and the [next lesson](/course/design-patterns/patterns-in-the-real-world/when-not-to-use-a-pattern) is
 about exactly this trap. Add the pattern when you feel the pain it removes, not by default.
 
 ## FAQ

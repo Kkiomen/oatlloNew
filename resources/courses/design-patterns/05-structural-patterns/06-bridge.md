@@ -100,7 +100,7 @@ adapter's job.
 ### Bridge vs strategy?
 
 They look identical in code - an object holding an interface it delegates to. The
-difference is intent and scale. Strategy (a behavioral pattern in the next chapter) swaps
+difference is intent and scale. [Strategy](/course/design-patterns/behavioral-patterns/strategy) (a behavioral pattern in the next chapter) swaps
 *one algorithm*; bridge separates a *whole abstraction* from a *whole implementation* so
 both can grow. Same structure, bigger purpose.
 

@@ -40,7 +40,7 @@ The flag decides what nginx does after the rewrite:
 
 `last` and `break` rewrite **internally** (the browser URL does not change). `redirect` and `permanent` are visible **external** redirects.
 
-One trap hides in `last`: it restarts the location search with the new URL, so if your rewritten path still matches the same location and rewrite, you build a loop. Nginx cuts it off after 10 rounds and hands back a 500. When you use `last`, make sure the replacement lands somewhere the rule cannot fire again.
+One trap hides in `last`: it restarts the location search with the new URL, so if your rewritten path still matches the same location and rewrite, you [build a loop](/course/nginx-basics/common-errors-and-fixes/too-many-redirects). Nginx cuts it off after 10 rounds and hands back a 500. When you use `last`, make sure the replacement lands somewhere the rule cannot fire again.
 
 ## Internal rewrite example
 
@@ -53,7 +53,7 @@ location / {
 }
 ```
 
-A request for `/team/anna` is rewritten to `/people/anna.html`, then nginx re-runs matching and `try_files` serves the file. The user still sees `/team/anna` in the address bar.
+A request for `/team/anna` is rewritten to `/people/anna.html`, then nginx re-runs matching and [`try_files`](/course/nginx-basics/location-matching/try-files) serves the file. The user still sees `/team/anna` in the address bar.
 
 ## Rewrite vs return
 

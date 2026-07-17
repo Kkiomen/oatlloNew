@@ -69,11 +69,11 @@ run in a plain PHP script with no framework booted at all. That is the goal.
 ## Why point everything inward
 
 The domain is the part you most want to keep stable and testable. If it depended on MySQL,
-every database change could ripple into your business rules. By reversing the arrow -
+every database change could ripple into your business rules. By [reversing the arrow](/course/design-patterns/solid/dependency-inversion) -
 making the database depend on the domain instead - the rules stay put while technology
 changes around them.
 
-This is the practical payoff of the domain-vs-infrastructure split from Chapter 1. It also
+This is the practical payoff of the [domain-vs-infrastructure split](/course/software-architecture/what-is-software-architecture/domain-vs-infrastructure) from Chapter 1. It also
 makes tests fast: you can construct an `Order`, add lines, and assert the total without a
 database, a server, or any setup. When the domain depends on nothing, nothing needs to be
 set up to test it.
@@ -83,7 +83,7 @@ set up to test it.
 If the domain cannot know about the database, how does an order ever get saved? The domain
 declares an **interface** for what it needs - "something that can store orders" - and the
 outside world provides the real implementation. The interface belongs to the domain; the
-implementation lives outside and depends inward. Those interfaces are **ports**, the
+implementation lives outside and depends inward. Those interfaces are **[ports](/course/software-architecture/hexagonal-architecture/ports)**, the
 subject of the next lesson.
 
 ## Common mistake: importing an Eloquent model into the domain

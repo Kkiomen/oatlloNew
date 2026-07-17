@@ -10,8 +10,8 @@ seo_description: "Use --tries and --backoff, store dead jobs in the failed_jobs 
 A job can throw: an API is down, a record is missing, the network hiccups. Handling Laravel
 failed jobs and retries well means a temporary failure doesn't lose work, and a permanent
 failure isn't silently dropped. Laravel gives you both - retries for the transient case, a
-**failed jobs** record for the terminal one. This builds directly on the redelivery you
-saw in Chapter 5.
+**failed jobs** record for the terminal one. This builds directly on the [redelivery you
+saw in Chapter 5](/course/rabbitmq-basics/reliability-and-delivery/acknowledgements-deep-dive).
 
 ## Limit attempts with --tries
 
@@ -49,7 +49,7 @@ on the job:
 public array $backoff = [10, 30, 60];
 ```
 
-The first retry waits 10 seconds, the next 30, the next 60 - an "exponential backoff" that
+The first retry waits 10 seconds, the next 30, the next 60 - an ["exponential backoff"](/course/rabbitmq-basics/reliability-and-delivery/retries-and-dead-letter-queues) that
 gives a struggling downstream service room to recover.
 
 ## The failed_jobs table

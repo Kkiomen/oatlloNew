@@ -100,7 +100,7 @@ for the surrounding transaction to commit before they run. It is the framework's
 the same rule - and a reminder that "dispatch after commit" is a promise you have to arrange,
 not something a naive `event()` call gives you by default. The mechanics of building whole
 systems on those events - and the harder guarantees around them - are Chapter 7's job
-(event-driven architecture); here the rule is simply: **commit first, dispatch after**.
+([event-driven architecture](/course/software-architecture/event-driven-architecture/what-is-event-driven-architecture)); here the rule is simply: **commit first, dispatch after**.
 
 ## Common mistake
 

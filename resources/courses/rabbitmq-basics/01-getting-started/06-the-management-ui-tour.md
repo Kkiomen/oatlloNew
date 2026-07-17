@@ -46,7 +46,7 @@ Watch these two numbers together and they tell a story. Kill a consumer while it
 holding unconfirmed messages and you'll see **Unacked** drop while **Ready** jumps by
 the same amount - RabbitMQ didn't lose those messages, it put them back in line for the
 next consumer. Seeing that swap happen live is the clearest way to understand what
-"unacknowledged" really protects you from.
+["unacknowledged"](/course/rabbitmq-basics/core-concepts/messages-and-acknowledgements) really protects you from.
 
 ## Exchanges
 
@@ -54,7 +54,7 @@ The **Exchanges** tab lists **exchanges** - the part of RabbitMQ that decides wh
 queue a message goes to. You'll notice several already exist with names like
 `amq.direct` and `amq.fanout`; these are built in.
 
-We haven't covered exchanges yet - that's a whole chapter of its own. For now, just
+We haven't [covered exchanges](/course/rabbitmq-basics/core-concepts/exchanges) yet - that's a whole chapter of its own. For now, just
 know this tab exists and that exchanges are about **routing** messages to queues.
 
 ## Connections and Channels
@@ -63,7 +63,7 @@ These two tabs show who is currently talking to RabbitMQ.
 
 - **Connections** lists each open network connection from an application to the broker.
   When your PHP app connects, it appears here. If it's empty, nothing is connected.
-- **Channels** lists the lightweight conversations that run *inside* those connections.
+- **[Channels](/course/rabbitmq-basics/core-concepts/connections-and-channels)** lists the lightweight conversations that run *inside* those connections.
   One connection can carry many channels. This is a detail you'll understand fully in
   the next chapter; for now, connections are the pipes and channels are the
   conversations inside them.

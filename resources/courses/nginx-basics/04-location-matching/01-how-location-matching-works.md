@@ -71,7 +71,7 @@ location ^~ /assets/ {
 }
 ```
 
-Everything under `/assets/` is served from disk, even if a regex like `~* \.png$` also exists. You will see exactly why that matters in the next lesson.
+Everything under `/assets/` is served from disk, even if a regex like `~* \.png$` also exists. You will see exactly why that matters in [the next lesson on matching priority](/course/nginx-basics/location-matching/matching-priority).
 
 ## FAQ
 

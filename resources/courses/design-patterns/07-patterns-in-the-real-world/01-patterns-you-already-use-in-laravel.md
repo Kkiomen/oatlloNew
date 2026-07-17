@@ -37,8 +37,9 @@ for a mock in a test. A pure static call could never do that.
 Every time Laravel *builds* an object for you - a controller, a mailer, your own service -
 the **service container** decides which class to create and hands over its dependencies.
 That's the [factory method](/course/design-patterns/creational-patterns/factory-method)
-idea (something else creates the object) combined with dependency injection. The next
-lesson is entirely about this, because it's the pattern that powers the whole framework.
+idea (something else creates the object) combined with dependency injection. The [next
+lesson](/course/design-patterns/patterns-in-the-real-world/dependency-injection-and-the-container)
+is entirely about this, because it's the pattern that powers the whole framework.
 
 ## Events and observers are the observer pattern
 

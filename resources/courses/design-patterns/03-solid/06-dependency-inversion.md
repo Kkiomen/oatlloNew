@@ -91,13 +91,15 @@ There's a subtlety in *where* that `Mailer` interface belongs, and it's the part
 the word "inversion" earn its keep. The contract should be owned by the code that needs
 sending - the order side - not filed away next to `SmtpMailer`. When the high-level policy
 defines the interface and the low-level detail implements it, the arrow of dependency flips:
-the SMTP class now bends to the order module's terms instead of the reverse. Drop the
+the SMTP class now bends to the order module's terms instead of the reverse. This is exactly
+what [ports](/course/software-architecture/hexagonal-architecture/ports) are in hexagonal
+architecture: the interface is owned by the domain that needs it. Drop the
 interface in the mailer package and you'll still get testable code, but you haven't actually
 inverted anything - you've just added a layer.
 
 Handing a class its dependencies from the outside like this is called **dependency
 injection**, and it's the everyday technique that makes DIP practical. You'll go deeper into
-it - and how a framework's container wires it up for you - in
+it - and how a framework's [container wires it up for you](/course/design-patterns/patterns-in-the-real-world/dependency-injection-and-the-container) - in
 Chapter 7.
 
 ## Common mistake

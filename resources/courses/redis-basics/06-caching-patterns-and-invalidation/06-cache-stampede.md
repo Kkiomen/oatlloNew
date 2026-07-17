@@ -6,7 +6,7 @@ seo_description: "A hot cache key expires and every request rebuilds it at once,
 ---
 
 Here is a failure that only shows up under load, which is the worst time to discover it.
-You cache an expensive value with a TTL. It serves thousands of requests per second happily.
+You cache an expensive value with a [TTL](/course/redis-basics/keys-values-and-expiration/expiration-and-ttl). It serves thousands of requests per second happily.
 Then the TTL expires - and everything falls over for a moment. This is a **cache stampede**,
 also called the **thundering herd**.
 

@@ -7,7 +7,7 @@ seo_description: "Run Redis locally with Docker. Start a container with docker r
 
 ## Why run Redis with Docker?
 
-To use Redis you need Redis running somewhere. The easiest way to run Redis on your machine is Docker: you install nothing system-wide, and you can throw the whole thing away cleanly when you are done.
+To use Redis you need Redis running somewhere. The easiest way to run Redis on your machine is [Docker](/course/docker-basics): you install nothing system-wide, and you can throw the whole thing away cleanly when you are done.
 
 This lesson assumes you have Docker installed and running. If you can run `docker --version` and see a number, you are ready.
 

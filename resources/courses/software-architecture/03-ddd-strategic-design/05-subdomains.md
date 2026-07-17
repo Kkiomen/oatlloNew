@@ -8,7 +8,7 @@ seo_description: "DDD subdomains explained: core, supporting and generic. Learn 
 Not every part of your system deserves the same effort. **Subdomains** are the smaller
 areas that make up a domain, and DDD sorts them into three kinds so you know where to spend
 your best people and where to keep things cheap. This is a strategic decision - it shapes
-where you apply the tactical patterns of the next chapter, and where you deliberately do
+where you apply the [tactical patterns](/course/software-architecture/ddd-tactical-patterns/entities) of the next chapter, and where you deliberately do
 not.
 
 Vaughn Vernon stresses this classification because getting it wrong is expensive both

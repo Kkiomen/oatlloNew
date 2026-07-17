@@ -142,7 +142,7 @@ sudo nginx -t && sudo systemctl reload nginx
 curl -I http://myapp.test/
 ```
 
-A `200 OK` on the homepage and a working `/some/route` means the front controller wiring is correct. If routes 404, re-check `try_files`. If you get a 502, re-check `fastcgi_pass` and that PHP-FPM is running, exactly as in the previous lesson.
+A `200 OK` on the homepage and a working `/some/route` means the front controller wiring is correct. If routes 404, re-check `try_files`. If you get [a 502](/course/nginx-basics/common-errors-and-fixes/502-bad-gateway), re-check `fastcgi_pass` and that PHP-FPM is running, exactly as in the previous lesson.
 
 ## FAQ
 

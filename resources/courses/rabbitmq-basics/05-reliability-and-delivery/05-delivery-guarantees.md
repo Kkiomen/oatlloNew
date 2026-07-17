@@ -102,7 +102,7 @@ prior `SELECT`.
 ## Common mistake: assuming exactly-once and skipping idempotency
 
 The most expensive bug in this chapter is writing a consumer that charges a card, sends an
-email, or ships an order, and assuming each message arrives once. It will not. One day a
+email, or [ships an order](/course/software-architecture/event-driven-architecture/the-saga-pattern), and assuming each message arrives once. It will not. One day a
 worker restarts at the wrong moment and a customer is charged twice. Treat every consumer
 as if it *will* see duplicates, because eventually it will.
 

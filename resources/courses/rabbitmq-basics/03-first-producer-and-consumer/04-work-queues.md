@@ -118,7 +118,7 @@ the seed of the imbalance we untangle two lessons from now.
 Assuming every worker gets a copy of every message. A queue is not a broadcast - it hands
 each message to exactly one consumer. If you actually want *every* consumer to receive
 *every* message (like sending the same notification to several services), that's a
-different tool - a fanout exchange - which the course covers later. A work queue is for
+different tool - a [fanout exchange](/course/rabbitmq-basics/exchanges-and-routing/fanout-exchange) - which the course covers later. A work queue is for
 *sharing* work, not duplicating it.
 
 ## Common mistake, part two
@@ -140,7 +140,7 @@ took - just the order.
 
 With the auto-acknowledge mode used here, the message is already considered delivered, so
 it's **lost**. That's a real problem for work queues, and the fix - manual
-acknowledgements - is the next lesson.
+acknowledgements - is the [next lesson](/course/rabbitmq-basics/first-producer-and-consumer/message-acknowledgements).
 
 ### Can I add workers while the system is running?
 

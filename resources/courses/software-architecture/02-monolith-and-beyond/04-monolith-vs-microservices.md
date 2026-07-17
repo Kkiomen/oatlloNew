@@ -13,7 +13,7 @@ most teams the honest answer is "not microservices, not yet".
 
 A monolith optimizes for **simplicity**: easy to build, deploy, debug, and to keep data
 consistent. Microservices optimize for **independence**: teams and parts of the system that
-can move and scale on their own, bought with a large jump in complexity.
+can move and scale on their own, bought with a large jump in [complexity](/course/software-architecture/monolith-and-beyond/the-cost-of-distributed-systems).
 
 So the question is never "which is better". It is "which trade-off fits *us*, right now".
 Three factors decide it.

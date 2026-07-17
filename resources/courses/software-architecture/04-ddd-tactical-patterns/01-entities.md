@@ -32,7 +32,7 @@ These two words get mixed up constantly, so pin them down:
   comparing fields.
 
 For entities, identity wins. Two entities count as equal when their ids match, even if some
-fields differ - one might just be a slightly staler copy of the same order. Value objects,
+fields differ - one might just be a slightly staler copy of the same order. [Value objects](/course/software-architecture/ddd-tactical-patterns/value-objects),
 which you'll meet in the next lesson, flip this around.
 
 ## An entity in PHP
@@ -99,7 +99,7 @@ The usual trap is an entity that's just a bag of public getters and setters with
 after shipping") then leak into services elsewhere, and the entity can no longer protect
 itself. An entity should own the operations that change it (`markPaid()`, `addItem()`), so the
 rules sit next to the data they guard. The course returns to this trap by name later, in the
-anemic domain model lesson.
+[anemic domain model lesson](/course/software-architecture/evolving-the-architecture/the-anemic-domain-model).
 
 ## FAQ
 

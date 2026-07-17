@@ -30,7 +30,7 @@ Two rules that catch every beginner:
 - Simple directives **must** end with `;`.
 - Block directives end with `}`, never a semicolon.
 
-Forgetting the semicolon is the most common syntax error you will make. Worse, the error nginx reports often points at the *next* line, because that is where nginx first notices something is wrong. The real fix is usually one line up. The testing lesson shows how nginx points it out.
+Forgetting the semicolon is the most common syntax error you will make. Worse, the error nginx reports often points at the *next* line, because that is where nginx first notices something is wrong. The real fix is usually one line up. The [testing lesson](/course/nginx-basics/configuration-basics/testing-config-safely) shows how nginx points it out.
 
 ## Nginx contexts: where each directive is allowed
 
@@ -39,7 +39,7 @@ A block directive that contains other directives is also called a **context**. A
 - **main** - the top level of the file, outside any braces. Global stuff like `user` and `worker_processes` lives here.
 - **events** - connection handling settings.
 - **http** - everything about serving web traffic over HTTP.
-- **server** - one website or virtual host (covered in the next chapter).
+- **server** - [one website or virtual host](/course/nginx-basics/serving-static-content/server-blocks) (covered in the next chapter).
 - **location** - rules for a specific URL path inside a server (also next chapter).
 
 They nest inside each other like boxes:

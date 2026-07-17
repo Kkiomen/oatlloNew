@@ -7,7 +7,7 @@ seo_description: "A full annotated docker-compose.yml running a Laravel app, Rab
 
 Everything the course taught - a broker, a producer, a consumer, acknowledgements, a
 Laravel driver - collapses into three containers described in one file. Here you get a
-`docker-compose.yml` you can copy, the `.env` that wires Laravel to the broker, and the
+[`docker-compose.yml`](/course/docker-basics) you can copy, the `.env` that wires Laravel to the broker, and the
 reasoning behind every line. By the end, one command brings the whole system up.
 
 ## The three services

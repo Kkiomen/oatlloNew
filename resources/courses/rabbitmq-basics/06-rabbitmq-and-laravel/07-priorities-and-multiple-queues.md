@@ -14,8 +14,8 @@ flood of slow report jobs makes the urgent email wait behind them. The fix is to
 different work on different **named queues** and let a worker drain the important one
 first.
 
-You already have the tools: `onQueue()` to route a job (Chapter 6, lesson 4) and `--queue`
-to tell a worker what to consume (lesson 5). Here you combine them.
+You already have the tools: `onQueue()` to [route a job](/course/rabbitmq-basics/rabbitmq-and-laravel/dispatching-jobs) (Chapter 6, lesson 4) and `--queue`
+to [tell a worker what to consume](/course/rabbitmq-basics/rabbitmq-and-laravel/running-workers) (lesson 5). Here you combine them.
 
 ## Route jobs to different queues
 

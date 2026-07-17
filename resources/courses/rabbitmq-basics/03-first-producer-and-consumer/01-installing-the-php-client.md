@@ -78,7 +78,7 @@ reconnecting for every message.
 The `guest` account only works over a **localhost** connection. That's a RabbitMQ
 security default: `guest`/`guest` is refused from any remote host. On your own machine
 it's fine, but the moment RabbitMQ lives on another server you'll need to create a real
-user (covered later in the course) - otherwise you'll get an "ACCESS_REFUSED" error even
+user ([covered later in the course](/course/rabbitmq-basics/operating-in-production/users-vhosts-permissions)) - otherwise you'll get an "ACCESS_REFUSED" error even
 though the password is correct.
 
 ## FAQ

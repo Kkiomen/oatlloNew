@@ -64,7 +64,7 @@ Yes. `keepalive_timeout` has a sensible default, so browsers already reuse conne
 
 `keepalive 32;` is a fine starting point for a single backend. It is a cap on idle connections held ready, not a limit on total requests. Raise it only if you proxy very heavy traffic.
 
-One detail that catches people: the count is per worker process, not per server. With `worker_processes auto;` on a 4-core box, `keepalive 32;` means up to 32 idle connections in each of the 4 workers, so up to 128 held open to the backend. Keep that in mind so the pool stays comfortably under whatever connection limit your backend enforces.
+One detail that catches people: the count is [per worker process](/course/nginx-basics/performance-and-caching/workers-and-connections), not per server. With `worker_processes auto;` on a 4-core box, `keepalive 32;` means up to 32 idle connections in each of the 4 workers, so up to 128 held open to the backend. Keep that in mind so the pool stays comfortably under whatever connection limit your backend enforces.
 
 ### Does this help a small site?
 

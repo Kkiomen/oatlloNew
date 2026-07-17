@@ -10,7 +10,7 @@ or hand it one to save, and it hides the database. One repository per aggregate 
 
 ## What is the repository pattern?
 
-The repository pattern gives the domain a collection-shaped interface for storage and keeps
+The [repository pattern](/course/design-patterns/patterns-in-the-real-world/the-repository-pattern) gives the domain a collection-shaped interface for storage and keeps
 every trace of SQL on the far side of it. Without one, persistence bleeds into your domain:
 
 ```php
@@ -49,7 +49,8 @@ interface OrderRepository
 
 Read `ofId` and `unpaidOrders` out loud - domain vocabulary, not database vocabulary. The
 domain depends only on this interface and has no idea whether orders sit in MySQL, a file, or an
-array. One detail worth copying: `ofId()` returns `?Order`. A repository that throws on a
+array - this interface-in-the-domain, implementation-in-infrastructure shape is exactly a
+[port](/course/software-architecture/hexagonal-architecture/ports) in hexagonal terms. One detail worth copying: `ofId()` returns `?Order`. A repository that throws on a
 missing id forces every caller into a try/catch; returning null lets the caller decide what
 "not found" means.
 
@@ -125,7 +126,7 @@ aggregates and speaks the domain's language, hiding that a database exists at al
 
 Not quite, and that's a debate of its own. Eloquent mixes the aggregate and its persistence in
 one class, whereas the DDD repository keeps them apart behind an interface. When it's worth
-adding a repository on top of Laravel's defaults is covered in the Laravel chapter later - here
+adding a repository on top of [Laravel's defaults](/course/software-architecture/putting-it-together-in-laravel/when-laravels-defaults-are-enough) is covered in the Laravel chapter later - here
 we're only defining the pattern.
 
 ### Why one repository per aggregate root, not per table?

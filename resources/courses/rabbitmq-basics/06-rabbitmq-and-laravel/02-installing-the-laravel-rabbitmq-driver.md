@@ -10,7 +10,7 @@ seo_description: "Install the Laravel RabbitMQ queue driver with composer requir
 To install the Laravel RabbitMQ queue driver you add one Composer package - Laravel itself
 ships with `database`, `redis`, `sqs`, `beanstalkd` and `sync`, but not RabbitMQ. The
 community package `vyuldashev/laravel-queue-rabbitmq` fills the gap. It is the standard
-RabbitMQ queue driver for Laravel and wraps `php-amqplib` (the same client from Chapter 3)
+RabbitMQ queue driver for Laravel and wraps `php-amqplib` ([the same client from Chapter 3](/course/rabbitmq-basics/first-producer-and-consumer/installing-the-php-client))
 behind Laravel's queue interface.
 
 Install it with Composer in your Laravel project:

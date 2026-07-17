@@ -26,7 +26,7 @@ location = /old-page {
 }
 ```
 
-The `=` makes it an exact match (from the matching lessons), so only `/old-page` is redirected. The browser receives a 301 and requests `/new-page`.
+The `=` makes it an exact match (from [how location matching works](/course/nginx-basics/location-matching/how-location-matching-works)), so only `/old-page` is redirected. The browser receives a 301 and requests `/new-page`.
 
 The `=` is doing more work than it looks. Swap it for a plain `location /old-page` and you have a prefix match, so `/old-page-archive` and `/old-page/comments` get swept into the same redirect. For a single moved URL, exact match keeps the blast radius to exactly one path.
 
@@ -62,7 +62,7 @@ You may have seen redirects written with `rewrite`. For simple cases, `return` i
 - It is **faster**. There is no regular expression to evaluate.
 - It **stops processing** immediately, so there is no risk of another directive running afterwards.
 
-Reach for `rewrite` only when you need pattern matching or to capture parts of the URL, which is the next lesson.
+Reach for `rewrite` only when you need pattern matching or to capture parts of the URL, which is [the next lesson](/course/nginx-basics/location-matching/rewrite-basics).
 
 ## FAQ
 

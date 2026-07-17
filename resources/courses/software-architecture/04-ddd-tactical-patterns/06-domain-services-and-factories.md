@@ -41,15 +41,15 @@ own, it just coordinates. And it holds **domain** logic, not plumbing: it knows 
 "withdraw from one, deposit to the other", but it sends no emails, writes to no database, calls
 no API. A useful tell here: a domain service takes entities and value objects as arguments and
 returns them - the moment it reaches for a repository or the network itself, it has quietly
-become an application service, which a later chapter covers. Like an entity, a domain service
-is named in the ubiquitous language.
+become an [application service](/course/software-architecture/application-layer-and-use-cases/the-application-layer), which a later chapter covers. Like an entity, a domain service
+is named in the [ubiquitous language](/course/software-architecture/ddd-strategic-design/ubiquitous-language).
 
 ## Don't reach for a service too soon
 
 The domain service is easy to overuse. Every time you're about to write one, ask first: does
 this logic actually belong inside an entity or value object? A rule about a single order goes
 in `Order`, not in an `OrderService`. Reach for a domain service only when the logic genuinely
-spans several aggregates and has no natural home. Otherwise you're back to the anemic model -
+spans several aggregates and has no natural home. Otherwise you're back to the [anemic model](/course/software-architecture/evolving-the-architecture/the-anemic-domain-model) -
 entities with no behaviour and services doing everything.
 
 ## What is a factory in DDD?

@@ -72,7 +72,7 @@ You'll see the details in code later, but the shape to remember is:
 - **One channel per task or per thread** - cheap to open, not shared between threads doing
   work at the same time.
 
-Most client libraries make this easy, and the Laravel driver in chapter 6 handles much of
+Most client libraries make this easy, and the [Laravel driver in chapter 6](/course/rabbitmq-basics/rabbitmq-and-laravel/how-laravel-queues-work) handles much of
 it for you. You mainly need to recognise the two ideas when you see them.
 
 ## Common mistake

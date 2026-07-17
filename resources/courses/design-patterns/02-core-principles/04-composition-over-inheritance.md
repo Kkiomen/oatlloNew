@@ -104,7 +104,7 @@ collection to store data, it would hold one as a private property and call its p
 Inheritance locks you into one axis of variation, fixed at class-definition time. Composition
 lets you assemble behavior from small, independent parts and swap them out - even at runtime.
 That flexibility is the engine behind many of the design patterns later in this course; the
-strategy pattern, which you'll meet in a later chapter, is composition in its purest form.
+[strategy pattern](/course/design-patterns/behavioral-patterns/strategy), which you'll meet in a later chapter, is composition in its purest form.
 You depend on a collaborator's public contract, not its guts, so each piece can change
 without shattering the others - a direct payoff of the low coupling from
 [chapter one](/course/design-patterns/why-design-matters/coupling-and-cohesion).

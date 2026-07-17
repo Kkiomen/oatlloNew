@@ -7,7 +7,7 @@ seo_description: "Run RabbitMQ locally with one Docker command using the rabbitm
 
 Enough theory. Let's run RabbitMQ with Docker - one command gives you a full broker
 plus a web dashboard, with nothing to install by hand and nothing to uninstall later.
-This lesson assumes you already have Docker installed and working.
+This lesson assumes you already have [Docker installed and working](/course/docker-basics).
 
 ## The one command
 

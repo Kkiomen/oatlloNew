@@ -105,15 +105,15 @@ and the database before you write a single rule, because the base class carries 
 Spotting a stray `DB::` call is easy; spotting the dependency you inherited takes a second
 look.
 
-The later chapters on hexagonal architecture exist largely to make this leak impossible.
+The later chapters on [hexagonal architecture](/course/software-architecture/hexagonal-architecture/what-is-hexagonal-architecture) exist largely to make this leak impossible.
 For now, just learn to spot it.
 
 ## Common mistake: skipping the application layer
 
 Beginners often collapse presentation and application together - controllers that both
 handle the HTTP request *and* coordinate all the business steps. It works for a while, then
-controllers balloon into thousand-line files doing everything. Keeping a thin application
-layer between the web and the domain gives each request a clear home that isn't tangled up
+controllers balloon into thousand-line files doing everything. Keeping a thin [application
+layer](/course/software-architecture/application-layer-and-use-cases/the-application-layer) between the web and the domain gives each request a clear home that isn't tangled up
 with HTTP.
 
 ## FAQ

@@ -12,15 +12,15 @@ afterthought.
 
 ## Delete a merged branch with -d
 
-Once you've merged `new-feature` into `main` (and switched back to `main`), delete the
-feature branch with `-d`:
+Once you've [merged `new-feature` into `main`](/course/git-basics/branching-and-merging/merging-branches)
+(and switched back to `main`), delete the feature branch with `-d`:
 
 ```bash
 git switch main
 git branch -d new-feature
 ```
 
-Remember, a branch is just a pointer to a commit. Deleting the branch only removes the
+Remember, [a branch is just a pointer to a commit](/course/git-basics/branching-and-merging/what-is-a-branch). Deleting the branch only removes the
 label - the commits themselves are already part of `main`, so nothing is lost. The
 work lives on; you're just tidying up the name.
 

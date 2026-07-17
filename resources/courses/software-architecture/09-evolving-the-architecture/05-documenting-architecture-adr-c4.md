@@ -66,7 +66,7 @@ Anyone reading this later gets the *reasoning*, not just the result. If circumst
 and you split Billing out, you write ADR 012 ("supersedes ADR 007 for Billing") - the
 history stays intact. This is the written form of every trade-off this course discussed:
 [monolith vs microservices](/course/software-architecture/monolith-and-beyond/microservices-overview),
-the [cost of distributed systems](/course/software-architecture/monolith-and-beyond/the-modular-monolith),
+the [cost of distributed systems](/course/software-architecture/monolith-and-beyond/the-cost-of-distributed-systems),
 whether to go event-driven.
 
 ## C4: communicate the structure

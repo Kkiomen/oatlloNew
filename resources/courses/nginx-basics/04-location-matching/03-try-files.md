@@ -59,7 +59,7 @@ location / {
 }
 ```
 
-Now `/`, `/about`, and `/products/42` all fall back to `/index.html` when there is no matching file. That is the core of the "front controller" idea: static files served directly, everything else handed to one file. You will build the full version for a real app later in the course, once you have proxying and PHP.
+Now `/`, `/about`, and `/products/42` all fall back to `/index.html` when there is no matching file. That is the core of the "front controller" idea: static files served directly, everything else handed to one file. You will [build the full version for a real app](/course/nginx-basics/nginx-and-php/a-laravel-server-block) later in the course, once you have proxying and PHP.
 
 ## FAQ
 

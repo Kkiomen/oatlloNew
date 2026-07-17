@@ -5,7 +5,7 @@ seo_title: "Nginx server_name and listen: Host Many Domains"
 seo_description: "How nginx server_name matches the domain and listen sets the port, so one nginx hosts several sites, plus the default_server catch-all."
 ---
 
-One nginx can answer for many domains at once. Two directives decide which requests a server block picks up: `listen` sets the port, and `server_name` matches the domain. This lesson explains both, plus the `default_server` that catches everything else.
+One nginx can answer for many domains at once. Two directives decide which requests a [server block](/course/nginx-basics/serving-static-content/server-blocks) picks up: `listen` sets the port, and `server_name` matches the domain. This lesson explains both, plus the `default_server` that catches everything else.
 
 ## listen: the port
 
@@ -19,7 +19,7 @@ server {
 }
 ```
 
-Port 80 is plain HTTP, the default for `http://` addresses. Port 443 is HTTPS, but that needs a certificate, which we cover later in the HTTPS chapter. For now, port 80 is all you need.
+Port 80 is plain HTTP, the default for `http://` addresses. Port 443 is HTTPS, but that needs a certificate, which we cover later in the [HTTPS chapter](/course/nginx-basics/https-tls/listen-443-ssl). For now, port 80 is all you need.
 
 You can also bind to a specific address:
 
@@ -31,7 +31,7 @@ That means "only answer requests arriving on the local loopback address." Withou
 
 ## server_name: the domain
 
-Many server blocks can share port 80. So how does nginx know which one should answer? It reads the `Host` header the browser sends (the domain in the address bar) and matches it against `server_name`.
+Many server blocks can share port 80. So how does nginx know which one should answer? It [reads the `Host` header the browser sends](/course/nginx-basics/getting-started/how-a-web-request-works) (the domain in the address bar) and matches it against `server_name`.
 
 ```nginx
 server {

@@ -57,7 +57,7 @@ If nothing loads, do not worry yet. The next lesson covers starting nginx and ch
 Nginx has a native Windows build, but it is limited and not how it is used in the real world. Instead:
 
 - **Windows**: install **WSL** (Windows Subsystem for Linux) to get a real Ubuntu inside Windows, then follow the apt steps above.
-- **Mac or Windows**: use **Docker** to run nginx in a container. One command downloads and runs it:
+- **Mac or Windows**: use **[Docker](/course/docker-basics)** to run nginx in a container. One command downloads and runs it:
 
 ```bash
 docker run --name web -p 8080:80 nginx
@@ -65,7 +65,7 @@ docker run --name web -p 8080:80 nginx
 
 This starts nginx and maps it to port 8080, so you open `http://localhost:8080` in your browser. Docker is a clean way to try nginx without installing it system-wide.
 
-Ports come up again soon. Sometimes you want several sites on a single server, and a common way to keep them apart is to run each one on its own port - one site on 80, another on 8080, and so on. You just met that idea here: the container answers on 8080 instead of the usual 80. A later chapter shows how nginx decides which site a request belongs to, so for now just notice that the port is part of the address.
+Ports come up again soon. Sometimes you want several sites on a single server, and a common way to keep them apart is to run each one on its own port - one site on 80, another on 8080, and so on. You just met that idea here: the container answers on 8080 instead of the usual 80. A later chapter shows [how nginx decides which site a request belongs to](/course/nginx-basics/serving-static-content/listen-and-server-name), so for now just notice that the port is part of the address.
 
 Whichever route you pick, the config and commands in this course are the same, because underneath you are running nginx on Linux.
 
@@ -81,7 +81,7 @@ No. Your own laptop is enough. You run nginx locally and visit `http://localhost
 
 ### Nginx installed but localhost does not load. Why?
 
-Most often nginx is not running, or something else is using the port. The next lesson, on start, stop, and reload, shows how to check its status and start it.
+Most often nginx is not running, or something else is using the port. The next lesson, on [start, stop, and reload](/course/nginx-basics/getting-started/start-stop-reload), shows how to check its status and start it.
 
 ### Should I install nginx on Windows directly?
 

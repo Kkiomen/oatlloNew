@@ -43,7 +43,7 @@ SendWelcomeEmail::dispatch($user);
 
 The default `database` driver stores jobs in a `jobs` table. It works and needs nothing
 extra, but every worker **polls** the table with `SELECT ... FOR UPDATE` queries, which
-adds load to your database and adds a small delay between dispatch and pickup. Redis is
+adds load to your database and adds a small delay between dispatch and pickup. [Redis](/course/redis-basics/redis-and-laravel/sessions-and-queues-on-redis) is
 faster but is a key-value store, not a real message broker.
 
 RabbitMQ is a purpose-built broker, and pointing Laravel at it gives you what the earlier

@@ -26,7 +26,7 @@ This is the second big job, and it is where nginx really shines.
 
 A reverse proxy sits in front of another program and passes requests to it. Your app (written in PHP, Node.js, Python, and so on) does the real work. Nginx takes the incoming request, hands it to your app, gets the answer back, and returns it to the visitor.
 
-Think of nginx as the front desk. Visitors talk to the front desk, and the front desk talks to the right person in the back. We will cover reverse proxying in detail later; for now, just know nginx can do both.
+Think of nginx as the front desk. Visitors talk to the front desk, and the front desk talks to the right person in the back. We will cover [reverse proxying](/course/nginx-basics/reverse-proxy/what-is-a-reverse-proxy) in detail later; for now, just know nginx can do both.
 
 ## What is nginx used for?
 

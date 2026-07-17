@@ -75,7 +75,8 @@ tracking `debug.log` - the ignore rule is skipped for files already in the repo.
 The fix is to stop tracking the file first (with `git rm --cached`, covered in the
 [next lesson](/course/git-basics/everyday-git/moving-and-removing-files)). If you ever
 hit "I added it to .gitignore but Git still sees it", this is almost always why - and a
-later troubleshooting chapter walks through it in full.
+[later troubleshooting lesson](/course/git-basics/real-world-and-troubleshooting/gitignore-not-working)
+walks through it in full.
 
 ## FAQ
 

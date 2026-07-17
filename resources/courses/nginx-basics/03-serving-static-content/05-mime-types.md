@@ -68,7 +68,7 @@ The `-I` flag asks for headers only. Look for the `Content-Type` line in the out
 
 ## Common mistake
 
-Forgetting `include mime.types;`. If it is missing, every file falls back to `default_type`, so your HTML and CSS go out as `application/octet-stream` and the browser will not render them. If a whole site suddenly serves as downloads or plain text, check that `include mime.types;` is present in the `http` block.
+Forgetting `include mime.types;`. If it is missing, every file falls back to `default_type`, so your HTML and CSS go out as `application/octet-stream` and the browser will not render them. If [a whole site suddenly serves as downloads or plain text](/course/nginx-basics/common-errors-and-fixes/static-files-not-loading), check that `include mime.types;` is present in the `http` block.
 
 ## FAQ
 

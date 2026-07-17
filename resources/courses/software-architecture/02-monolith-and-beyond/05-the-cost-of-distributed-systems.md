@@ -74,7 +74,7 @@ DB::transaction(function () use ($order) {
 Split `Orders` and `Billing` into services with separate databases and this guarantee is
 **gone**. There is no transaction spanning two databases over a network. You can save the
 order and then fail to charge - now your data is inconsistent, and you must repair it in
-application code (retries, compensating actions - the saga pattern, named in a later
+application code (retries, compensating actions - [the saga pattern](/course/software-architecture/event-driven-architecture/the-saga-pattern), named in a later
 chapter).
 
 ## Eventual consistency

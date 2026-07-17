@@ -5,7 +5,7 @@ seo_title: "Read Models and CQRS with Event Sourcing"
 seo_description: "Read models and CQRS: build query-optimized projections from an event stream. This is full CQRS - separate write and read models, rebuildable by replay."
 ---
 
-Event sourcing gave you a great way to **write**: an append-only log of facts. But that log
+[Event sourcing](/course/software-architecture/event-driven-architecture/event-sourcing) gave you a great way to **write**: an append-only log of facts. But that log
 is terrible to **query**. "Show me all orders over 100 from last month, sorted by date" is a
 nightmare if every read has to replay thousands of events. The fix is to keep the event
 stream for writing and build separate, query-friendly **read models** from it. Combined,

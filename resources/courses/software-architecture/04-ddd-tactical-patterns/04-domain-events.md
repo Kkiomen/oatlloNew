@@ -95,7 +95,7 @@ after saving and they pile up silently and never fire.
 
 ## Why past tense matters
 
-The name isn't cosmetic. `PlaceOrder` (imperative) is a **command** - a request that might
+The name isn't cosmetic. `PlaceOrder` (imperative) is a **[command](/course/software-architecture/event-driven-architecture/events-vs-commands)** - a request that might
 still be rejected. `OrderPlaced` (past tense) is an **event** - a fact that already happened
 and can't be undone. Handlers react to facts. Past-tense naming keeps that line sharp and
 stops you sneaking "please do X" logic into something meant to say "X happened".
@@ -109,7 +109,7 @@ aggregate is saved.
 
 This lesson covers only the DDD **building block** - a plain object that records a fact.
 Turning events into a full messaging system (dispatchers, queues, choreography, event
-sourcing) is its own subject, covered later in the **event-driven architecture** chapter. Here,
+sourcing) is its own subject, covered later in the **[event-driven architecture](/course/software-architecture/event-driven-architecture/what-is-event-driven-architecture)** chapter. Here,
 an event is just an immutable object an aggregate produces.
 
 ## FAQ
@@ -131,4 +131,4 @@ a hidden coupling to the aggregate's internal shape.
 
 Usually right after the aggregate is saved, so you never announce something that didn't
 persist. The aggregate records the events; the layer that saves it releases and dispatches
-them. That ordering belongs to the **application layer**, which a later chapter covers in full.
+them. That ordering belongs to the **[application layer](/course/software-architecture/application-layer-and-use-cases/the-application-layer)**, which a later chapter covers in full.

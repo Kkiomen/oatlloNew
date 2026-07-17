@@ -48,7 +48,7 @@ There is no real downside anymore. Certificates are free (you'll get one in [Let
 
 nginx does the TLS work at the front door. It decrypts incoming HTTPS, passes plain HTTP to your app internally, and encrypts the response on the way out. This is called **TLS termination**. Your PHP or Node app does not need to know anything about certificates.
 
-The next lesson turns HTTPS on with a real config.
+[The next lesson](/course/nginx-basics/https-tls/listen-443-ssl) turns HTTPS on with a real config.
 
 ## FAQ
 

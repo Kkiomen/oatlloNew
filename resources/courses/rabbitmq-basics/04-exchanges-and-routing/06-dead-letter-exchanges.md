@@ -93,9 +93,9 @@ and its queue exist and are bound, or the dead letter is dropped once more.
 
 ## Where this leads
 
-A DLX is the mechanism. The patterns built on top of it - **retries** with a delay, a
+A DLX is the mechanism. The patterns built on top of it - **[retries](/course/rabbitmq-basics/reliability-and-delivery/retries-and-dead-letter-queues)** with a delay, a
 proper **dead-letter queue (DLQ)** for messages that fail for good, and combining it with
-TTL - are covered in the next chapter on reliability and delivery. For now, the important
+[TTL](/course/rabbitmq-basics/reliability-and-delivery/message-and-queue-ttl) - are covered in the next chapter on reliability and delivery. For now, the important
 idea is that a queue can hand its failures to another exchange instead of losing them.
 
 ## FAQ

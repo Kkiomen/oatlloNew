@@ -28,11 +28,11 @@ Something redirects HTTP to HTTPS, but the request never actually arrives as HTT
 
 - **Cloudflare Flexible SSL.** Cloudflare talks HTTPS to the browser but plain HTTP to your server. Your nginx sees HTTP, redirects to HTTPS, Cloudflare turns it back into HTTP to your server, and the loop repeats.
 - **A load balancer** that terminates TLS and forwards plain HTTP, with nginx still forcing a redirect.
-- **A bad redirect rule** that redirects a request back to itself.
+- **A [bad redirect rule](/course/nginx-basics/location-matching/redirects-with-return)** that redirects a request back to itself.
 
 ## How to fix it
 
-1. When nginx is behind a proxy, do not redirect blindly. Check the `X-Forwarded-Proto` header, which the proxy sets to the original scheme, and only redirect when it is not already HTTPS:
+1. When nginx is behind a proxy, do not redirect blindly. Check the [`X-Forwarded-Proto` header, which the proxy sets to the original scheme](/course/nginx-basics/reverse-proxy/proxy-headers), and only redirect when it is not already HTTPS:
 
 ```nginx
 server {

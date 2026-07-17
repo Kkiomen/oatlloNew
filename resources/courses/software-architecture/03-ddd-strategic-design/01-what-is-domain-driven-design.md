@@ -23,7 +23,8 @@ transfers and interest. For a shipping company it is cargo, routes and ports. Fo
 online shop it is orders, products, payments and delivery.
 
 Inside a big domain there are smaller areas called **subdomains** - for a shop, things
-like catalog, checkout, shipping and invoicing. You'll meet subdomains properly later in
+like catalog, checkout, shipping and invoicing. You'll meet
+[subdomains](/course/software-architecture/ddd-strategic-design/subdomains) properly later in
 this chapter.
 
 The people who understand the domain deeply - not the developers - are the **domain
@@ -51,7 +52,8 @@ Domain-Driven Design
 areas that make sense, and how each area talks about the world. These are decisions you
 make with a whiteboard and conversations, before much code exists.
 
-**Tactical patterns** are the concrete building blocks you write in code - entities, value
+**Tactical patterns** are the concrete building blocks you write in code -
+[entities](/course/software-architecture/ddd-tactical-patterns/entities), value
 objects, aggregates and so on. That is the next chapter; here we stay at the big-picture
 level and do not write domain classes yet.
 
@@ -68,7 +70,7 @@ behavior that changes as the business grows. Think insurance, logistics, trading
 It is usually **overkill** when the domain is simple. A blog, a basic CRUD admin, or a
 form that saves data to a table does not have hidden business complexity to capture. There,
 the full DDD machinery adds ceremony without buying you much. We look at this honestly in
-Chapter 9 (when not to use DDD).
+Chapter 9 ([when not to use DDD](/course/software-architecture/evolving-the-architecture/when-not-to-use-ddd)).
 
 A useful test: if you and the domain experts keep discovering rules you did not know
 about, and the tricky part is *what the software should do* rather than *how to store it*,

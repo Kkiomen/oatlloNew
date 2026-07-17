@@ -58,7 +58,7 @@ object. That's the whole pattern.
 It looks convenient, but a singleton causes real problems:
 
 - **It's global state in disguise.** Any code, anywhere, can grab the instance and change
-  it. That's exactly the tight coupling and hidden dependencies the earlier chapters warned
+  it. That's exactly the tight [coupling](/course/design-patterns/why-design-matters/coupling-and-cohesion) and hidden dependencies the earlier chapters warned
   against - `Logger::instance()` buried inside a method is a dependency that doesn't show up
   in the constructor, so you can't see it from the outside.
 - **It's hard to test.** Because the instance is shared and created behind a static method,

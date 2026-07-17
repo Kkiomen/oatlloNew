@@ -83,7 +83,7 @@ and others. We use PHP for the examples, but the ideas transfer directly.
 ### Are patterns still relevant with modern frameworks?
 
 Very much so. Frameworks like Laravel are *built* out of patterns - you already use many
-without naming them. A later chapter shows exactly which ones.
+without naming them. A [later chapter](/course/design-patterns/patterns-in-the-real-world/patterns-you-already-use-in-laravel) shows exactly which ones.
 
 ### What is the difference between creational, structural and behavioral patterns?
 

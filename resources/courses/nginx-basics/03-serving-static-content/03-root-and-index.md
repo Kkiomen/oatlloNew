@@ -86,7 +86,7 @@ Reload nginx (see [Start, stop, reload](/course/nginx-basics/getting-started/sta
 
 ## Common mistake
 
-Putting a slash on the end of `root`, like `root /var/www/example/;`. It usually still works, but the clean habit is no trailing slash. A worse mistake is pointing `root` at a folder that does not exist or that nginx cannot read; you will get 403 or 404 errors. Check the path and its permissions, then read the error log as shown in [Access and error logs](/course/nginx-basics/configuration-basics/access-and-error-logs).
+Putting a slash on the end of `root`, like `root /var/www/example/;`. It usually still works, but the clean habit is no trailing slash. A worse mistake is pointing `root` at a folder that does not exist or that nginx cannot read; you will get [403](/course/nginx-basics/common-errors-and-fixes/403-forbidden) or 404 errors. Check the path and its permissions, then read the error log as shown in [Access and error logs](/course/nginx-basics/configuration-basics/access-and-error-logs).
 
 ## FAQ
 

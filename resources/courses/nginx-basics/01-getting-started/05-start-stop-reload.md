@@ -77,7 +77,7 @@ You will meet these inside Docker containers and setups without systemctl. On a 
 
 ## Common mistake to avoid
 
-Changing the config and forgetting to reload. Nginx does not watch its files. Your edit does nothing until you run `reload`. If a change "did not work", reloading is the first thing to check. (We will also learn to test config *before* reloading in a later chapter.)
+Changing the config and forgetting to reload. Nginx does not watch its files. Your edit does nothing until you run `reload`. If a change "did not work", reloading is the first thing to check. (We will also learn to [test config *before* reloading](/course/nginx-basics/configuration-basics/testing-config-safely) in a later chapter.)
 
 ## FAQ
 

@@ -27,7 +27,7 @@ You don't need to fix these yet. Right now, just learn to recognise the names.
 
 **Long method.** A single function that goes on for screens and screens. It usually
 means several jobs are crammed into one place - a cohesion problem, in the language of
-the last lesson.
+[the last lesson](/course/design-patterns/why-design-matters/coupling-and-cohesion).
 
 **Duplicated code.** The same logic copy-pasted in several spots. When the rule changes,
 you have to remember every copy, and you'll miss one.
@@ -73,7 +73,7 @@ haven't met those yet. Reaching for a solution before you understand the problem
 people over-engineer.
 
 So this course does it in the right order: learn the ideas first, then come back to
-smells at the end. **The final chapter has a full catalogue of code smells** and the
+smells at the end. **The final chapter has a full [catalogue of code smells](/course/design-patterns/refactoring-and-anti-patterns/code-smells-catalog)** and the
 refactorings that clear them up. For now, it's enough to smell that something's off.
 
 ## Common mistake

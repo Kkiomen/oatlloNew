@@ -34,11 +34,11 @@ list data type. It's extremely fast and easy if you already run Redis for cachin
 The trade-off is that Redis is a "dumb pipe" by comparison. It has no built-in routing
 and weaker delivery guarantees. It's a great fit for straightforward background jobs
 where you don't need smart routing - which is exactly why many Laravel apps start with
-the Redis queue driver.
+the [Redis queue driver](/course/rabbitmq-basics/rabbitmq-and-laravel/how-laravel-queues-work).
 
 If you're coming from Laravel, one practical wrinkle: Redis, SQS and a database queue
 are all supported out of the box, while wiring RabbitMQ into Laravel's queue system
-means pulling in a community package. That extra step is worth it when you actually
+means [pulling in a community package](/course/rabbitmq-basics/rabbitmq-and-laravel/installing-the-laravel-rabbitmq-driver). That extra step is worth it when you actually
 need routing, but it's a reason plenty of teams stay on Redis until they don't.
 
 ## Amazon SQS: managed, no server to run

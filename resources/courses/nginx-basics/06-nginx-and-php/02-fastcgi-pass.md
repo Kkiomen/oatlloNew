@@ -51,7 +51,7 @@ fastcgi_pass unix:/run/php/php8.4-fpm.sock;
 
 This is the address of PHP-FPM. It has two forms:
 
-**Unix socket** (shown above). A socket is a special file on the same machine. It is the common choice when nginx and PHP-FPM run on one server, and it is slightly faster because it skips the network stack. The path must match PHP-FPM's own config (`listen = ...` in the pool file). A wrong path gives `502 Bad Gateway`.
+**Unix socket** (shown above). A socket is a special file on the same machine. It is the common choice when nginx and PHP-FPM run on one server, and it is slightly faster because it skips the network stack. The path must match PHP-FPM's own config (`listen = ...` in the pool file). A wrong path gives [`502 Bad Gateway`](/course/nginx-basics/common-errors-and-fixes/502-bad-gateway).
 
 **TCP** on localhost or another host:
 
@@ -65,7 +65,7 @@ Use TCP when PHP-FPM runs somewhere nginx cannot reach by file, most commonly in
 fastcgi_pass php:9000;
 ```
 
-Here `php` is the service name of the PHP-FPM container. Same directive, just a network address instead of a socket path. If you set up PHP-FPM in the Docker course, this is how nginx reaches it.
+Here `php` is the service name of the PHP-FPM container. Same directive, just a network address instead of a socket path. If you set up PHP-FPM in the [Docker course](/course/docker-basics), this is how nginx reaches it.
 
 One trap with the socket form: the path can be perfectly correct and still return `502` if nginx is not allowed to open the socket. PHP-FPM owns that file, and its pool config (`listen.owner`, `listen.group`, `listen.mode`) decides who may connect. On Debian and Ubuntu the defaults already give nginx's user access, but a hand-rolled pool or a custom user is a classic source of a permission-denied `502` that looks exactly like a wrong path.
 

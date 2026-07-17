@@ -7,7 +7,7 @@ seo_description: "Why use RabbitMQ instead of calling a service directly - decou
 
 You've seen that a message broker lets one part of your app hand off work to another.
 So why use RabbitMQ instead of just calling that other service directly and saving
-yourself a moving part? Four concrete reasons: decoupling, load leveling, reliable
+yourself a moving part? Four concrete reasons: [decoupling](/course/software-architecture/event-driven-architecture/what-is-event-driven-architecture), load leveling, reliable
 retries, and background work.
 
 ## The alternative: calling a service directly
@@ -51,7 +51,7 @@ that a broker gives you a place for work to wait safely.
 
 There's a flip side of retries worth planting early: if a worker crashes after doing
 its job but before it confirms, RabbitMQ assumes the work failed and hands the message
-to another worker. So a queued job can run more than once. Write your background tasks
+to another worker. So a queued job can [run more than once](/course/rabbitmq-basics/reliability-and-delivery/delivery-guarantees). Write your background tasks
 so a second run does no harm - charging a card or sending the same email twice is the
 kind of thing this saves you from.
 

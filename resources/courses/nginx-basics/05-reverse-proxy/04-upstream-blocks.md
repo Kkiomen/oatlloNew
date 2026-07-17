@@ -66,7 +66,7 @@ Now you run three copies of your app on ports 3000, 3001 and 3002, and nginx spr
 
 ## The path and headers still apply
 
-Everything from the earlier lessons still applies. The trailing-slash rule and the header block work exactly the same with a named upstream:
+Everything from the earlier lessons still applies. The [trailing-slash rule](/course/nginx-basics/reverse-proxy/proxy-pass) and the [header block](/course/nginx-basics/reverse-proxy/proxy-headers) work exactly the same with a named upstream:
 
 ```nginx
 upstream app_backend {

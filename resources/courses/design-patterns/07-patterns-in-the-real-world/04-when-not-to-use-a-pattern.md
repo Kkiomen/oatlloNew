@@ -83,7 +83,7 @@ conditional has changed three times this month".
 
 ### Isn't it expensive to add a pattern later?
 
-Rarely as expensive as you fear. Refactoring toward a pattern (the next lesson) is a small,
+Rarely as expensive as you fear. [Refactoring toward a pattern](/course/design-patterns/patterns-in-the-real-world/refactoring-toward-a-pattern) (the next lesson) is a small,
 safe step once the need is real - and far cheaper than maintaining an abstraction nobody
 uses. Add it when the second case shows up.
 

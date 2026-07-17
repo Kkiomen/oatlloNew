@@ -91,7 +91,7 @@ $order->ship();  // Paid -> Shipped
 
 Each state knows its own allowed transitions and hands the order its next state. Adding a
 new state is a new class, not edits scattered across every method - the same
-[Open/Closed](/course/design-patterns/solid/open-closed) win you saw with Strategy.
+[Open/Closed](/course/design-patterns/solid/open-closed) win you saw with [Strategy](/course/design-patterns/behavioral-patterns/strategy).
 
 ## When to use it
 

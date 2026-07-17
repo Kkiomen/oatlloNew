@@ -75,4 +75,4 @@ A `^~` prefix (or an exact `=`) matched first and stopped the search. Check whet
 Neither in general. Exact `=` is strongest, then `^~` prefixes, then regex, then plain prefixes. A regex beats a plain prefix, but a `^~` prefix beats a regex.
 
 ### How do I debug which location ran?
-Add a distinct [error page or log entry](/course/nginx-basics/configuration-basics/access-and-error-logs) per block, or return a test string with `return 200 "matched B";` temporarily. You will meet `return` in a later lesson.
+Add a distinct [error page or log entry](/course/nginx-basics/configuration-basics/access-and-error-logs) per block, or return a test string with `return 200 "matched B";` temporarily. You will meet `return` in [a later lesson on redirects](/course/nginx-basics/location-matching/redirects-with-return).

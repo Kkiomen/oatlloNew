@@ -66,4 +66,4 @@ Yes. Put `allow`/`deny` directly in the `server {}` block to guard the entire si
 
 ### Is IP blocking enough to protect an admin panel?
 
-No. IPs can change and are not a login. Combine it with a password (next lesson) and HTTPS. Treat it as one layer, not the only one.
+No. IPs can change and are not a login. Combine it with [a password (next lesson)](/course/nginx-basics/security-basics/basic-auth) and [HTTPS](/course/nginx-basics/https-tls/why-https). Treat it as one layer, not the only one.

@@ -71,7 +71,7 @@ There is a catch worth understanding now, before you write any consumer. Redeliv
 blind to how far the work got. If a consumer finishes the job - sends the email - and then
 crashes in the split second before its ack goes out, the broker never heard the ack and
 hands the same message to someone else. The email goes out twice. This is why RabbitMQ
-gives you "at least once" delivery, not "exactly once", and why consumers that do
+gives you ["at least once" delivery](/course/rabbitmq-basics/reliability-and-delivery/delivery-guarantees), not "exactly once", and why consumers that do
 non-repeatable work should be written to tolerate seeing the same message again.
 
 ## A note on the trade-off
@@ -79,7 +79,7 @@ non-repeatable work should be written to tolerate seeing the same message again.
 Acknowledgements are not free of nuance. If a consumer never acks - because it hangs, or a
 bug forgets to send the signal - the broker keeps the message as "in progress" and it
 never completes. A pile of unacknowledged messages is a classic RabbitMQ symptom, and
-there's a whole troubleshooting lesson about it later in the course. For now, just know
+there's a [whole troubleshooting lesson about it later](/course/rabbitmq-basics/real-world-and-troubleshooting/unacked-messages-piling-up) in the course. For now, just know
 the signal exists and why.
 
 ## This is only the overview
@@ -88,7 +88,7 @@ We've kept this deliberately simple: a message is a body plus properties, and an
 the broker a message was handled. There is much more to it - manual versus automatic acks,
 negative acknowledgements, how many messages a consumer holds at once - but that belongs
 with real code. You'll wire up acknowledgements yourself in **chapter 3**, and go deep on
-reliable delivery in **chapter 5**.
+[reliable delivery](/course/rabbitmq-basics/reliability-and-delivery/acknowledgements-deep-dive) in **chapter 5**.
 
 ## FAQ
 

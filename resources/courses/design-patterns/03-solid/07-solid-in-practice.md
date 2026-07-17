@@ -142,8 +142,8 @@ Compare it against the principles:
 
 One honest caveat before you fall in love with the diff: those three collaborators still have
 to be built and handed in somewhere. That work didn't vanish - it moved to a single wiring
-point at the edge of the app (a composition root, or your framework's dependency injection
-container, which Chapter 7 covers). Pushing the messy construction to one boundary, so the
+point at the edge of the app (a composition root, or your framework's [dependency injection
+container](/course/design-patterns/patterns-in-the-real-world/dependency-injection-and-the-container), which Chapter 7 covers). Pushing the messy construction to one boundary, so the
 core stays clean, *is* the trade you're making. It pays off precisely because that boundary
 changes far less often than the logic inside it.
 

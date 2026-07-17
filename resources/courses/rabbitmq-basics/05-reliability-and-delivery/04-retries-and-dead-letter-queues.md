@@ -35,7 +35,7 @@ That single `false` for requeue is the hinge the whole pattern turns on.
 ## The retry pattern: a wait queue with TTL
 
 We want a failed message to come back and be retried, but *after a pause*. We combine two
-things you already know: dead-lettering and per-queue TTL. The setup is two queues:
+things you already know: dead-lettering and [per-queue TTL](/course/rabbitmq-basics/reliability-and-delivery/message-and-queue-ttl). The setup is two queues:
 
 - **Main queue** (`tasks`) - dead-letters to a `retry` exchange when a message is rejected.
 - **Wait queue** (`tasks.wait`) - has a TTL and dead-letters *back* to the main queue.

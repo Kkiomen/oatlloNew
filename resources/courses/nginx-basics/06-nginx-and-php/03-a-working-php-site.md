@@ -127,7 +127,7 @@ location ~ \.php$ {   # the $ is not optional
 Three different failures, three different causes:
 
 - **Raw PHP source or a download.** The request never reached the PHP location. Check the `location ~ \.php$` block exists.
-- **502 Bad Gateway.** Nginx found the block but could not reach PHP-FPM. Wrong socket path, or PHP-FPM is not running. Check `systemctl status php8.4-fpm` and that the socket path matches.
+- **[502 Bad Gateway](/course/nginx-basics/common-errors-and-fixes/502-bad-gateway).** Nginx found the block but could not reach PHP-FPM. Wrong socket path, or PHP-FPM is not running. Check `systemctl status php8.4-fpm` and that the socket path matches.
 - **File not found.** PHP-FPM was reached but `SCRIPT_FILENAME` points at nothing. Check your `root` and the `SCRIPT_FILENAME` line.
 
 ## FAQ

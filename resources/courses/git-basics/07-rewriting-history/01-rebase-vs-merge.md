@@ -69,8 +69,9 @@ the same commits anymore. That detail matters a lot (see the last lesson of this
 chapter). See also [git reset explained](/course/git-basics/undoing-things/git-reset-explained)
 for the related idea that history is just movable pointers.
 
-One thing the diagram hides: rebase replays commits one at a time, so a conflict gets
-resolved per commit, not once. Rebase ten commits across a big change on `main` and you
+One thing the diagram hides: rebase replays commits one at a time, so a
+[conflict gets resolved](/course/git-basics/branching-and-merging/resolving-merge-conflicts)
+per commit, not once. Rebase ten commits across a big change on `main` and you
 can end up fixing the same clash ten times over. A merge stops once and you settle it in
 a single merge commit. That is the practical tax of a linear history.
 
@@ -112,8 +113,9 @@ Choose **merge** when:
 
 Choose **rebase** when:
 
-- You want to update **your own** feature branch on top of the latest `main` before
-  opening a pull request, so it applies cleanly.
+- You want to
+  [update **your own** feature branch](/course/git-basics/collaborating/keeping-your-branch-up-to-date)
+  on top of the latest `main` before opening a pull request, so it applies cleanly.
 - You want a clean, linear, easy-to-read history without noisy merge commits.
 - The commits you're rebasing are still private - only on your machine, not pulled by
   anyone else.

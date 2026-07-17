@@ -74,7 +74,7 @@ from Chapter 4, made concrete.
 ## The container is the wiring
 
 Something has to decide that `InvoiceRepository` means `EloquentInvoiceRepository`. In
-Laravel that is the **service container**, bound in a service provider:
+Laravel that is the **[service container](/course/design-patterns/patterns-in-the-real-world/dependency-injection-and-the-container)**, bound in a service provider:
 
 ```php
 // app/Providers/AppServiceProvider.php

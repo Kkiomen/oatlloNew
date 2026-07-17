@@ -7,7 +7,7 @@ seo_description: "Use the Laravel Redis facade to run raw commands: set, get, hs
 
 ## Run raw Redis commands from Laravel
 
-The cache is the easy way to reach Redis in Laravel, and the next lessons get you there. Sometimes, though, you want the raw commands you learned in the console: `SET`, `GET`, `HSET`, `INCR`. The Laravel Redis facade exposes every one of them, and the method names are just the commands you already know.
+The cache is the easy way to reach Redis in Laravel, and the next lessons get you there. Sometimes, though, you want the raw commands you learned in [the console](/course/redis-basics/managing-redis-from-the-console/the-redis-cli-console): `SET`, `GET`, `HSET`, `INCR`. The Laravel Redis facade exposes every one of them, and the method names are just the commands you already know.
 
 Import the facade at the top of your class:
 
@@ -30,7 +30,7 @@ Same commands as `redis-cli`, same arguments, just written in PHP. If a key does
 
 ## Hashes, lists, sets, and counters
 
-Every type from the core-data-types chapter is here too. A hash stores fields under one key:
+Every type from the [core data types chapter](/course/redis-basics/core-data-types/strings) is here too. A hash stores fields under one key:
 
 ```php
 Redis::hset('user:42', 'name', 'Ada');

@@ -13,7 +13,7 @@ choice shapes how easy the system is to change and to understand: **choreography
 
 ## Choreography: everyone reacts to events
 
-In **choreography** there is no boss. Each service listens for events and reacts by doing
+In **choreography** there is no boss. Each service listens for [events](/course/software-architecture/event-driven-architecture/what-is-event-driven-architecture) and reacts by doing
 its job and (usually) publishing its own event, which the next service reacts to. The
 process emerges from the chain of reactions, like dancers who each know their steps.
 
@@ -50,7 +50,7 @@ hold the whole dance in your head.
 ## Orchestration: a coordinator directs the steps
 
 In **orchestration** one component - the **orchestrator** - owns the process. It calls each
-step in turn (often by sending commands) and decides what happens next based on the results.
+step in turn (often by sending [commands](/course/software-architecture/event-driven-architecture/events-vs-commands)) and decides what happens next based on the results.
 The steps do not need to know about each other; they only know the orchestrator.
 
 ```text

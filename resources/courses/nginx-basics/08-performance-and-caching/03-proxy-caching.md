@@ -27,7 +27,7 @@ http {
 
 ## Using the cache
 
-Now switch it on where you proxy to the backend:
+Now switch it on [where you proxy to the backend](/course/nginx-basics/reverse-proxy/proxy-pass):
 
 ```nginx
 server {

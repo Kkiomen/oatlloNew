@@ -47,7 +47,7 @@ driven side gets pushed. The application is always in the middle, never at eithe
 
 ## Both sides use interfaces, but define them differently
 
-A subtle but important point: both ports are interfaces, yet they are owned differently.
+A subtle but important point: both [ports](/course/software-architecture/hexagonal-architecture/ports) are interfaces, yet they are owned differently.
 
 - A **driving port** is offered by the application and *implemented by the application*. The
   driving adapter (a controller) merely calls it.

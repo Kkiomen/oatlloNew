@@ -82,4 +82,4 @@ The request is what the browser sends *to* the server ("give me this page"). The
 
 ### Does nginx handle the request or does my app?
 
-It can be either. For a plain file, nginx answers directly. For a dynamic page, nginx forwards the request to your app and returns its answer. We will cover that setup later.
+It can be either. For a plain file, nginx answers directly. For a dynamic page, nginx [forwards the request to your app](/course/nginx-basics/reverse-proxy/what-is-a-reverse-proxy) and returns its answer. We will cover that setup later.

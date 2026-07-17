@@ -67,8 +67,9 @@ This fetches `main` from GitHub and merges it into your current branch in one st
 
 There's another way to do this: **rebase**, which replays your commits on top of the
 latest `main` instead of merging. It produces a cleaner, straight-line history, but it
-rewrites your commits, so it comes with rules. We cover it properly in Chapter 7 - for
-now, merging `main` into your branch is perfectly correct and safe.
+rewrites your commits, so it comes with rules. We cover it properly in
+[Chapter 7](/course/git-basics/rewriting-history/rebase-vs-merge) - for now, merging
+`main` into your branch is perfectly correct and safe.
 
 ## A common mistake
 

@@ -86,7 +86,7 @@ Worth knowing before it bites you: the moment you add a path after the port, lik
 
 The most common bug is a mismatched trailing slash giving you a wrong path: you proxy `/api/` to `http://127.0.0.1:3000/` (with slash), and suddenly your app gets `/users` instead of `/api/users` and returns 404. If your proxied routes 404 but the app works when you hit it directly, check this slash first.
 
-A second mistake: forgetting to actually start the app. If nginx returns `502 Bad Gateway`, nginx is fine but nothing is listening on that port. Start the app and confirm with `curl`.
+A second mistake: forgetting to actually start the app. If nginx returns [`502 Bad Gateway`](/course/nginx-basics/common-errors-and-fixes/502-bad-gateway), nginx is fine but nothing is listening on that port. Start the app and confirm with `curl`.
 
 ```bash
 curl http://127.0.0.1:3000/

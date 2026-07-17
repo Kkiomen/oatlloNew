@@ -24,16 +24,16 @@ presentation, application, domain, infrastructure - stacked so that each layer d
 only on the ones below it. It's the default most teams start from, and the next lesson but
 one introduces it properly.
 
-**Hexagonal (ports and adapters).** Puts the business logic in the centre and pushes
+**[Hexagonal (ports and adapters)](/course/software-architecture/hexagonal-architecture/what-is-hexagonal-architecture).** Puts the business logic in the centre and pushes
 everything external - the database, the web, message queues - to the edges, behind
 interfaces called *ports*. The outside world plugs in through *adapters*. The goal is a
 core that doesn't know or care what framework it runs in.
 
-**Event-driven architecture.** Parts of the system communicate by emitting and reacting to
+**[Event-driven architecture](/course/software-architecture/event-driven-architecture/what-is-event-driven-architecture).** Parts of the system communicate by emitting and reacting to
 **events** ("an order was placed") rather than calling each other directly. This loosens
 the coupling between parts and suits systems where many things react to one change.
 
-**Microservices.** The system is split into many small, independently deployable services,
+**[Microservices](/course/software-architecture/monolith-and-beyond/microservices-overview).** The system is split into many small, independently deployable services,
 each owning its own data and talking to the others over the network. Powerful for large
 organisations, and expensive in ways that surprise people - a whole chapter is devoted to
 that cost.

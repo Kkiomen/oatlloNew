@@ -74,7 +74,8 @@ you're happy.
 
 Do not run `git pull` with uncommitted changes sitting in your working directory,
 expecting it to be harmless. If the incoming commits touch files you've edited but not
-committed, Git refuses or things get messy. Commit (or stash, covered later) your work
+committed, Git refuses or things get messy. Commit (or
+[stash](/course/git-basics/undoing-things/stashing-work), covered later) your work
 first, *then* pull. A clean working directory makes pulling painless.
 
 ## FAQ

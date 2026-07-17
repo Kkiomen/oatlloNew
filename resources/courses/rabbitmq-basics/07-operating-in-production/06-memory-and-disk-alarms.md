@@ -37,7 +37,7 @@ everyone's publishing, which is why you watch every node's memory, not just the 
 
 ## What "blocked" looks like
 
-To your producer, a blocked broker looks like publishing that suddenly hangs. The connection isn't
+To your producer, a [blocked broker looks like publishing that suddenly hangs](/course/rabbitmq-basics/real-world-and-troubleshooting/memory-alarm-blocked-publishers). The connection isn't
 dropped - RabbitMQ just stops reading from it, so `basic_publish` stalls. If you're using publisher
 confirms from
 [chapter 5](/course/rabbitmq-basics/reliability-and-delivery/publisher-confirms), the confirms stop

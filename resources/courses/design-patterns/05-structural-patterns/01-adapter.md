@@ -86,7 +86,7 @@ of matching each vendor stays boxed inside one small class.
 
 An adapter should *translate*, not *decide*. If your adapter starts adding retries,
 logging, discount rules or validation, it has stopped being an adapter. Keep it thin: map
-names, convert units, reshape data. Extra behavior belongs in a decorator or in your own
+names, convert units, reshape data. Extra behavior belongs in a [decorator](/course/design-patterns/structural-patterns/decorator) or in your own
 service. One tell that you've kept it thin: the adapter needs no state of its own beyond
 the wrapped object, so its unit test is just "given this vendor call, I return that shape."
 

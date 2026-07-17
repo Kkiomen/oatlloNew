@@ -20,7 +20,7 @@ direction is better, at any scale, in any style.
 
 **Styles are shapes.** A style is a concrete, named way to structure a system - layered,
 hexagonal, event-driven, microservices. Styles are recipes: recognisable shapes you can
-choose and apply. The map lesson named them; later chapters teach them one by one.
+choose and apply. The [map lesson](/course/software-architecture/what-is-software-architecture/a-map-of-architectural-styles) named them; later chapters teach them one by one.
 
 A simple way to hold it: **principles are values, styles are shapes.** You learn the values
 first so that when you reach the shapes, you can judge which one earns its place.
@@ -37,7 +37,7 @@ Java, C#, Python, Go or TypeScript. If you work elsewhere, read the PHP as a cle
 illustration and carry the idea across. Only the syntax is language-specific; the structure
 is universal.
 
-We'll even make a point, in a later chapter, of keeping the domain *framework-free* - so the
+We'll even make a point, in a later chapter, of [keeping the domain *framework-free*](/course/software-architecture/putting-it-together-in-laravel/keeping-the-domain-framework-free) - so the
 Laravel in these examples is the servant, never the owner, of the architecture.
 
 ## Architecture is trade-offs, not rules

@@ -150,7 +150,7 @@ object that Eloquent maps *to* - the model becomes a driven adapter, not the ent
 ## When "anemic" is actually fine
 
 Not every object needs behaviour. A
-[DTO](/course/software-architecture/application-layer-and-use-cases/the-application-layer)
+[DTO](/course/software-architecture/application-layer-and-use-cases/dtos-and-mapping)
 carrying request data, or a read model built for a query, is *supposed* to be a plain bag
 of fields - it has no rules to protect. The anti-pattern is specifically an **entity** that
 should hold business rules but doesn't. Data-only is the goal for data; it's a smell for

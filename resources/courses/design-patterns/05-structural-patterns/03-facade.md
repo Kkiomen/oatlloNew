@@ -68,7 +68,7 @@ In Laravel, a *Facade* (like `Cache::get()` or `DB::table()`) means something na
 static-looking proxy to a service resolved from the container. It's related in spirit - a
 convenient front - but the Gang of Four facade in this lesson is simply a plain class that
 hides a subsystem. The framework kind is a naming choice that borrows the word; the pattern
-you're learning here does not require static calls or a container at all. A later chapter
+you're learning here does not require static calls or a container at all. A [later chapter](/course/design-patterns/patterns-in-the-real-world/patterns-you-already-use-in-laravel)
 revisits how frameworks reuse these pattern names.
 
 ## When to use it

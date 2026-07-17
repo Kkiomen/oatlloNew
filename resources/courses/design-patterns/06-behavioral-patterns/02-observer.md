@@ -90,8 +90,8 @@ built-in `SplSubject`/`SplObserver` interface pair with the same shape.
 ## When to use it
 
 Use Observer when one event should trigger several independent reactions, and you want the
-source of the event decoupled from the handlers. Domain events, UI updates when data
-changes, and webhook-style hooks are all textbook cases. If there's exactly one reaction
+source of the event decoupled from the handlers. [Domain events](/course/software-architecture/event-driven-architecture/what-is-event-driven-architecture),
+UI updates when data changes, and webhook-style hooks are all textbook cases. If there's exactly one reaction
 that will never change, a direct call is simpler and clearer.
 
 Worth knowing before you scatter logic into observers: in a plain PHP request the observers
@@ -112,7 +112,7 @@ sign the work belongs in one place, not scattered across observers.
 ### What is the difference between the observer and mediator pattern?
 
 Observer is one-to-many broadcasting: a subject tells many listeners, one-directionally.
-Mediator (later in this chapter) is many-to-many coordination: several peers talk *through*
+[Mediator](/course/design-patterns/behavioral-patterns/iterator-and-mediator) (later in this chapter) is many-to-many coordination: several peers talk *through*
 a central object that routes messages in every direction.
 
 ### Is Observer the same as an event dispatcher?

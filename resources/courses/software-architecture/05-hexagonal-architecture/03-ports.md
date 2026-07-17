@@ -15,8 +15,8 @@ real technology stays outside.
 The trick that makes the dependency rule work is where the interface lives. The interface
 belongs to the **domain**, not to the database code. The domain says "I need something
 that can save orders" by declaring `OrderRepository`. The database code outside then
-implements that interface. The arrow points inward: the database depends on the domain's
-interface, not the reverse.
+implements that interface. The arrow points inward: [the database depends on the domain's
+interface, not the reverse](/course/design-patterns/solid/dependency-inversion).
 
 This is the difference between a port and an ordinary interface: a port is defined by the
 side that needs it, in the language of the business.
@@ -106,7 +106,7 @@ interface PlaceOrder
 ```
 
 A controller or a CLI command calls `PlaceOrder` without knowing how orders are placed.
-The full shape of these use cases - commands, the application layer that implements them -
+The full shape of these use cases - commands, the [application layer](/course/software-architecture/application-layer-and-use-cases/the-application-layer) that implements them -
 is the subject of Chapter 6; here the point is only that the entry point is an interface
 the domain side defines.
 
@@ -135,5 +135,5 @@ driven is "out."
 ### Is a repository interface a port?
 
 Yes. A repository interface like `OrderRepository`, defined by the domain and implemented
-by the database code, is a textbook driven port. You met repositories in Chapter 4; naming
+by the database code, is a textbook driven port. You met [repositories](/course/software-architecture/ddd-tactical-patterns/repositories) in Chapter 4; naming
 them ports is the same idea seen from the architecture side.

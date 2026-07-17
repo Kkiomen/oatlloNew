@@ -97,5 +97,6 @@ lets you accept or reject each hunk separately, so you can stage part of a file.
 
 ### Can I check what's staged before committing?
 
-Yes - `git status` lists staged versus unstaged files, and `git diff --staged` (a later
-lesson) shows the exact staged changes.
+Yes - `git status` lists staged versus unstaged files, and `git diff --staged` (a
+[later lesson](/course/git-basics/everyday-git/seeing-changes)) shows the exact staged
+changes.

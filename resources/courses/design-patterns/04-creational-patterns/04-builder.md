@@ -128,7 +128,9 @@ builder it makes no difference, but `static` is the safer habit.
 ### Is this the same as Laravel's query builder?
 
 The idea is the same - Laravel's `DB::table('users')->where(...)->get()` is a builder-style
-fluent API. You already use the pattern; this lesson just names it.
+fluent API. You already use the pattern; this lesson just names it. The
+[patterns you already use in Laravel](/course/design-patterns/patterns-in-the-real-world/patterns-you-already-use-in-laravel)
+lesson collects more of these.
 
 ### Does the builder have to return a different object from `build()`?
 

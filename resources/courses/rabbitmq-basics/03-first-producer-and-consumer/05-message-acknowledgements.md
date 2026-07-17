@@ -102,7 +102,7 @@ off and call `ack()` only after the work succeeds.
 
 The second mistake is the mirror image: turning manual acks on but **forgetting to call**
 `ack()`. RabbitMQ then thinks the message is still being worked on forever. It's never
-redelivered and never removed, and these "unacknowledged" messages pile up until the
+redelivered and never removed, and these ["unacknowledged" messages pile up](/course/rabbitmq-basics/real-world-and-troubleshooting/unacked-messages-piling-up) until the
 worker disconnects. Every successful path must end in exactly one `ack()`.
 
 ## FAQ
@@ -122,5 +122,5 @@ the message goes back on the queue or is discarded.
 ### Won't a failing message that keeps requeuing loop forever?
 
 It can - a "poison message" that always fails will bounce back endlessly. Handling that
-properly (retry limits and dead-letter queues) comes later in the course. For now, just be
+properly ([retry limits and dead-letter queues](/course/rabbitmq-basics/reliability-and-delivery/retries-and-dead-letter-queues)) comes later in the course. For now, just be
 aware that blindly requeuing every failure can create an infinite loop.

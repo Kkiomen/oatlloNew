@@ -79,7 +79,7 @@ A small detail that sends people in circles: `ss -ltnp` only prints the owning p
 
 ### What does default_server mean here?
 
-`default_server` marks the block that handles requests not matched by any `server_name` on that port. Only one block per port may be the default. Two of them cause this same emerg error.
+`default_server` marks [the block that handles requests not matched by any `server_name`](/course/nginx-basics/serving-static-content/listen-and-server-name) on that port. Only one block per port may be the default. Two of them cause this same emerg error.
 
 ### Same error but on port 443?
 

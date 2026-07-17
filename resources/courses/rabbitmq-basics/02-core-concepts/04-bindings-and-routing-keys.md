@@ -85,8 +85,8 @@ from more than one routing key.
 ## This was just the direct style
 
 The example above used exact matching because it is the easiest to picture. Other
-exchange types treat the routing key differently - a **fanout** exchange ignores it
-completely and delivers to every bound queue, while a **topic** exchange matches it
+exchange types treat the routing key differently - a **[fanout](/course/rabbitmq-basics/exchanges-and-routing/fanout-exchange)** exchange ignores it
+completely and delivers to every bound queue, while a **[topic](/course/rabbitmq-basics/exchanges-and-routing/topic-exchange)** exchange matches it
 against patterns with wildcards. Those live in **chapter 4**. The relationship you should
 remember is the one that never changes: **routing key plus binding decides delivery.**
 

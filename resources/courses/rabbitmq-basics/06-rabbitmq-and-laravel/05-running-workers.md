@@ -25,7 +25,7 @@ instant.
 
 ## How the worker acks a job
 
-This is the part that ties back to Chapter 3. When the worker takes a message, RabbitMQ
+This is the part that [ties back to Chapter 3](/course/rabbitmq-basics/first-producer-and-consumer/message-acknowledgements). When the worker takes a message, RabbitMQ
 marks it unacknowledged - held, but not gone. If `handle()` finishes without throwing, the
 worker sends an **ack** and the broker deletes the message. If `handle()` throws, the
 worker does not ack; the job is marked failed or released back for another try, depending
@@ -113,5 +113,5 @@ process manager launches fresh ones.
 ### How do I run more than one worker?
 
 Start multiple `queue:work` processes, or set `numprocs` in Supervisor. RabbitMQ delivers
-each message to only one of them and balances load across them, exactly like the work
-queues from Chapter 3.
+each message to only one of them and balances load across them, exactly like the [work
+queues from Chapter 3](/course/rabbitmq-basics/first-producer-and-consumer/work-queues).

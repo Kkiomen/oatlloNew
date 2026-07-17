@@ -26,7 +26,7 @@ Several different problems all show up as "my CSS will not load":
 
 - **Wrong `root` or `alias`.** Nginx looks in the wrong folder, so the file is not there. See [root and index](/course/nginx-basics/serving-static-content/root-and-index) and [alias](/course/nginx-basics/serving-static-content/alias-serving-another-directory).
 - **Missing `include mime.types`.** Without it, CSS is sent as `text/plain` and the browser refuses to apply it. See [mime types](/course/nginx-basics/serving-static-content/mime-types).
-- **Missing or wrong `try_files`.** The request never resolves to the real file.
+- **Missing or wrong [`try_files`](/course/nginx-basics/location-matching/try-files).** The request never resolves to the real file.
 - **Permissions.** The nginx user cannot read the asset.
 - **A greedy front controller.** In a Laravel or SPA config, `try_files $uri $uri/ /index.php` can send asset requests to PHP instead of serving the file.
 
@@ -68,7 +68,7 @@ sudo nginx -t && sudo systemctl reload nginx
 
 Trailing slash confusion with `alias`. If your `location /assets/` uses `alias`, the alias path must end in a slash too. A missing slash makes nginx build the wrong file path and every asset 404s.
 
-Another one that hides in plain sight: a regex `location`. A block like `location ~* \.(css|js|png)$ { ... }` wins over your normal `location /`, because regex locations are matched before prefix ones. If that block sets a different `root`, or forgets to set one, your assets 404 while the rest of the site is fine. When only certain file types break, look for a regex location handling exactly those extensions.
+Another one that hides in plain sight: a regex `location`. A block like `location ~* \.(css|js|png)$ { ... }` wins over your normal `location /`, because [regex locations are matched before prefix ones](/course/nginx-basics/location-matching/matching-priority). If that block sets a different `root`, or forgets to set one, your assets 404 while the rest of the site is fine. When only certain file types break, look for a regex location handling exactly those extensions.
 
 ## FAQ
 

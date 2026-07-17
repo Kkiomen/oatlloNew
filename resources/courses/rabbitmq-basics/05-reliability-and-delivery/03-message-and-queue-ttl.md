@@ -97,7 +97,7 @@ $channel->queue_declare('wait_10s', false, true, false, false, false, $args);
 ```
 
 Now a message sits in `wait_10s` for 10 seconds, and then RabbitMQ moves it on. That "wait,
-then move" behaviour is the whole trick behind retry queues and delayed messages, which we
+then move" behaviour is the whole trick behind [retry queues](/course/rabbitmq-basics/reliability-and-delivery/retries-and-dead-letter-queues) and [delayed messages](/course/rabbitmq-basics/reliability-and-delivery/delayed-messages), which we
 build in the next lessons.
 
 ## Common mistake: changing a queue's TTL in place

@@ -56,7 +56,7 @@ Same building, two very different levels of decision.
 
 If you've studied design patterns, this is the key distinction.
 
-A **design pattern is local.** Strategy, Observer, Factory - each solves a problem inside
+A **design pattern is local.** [Strategy](/course/design-patterns/behavioral-patterns/strategy), Observer, Factory - each solves a problem inside
 a small neighbourhood of classes. You apply it in one file or a handful of related ones,
 and the rest of the system doesn't need to know.
 

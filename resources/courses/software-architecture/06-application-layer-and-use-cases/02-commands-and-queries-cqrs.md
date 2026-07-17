@@ -96,8 +96,8 @@ something the infrastructure enforces for you instead of something you have to r
 CQRS is a spectrum. The light version - separate command and query *objects*, write side
 through the domain, read side straight from the database - costs almost nothing and pays off
 immediately. The heavy version keeps a *separate read database* kept in sync by events, so
-reads never touch the write store at all. That, together with event sourcing, is the
-subject of Chapter 7 (read models and CQRS); do not reach for it here. For now: separate
+reads never touch the write store at all. That, together with [event sourcing](/course/software-architecture/event-driven-architecture/event-sourcing), is the
+subject of Chapter 7 ([read models and CQRS](/course/software-architecture/event-driven-architecture/read-models-and-cqrs)); do not reach for it here. For now: separate
 your commands from your queries, and let the read side skip the domain.
 
 ## Common mistake

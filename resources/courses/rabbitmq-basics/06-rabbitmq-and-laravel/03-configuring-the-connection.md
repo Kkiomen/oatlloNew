@@ -7,7 +7,7 @@ seo_description: "Add a rabbitmq connection to config/queue.php, set RABBITMQ_HO
 
 ## Add a rabbitmq connection
 
-With the driver installed, the next step is to configure the Laravel RabbitMQ queue
+With the [driver installed](/course/rabbitmq-basics/rabbitmq-and-laravel/installing-the-laravel-rabbitmq-driver), the next step is to configure the Laravel RabbitMQ queue
 connection so Laravel knows how to reach your broker. Connections live in the `connections`
 array of `config/queue.php`. Add one that uses the `rabbitmq` driver:
 
@@ -75,7 +75,7 @@ A few things worth knowing:
   single slash `/`. Because a bare `/` can be awkward in some env parsers, keep it quoted
   or exactly `RABBITMQ_VHOST=/`.
 - The `guest` user only works from `localhost` by default in RabbitMQ. On a remote broker
-  you must create a real user, which is covered in the production chapter.
+  you must create a real user, which is [covered in the production chapter](/course/rabbitmq-basics/operating-in-production/users-vhosts-permissions).
 
 ## Select the connection
 

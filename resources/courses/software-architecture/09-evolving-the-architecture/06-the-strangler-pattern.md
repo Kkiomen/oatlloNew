@@ -101,7 +101,7 @@ with clean boundaries. A module behind a front door is a ready-made strangler sl
 router in front, extract that one module into its own service, reroute its calls across the
 network, and leave everything else in the monolith. Repeat only for the modules that
 genuinely need it - remembering the
-[cost of distributed systems](/course/software-architecture/monolith-and-beyond/the-modular-monolith)
+[cost of distributed systems](/course/software-architecture/monolith-and-beyond/the-cost-of-distributed-systems)
 means most modules should stay put. The strangler pattern turns "rewrite as microservices",
 a terrifying big-bang, into a series of ordinary, reversible deploys.
 

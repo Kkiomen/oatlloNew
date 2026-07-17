@@ -87,7 +87,7 @@ $response = $auth->handle($request);
 
 Each check is its own small class, reusable and testable alone. Reordering the pipeline or
 inserting a new step is a change to how you *wire* the chain, not a rewrite of a giant
-method. Laravel's HTTP middleware is this pattern, wired for you.
+method. [Laravel's HTTP middleware](/course/design-patterns/patterns-in-the-real-world/patterns-you-already-use-in-laravel) is this pattern, wired for you.
 
 ## When to use it
 
