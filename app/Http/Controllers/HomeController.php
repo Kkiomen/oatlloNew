@@ -168,17 +168,37 @@ class HomeController extends Controller
 
     // ============== ARTICLE ==============
 
+    /**
+     * Artykuł z bazy jest widoczny pod bezpośrednim URL-em TYLKO gdy `is_published`.
+     *
+     * MINA (naprawiona 2026-07-27): przez ten brakujący warunek wygaszenie 44 starych
+     * artykułów SEO-first (`config('articles.retired_slugs')`) NIE DZIAŁAŁO tam, gdzie
+     * miało. Znikały z list, z sitemapy i z wyszukiwarki na stronie, ale bezpośredni URL
+     * dalej oddawał 200 z pełną treścią – więc Google trzymał je w indeksie i wg GSC
+     * (19-25.07.2026) zbierały nadal 4 z 15 kliknięć domeny. Ten sam warunek co listingi
+     * (`where('is_published', true)`), żeby zbiór serwowanych URL-i był równy zbiorowi
+     * ogłaszanemu w sitemapie.
+     *
+     * Wygaszony świadomie => **410 Gone**, nie 404: 410 znaczy „usunięte na stałe" i Google
+     * wyrzuca taki URL z indeksu szybciej niż 404, który czyta jako „może wróci". Reszta
+     * (literówka w URL-u, artykuł zaplanowany na przyszłość) zostaje przy 404.
+     */
+    private function abortForHiddenArticle(string $articleSlug): never
+    {
+        abort(in_array($articleSlug, config('articles.retired_slugs', []), true) ? 410 : 404);
+    }
+
     public function articleWithCategory(Request $request, string $categorySlug, string $articleSlug): View
     {
         // Źródło 1: plik .md (ma pierwszeństwo przed bazą przy tym samym slug).
         $article = app(MarkdownArticleRepository::class)->findBySlug($articleSlug);
         if (!($article && $article->isLive())) {
-            // Źródło 2: baza danych.
-            $article = Article::where('slug', $articleSlug)->first();
+            // Źródło 2: baza danych (tylko opublikowane – patrz abortForHiddenArticle()).
+            $article = Article::where('slug', $articleSlug)->where('is_published', true)->first();
         }
 
         if(!$article || $article->contents == null){
-            abort(404);
+            $this->abortForHiddenArticle($articleSlug);
         }
         $randomArticles = Article::randomPublished(3, $article->id);
         $category = Category::where('slug', $categorySlug)->first();
@@ -204,12 +224,15 @@ class HomeController extends Controller
         if ($article && (env('LANGUAGE_MODE') != 'strict' || $article->language === $defaultLangue) && $article->isLive()) {
             // artykuł z pliku .md
         } else {
-            // Źródło 2: baza danych.
-            $article = Article::where('slug', $articleSlug)->where('language', $defaultLangue)->first();
+            // Źródło 2: baza danych (tylko opublikowane – patrz abortForHiddenArticle()).
+            $article = Article::where('slug', $articleSlug)
+                ->where('language', $defaultLangue)
+                ->where('is_published', true)
+                ->first();
         }
 
         if(!$article || $article->contents == null){
-            abort(404);
+            $this->abortForHiddenArticle($articleSlug);
         }
 
         $randomArticles = Article::randomPublished(
