@@ -1,8 +1,8 @@
 ---
 title: "Variable Scope in PHP: Global, Static, and Closures"
 slug: php-variable-scope-guide
-seo_title: "PHP Variable Scope Tutorial: Global, Static, and Closures"
-seo_description: "Variable scope in PHP made simple: local, global, static, and closures - where variables live, why, and how to access them, with clear examples."
+seo_title: "PHP Variable Scope: Local, Global and Static (Examples)"
+seo_description: "PHP variable scope explained: why a variable is not visible inside a function, how to reach a global one, what static keeps between calls, and how closures capture."
 ---
 
 Variable scope in PHP defines **where a variable is visible and accessible**. It affects:
@@ -23,7 +23,7 @@ In practice, scope determines whether a variable is accessible:
 
 ## What is variable scope in PHP?
 
-### Main types of scope
+### PHP variable scope types: local, global, static
 
 - **Local scope**: variables defined inside a function exist only there.
 - **Global scope**: variables defined outside functions (at file level). Not visible in functions unless explicitly imported.
@@ -31,7 +31,7 @@ In practice, scope determines whether a variable is accessible:
 - **Static variable inside a function**: keeps its value across multiple calls of the same function.
 - **Closure**: [anonymous functions (closures)](/course/php/function/php-anonymous-functions-guide) can “capture” variables from the surrounding context using `use`. Capture can be by value or by reference.
 
-### What does *not* create a new scope
+### Do if, for and foreach create a new scope?
 
 `if`, `for`, `foreach`, `while`, `switch` **do not create new scopes**. A counter from [the for loop](/course/php/loop/php-for-loop-guide) or a value from [the foreach loop](/course/php/loop/php-foreach-loop-guide) still exists after the loop ends. New scope is mainly created inside functions, methods, and classes.
 

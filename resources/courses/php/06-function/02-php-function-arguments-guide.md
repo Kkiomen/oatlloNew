@@ -1,11 +1,11 @@
 ---
 title: "Function Arguments in PHP: Optional Parameters and Default Values"
 slug: php-function-arguments-guide
-seo_title: "PHP Optional Parameters and Default Values in Functions"
-seo_description: "Optional parameters, default values, and named arguments in PHP - explained simply with clear examples. Write flexible functions the right way."
+seo_title: "PHP Optional Parameters and Default Values (Examples)"
+seo_description: "How PHP optional parameters and default values work, with clear examples - plus named arguments and the mistakes to avoid. Write flexible functions right."
 ---
 
-In PHP programming, we often write functions that accept **arguments**. You already know how to [define functions and use the return statement](/course/php/function/php-functions-basics-guide); now we look closely at what goes into the parentheses. Sometimes not all parameters are required — and that’s a good thing! With **optional parameters** and **default values**, we can create flexible functions that are convenient to use and safe.
+You make a **PHP parameter optional** by giving it a **default value** - if the caller skips that argument, PHP uses the default. That one idea is what this lesson is about. You already know how to [define functions and use the return statement](/course/php/function/php-functions-basics-guide); now we look closely at what goes into the parentheses. With **optional parameters** and **default values**, you can write flexible functions that are convenient to use and safe.
 
 In this lesson you’ll learn:
 
@@ -160,7 +160,7 @@ echo loadConfig();
 echo loadConfig('/etc/app');
 ```
 
-### Named arguments (PHP 8+)
+### PHP named arguments (PHP 8+)
 
 ```php
 function mailer(string $to, string $subject = 'Hi', string $body = '', bool $isHtml = false): void {

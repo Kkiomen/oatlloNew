@@ -1,8 +1,8 @@
 ---
 title: "Constants in PHP - Complete Beginner's Guide"
 slug: constants-in-php
-seo_title: "PHP Constants Tutorial: How to Define and Use Constants"
-seo_description: "Learn how to create and use constants in PHP. Complete guide covering const keyword, define() function, class constants, and best practices."
+seo_title: "PHP Constants: const, define() and Class Constants"
+seo_description: "How to define a constant in PHP with const and define(), how class constants work, and the UPPER_CASE naming convention - with runnable examples."
 ---
 
 ## Introduction
@@ -43,7 +43,7 @@ Note: This information applies to modern PHP 8+. Some behavior differs in older 
 - Useful for dynamic constant names.
 - In namespaces, by default creates a global constant (unless you specify the full name with backslashes).
 
-### Class Constants
+### How to define a constant in a PHP class
 
 - Syntax: `public const NAME = value;`
 - Since PHP 7.1, class constants can have visibility modifiers (`public/protected/private`).
@@ -239,7 +239,7 @@ if (!defined('APP_STARTED')) {
 - Use **const** whenever possible:
   - faster, checked at compile time,
   - clearer (especially in classes and namespaces).
-- **UPPER_SNAKE_CASE naming**: `APP_NAME`, `DEFAULT_TIMEOUT`, `MAX_ITEMS`.
+- **PHP constant naming convention - UPPER_SNAKE_CASE**: `APP_NAME`, `DEFAULT_TIMEOUT`, `MAX_ITEMS`. Constants are case-sensitive in PHP 8+, so pick one convention and keep it.
 - Group constants logically:
   - in config files,
   - in proper namespaces (`namespace App\Config;`),

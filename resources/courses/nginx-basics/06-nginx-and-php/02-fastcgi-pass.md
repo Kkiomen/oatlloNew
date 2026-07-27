@@ -1,8 +1,8 @@
 ---
 title: "The fastcgi_pass block"
 slug: fastcgi-pass
-seo_title: "Nginx fastcgi_pass to PHP-FPM: The Config, Line by Line"
-seo_description: "The nginx fastcgi_pass PHP-FPM config, line by line: fastcgi_pass, include fastcgi_params, and why SCRIPT_FILENAME picks the file. Unix socket vs TCP."
+seo_title: "Nginx fastcgi_pass Explained: PHP-FPM Config Example"
+seo_description: "What fastcgi_pass does in nginx and how to point it at PHP-FPM, line by line: include fastcgi_params, SCRIPT_FILENAME, and Unix socket vs TCP address."
 ---
 
 ## What the PHP location block actually does

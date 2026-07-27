@@ -34,7 +34,7 @@ location / {
 
 `proxy_set_header NAME VALUE` sets a header on the request nginx sends to the app. The values are nginx variables, filled in per request.
 
-## What each line does
+## What each proxy_set_header line does
 
 **`Host $host`** - passes the original hostname the visitor requested. `$host` is the domain from the request. Without this, an app that builds absolute URLs (redirects, links, canonical tags) can produce the wrong domain.
 

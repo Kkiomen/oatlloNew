@@ -1,7 +1,7 @@
 ---
 title: "The match Expression in PHP 8+: A Modern Approach to Conditionals"
 slug: php-match-expression-guide
-seo_title: "PHP match Expression Tutorial: Syntax and Examples"
+seo_title: "PHP match Expression: Syntax and Examples (PHP 8+)"
 seo_description: "Learn the PHP match expression: syntax, strict === comparison, returning a value, and the match(true) trick - with clear, runnable examples for PHP 8+."
 ---
 
@@ -34,7 +34,7 @@ In practice, **match** is great for mapping values, formatting statuses, selecti
   - match is ideal for simple 1:1 matches (or multiple values to one result).
   - You can use the `match (true)` trick for ranges (see below).
 
-### Basic syntax
+### PHP match syntax
 
 - Each arm has the form: `condition => result,`
 - You can group multiple values in one arm, separated by commas.

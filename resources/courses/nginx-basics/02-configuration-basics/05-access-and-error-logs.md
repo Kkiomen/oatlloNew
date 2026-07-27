@@ -1,13 +1,13 @@
 ---
 title: "Reading nginx access and error logs"
 slug: access-and-error-logs
-seo_title: "Nginx Access and Error Logs: Location and Debugging"
-seo_description: "Where nginx access and error logs live, what error log levels mean, and how to tail them to debug problems in real time."
+seo_title: "Nginx Logs: Access and Error Log Location Explained"
+seo_description: "The default nginx log location (/var/log/nginx/access.log and error.log), how to read a line in each, what the error log levels mean, and how to tail them live."
 ---
 
 When something does not work, the logs tell you why. Nginx keeps two: the access and error logs. One records every request it serves, the other records problems. Knowing where these nginx access and error logs live and how to read them turns "the site is broken" into "line 42 says permission denied".
 
-## Where nginx access and error logs live
+## Default nginx log location: /var/log/nginx
 
 You already saw both directives in [Config file structure](/course/nginx-basics/configuration-basics/config-file-structure):
 

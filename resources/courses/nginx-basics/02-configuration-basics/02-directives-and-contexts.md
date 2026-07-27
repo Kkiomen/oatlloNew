@@ -1,8 +1,8 @@
 ---
 title: "Directives and contexts in nginx"
 slug: directives-and-contexts
-seo_title: "Nginx Directives and Contexts Explained for Beginners"
-seo_description: "Learn nginx directives and contexts - simple vs block directives, main/events/http/server/location, and how nesting and inheritance work."
+seo_title: "Nginx Directives and Contexts: Beginner's Guide"
+seo_description: "What an nginx directive is, simple vs block directives, and every context you meet early (main, events, http, server, location) - plus how inheritance works."
 ---
 
 In [Config file structure](/course/nginx-basics/configuration-basics/config-file-structure) you saw a file full of lines and curly braces. Every line has a name. The lines are **directives**, and the blocks they live in are **contexts**. Learn those two nginx directives and contexts terms and the config stops looking like noise and starts looking like a set of nested rules.

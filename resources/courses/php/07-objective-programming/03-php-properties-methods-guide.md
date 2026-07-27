@@ -1,8 +1,8 @@
 ---
 title: "Properties and Methods in PHP Object-Oriented Programming"
 slug: php-properties-methods-guide
-seo_title: "PHP Object Properties and Methods Explained (OOP)"
-seo_description: "Object properties and methods in PHP explained for beginners: instance vs static, readonly, visibility, and method chaining - with practical examples."
+seo_title: "PHP Class Properties and Methods Explained (Examples)"
+seo_description: "How PHP class properties and object methods work: declaring a property, the -> operator, static vs instance, readonly and visibility - with runnable examples."
 ---
 
 In this lesson, you’ll learn the fundamentals of Object-Oriented Programming (OOP) in PHP: what **properties** and **methods** are, how to define them, how to use them, and what best practices to follow. These are core concepts of OOP in PHP — without them you cannot build clean and scalable applications. If you already know [classes and objects](/course/php/objective-programming/php-oop-basics-guide) and [constructors and destructors](/course/php/objective-programming/php-constructor-destructor-guide) from previous lessons, now you’ll deepen your knowledge of how to store object state and manage it.
@@ -11,7 +11,7 @@ In this lesson, you’ll learn the fundamentals of Object-Oriented Programming (
 
 ## What are object properties and methods in PHP?
 
-### Properties
+### Class properties
 
 - Variables belonging to a class/object.
 - Store the state of an object (e.g., product name, price, user status).
@@ -31,7 +31,7 @@ In this lesson, you’ll learn the fundamentals of Object-Oriented Programming (
 
 Access modifiers enable **encapsulation** — hiding implementation details and controlling access to object state. A dedicated lesson on [public, private, and protected](/course/php/objective-programming/php-encapsulation-guide) follows later in this chapter.
 
-### $this, -> and ::
+### The PHP object operator: $this, -> and ::
 
 - `$this` – refers to the current object (inside instance methods).
 - `->` – operator for accessing instance properties/methods.
