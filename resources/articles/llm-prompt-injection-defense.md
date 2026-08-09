@@ -3,7 +3,7 @@ name: "Defending Against Prompt Injection"
 slug: llm-prompt-injection-defense
 short_description: "Why 'ignore malicious instructions' never works, and which defenses actually reduce the blast radius of prompt injection in LLM apps."
 language: en
-published_at: 2027-04-05 09:00:00
+published_at: 2026-09-14 09:00:00
 is_published: true
 tags: [ai, security, architecture, php]
 ---

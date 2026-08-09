@@ -3,7 +3,7 @@ name: "10 Useful Git Commands That Save Developers Time"
 slug: useful-git-commands
 short_description: "10 useful Git commands that save developers real time, with correct examples and scenarios for stash, rebase, bisect, reflog, worktree and more."
 language: en
-published_at: 2026-08-19 09:00:00
+published_at: 2027-01-06 09:00:00
 is_published: true
 tags: [git, cli, productivity, workflow]
 ---

@@ -555,12 +555,32 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   Przywrócenie artykułu = usuń slug z configu, deploy, potem `--restore` (samo `--restore` nie wystarczy).
   **`site-map` NIE jest na liście** — wygląda jak slug artykułu i jest w sitemapie, ale to prawdziwa mapa
   strony (trasa `site.map`, `/mapa` na nią przekierowuje); wyłączenie zabrałoby nawigację. Też ma test.
-- **Tempo publikacji: ~3 artykuły/tydzień i nie przyspieszamy.** 101 plików `.md` jest rozłożonych po
-  ~13/miesiąc do lutego 2027 (`published_at` we frontmatterze — bez crona, bez bazy). Google nie karze za
-  tempo, tylko za jakość, więc 3/tydzień nie jest spamem. Ale wąskim gardłem nie jest prędkość pisania
-  (artykuły są gotowe) — tylko to, że **domena ma 48 z 257 stron w indeksie**. Dosypywanie URL‑i tego nie
-  naprawi. Za to **przyspieszenie** mogłoby zaszkodzić: zrzut 97 artykułów na stronie, która miała ich 45,
-  to skok wolumenu ×20. Wrócić do tematu dopiero, gdy nowe artykuły zaczną wchodzić do indeksu w kilka dni.
+- **Tempo publikacji: ~3 artykuły/tydzień i nie przyspieszamy.** 140 zakolejkowanych plików `.md`
+  rozłożonych równo (3.0/tydzień przez 47 tygodni, 10.08.2026 -> 30.06.2027; `published_at` we
+  frontmatterze - bez crona, bez bazy).
+  **UWAGA - pierwotne uzasadnienie tego limitu JUŻ NIE OBOWIĄZUJE i nie należy go cytować.** Brzmiało
+  „domena ma 48 z 257 stron w indeksie, dosypywanie URL-i tego nie naprawi". Na 09.08.2026 jest
+  **260 z 396 (66% zamiast 19%)** - indeksacja przestała być wąskim gardłem.
+  **Nowe uzasadnienie: nie nadążamy z WCHŁANIANIEM, nie z pisaniem.** Z 14 opublikowanych artykułów
+  **5 najnowszych (27.07-07.08) ma zero wyświetleń**; droga od publikacji do pierwszych wyświetleń
+  to **3-4 tygodnie**. Do tego Coverage pokazuje 62 URL-e „wykryta, niezindeksowana" i 56
+  „zeskanowana, niezindeksowana", czyli **118 URL-i już czeka albo już zostało odrzuconych**.
+  Dosypywanie do tej kolejki jej nie skróci. Przy 3/tydzień mamy stale ~9 artykułów w locie i to jest
+  zdrowe. **Wyzwalacz do rewizji: gdy nowe artykuły zaczną zbierać wyświetlenia w ciągu tygodnia
+  zamiast 3-4** (sprawdzalne w każdym cotygodniowym eksporcie GSC).
+  **Strach przed „spamem" jest źle zaadresowany - mamy własny dowód, że wolumen nie szkodzi**:
+  indeksacja skoczyła 48 -> 183 (11.07) i 183 -> 257 (25.07), czyli dwie paczki po ~135 i ~74 strony
+  naraz, obie ze statusem *Powodzenie*, zero działań ręcznych. Google karze „scaled content abuse",
+  czyli JAKOŚĆ, nie kalendarz. Wskaźnikiem ostrzegawczym jest **„zeskanowana, niezindeksowana"**
+  (Google obejrzał i odmówił) - dziś 56 i spadło z 84. Gdyby rosło równolegle z publikacjami,
+  to dopiero jest sygnał, żeby zwolnić.
+  **Kolejność w kolejce ma znaczenie, tempo mniej.** Tematy wrażliwe na czas (wersje PHP/Laravela,
+  wszystko wokół LLM-ów) psują się, czekając pół roku, więc trzymamy je z przodu. 09.08.2026
+  przesunięto cztery takie (`evaluate-llm-output`, `php-8-4-property-hooks`,
+  `prompt-caching-llm-latency-cost`, `llm-prompt-injection-defense`) ze stycznia-kwietnia 2027 na
+  sierpień-wrzesień 2026, **zamieniając je datami** z czterema odpornymi na czas (git commands,
+  database indexing, TS generics, locking) - dzięki temu kadencja 3/tydzień została nietknięta
+  co do dnia.
   **Kursy to inna sprawa — dodajemy w całości**: kurs to spójna hierarchia (kurs→rozdział→lekcja), Google
   oczekuje kompletu, a dowód jest własny — 86 podstron kursu PHP dodanych naraz to 88% ruchu domeny.
 - **IndexNow** (Bing/Yandex/Seznam): powiadamianie wyszukiwarek o zmianach URL. Klucz w `INDEXNOW_KEY`

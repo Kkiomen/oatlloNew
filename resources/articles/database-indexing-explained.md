@@ -4,7 +4,7 @@ seo_title: "Database Indexing Explained"
 slug: database-indexing-explained
 short_description: "Database indexing explained for app developers: how B-tree indexes work, composite and covering indexes, the leftmost-prefix rule, and reading EXPLAIN."
 language: en
-published_at: 2026-08-24 09:00:00
+published_at: 2027-01-08 09:00:00
 is_published: true
 tags: [database, mysql, postgresql, performance, sql]
 ---

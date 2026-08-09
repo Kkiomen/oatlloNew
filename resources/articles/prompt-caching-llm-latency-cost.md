@@ -3,7 +3,7 @@ name: "Prompt Caching: Cutting LLM Latency and Cost"
 slug: prompt-caching-llm-latency-cost
 short_description: "A practical guide to prompt caching with the Claude API: cache_control, cache-hit verification, and the mistakes that quietly break it."
 language: en
-published_at: 2027-02-05 09:00:00
+published_at: 2026-09-25 09:00:00
 is_published: true
 tags: [llm, prompt-caching, claude-api, performance]
 ---

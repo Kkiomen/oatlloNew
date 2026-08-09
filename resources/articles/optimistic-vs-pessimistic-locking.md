@@ -4,7 +4,7 @@ seo_title: "Optimistic vs Pessimistic Locking in SQL"
 slug: optimistic-vs-pessimistic-locking
 short_description: "Optimistic vs pessimistic locking explained with real SQL and Laravel code, trade-offs, and when to pick each for concurrent writes."
 language: en
-published_at: 2026-09-14 09:00:00
+published_at: 2027-04-05 09:00:00
 is_published: true
 tags: [databases, concurrency, laravel, sql]
 ---

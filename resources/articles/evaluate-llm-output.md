@@ -4,7 +4,7 @@ seo_title: "How to Evaluate LLM Output"
 slug: evaluate-llm-output
 short_description: "A practical guide to evaluate LLM output: golden datasets, deterministic checks, LLM-as-judge, human review, and regression testing."
 language: en
-published_at: 2027-01-06 09:00:00
+published_at: 2026-08-19 09:00:00
 is_published: true
 tags: [llm, evaluation, testing, ai]
 ---

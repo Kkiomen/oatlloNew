@@ -3,7 +3,7 @@ name: "TypeScript Generics Explained with Real Examples"
 slug: typescript-generics-explained-with-real-examples
 short_description: "Learn TypeScript generics through real, runnable examples: generic functions, constraints, keyof, and a typed Repository you can copy today."
 language: en
-published_at: 2026-09-25 09:00:00
+published_at: 2027-02-05 09:00:00
 is_published: true
 tags: [typescript, generics, types]
 ---

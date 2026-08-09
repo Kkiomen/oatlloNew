@@ -4,7 +4,7 @@ seo_title: "PHP 8.4 Property Hooks Explained"
 slug: php-8-4-property-hooks
 short_description: "A practical guide to PHP 8.4 property hooks: get/set syntax, virtual properties, interface requirements, and when they beat plain getters."
 language: en
-published_at: 2027-01-08 09:00:00
+published_at: 2026-08-24 09:00:00
 is_published: true
 tags: [php, php-8-4, oop]
 ---
