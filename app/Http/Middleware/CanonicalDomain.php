@@ -17,21 +17,24 @@ use Symfony\Component\HttpFoundation\Response;
  * się sam (tag canonical wskazuje bieżący URL). Google traktuje je jak duplikaty
  * i dzieli sygnały rankingowe, co spycha strony na 2. stronę wyników.
  *
- * MINA (kosztowała miesiąc): warunkiem NIE MOŻE być `app()->environment('production')`.
- * Ta wersja wisiała na produkcji od 14.07 i nie przekierowała ani jednego żądania -
- * www i http dalej oddawały 200, a GSC pokazywał 7 duplikatów kanonicznych i ruch
- * równolegle na `www.oatllo.com`. Guard oparty na APP_ENV milczy, gdy zawiedzie coś
- * poza kodem: inna wartość `APP_ENV` w `.env` produkcji albo stary `config:cache`
- * sprzed wdrożenia. Objaw jest przy tym niewidoczny - strona działa, testy przechodzą,
- * a jedyne, co się psuje, to ranking.
+ * MINA, ROZBROJONA ZA DRUGIM PODEJŚCIEM: ten middleware NIE MOŻE pytać o `APP_ENV`.
+ * Wersja z 14.07 wisiała na `app()->environment('production')` i przez miesiąc nie
+ * przekierowała ani jednego żądania. Poprawka z 09.08 wymieniła to na bail-out
+ * `environment('local','testing')` - i po wdrożeniu na produkcję **dalej nie działała**,
+ * bo dziedziczyła tę samą zależność. Dowód jest w logu: `https://www.oatllo.com/course/php`
+ * oddawał 200 jeszcze po deployu commita, który miał to naprawić.
  *
- * Dlatego decyduje SAM HOST: przekierowujemy wyłącznie hosty z rodziny kanonicznej
- * (`oatllo.com` i `www.oatllo.com`). Środowisko przestaje mieć znaczenie, bo lokalny
- * `oatllo.test` po prostu nie należy do tej rodziny i nigdy nie złapie warunku.
+ * Wniosek: cokolwiek jest nie tak z `APP_ENV` na tym serwerze, kod nie ma prawa na tym
+ * stać. Guard oparty na środowisku milczy, gdy zawiedzie coś poza kodem (wartość w `.env`,
+ * stary `config:cache`), a objaw jest niewidoczny - strona działa, testy przechodzą,
+ * psuje się wyłącznie ranking.
+ *
+ * Dlatego decyduje WYŁĄCZNIE HOST: przekierowujemy tylko hosty z rodziny kanonicznej
+ * (`oatllo.com` i `www.oatllo.com`). To jest jednocześnie cała ochrona dev-a - lokalny
+ * `oatllo.test` i testowy `localhost` do rodziny nie należą, więc nigdy nie złapią
+ * warunku. Środowisko nie występuje w tej klasie ani razu i tak ma zostać.
  *
  * Bezpieczeństwo:
- *  - `local`/`testing` dodatkowo wyłączone wprost, na wypadek `CANONICAL_HOST`
- *    ustawionego lokalnie na własny host (inaczej http://oatllo.test dostałoby 301).
  *  - Obcy host (podpięta inna domena, IP, health check zewnętrznego monitoringu)
  *    przechodzi bez zmian - nie odsyłamy w świat czegoś, czego nie znamy.
  *  - Serwer terminuje SSL bezpośrednio (bez proxy), więc $request->isSecure() jest
@@ -64,10 +67,6 @@ class CanonicalDomain
 
     private function shouldEnforce(Request $request): bool
     {
-        if (app()->environment('local', 'testing')) {
-            return false;
-        }
-
         if (! $request->isMethodSafe()) { // tylko GET/HEAD
             return false;
         }

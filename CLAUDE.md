@@ -559,10 +559,16 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   w czterech kopiach, a Google dzielił między nie sygnały rankingowe (GSC: „duplikat, inna kanoniczna").
   Guard na `APP_ENV` milczy, gdy zawiedzie coś poza kodem (inna wartość w `.env`, stary `config:cache`),
   a **objaw jest niewidoczny: strona działa, testy przechodzą, psuje się wyłącznie ranking.**
-  Dlatego decyduje SAM HOST (rodzina `oatllo.com` + `www.oatllo.com`) - lokalny `oatllo.test` do niej
-  nie należy, więc dev jest bezpieczny bez oglądania się na środowisko. To samo kryterium (tożsamość
-  wdrożenia z `APP_URL`, nie nazwa środowiska) rządzi `AppServiceProvider::forceCanonicalUrlRoot()`.
-  Pilnuje tego `tests/Feature/CanonicalDomainTest.php`, w tym przypadek `APP_ENV=prod`.
+  **Poprawka musiała być robiona DWA RAZY i to jest najważniejsza część tej notatki.** Pierwsza
+  (09.08, `ad28279`) wymieniła guard na bail-out `environment('local','testing')` - i po wdrożeniu
+  na produkcję **dalej nie przekierowywała**, bo odziedziczyła tę samą zależność, a `APP_ENV` na tym
+  serwerze najwyraźniej należy do wykluczonych. Dopiero druga wyrzuciła środowisko z tej ścieżki
+  **całkowicie**: w `CanonicalDomain` i `forceCanonicalUrlRoot` nie ma ani jednego `environment()`.
+  Decyduje SAM HOST (rodzina `oatllo.com` + `www.oatllo.com`) i to jest jednocześnie **jedyna** ochrona
+  dev-a: `oatllo.test` i `localhost` do rodziny nie należą. `forceCanonicalUrlRoot` pyta analogicznie
+  o `APP_URL` (tożsamość wdrożenia), nie o nazwę środowiska. **Nie dopisywać tu warunku na `APP_ENV`** -
+  `tests/Feature/CanonicalDomainTest.php` oblewa wtedy na zestawie `production/prod/staging/local/testing`,
+  bo 301 ma padać w każdym z nich.
 - **`route()` w cache'owanej treści bierze host z ŻĄDANIA - i tak zatruwa się sitemapa.**
   `MarkdownArticleParser` buduje `image` artykułu przez `route('article.cover')`, a sparsowane `.md`
   są cache'owane. Jedno wejście robota na `www.` wsadzało do cache'u okładkę na złym hoście, a sitemap
@@ -597,6 +603,11 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
      siedzą okładki z hostem `www.`, a stary `config:cache` jest jednym z dwóch podejrzanych
      o unieruchomienie `CanonicalDomain` na miesiąc.
    - `APP_URL=https://oatllo.com` w `.env` (na tym wisi `forceCanonicalUrlRoot`).
+   - **Sprawdź `php artisan tinker --execute="echo app()->environment();"` na serwerze.** Objawy
+     z 09.08 wskazują, że produkcja NIE raportuje się jako `production` - to samo tłumaczyłoby
+     awarię z 14.07 i nieudaną pierwszą poprawkę. Kanonikalizacja już od tego nie zależy, ale
+     **`APP_ENV=local` na produkcji to osobny problem**: idzie w parze z `APP_DEBUG=true`, czyli
+     publicznymi stack trace'ami z danymi z `.env`.
    - Sprawdź: `curl -I https://www.oatllo.com/course/php` ma dać **301** na `https://oatllo.com/course/php`,
      `curl -I http://oatllo.com/blog` też 301. Jeśli oddaje 200 - poprawka nie działa i sygnały
      rankingowe dalej się dzielą.

@@ -58,19 +58,18 @@ class AppServiceProvider extends ServiceProvider
      * przy `<loc>` na `https://oatllo.com`. Sitemap generowany z CLI czyta ten sam
      * cache, więc zatrucie przeżywa i wychodzi na zewnątrz.
      *
-     * Warunkiem NIE jest `environment('production')` - poprzednia wersja tej metody
-     * (samo `forceScheme`) wisiała pod takim guardem i nie odpaliła się ani razu,
-     * dokładnie jak CanonicalDomain. Zamiast nazwy środowiska pytamy o TOŻSAMOŚĆ
-     * WDROŻENIA: czy `APP_URL` wskazuje na kanoniczną domenę (lub jej wariant `www.`).
-     * Lokalny `http://localhost` do rodziny nie należy, więc dev jest nietknięty
-     * bez oglądania się na `APP_ENV`.
+     * Środowisko NIE WYSTĘPUJE w tym warunku i to jest celowe. Poprzednia wersja tej
+     * metody (samo `forceScheme`) wisiała na `environment('production')` i nie odpaliła
+     * się ani razu; pierwsza poprawka z 09.08 wymieniła to na bail-out
+     * `environment('local','testing')` i **po wdrożeniu na produkcję dalej nie działała**,
+     * bo `APP_ENV` na tym serwerze najwyraźniej nie jest tym, czym się wydaje.
+     * Pytamy więc o TOŻSAMOŚĆ WDROŻENIA: czy `APP_URL` wskazuje na kanoniczną domenę
+     * (lub jej wariant `www.`). Lokalny `http://localhost` do rodziny nie należy, więc
+     * dev jest nietknięty - i jest to ochrona, której żaden wpis w `.env` nie wyłączy
+     * przez przypadek.
      */
     private function forceCanonicalUrlRoot(): void
     {
-        if ($this->app->environment('local', 'testing')) {
-            return;
-        }
-
         $canonicalHost = strtolower(trim((string) config('app.canonical_host')));
 
         if ($canonicalHost === '') {
