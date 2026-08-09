@@ -551,6 +551,35 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   commitem + deployem (brak runtime eventu), więc po deployu odpal komendę `php artisan indexnow:submit-sitemap`
   — wysyła batch wszystkich URL‑i z `sitemap.xml` (`--regenerate` = najpierw przebuduj mapę). Ten sam klucz
   musi być na produkcji co w pliku `/{key}.txt`.
+- **Kanoniczny host - MINA, kosztowała miesiąc.** Domena musi wychodzić w świat pod JEDNYM originem
+  (`https://oatllo.com`); `www.` i `http://` dostają 301 z `App\Http\Middleware\CanonicalDomain`.
+  **Warunkiem włączenia NIE MOŻE być `app()->environment('production')`.** Pierwsza wersja tak właśnie
+  wisiała, wdrożono ją 14.07.2026 i **nie przekierowała ani jednego żądania** - `www.oatllo.com`
+  oddawał 200 z canonicalem na samego siebie, czyli każda z 260 zindeksowanych stron istniała
+  w czterech kopiach, a Google dzielił między nie sygnały rankingowe (GSC: „duplikat, inna kanoniczna").
+  Guard na `APP_ENV` milczy, gdy zawiedzie coś poza kodem (inna wartość w `.env`, stary `config:cache`),
+  a **objaw jest niewidoczny: strona działa, testy przechodzą, psuje się wyłącznie ranking.**
+  Dlatego decyduje SAM HOST (rodzina `oatllo.com` + `www.oatllo.com`) - lokalny `oatllo.test` do niej
+  nie należy, więc dev jest bezpieczny bez oglądania się na środowisko. To samo kryterium (tożsamość
+  wdrożenia z `APP_URL`, nie nazwa środowiska) rządzi `AppServiceProvider::forceCanonicalUrlRoot()`.
+  Pilnuje tego `tests/Feature/CanonicalDomainTest.php`, w tym przypadek `APP_ENV=prod`.
+- **`route()` w cache'owanej treści bierze host z ŻĄDANIA - i tak zatruwa się sitemapa.**
+  `MarkdownArticleParser` buduje `image` artykułu przez `route('article.cover')`, a sparsowane `.md`
+  są cache'owane. Jedno wejście robota na `www.` wsadzało do cache'u okładkę na złym hoście, a sitemap
+  generowany z CLI czytał ten sam cache i publikował 14 `<image:loc>` na `www.oatllo.com` przy `<loc>`
+  na apeksie. Dlatego kanonikalizacja stoi w DWÓCH miejscach i oba są konieczne: `AppServiceProvider`
+  przybija korzeń `route()` (żeby zatrucie nie powstało), a `SitemapService::canonicalizeOwnHost()`
+  czyści URL na wyjściu (żeby JUŻ ZATRUTY wpis nie wyciekł, zanim ktoś wyczyści cache). Obce hosty
+  (obrazek z CDN we frontmatterze) zostają nietknięte. Test: `tests/Feature/SitemapCanonicalHostTest.php`.
+- **CTR: artykuły `.md` biją lekcje kursów 10-20x i to zmienia priorytety** (GSC 01-07.08.2026).
+  Artykuły zrobiły 47% kliknięć domeny z 10% wyświetleń (CTR 0.58%, pojedyncze sztuki 1.6-2.8%),
+  lekcje kursów 0.07-0.20%. Powód nie jest kosmetyczny: artykuł łapie KONKRETNY problem
+  („horizon vs supervisor"), gdzie klika się w obietnicę odpowiedzi, a lekcja łapie zapytanie OGÓLNE
+  („php match", „git reset"), gdzie pierwsze wyniki to php.net i git-scm, a my jesteśmy dwunastym
+  linkiem do tej samej rzeczy. **Dlatego przepisywanie tytułów lekcji na pozycjach 12-16 nie jest
+  udowodnioną dźwignią** - dziesięć lekcji poprawionych 27.07 nie oderwało się CTR-em od trendu
+  domeny (0.15% → 0.07% przy domenie 0.24% → 0.12%), mimo że nowe tytuły były na produkcji.
+  Kolejka `lesson-seo` zawężona do pozycji < 12. Szczegóły: `docs/seo/gsc-weekly/2026-08-09.md`.
 
 ## Checklist wdrożenia (produkcja)
 
@@ -563,6 +592,16 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
    Sprawdź raz, że `https://oatllo.com/{INDEXNOW_KEY}.txt` zwraca klucz.
 5. **Artykuły `.md`** są teraz w `resources/articles/` (commit + `git pull`) — upewnij się, że produkcja
    nie ma w `.env` starego `ARTICLES_MD_PATH=storage/app/articles` (domyślnie czyta `resources/articles`).
+5a. **Kanoniczny host** (jednorazowo, po wdrożeniu poprawki z 09.08):
+   - `php artisan config:clear && php artisan cache:clear` - **konieczne**. W cache'u sparsowanych `.md`
+     siedzą okładki z hostem `www.`, a stary `config:cache` jest jednym z dwóch podejrzanych
+     o unieruchomienie `CanonicalDomain` na miesiąc.
+   - `APP_URL=https://oatllo.com` w `.env` (na tym wisi `forceCanonicalUrlRoot`).
+   - Sprawdź: `curl -I https://www.oatllo.com/course/php` ma dać **301** na `https://oatllo.com/course/php`,
+     `curl -I http://oatllo.com/blog` też 301. Jeśli oddaje 200 - poprawka nie działa i sygnały
+     rankingowe dalej się dzielą.
+   - `php artisan indexnow:submit-sitemap --regenerate` (przebuduje mapę bez hostów `www.`).
+   - W GSC: „Indeksowanie stron" → „Duplikat, inna kanoniczna" → **Zweryfikuj poprawkę**.
 6. **Autopublikacja na Instagram** (jednorazowy setup na produkcji):
    - `php artisan storage:link` — bez tego `/storage/social/...` zwraca 404, a Zernio wymaga URL-a, który
      oddaje **bajty** z poprawnym Content-Type. Sprawdź: `curl -I https://oatllo.com/storage/social/{slug}/01.png`.

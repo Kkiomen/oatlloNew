@@ -44,9 +44,46 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if($this->app->environment('production')) {
-            URL::forceScheme('https');
+        $this->forceCanonicalUrlRoot();
+    }
+
+    /**
+     * Przybija korzeń generowanych URL-i do kanonicznego hosta.
+     *
+     * MINA, którą to zamyka: `route()` bierze host z BIEŻĄCEGO ŻĄDANIA, a sparsowane
+     * artykuły `.md` są cache'owane razem z polem `image`, które powstaje z
+     * `route('article.cover', ...)`. Wystarczyło JEDNO wejście robota na
+     * `www.oatllo.com`, żeby do cache'u wpadła okładka na hoście `www.` - i tak
+     * właśnie w sitemapie wylądowało 14 `<image:loc>` na `https://www.oatllo.com`
+     * przy `<loc>` na `https://oatllo.com`. Sitemap generowany z CLI czyta ten sam
+     * cache, więc zatrucie przeżywa i wychodzi na zewnątrz.
+     *
+     * Warunkiem NIE jest `environment('production')` - poprzednia wersja tej metody
+     * (samo `forceScheme`) wisiała pod takim guardem i nie odpaliła się ani razu,
+     * dokładnie jak CanonicalDomain. Zamiast nazwy środowiska pytamy o TOŻSAMOŚĆ
+     * WDROŻENIA: czy `APP_URL` wskazuje na kanoniczną domenę (lub jej wariant `www.`).
+     * Lokalny `http://localhost` do rodziny nie należy, więc dev jest nietknięty
+     * bez oglądania się na `APP_ENV`.
+     */
+    private function forceCanonicalUrlRoot(): void
+    {
+        if ($this->app->environment('local', 'testing')) {
+            return;
         }
 
+        $canonicalHost = strtolower(trim((string) config('app.canonical_host')));
+
+        if ($canonicalHost === '') {
+            return;
+        }
+
+        $appHost = strtolower((string) parse_url((string) config('app.url'), PHP_URL_HOST));
+
+        if ($appHost !== $canonicalHost && $appHost !== 'www.' . $canonicalHost) {
+            return;
+        }
+
+        URL::forceRootUrl('https://' . $canonicalHost);
+        URL::forceScheme('https');
     }
 }

@@ -163,7 +163,40 @@ class SitemapService
             return [];
         }
 
-        return [$image];
+        return [static::canonicalizeOwnHost($image)];
+    }
+
+    /**
+     * Sprowadza URL-e z NASZEJ domeny do kanonicznego hosta i https.
+     *
+     * Sitemap to ostatnia bramka przed wyjściem URL-a do Google, więc kanonikalizacja
+     * musi być też tutaj, mimo że korzeń URL-i przybija już AppServiceProvider.
+     * Powód jest konkretny: pole `image` artykułu powstaje z `route()` i wpada do
+     * CACHE'U sparsowanych `.md`. Wpis zatruty hostem `www.` przeżywa wdrożenie
+     * poprawki i sitemap wypluwałby go dalej, aż ktoś ręcznie wyczyści cache.
+     * W eksporcie GSC z 09.08 było tak 14 okładek artykułów.
+     *
+     * Obce hosty (obrazek z CDN podany wprost we frontmatterze) zostają nietknięte -
+     * przepisujemy wyłącznie własną domenę i jej wariant `www.`.
+     */
+    protected static function canonicalizeOwnHost(string $url): string
+    {
+        $canonicalHost = strtolower(trim((string) config('app.canonical_host')));
+
+        if ($canonicalHost === '') {
+            return $url;
+        }
+
+        $host = strtolower((string) parse_url($url, PHP_URL_HOST));
+
+        if ($host !== $canonicalHost && $host !== 'www.' . $canonicalHost) {
+            return $url;
+        }
+
+        $path = (string) parse_url($url, PHP_URL_PATH);
+        $query = parse_url($url, PHP_URL_QUERY);
+
+        return 'https://' . $canonicalHost . $path . ($query !== null ? '?' . $query : '');
     }
 
     protected static function prepareCategoriesBlog($mdArticles = null): mixed

@@ -1,0 +1,7 @@
+Przyczyna,Źródło,Weryfikacja,Strony
+"Strona zeskanowana, ale jeszcze nie zindeksowana",Systemy Google,Niepowodzenie,56
+Strona wykluczona za pomocą tagu „noindex”,Strona internetowa,Nie rozpoczęto,10
+Nie znaleziono (404),Strona internetowa,Nie rozpoczęto,1
+"Duplikat, wyszukiwarka Google wybrała inną stronę kanoniczną niż użytkownik",Systemy Google,Nie rozpoczęto,7
+Błąd serwera (5xx),Strona internetowa,Nie dotyczy,0
+Strona wykryta – obecnie niezindeksowana,Systemy Google,Powodzenie,62

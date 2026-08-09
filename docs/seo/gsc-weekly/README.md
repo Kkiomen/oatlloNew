@@ -38,9 +38,13 @@ Performance = okno 7 dni. Coverage = stan na dzień eksportu.
 |---|---|---|---|---|---|---|---|---|
 | 2026-07-14/15 (baza 3M) | 13.04-12.07 | 93 | 106157 | 0.09% | ~13 | 48 | 209 | 71 |
 | **2026-07-27** | 19-25.07 | **15** | **6249** | **0.24%** | **17.5** | **183** | **119** | **84** |
+| **2026-08-09** | 01-07.08 | **19** | **15438** | **0.12%** | **20.9** | **260** | **136** | **56** |
 
 Wiersz „baza 3M" jest tam dla kontekstu, nie do arytmetyki tydzień-do-tygodnia: 106157 wyświetleń
 to 91 dni (~1167/dzień), a 6249 to 7 dni (~893/dzień).
+
+W oknie 01-07.08 jeden dzień (05.08) dał 5661 wyświetleń przy ~1500 w pozostałe. Bez niego średnia
+to 1629/dzień zamiast 2205 - przy porównaniu z kolejnym tygodniem pamiętać, że 2205 nie jest poziomem.
 
 ## Wskaźniki, które śledzimy (i dlaczego akurat te)
 
@@ -49,3 +53,9 @@ to 91 dni (~1167/dzień), a 6249 to 7 dni (~893/dzień).
 3. **CTR domeny** - przy naszych pozycjach (10-15) to najtańsza dźwignia: tytuł i opis, nie treść.
 4. **Lista „duże wyświetlenia / 0 kliknięć, pozycja 8-16"** - kolejka robocza dla `lesson-seo`.
    To z niej bierzemy paczkę lekcji do poprawy w danym tygodniu.
+   **Od 09.08 próg zawężony do pozycji < 12.** Dziesięć lekcji poprawionych 27.07 nie oderwało się
+   CTR-em od trendu domeny (0.15% -> 0.07% przy domenie 0.24% -> 0.12%), więc przepisywanie tytułu
+   na pozycji 12-16 nie jest udowodnioną dźwignią. Szczegóły w `2026-08-09.md`.
+5. **CTR artykułów `.md` kontra CTR lekcji kursów** - nowy wskaźnik od 09.08. Artykuły robiły 47%
+   kliknięć domeny z 10% wyświetleń (0.58% vs 0.07-0.20%). Jeśli to się utrzyma, główną dźwignią
+   jest tempo publikacji artykułów, a nie optymalizacja lekcji.
