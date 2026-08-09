@@ -1,5 +1,6 @@
 ---
 name: "Webhook Design Best Practices: Signatures and Retries That Hold Up"
+seo_title: "Webhook Design: Signatures and Retries"
 slug: webhook-design-best-practices
 short_description: "Webhook design best practices for reliable delivery: HMAC signatures, replay protection, idempotent handlers, and retries with backoff and a DLQ."
 language: en

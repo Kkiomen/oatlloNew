@@ -1,5 +1,6 @@
 ---
 name: "Redis Caching Patterns for Web Applications: A Practical Guide"
+seo_title: "Redis Caching Patterns for Web Apps"
 slug: redis-caching-patterns
 short_description: "Battle-tested Redis caching patterns for web apps: cache-aside, write-through, TTLs, stampede protection, and the right data structures."
 language: en

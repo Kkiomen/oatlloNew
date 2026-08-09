@@ -1,5 +1,6 @@
 ---
 name: "Database Isolation Levels Explained: Transactions Without the Guesswork"
+seo_title: "Database Isolation Levels Explained"
 slug: database-isolation-levels
 short_description: "A practical guide to database isolation levels, the anomalies they prevent, engine defaults in MySQL and PostgreSQL, and how to set them in Laravel."
 language: en

@@ -1,5 +1,6 @@
 ---
 name: "How to Manage Secrets and Env Variables Safely in Laravel"
+seo_title: "Managing Secrets and Env Vars in Laravel"
 slug: manage-secrets-env-variables
 short_description: "A practical guide to manage secrets and env variables safely in Laravel: keep .env out of git, rotate leaks, avoid the config cache trap."
 language: en

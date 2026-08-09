@@ -1,5 +1,6 @@
 ---
 name: "Laravel Reverb WebSockets: Real-Time Broadcasting Done Right"
+seo_title: "Laravel Reverb WebSockets Tutorial"
 slug: laravel-reverb-websockets
 short_description: "A hands-on guide to Laravel Reverb WebSockets: install the server, broadcast events, authorize private channels, and wire up Laravel Echo."
 language: en

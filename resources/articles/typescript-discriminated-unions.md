@@ -1,5 +1,6 @@
 ---
 name: "TypeScript Discriminated Unions Explained (With Real Examples)"
+seo_title: "TypeScript Discriminated Unions Explained"
 slug: typescript-discriminated-unions
 short_description: "Learn TypeScript discriminated unions: the discriminant property, narrowing, and exhaustiveness checks with never — shown on a real async state."
 language: en

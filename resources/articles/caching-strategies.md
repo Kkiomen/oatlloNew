@@ -1,5 +1,6 @@
 ---
 name: "Caching Strategies: Cache-Aside, Write-Through, and More"
+seo_title: "Cache-Aside vs Write-Through Caching"
 slug: caching-strategies
 short_description: "A practical guide to caching strategies: cache-aside, read-through, write-through, write-behind, and refresh-ahead, with trade-offs and PHP examples."
 language: en

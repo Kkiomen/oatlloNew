@@ -1,8 +1,8 @@
 ---
 title: "What is event-driven architecture?"
 slug: what-is-event-driven-architecture
-seo_title: "What Is Event-Driven Architecture? A Clear Intro"
-seo_description: "Event-driven architecture: components communicate by publishing and subscribing to events instead of direct calls. Learn loose coupling and brokers."
+seo_title: "Publish and Subscribe Instead of Direct Calls"
+seo_description: "How publish/subscribe replaces direct calls between services, what a message broker does, and how events decouple senders from receivers in time and space."
 ---
 
 In most code, one part calls another directly and waits for an answer. The order module

@@ -1,8 +1,8 @@
 ---
 title: "Writing good commit messages"
 slug: good-commit-messages
-seo_title: "How to Write Good Git Commit Messages"
-seo_description: "Write clear Git commit messages: a concise imperative subject line, a body that explains why not what, and common conventions teams follow."
+seo_title: "Git Commit Message Format: Subject Line and Body"
+seo_description: "The format of a Git commit message: a short imperative subject line, a blank line, and a body that explains why. With a checklist and examples."
 ---
 
 ## Why the message matters

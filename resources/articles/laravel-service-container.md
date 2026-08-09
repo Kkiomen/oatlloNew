@@ -1,5 +1,6 @@
 ---
 name: "Understanding the Laravel Service Container and Binding"
+seo_title: "The Laravel Service Container Explained"
 slug: laravel-service-container
 short_description: "A practical guide to the Laravel service container: binding, singletons, autowiring, contextual binding and where to register it all."
 language: en

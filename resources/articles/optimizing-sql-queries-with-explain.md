@@ -1,5 +1,6 @@
 ---
 name: "Optimizing SQL Queries with EXPLAIN: A Practical Guide"
+seo_title: "Optimizing SQL Queries with EXPLAIN"
 slug: optimizing-sql-queries-with-explain
 short_description: "Learn to use SQL EXPLAIN to optimize query performance, read the plan, spot full scans, and fix them with indexes or sargable rewrites."
 language: en

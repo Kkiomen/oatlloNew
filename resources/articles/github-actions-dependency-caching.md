@@ -1,5 +1,6 @@
 ---
 name: "Speeding Up CI with GitHub Actions Dependency Caching"
+seo_title: "GitHub Actions Dependency Caching"
 slug: github-actions-dependency-caching
 short_description: "How to cache Composer and npm on GitHub Actions with restore-keys, lockfile hashing, and setup-* built-in caching - and why caches silently never hit."
 language: en

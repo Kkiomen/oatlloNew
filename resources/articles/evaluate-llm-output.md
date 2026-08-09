@@ -1,5 +1,6 @@
 ---
 name: "How to Evaluate LLM Output So You Can Ship and Iterate Safely"
+seo_title: "How to Evaluate LLM Output"
 slug: evaluate-llm-output
 short_description: "A practical guide to evaluate LLM output: golden datasets, deterministic checks, LLM-as-judge, human review, and regression testing."
 language: en

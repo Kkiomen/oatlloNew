@@ -1,5 +1,6 @@
 ---
 name: "Database Indexing Explained for Application Developers"
+seo_title: "Database Indexing Explained"
 slug: database-indexing-explained
 short_description: "Database indexing explained for app developers: how B-tree indexes work, composite and covering indexes, the leftmost-prefix rule, and reading EXPLAIN."
 language: en

@@ -15,6 +15,25 @@ Artykuły pochodzą z **dwóch źródeł**, scalanych po `slug` (**`.md` ma pier
    jest git. Widoczność liczona z frontmattera (`published_at` / `is_published`): plik z datą w przyszłości
    jest ukryty aż do terminu, bez wiersza w bazie i bez crona. Nazwa pliku = `{slug}.md`.
 
+**`seo_title` / `seo_description` we frontmatterze `.md` (od 09.08.2026).** Do tej pory artykuły były
+jedynym typem treści BEZ tej dźwigni: `article.blade.php` brał `$article->name` prosto na `<title>`, więc
+H1 i tytuł w Google były tym samym ciągiem. Widok dokleja `" | Oatllo"` (9 zn.), a Google ucina ok. 60,
+więc **36 ze 140 zakolejkowanych artykułów miało ucinaną końcówkę** i jedynym ratunkiem było skrócenie
+H1 - psucie tekstu, żeby naprawić meta. `MarkdownArticleParser` wpisuje te pola do `view_content`
+(klucze `basic_website_structure_title` / `_description`), czyli w **istniejący szew**, którym artykuły
+z bazy nadpisują SEO - dzięki temu widok nie wymagał ani jednej zmiany. `og:title` celowo zostaje na
+`name`: `seo_title` jest optymalizowany pod ucięcie w SERP-ie, a kafelek społecznościowy ma pokazać
+ludzki nagłówek. Limit: `seo_title` ≤ 51 zn. Test: `tests/Feature/ArticleSeoTitleTest.php`.
+
+**Artykuł nie może celować w tę samą frazę co lekcja kursu.** To ta sama mina, przez którą wycofaliśmy
+44 artykuły (`retired_slugs`), tylko że tym razem groziła treściom jeszcze nieopublikowanym. Audyt 140
+zakolejkowanych artykułów przeciw 380 lekcjom (09.08.2026) znalazł 4 realne kolizje - m.in. artykuł
+`good-commit-messages` i lekcję `git-basics` o **identycznym slugu i niemal identycznym `seo_title`**.
+Zasada rozstrzygania: **head term dostaje artykuł** (ok. 2000 słów, a wg GSC artykuły konwertują 10-20x
+lepiej od lekcji), **lekcja zostaje zawężona do swojej roli w kursie** (ok. 700 słów, jeden krok
+materiału) - to jedna linijka `seo_title` zamiast przepisywania artykułu. Przed dodaniem artykułu
+o temacie, który jest w kursie, sprawdź `seo_title` lekcji.
+
 Wspólny punkt renderu obu źródeł: **`Article::getDisplayContents()`** — tu dzieje się:
 - **`ContentSanitizer`** (`app/Services/Article/ContentSanitizer.php`): em/en dashe → `-` + słownik anti‑AI.
 - **`InternalLinker`** (`app/Services/Article/InternalLinker.php`): linkowanie wewnętrzne **przy renderze**

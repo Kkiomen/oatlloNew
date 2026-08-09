@@ -1,5 +1,6 @@
 ---
 name: "Building a Chatbot with Conversation Memory in Laravel"
+seo_title: "Chatbot with Conversation Memory in Laravel"
 slug: chatbot-conversation-memory
 short_description: "Give your Claude-powered chatbot real conversation memory in Laravel: store turns, rebuild the messages array, and budget tokens."
 language: en

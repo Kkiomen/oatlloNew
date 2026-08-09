@@ -1,5 +1,6 @@
 ---
 name: "Zod TypeScript Validation: Runtime Schema Checking Done Right"
+seo_title: "Zod TypeScript Validation Explained"
 slug: zod-typescript-validation
 short_description: "A practical guide to Zod TypeScript validation: parse vs safeParse, type inference, refinements, coercion, and the pitfalls that bite in production."
 language: en

@@ -1,5 +1,6 @@
 ---
 name: "Laravel Sanctum vs Passport: Choosing the Right API Auth"
+seo_title: "Laravel Sanctum vs Passport"
 slug: laravel-sanctum-vs-passport
 short_description: "Laravel Sanctum vs Passport compared for real projects: tokens, SPA auth, OAuth2, install steps, and which one to pick."
 language: en

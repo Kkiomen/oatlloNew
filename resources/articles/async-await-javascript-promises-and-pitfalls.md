@@ -1,5 +1,6 @@
 ---
 name: "Async Await JavaScript: Promises, async/await, and the Pitfalls That Bite"
+seo_title: "Async/Await in JavaScript: Promises Explained"
 slug: async-await-javascript-promises-and-pitfalls
 short_description: "A practical guide to async await JavaScript: how promises work, async/await patterns, Promise.all vs allSettled, and the mistakes that break code."
 language: en

@@ -97,7 +97,30 @@ class MarkdownArticleParser
         $article->contents = [
             ['type' => 'text', 'content' => $html],
         ];
-        $article->view_content = [];
+        // SEO title/description niezależne od H1 — dokładnie ten sam mechanizm, który mają
+        // lekcje kursów (`seo_title`), a artykuły do 09.08.2026 go NIE MIAŁY: widok brał
+        // `$article->name` wprost na `<title>`, więc nagłówek i tytuł w Google były tym samym
+        // ciągiem. To nie kosmetyka — 36 ze 140 zakolejkowanych artykułów przekraczało po
+        // doklejeniu " | Oatllo" ~60 znaków, czyli długość, którą Google ucina, a jedynym
+        // ratunkiem było skrócenie H1. Fałszywy wybór: albo czytelny nagłówek, albo pełny tytuł
+        // w wynikach. Teraz `seo_title:` we frontmatterze rozdziela te dwie role.
+        //
+        // Celowo NIE tworzymy nowego pola w modelu: widok artykułu od dawna czyta nadpiski SEO
+        // z `view_content` (tak działają artykuły z bazy), więc plik `.md` wpina się w ten sam
+        // szew i `article.blade.php` nie wymaga ani jednej zmiany.
+        //
+        // og:title zostaje na `name` z premedytacją — `seo_title` jest optymalizowany pod
+        // ucięcie w SERP-ie, a kafelek na Facebooku/LinkedInie ma pokazać ludzki nagłówek.
+        $seoOverrides = [];
+        $seoTitle = trim((string) ($fm['seo_title'] ?? ''));
+        $seoDescription = trim((string) ($fm['seo_description'] ?? ''));
+        if ($seoTitle !== '') {
+            $seoOverrides['basic_website_structure_title'] = $seoTitle;
+        }
+        if ($seoDescription !== '') {
+            $seoOverrides['basic_website_structure_description'] = $seoDescription;
+        }
+        $article->view_content = $seoOverrides;
         $article->published_at = $publishedAt;
 
         // Ustawiamy timestampy ręcznie – model nie jest zapisywany do bazy.

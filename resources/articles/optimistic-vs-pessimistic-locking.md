@@ -1,5 +1,6 @@
 ---
 name: "Optimistic vs Pessimistic Locking in Databases: A Practical Guide"
+seo_title: "Optimistic vs Pessimistic Locking in SQL"
 slug: optimistic-vs-pessimistic-locking
 short_description: "Optimistic vs pessimistic locking explained with real SQL and Laravel code, trade-offs, and when to pick each for concurrent writes."
 language: en

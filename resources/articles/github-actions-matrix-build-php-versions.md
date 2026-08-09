@@ -1,5 +1,6 @@
 ---
 name: "GitHub Actions Matrix Build for PHP Versions: A Practical Guide"
+seo_title: "GitHub Actions Matrix Build for PHP"
 slug: github-actions-matrix-build-php-versions
 short_description: "Set up a GitHub Actions matrix build to test your PHP package across 8.2, 8.3, 8.4, Laravel versions, and lowest/stable deps."
 language: en

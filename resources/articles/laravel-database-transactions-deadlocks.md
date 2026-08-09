@@ -1,5 +1,6 @@
 ---
 name: "Laravel Database Transactions and How to Avoid Deadlocks"
+seo_title: "Laravel Transactions and Deadlocks"
 slug: laravel-database-transactions-deadlocks
 short_description: "How DB::transaction works, when deadlocks happen in MySQL, and how automatic retries, lock ordering and lockForUpdate keep concurrent writes safe."
 language: en

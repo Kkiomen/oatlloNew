@@ -1,5 +1,6 @@
 ---
 name: "API Versioning Strategies: URL, Header, or Media Type"
+seo_title: "API Versioning: URL, Header, or Media Type"
 slug: api-versioning-strategies
 short_description: "Compare the four main API versioning strategies (URI, query param, header, media type) with honest trade-offs and Laravel examples."
 language: en

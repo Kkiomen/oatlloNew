@@ -1,5 +1,6 @@
 ---
 name: "Laravel Feature Flags with Pennant: A Practical Guide"
+seo_title: "Laravel Feature Flags with Pennant"
 slug: laravel-feature-flags-pennant
 short_description: "Ship features safely with Laravel feature flags using Pennant: define flags, gradual rollout, A/B tests, kill switches, and Blade."
 language: en

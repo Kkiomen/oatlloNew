@@ -1,8 +1,8 @@
 ---
 title: "The saga pattern"
 slug: the-saga-pattern
-seo_title: "The Saga Pattern: Transactions Across Services"
-seo_description: "The saga pattern manages a transaction across services without a distributed transaction: local steps with compensating actions on failure."
+seo_title: "Saga Pattern: Choreography vs Orchestration"
+seo_description: "The two ways to run a saga - choreography and orchestration - plus compensating actions and why consistency across services is eventual, not instant."
 ---
 
 Inside one database, a transaction is easy: several changes either all commit or all roll

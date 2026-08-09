@@ -1,5 +1,6 @@
 ---
 name: "The Laravel HTTP Client: Retries, Pooling and Testing"
+seo_title: "Laravel HTTP Client: Retries and Pooling"
 slug: laravel-http-client-guide
 short_description: "Why 4xx and 5xx do not throw by default, how retry() backoff really works, running requests in parallel with Http::pool, and faking calls in tests."
 language: en

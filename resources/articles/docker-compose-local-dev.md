@@ -1,5 +1,6 @@
 ---
 name: "Docker Compose for Local Development Setup: A Practical Guide"
+seo_title: "Docker Compose for Local Development"
 slug: docker-compose-local-dev
 short_description: "Build a Docker Compose local dev setup with app, MySQL, and Redis: a full compose.yaml explained service by service, healthchecks, and live reload."
 language: en

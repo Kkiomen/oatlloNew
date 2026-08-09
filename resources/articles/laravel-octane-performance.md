@@ -1,5 +1,6 @@
 ---
 name: "Laravel Octane Performance: Boosting Throughput with Swoole and RoadRunner"
+seo_title: "Laravel Octane: Swoole vs RoadRunner Speed"
 slug: laravel-octane-performance
 short_description: "How Laravel Octane performance works with Swoole, RoadRunner and FrankenPHP, plus the state-leak pitfalls nobody warns you about."
 language: en

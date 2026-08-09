@@ -1,5 +1,6 @@
 ---
 name: "PHP Generators and yield: Iterating Without the Memory Cost"
+seo_title: "PHP Generators and yield Explained"
 slug: php-generators-and-yield
 short_description: "How yield builds lazy iterators, what it costs in memory versus arrays, plus yield from, keyed yields, send(), and when to skip it."
 language: en

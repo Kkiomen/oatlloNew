@@ -81,6 +81,7 @@ Each of these is quoted from a real Oatllo article. Do not reproduce the pattern
 ```markdown
 ---
 name: "Article Title With Primary Keyword"
+seo_title: "Short Title For Google"              # optional; only when `name` > 51 chars
 slug: article-title-with-primary-keyword
 short_description: "Compelling meta description, ≤155 chars, primary keyword + benefit."
 image: https://picsum.photos/seed/{slug}/1200/630
@@ -94,6 +95,14 @@ keys_link: "distinctive phrase, another specific phrase, exact concept name"
 
 Rules for frontmatter:
 - `name` — includes the primary keyword, reads naturally, ~50–60 chars ideal.
+  This is the H1 **and**, unless `seo_title` is set, the `<title>` tag.
+- `seo_title` — optional override for the `<title>` tag only; the H1 stays `name`.
+  **Add it whenever `name` is longer than 51 characters**, because the view appends
+  `" | Oatllo"` (9 chars) and Google truncates around 60 — the cut-off tail never
+  reaches the search result. Without this field the only fix was shortening the H1,
+  i.e. damaging the article to fix a meta tag. Keep `seo_title` ≤ 51 chars and put
+  the keyword first. It does **not** change `og:title` (social cards keep the human
+  headline). Audit from 2026-08-09 found 36 of 140 queued articles over the limit.
 - `slug` — lowercase, hyphenated, short, contains the primary keyword. Must be
   unique on the site (it becomes the URL and the filename).
 - `short_description` — the meta description; ≤155 chars. State what the article

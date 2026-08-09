@@ -1,5 +1,6 @@
 ---
 name: "Database Connection Pooling Explained (and Why PHP Handles It Differently)"
+seo_title: "Database Connection Pooling in PHP"
 slug: database-connection-pooling
 short_description: "How database connection pooling really works, why PHP-FPM has no built-in pool, and when PgBouncer or ProxySQL actually helps."
 language: en

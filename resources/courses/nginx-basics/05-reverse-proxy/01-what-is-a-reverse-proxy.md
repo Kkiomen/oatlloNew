@@ -1,8 +1,8 @@
 ---
 title: "What is a reverse proxy"
 slug: what-is-a-reverse-proxy
-seo_title: "Nginx Reverse Proxy Explained: How It Works"
-seo_description: "What an nginx reverse proxy is, how a request flows from browser to nginx to your app, and why you put nginx in front of an application."
+seo_title: "Why Put Nginx in Front of Your App Server"
+seo_description: "What a reverse proxy is and why an application server is a poor front door: how a request flows through nginx, and a minimal proxy config to start from."
 ---
 
 ## Why your app server is a poor front door

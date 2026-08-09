@@ -1,5 +1,6 @@
 ---
 name: "How to Write Meaningful Commit Messages"
+seo_title: "How to Write Good Commit Messages"
 slug: good-commit-messages
 short_description: "A practical guide to good commit messages: the seven rules, Conventional Commits, and how they pay off in git log, blame, and changelogs."
 language: en

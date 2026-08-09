@@ -1,5 +1,6 @@
 ---
 name: "Debouncing vs Throttling in JavaScript: When to Use Each"
+seo_title: "Debounce vs Throttle in JavaScript"
 slug: debounce-vs-throttle-javascript
 short_description: "Debounce vs throttle in JavaScript explained with runnable code, real use cases, and a cheat sheet so you pick the right one every time."
 language: en

@@ -1,5 +1,6 @@
 ---
 name: "PHP 8.4 Property Hooks: What They Are and How to Use"
+seo_title: "PHP 8.4 Property Hooks Explained"
 slug: php-8-4-property-hooks
 short_description: "A practical guide to PHP 8.4 property hooks: get/set syntax, virtual properties, interface requirements, and when they beat plain getters."
 language: en

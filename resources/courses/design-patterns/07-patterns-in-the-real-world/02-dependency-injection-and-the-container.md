@@ -1,7 +1,7 @@
 ---
 title: "Dependency injection and the container"
 slug: dependency-injection-and-the-container
-seo_title: "Dependency Injection in Laravel: Service Container"
+seo_title: "Dependency Injection in Laravel with Type Hints"
 seo_description: "How dependency injection in Laravel works: type-hint an interface, bind it once, and the service container auto-resolves it via constructor injection."
 ---
 

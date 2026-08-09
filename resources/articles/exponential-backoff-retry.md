@@ -1,5 +1,6 @@
 ---
 name: "Building a Robust Retry Strategy with Exponential Backoff Retry"
+seo_title: "Exponential Backoff Retry in PHP"
 slug: exponential-backoff-retry
 short_description: "How to build an exponential backoff retry with jitter that survives real outages: which errors to retry, capping delays, and Retry-After."
 language: en

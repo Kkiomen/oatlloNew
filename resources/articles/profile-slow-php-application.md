@@ -1,5 +1,6 @@
 ---
 name: "How to Profile a Slow PHP Application (Stop Guessing, Start Measuring)"
+seo_title: "How to Profile a Slow PHP Application"
 slug: profile-slow-php-application
 short_description: "Learn how to profile slow PHP the right way: Xdebug, Blackfire, Telescope, and a measure-fix-remeasure method that finds real hotspots."
 language: en

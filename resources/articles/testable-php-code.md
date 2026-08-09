@@ -1,5 +1,6 @@
 ---
 name: "How to Write Testable PHP Code (Without a Framework)"
+seo_title: "How to Write Testable PHP Code"
 slug: testable-php-code
 short_description: "Learn to write testable PHP code without a framework: dependency injection, injecting time and randomness, and a plain PHPUnit test."
 language: en

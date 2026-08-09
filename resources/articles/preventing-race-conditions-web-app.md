@@ -1,5 +1,6 @@
 ---
 name: "Preventing Race Conditions in a Web App: Locks, Atomics, and Idempotency"
+seo_title: "Preventing Race Conditions in Web Apps"
 slug: preventing-race-conditions-web-app
 short_description: "A practical guide to fixing the race condition web app bug: unique constraints, atomic updates, row locks, cache locks, and idempotency keys."
 language: en

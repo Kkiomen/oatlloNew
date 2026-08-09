@@ -1,5 +1,6 @@
 ---
 name: "Laravel Notifications: Mail, Slack, and Database Channels"
+seo_title: "Laravel Notifications: Mail, Slack, DB"
 slug: laravel-notifications
 short_description: "A hands-on guide to Laravel notifications: send the same message over mail, Slack, and database, queue it, and read it back in the UI."
 language: en

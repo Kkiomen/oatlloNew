@@ -1,5 +1,6 @@
 ---
 name: "Laravel API Resources vs Fractal: Serializing JSON the Right Way"
+seo_title: "Laravel API Resources vs Fractal"
 slug: laravel-api-resources-vs-fractal
 short_description: "Laravel API Resources vs Fractal for JSON serialization: code, trade-offs, a comparison table, and a clear pick for your next API."
 language: en

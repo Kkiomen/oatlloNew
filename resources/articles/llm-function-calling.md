@@ -1,5 +1,6 @@
 ---
 name: "LLM Function Calling: Building AI Tools with the Claude API"
+seo_title: "LLM Function Calling with the Claude API"
 slug: llm-function-calling
 short_description: "A hands-on guide to LLM function calling: define tools, run the tool-use loop, and build real AI tools in PHP with the Claude API."
 language: en
