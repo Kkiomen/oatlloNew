@@ -27,6 +27,11 @@ do tygodnia, a nie tylko oglądać jeden wykres w panelu.
   zanotowaliśmy tydzień wcześniej. Surowe CSV zostają w `raw/`, więc zawsze da się to odtworzyć.
 - **Coverage i Performance liczą co innego.** Wyświetlenia w Coverage (kolumna w `Wykres.csv`) to
   inny szereg niż w Performance - nie zestawiać ich w jednej tabeli.
+- **Zanim wyjaśnisz zero wyświetleń SEO-em, sprawdź, czy strona w ogóle stoi.** 23.08 artykuł
+  z terminem 19.08 miał zero wyświetleń, bo zwracał **404**: produkcja była o commit do tyłu
+  i publikowała wg starego harmonogramu. Przy każdej analizie warto puścić `curl -I` po kilku
+  najświeższych slugach z `resources/articles/` i sprawdzić, czy są w `sitemap.xml`. To 10 sekund,
+  a odróżnia „Google nas nie indeksuje" od „tej strony nie ma".
 - **Eksport 3-miesięczny z 2026-07-14** (`raw/2026-07-14-performance-3m/`) to historyczna baza
   sprzed przejścia na cadence tygodniowy. Porównywalny tylko po średnich dziennych i po CTR.
 
@@ -39,6 +44,17 @@ Performance = okno 7 dni. Coverage = stan na dzień eksportu.
 | 2026-07-14/15 (baza 3M) | 13.04-12.07 | 93 | 106157 | 0.09% | ~13 | 48 | 209 | 71 |
 | **2026-07-27** | 19-25.07 | **15** | **6249** | **0.24%** | **17.5** | **183** | **119** | **84** |
 | **2026-08-09** | 01-07.08 | **19** | **15438** | **0.12%** | **20.9** | **260** | **136** | **56** |
+| _(wycinek)_ | 08-14.08 | 9 | 14819 | 0.06% | 25.6 | 320 | 134-152 | - |
+| **2026-08-23** | 15-21.08 | **8** | **12056** | **0.07%** | **29.5** | **371** | **148** | **52** |
+
+Eksport z 23.08 zrobiono z filtrem **„Ostatnich 28 dni"** (25.07-21.08), bo poprzednia analiza jest
+sprzed dwóch tygodni i okno 7-dniowe zostawiłoby dziurę. Wiersze wyżej to **wycinki 7-dniowe
+z `Wykres.csv`** tego eksportu; dzienne szeregi zgadzają się z eksportem z 09.08 co do jednego
+kliknięcia, więc wycinanie jest legalne. Pozycja w tych dwóch wierszach to **średnia ważona
+wyświetleniami**, a nie średnia z dziennych średnich (GSC liczy tak samo, ale wcześniejsze wiersze
+przepisano wprost z panelu - stąd możliwa różnica na pierwszym miejscu po przecinku).
+Przekroje strona/zapytanie/kraj w `raw/2026-08-23-performance-28d/` dotyczą **całych 28 dni**,
+nie wiersza z tabeli.
 
 Wiersz „baza 3M" jest tam dla kontekstu, nie do arytmetyki tydzień-do-tygodnia: 106157 wyświetleń
 to 91 dni (~1167/dzień), a 6249 to 7 dni (~893/dzień).

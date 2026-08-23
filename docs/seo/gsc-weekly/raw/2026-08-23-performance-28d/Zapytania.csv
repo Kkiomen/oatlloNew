@@ -1,0 +1,1010 @@
+Najczęstsze zapytania,Kliknięcia,Wyświetlenia,CTR,Pozycja
+php match,1,452,0.22%,11.21
+encapsulation in php,1,10,10%,18.1
+php object properties,1,6,16.67%,8.33
+php class construct,1,3,33.33%,13
+git reset,0,149,0%,24.05
+rabbitmq troubleshooting,0,117,0%,19.97
+issues with rabbitmq,0,117,0%,26.92
+git remove,0,102,0%,22.47
+rabbitmq quorum queues,0,97,0%,29.02
+what is rabbitmq,0,94,0%,32.49
+git remove file,0,91,0%,23.49
+git rebase vs merge,0,91,0%,25.41
+git reset soft,0,79,0%,28.35
+rebase vs merge,0,72,0%,25.53
+remove file from git,0,68,0%,25.18
+git remove files,0,68,0%,25.91
+git delete,0,66,0%,18.82
+quorum queues,0,64,0%,31.48
+what is redis,0,64,0%,57.38
+php optional parameters,0,62,0%,8.52
+match php,0,62,0%,12.87
+php class constructor optional parameters,0,62,0%,19.45
+php for loop,0,62,0%,29.65
+git add specific file,0,60,0%,22.53
+i in solid,0,58,0%,7.43
+git unstage all,0,58,0%,41.4
+git reset head soft,0,55,0%,26.22
+git reset hard,0,55,0%,31.13
+php optional parameter,0,51,0%,9.18
+php class constructor,0,51,0%,18.04
+remove files from git,0,51,0%,24.29
+database disaster recovery,0,50,0%,67.02
+git clone repository,0,46,0%,55.54
+amend commit,0,45,0%,35.64
+git hard reset,0,43,0%,21.53
+git soft reset,0,43,0%,32.42
+git undo push,0,43,0%,50.56
+persistent queue rabbitmq,0,41,0%,23.59
+clone git repository,0,41,0%,34.76
+git undo commit before push,0,41,0%,66.39
+git revert commit after push,0,40,0%,53
+quorum queues rabbitmq,0,39,0%,33.23
+remove git from folder,0,39,0%,38.67
+git commit specific files,0,37,0%,9.84
+php constructor,0,37,0%,17.35
+redis data types,0,37,0%,28.22
+rabbitmq quorum,0,37,0%,33.73
+php match statement,0,36,0%,10.72
+git rm,0,36,0%,22.47
+rabbitmq queue type classic vs quorum,0,36,0%,24.89
+rabbitmq classic queue vs quorum,0,36,0%,25.25
+quorum queues vs classic queue,0,36,0%,26.17
+rabbitmq-queues grow,0,36,0%,32.06
+rabbitmq queue type classic vs quorum vs stream,0,36,0%,32.67
+monitor rabbitmq,0,36,0%,79.47
+php function optional parameter,0,35,0%,7.66
+php class constructor overloading,0,35,0%,20.43
+rabbitmq quorum queue,0,35,0%,30.46
+what is rabbitmq used for?,0,35,0%,42.8
+what is redis used for,0,35,0%,60.49
+difference between class and object in php,0,34,0%,18.65
+rabbitmq routing key wildcard,0,34,0%,22.71
+what is rabbitmq server,0,34,0%,33.18
+quorum queue,0,34,0%,35.76
+what is rabbitmq used for,0,34,0%,42.12
+rabbitmq topic,0,34,0%,42.71
+what is redis cache,0,34,0%,57.5
+match in php,0,33,0%,17.61
+rabbitmq quorum vs classic,0,33,0%,28.91
+what is rabbitmq?,0,33,0%,32.94
+quorum queue rabbitmq,0,33,0%,34.64
+quorum rabbitmq,0,33,0%,36.27
+rabbitmq usage,0,33,0%,36.52
+git reset last commit,0,33,0%,65.24
+systemctl reload nginx reload configuration without dropping connections,0,32,0%,9.03
+php match syntax,0,32,0%,9.19
+php class constructor public or private,0,32,0%,12.47
+php class example,0,32,0%,24.59
+redis queue,0,32,0%,25.09
+rabbitmq classic vs quorum,0,32,0%,28.16
+reset git,0,32,0%,37.34
+rabbitmq topic exchange,0,32,0%,39.09
+php application performance,0,32,0%,45.47
+how does redis work,0,32,0%,53.78
+git clone,0,32,0%,54.22
+git undo last commit,0,32,0%,63.38
+how to monitor rabbitmq,0,32,0%,72.12
+php class constructor with parameters,0,31,0%,16.26
+rabbitmq quorum queues vs classic,0,31,0%,25.74
+x-delivery-count rabbitmq,0,31,0%,30.94
+x-queue-type quorum,0,30,0%,16.97
+rabbitmq troubleshooting issues,0,30,0%,25.67
+git reset hard head,0,30,0%,34.93
+git revert last commit,0,30,0%,67.6
+undo the last commit git,0,30,0%,72.2
+rabbitmq monitoring,0,30,0%,82.3
+php class extends properties,0,29,0%,15.07
+php class constructor example,0,29,0%,19.59
+rabbitmq queue vs exchange,0,29,0%,24.14
+git remove file from tracking,0,29,0%,28.21
+what is rabbitmq for,0,29,0%,35.72
+when to use rabbitmq,0,29,0%,36.21
+rabbitmq docker,0,29,0%,42.07
+rabbitmq uses,0,29,0%,42.31
+git revert to last commit,0,29,0%,70.1
+php class constructor return value,0,28,0%,12.54
+php constant naming convention,0,28,0%,18.61
+redis keys,0,28,0%,21.32
+git clone example,0,28,0%,50.82
+git unstaged files,0,28,0%,54.54
+rabbitmq dashboard,0,28,0%,56.21
+git undo local commit,0,28,0%,61.71
+git uncommit last commit,0,28,0%,62.39
+constructor and destructor in php,0,27,0%,7.7
+php match function,0,27,0%,9.93
+php variable scope foreach,0,27,0%,17.04
+php class example with constructor,0,27,0%,19.78
+php array of arrays,0,27,0%,24.41
+git merge vs rebase,0,27,0%,25.81
+rabbitmq use,0,27,0%,39.33
+code smells,0,27,0%,46.11
+removing last commit git,0,27,0%,56.41
+undoing git commit,0,27,0%,67.89
+git uncommit,0,27,0%,73.52
+php manual for loop syntax,0,26,0%,10
+git removing files,0,26,0%,23.92
+rebase and merge,0,26,0%,28.12
+rabbitmq topics,0,26,0%,43.54
+how to clone git repository,0,26,0%,45.77
+run rabbitmq in docker,0,26,0%,47.38
+php enum,0,26,0%,53.5
+git undo a local commit,0,26,0%,80
+php user-defined function extra arguments allowed php 8,0,25,0%,9.24
+php extra arguments user-defined function allowed php 8,0,25,0%,9.68
+php variable scope,0,25,0%,32.52
+php variable in string single quote,0,25,0%,34.4
+how to clone a git repository,0,25,0%,53.6
+git undo a commit,0,25,0%,71
+uncommit git,0,25,0%,72.56
+php matches,0,24,0%,13.62
+php while,0,24,0%,14.29
+php legacy code moderniseren,0,24,0%,18.04
+git reset soft head 1,0,24,0%,24.62
+commit amend,0,24,0%,34.42
+git revert a commit after push,0,24,0%,52.75
+cloning repository git,0,24,0%,53.5
+undo last commit git,0,24,0%,63
+php object class example,0,23,0%,19.57
+for loop php,0,23,0%,32.87
+git undo last commit keep changes,0,23,0%,45.87
+is redis a database,0,23,0%,55.17
+what does redis do,0,23,0%,57.61
+troubleshooting rabbitmq,0,22,0%,22.64
+speed up php,0,22,0%,25.5
+git reset soft head,0,22,0%,30.77
+php class variable scope,0,22,0%,31.82
+redis,0,22,0%,31.95
+rebase merge,0,22,0%,32.59
+git remove last commit,0,22,0%,58.59
+revert last commit git,0,22,0%,71.18
+nginx expires 1y add_header cache-control public immutable for hashed assets,0,21,0%,4.14
+php variable scope javatpoint,0,21,0%,36.29
+clone a git repository,0,21,0%,39.19
+how to clone git,0,21,0%,50.62
+git delete last commit,0,21,0%,52.95
+git rm file,0,20,0%,29.25
+git cloning,0,20,0%,50.45
+monitoring rabbitmq,0,20,0%,75.6
+fastcgi_pass,0,19,0%,8.37
+php match default,0,19,0%,10.05
+php classes,0,19,0%,30.89
+enum php,0,19,0%,48.79
+clone a git,0,19,0%,50
+undo commit,0,19,0%,50
+remove last commit git,0,19,0%,56.84
+php user-defined function extra arguments allowed php 8 manual,0,18,0%,8.44
+php manual match expression introduced php 8.0,0,18,0%,10.17
+php array index,0,18,0%,25.94
+git delete file,0,18,0%,27.11
+cherry picking commits,0,18,0%,31.56
+php variable scope try catch,0,18,0%,35.28
+install docker,0,18,0%,50.39
+undo last commit,0,18,0%,56.33
+php match multiple values,0,17,0%,7.53
+php __construct constructor official manual,0,17,0%,8.76
+php match expression introduced in php 8 manual,0,17,0%,8.82
+php class variables example,0,17,0%,20.82
+git commit amend example,0,17,0%,33.12
+redis pub sub,0,17,0%,34.12
+amend a commit,0,17,0%,34.18
+how to commit all files in git,0,17,0%,36.06
+php variable scope inside function,0,17,0%,45.24
+performance application php,0,17,0%,77
+maxmemory-policy allkeys-lru,0,16,0%,8.5
+how to commit only one file in git,0,16,0%,8.69
+php manual match expression official,0,16,0%,9.94
+redis decr atomic,0,16,0%,10.06
+php destructor,0,16,0%,11.31
+git add specific files,0,16,0%,17.81
+merge vs rebase,0,16,0%,25
+what is a message queue,0,16,0%,36.19
+php variable scope in function,0,16,0%,48.06
+docker install,0,16,0%,49.44
+how to install docker,0,16,0%,49.69
+git clone a repository,0,16,0%,50
+clone git,0,16,0%,54.25
+what is redis cache used for,0,16,0%,69.25
+php optional arguments,0,15,0%,8.47
+php match expression,0,15,0%,10.2
+php define constant in class,0,15,0%,17.33
+git rebase vs git merge,0,15,0%,24.87
+remove file git,0,15,0%,26.8
+php performance tips,0,15,0%,32.27
+php loops,0,15,0%,41.87
+clone a repository,0,15,0%,60.67
+git undo commit,0,15,0%,64.93
+keepalive_timeout,0,14,0%,4.14
+echo php version,0,14,0%,7.14
+php match true,0,14,0%,8.5
+proxy_set_header,0,14,0%,10.36
+php class constructor array,0,14,0%,16.29
+php class constant,0,14,0%,20.07
+git rm a file,0,14,0%,27.71
+rm file from git,0,14,0%,28.93
+php performance,0,14,0%,48
+remove last commit,0,14,0%,54.07
+redis meaning,0,14,0%,61.64
+git cancel commit,0,14,0%,62.86
+php destructor called at end of script manual,0,13,0%,8.69
+php manual match expression introduced php 8,0,13,0%,9.23
+php inf constant manual,0,13,0%,9.92
+x-message-ttl,0,13,0%,11.46
+git commit only one file,0,13,0%,16.31
+php class inheritance parent constructor,0,13,0%,18.38
+git merge vs git rebase,0,13,0%,26.31
+redis delete key,0,13,0%,26.77
+git commit --amend,0,13,0%,32.15
+how to fork a repo in git,0,13,0%,38.08
+git cherry pick from another branch,0,13,0%,40.85
+php loop,0,13,0%,41.15
+php manual object operator -> properties methods,0,12,0%,5.83
+types of constructor in php,0,12,0%,7.5
+s in solid,0,12,0%,8.08
+git commit only specific files,0,12,0%,8.5
+php __dir__ constant manual,0,12,0%,9
+redis get key value,0,12,0%,11.25
+nginx keepalive_timeout,0,12,0%,11.67
+rabbitmq high availability,0,12,0%,19.83
+php class constant array,0,12,0%,19.92
+whats rabbitmq,0,12,0%,32.42
+php variable scope outside function,0,12,0%,37.67
+git commit amend,0,12,0%,38.25
+how to git clone,0,12,0%,48.75
+what is git clone,0,12,0%,52.17
+git clone repo command,0,12,0%,54.58
+laravel horizon,0,12,0%,60.5
+idempotency key,0,12,0%,65.25
+git staging,0,12,0%,68.58
+413 request entity too large,0,12,0%,77.92
+rabbitmq ready vs unacked,0,11,0%,3.36
+rabbitmq vs kafka vs redis vs sqs,0,11,0%,5.82
+php match expression introduced php 8 manual,0,11,0%,9.45
+php optional,0,11,0%,9.91
+maintenance code php,0,11,0%,11
+git diff staged,0,11,0%,11.91
+php class properties,0,11,0%,13
+php class extends parent constructor,0,11,0%,18.27
+function with parameter in php,0,11,0%,19.27
+docker image vs container,0,11,0%,22.91
+nginx redirect http to https,0,11,0%,23.27
+git commit all,0,11,0%,26
+skill enhancement,0,11,0%,29.27
+rabbitmq message queuing,0,11,0%,31
+redis cli remote host,0,11,0%,36.64
+php performance optimization,0,11,0%,44.55
+spublish,0,11,0%,59.18
+git command clone repository,0,11,0%,59.36
+git config user,0,11,0%,60.36
+revert last commit,0,11,0%,69.36
+what is i in solid,0,10,0%,5.4
+x-message-ttl rabbitmq,0,10,0%,9.1
+redis del returns 0 if key does not exist official docs,0,10,0%,9.3
+php function default value,0,10,0%,9.4
+php properties,0,10,0%,11.2
+php array of array,0,10,0%,19.9
+git add to last commit,0,10,0%,23.4
+php variable scope if statement,0,10,0%,24.4
+git commit one file,0,10,0%,25.4
+nginx config,0,10,0%,27.8
+nginx problems,0,10,0%,31.8
+git reset --hard,0,10,0%,32
+git cherry-pick from another branch,0,10,0%,35.6
+git config local,0,10,0%,47.7
+enums php,0,10,0%,50.7
+php enumerations,0,10,0%,50.7
+disaster recovery database,0,10,0%,56.8
+git user config,0,10,0%,60.5
+cancel commit git,0,10,0%,61.8
+git clone command,0,10,0%,68.3
+dockerfile,0,10,0%,74.7
+database disaster recovery planning,0,10,0%,78.8
+php destructor called at script shutdown manual,0,9,0%,5.67
+unacked meaning,0,9,0%,6
+laravel 11 redis facade hgetall keys scan documentation,0,9,0%,6.78
+git diff vs git diff --staged,0,9,0%,8
+php extra arguments user-defined function allowed php 8 manual,0,9,0%,8.11
+php manual for loop syntax official,0,9,0%,8.67
+php match example,0,9,0%,9.22
+rabbitmq default exchange,0,9,0%,9.67
+rabbitmq x-message-ttl,0,9,0%,9.78
+systemctl reload nginx reloads configuration without dropping connections,0,9,0%,10
+php manual php_eol constant,0,9,0%,10.44
+rabbitmq unacked messages,0,9,0%,12
+php function parameters,0,9,0%,14.33
+php class constant visibility,0,9,0%,19
+php iterate array,0,9,0%,20.22
+git rm cached,0,9,0%,22.78
+php escape quotes,0,9,0%,26.67
+nginx redirect to https,0,9,0%,27.33
+php performance tuning,0,9,0%,36.44
+git revert pushed commit,0,9,0%,41.33
+how to cherry pick,0,9,0%,46.44
+git unstage commit,0,9,0%,49.78
+for php loop,0,9,0%,50
+git install command line,0,9,0%,62.78
+git config name,0,9,0%,65.11
+what type of database is redis,0,9,0%,78.11
+php manual constructors and destructors parent::__construct inheritance,0,8,0%,6.88
+php array_map preserves keys one array manual,0,8,0%,7.5
+php optional argument,0,8,0%,7.75
+php manual constructors and destructors parent::__construct,0,8,0%,8.38
+php constructor cannot return value manual,0,8,0%,9
+return match php,0,8,0%,9
+how to commit specific files in git,0,8,0%,10
+redis del,0,8,0%,11.75
+redis lpush,0,8,0%,13.88
+php while loop,0,8,0%,18.88
+indexed array in php,0,8,0%,19.25
+php class constant vs static,0,8,0%,22
+dockerignore,0,8,0%,22.75
+git reset head 1,0,8,0%,23.25
+git delete a file,0,8,0%,27.88
+amend last commit,0,8,0%,29
+classes in php,0,8,0%,30.5
+git reset head,0,8,0%,33.12
+rabbitmq queue types,0,8,0%,35.62
+rabbitmq cluster,0,8,0%,37.25
+for loop in php,0,8,0%,38.25
+rabbitmq training,0,8,0%,38.5
+loop in php,0,8,0%,39.88
+cherry-pick commit from another branch,0,8,0%,40.38
+how to use git clone,0,8,0%,42.5
+clone repository git,0,8,0%,43
+php enum type,0,8,0%,49.38
+php-enum,0,8,0%,52.75
+redis cli commands,0,8,0%,55.5
+git config set user,0,8,0%,57.88
+redis-cli,0,8,0%,58.88
+git user settings,0,8,0%,63.25
+why use redis,0,8,0%,65.12
+php manual object operator -> property method,0,7,0%,7.71
+php optional function parameters,0,7,0%,8
+rabbitmqctl commands,0,7,0%,8.43
+php return match,0,7,0%,9.29
+php match case,0,7,0%,9.86
+php 8 extra arguments to user-defined function allowed,0,7,0%,10.14
+php manual object operator -> property method access,0,7,0%,10.14
+redis decr atomic operation documentation,0,7,0%,10.14
+php 8 user-defined function extra arguments allowed,0,7,0%,10.86
+match case php,0,7,0%,11.14
+php parameters,0,7,0%,11.86
+php default parameter,0,7,0%,12
+php function parameter,0,7,0%,13.43
+redis lpop,0,7,0%,14.14
+constructor php,0,7,0%,20
+php named arguments,0,7,0%,22
+git move,0,7,0%,22.86
+constants php,0,7,0%,23.14
+git commit part of file,0,7,0%,24.86
+antrean pesan,0,7,0%,25.86
+git reset head hard,0,7,0%,28.57
+redis enable authentication,0,7,0%,28.71
+class in php,0,7,0%,31.86
+git amend last commit,0,7,0%,33.43
+cherry pick a commit from another branch,0,7,0%,40
+clone git repo,0,7,0%,40.57
+php for i loop,0,7,0%,44.29
+redis flushall,0,7,0%,45.57
+redis command line,0,7,0%,46
+git undo commit keep changes,0,7,0%,49.86
+github clone repo,0,7,0%,49.86
+git clone repo,0,7,0%,51.43
+how to clone a repository from github,0,7,0%,52.43
+git configure local,0,7,0%,53.43
+git set user,0,7,0%,53.71
+install git terminal,0,7,0%,54.43
+when to use redis,0,7,0%,55.71
+git abort merge,0,7,0%,56.86
+redis cli,0,7,0%,58.43
+redis persistence,0,7,0%,59.14
+speed up php website,0,7,0%,65.43
+php di lifetime,0,6,0%,4.33
+php array_map preserves keys single array manual,0,6,0%,8
+php manual constructors and destructors inheritance parent::__construct,0,6,0%,8.5
+systemctl reload nginx,0,6,0%,8.67
+php manual return statement global scope,0,6,0%,9
+redis maxmemory-policy allkeys-lru,0,6,0%,9.17
+nginx root directive maps uri to filesystem path,0,6,0%,9.5
+optional parameter php,0,6,0%,9.67
+php match expression manual,0,6,0%,9.67
+x-expires rabbitmq,0,6,0%,9.67
+redis decr command atomic,0,6,0%,9.83
+object properties in php,0,6,0%,10
+php __destruct end of script manual,0,6,0%,10
+redis del command returns number of keys removed official docs,0,6,0%,10
+php extra arguments to user-defined function allowed php 8,0,6,0%,10.17
+php __construct,0,6,0%,11.17
+php function arguments,0,6,0%,12.17
+matches php,0,6,0%,14.5
+php parent constructor,0,6,0%,17.17
+php class variables,0,6,0%,19.17
+php constants,0,6,0%,20.67
+nginx global directives,0,6,0%,20.83
+git add change to last commit,0,6,0%,21.17
+php named parameters,0,6,0%,21.17
+x-real-ip,0,6,0%,22.17
+add changes to last commit,0,6,0%,23.17
+git stash show diff,0,6,0%,24.17
+nginx configuration directives,0,6,0%,24.33
+redis list,0,6,0%,24.33
+php loop through array,0,6,0%,24.83
+how to cherry pick a commit,0,6,0%,26
+array of arrays php,0,6,0%,26.17
+redis delete keys by pattern,0,6,0%,26.17
+rebase vs merge in git,0,6,0%,26.67
+difference between rebase and merge,0,6,0%,26.83
+git remove files from tracking,0,6,0%,26.83
+rabbitmq vs,0,6,0%,26.83
+difference between merge and rebase,0,6,0%,27.17
+class and object in php,0,6,0%,27.67
+php escape quote,0,6,0%,29.33
+git reset --soft,0,6,0%,29.5
+which php version,0,6,0%,30
+docker ignore,0,6,0%,30.83
+git edit last commit message,0,6,0%,32
+cherry pick commit git,0,6,0%,32.17
+rabbitmq ui,0,6,0%,32.5
+maintenance framework php,0,6,0%,33.33
+php optimization tools,0,6,0%,35
+git amend,0,6,0%,36.5
+git cherry pick commit,0,6,0%,37.83
+loop for php,0,6,0%,38.67
+what is code smell,0,6,0%,39.5
+loop php,0,6,0%,40
+github cloning repository,0,6,0%,47.5
+redis-cli command,0,6,0%,48.67
+how to clone repository from github,0,6,0%,50.17
+redis clear database,0,6,0%,51
+code smell,0,6,0%,51.5
+how to clone repo,0,6,0%,51.5
+how to clone github repository,0,6,0%,52.17
+php speed optimization,0,6,0%,52.33
+git clone examples,0,6,0%,52.83
+cloning a git repository,0,6,0%,54.17
+what is a git remote,0,6,0%,54.33
+git clone repository command,0,6,0%,59
+undo git commit,0,6,0%,59.5
+enumeration in php,0,6,0%,61.33
+github undo last commit,0,6,0%,62.83
+uncommit last commit,0,6,0%,65.33
+redis what is,0,6,0%,68.33
+redis monitor,0,6,0%,69.83
+413 request entity too large nginx,0,6,0%,76
+http localhost my_project index php,0,5,0%,4.6
+dockerignore example,0,5,0%,5.8
+how to commit only specific files in git,0,5,0%,6.4
+redis://127.0.0.1:6379/1,0,5,0%,6.4
+php object operator method call manual,0,5,0%,6.8
+rabbitmq at least once,0,5,0%,6.8
+rabbitmq binding key vs routing key,0,5,0%,7.6
+array_walk vs array_map,0,5,0%,8.4
+construct and destruct in php,0,5,0%,8.6
+php 8 user-defined function extra arguments allowed documentation,0,5,0%,8.6
+php 8 user-defined function extra arguments allowed manual,0,5,0%,9
+"nginx expires 1y add_header cache-control public immutable for hashed 
+assets best practice",0,5,0%,9.2
+redis del command returns integer number of keys removed official docs,0,5,0%,9.4
+php manual php_eol predefined constant,0,5,0%,9.6
+laravel 11 redis facade hgetall hmset keys scan documentation,0,5,0%,9.8
+php array iteration order insertion order manual,0,5,0%,9.8
+php match expression introduced version php manual,0,5,0%,9.8
+redis set key value,0,5,0%,9.8
+php 8 user-defined function extra arguments ignored documentation,0,5,0%,10.4
+nginx proxy_set_header,0,5,0%,10.8
+php global constant,0,5,0%,10.8
+principles of s,0,5,0%,12.4
+php classes constructor,0,5,0%,13.4
+php override constructor,0,5,0%,13.6
+construct php,0,5,0%,15.4
+constructor in php,0,5,0%,15.4
+php global constants,0,5,0%,15.8
+php arguments,0,5,0%,16
+php array iterate,0,5,0%,16.4
+php parameter,0,5,0%,16.4
+rabbitmq vs kafka vs redis,0,5,0%,17.8
+rabbitmq cli,0,5,0%,19.6
+while php,0,5,0%,19.8
+git commit rm,0,5,0%,20
+what is object in php,0,5,0%,20
+rabbitmq clustering,0,5,0%,20.6
+php legacy code,0,5,0%,20.8
+redis lists,0,5,0%,22
+secure redis server,0,5,0%,22.4
+constants in php,0,5,0%,22.6
+maxmemory,0,5,0%,22.8
+php defined constants,0,5,0%,22.8
+redis cli remove key,0,5,0%,23
+matching php,0,5,0%,23.6
+git reset --soft head 1,0,5,0%,25
+nginx listen directive,0,5,0%,25.4
+rabbitmq message format,0,5,0%,26.2
+staged changes,0,5,0%,26.6
+php classes example,0,5,0%,27.2
+what is exchange in rabbitmq,0,5,0%,29.6
+git reset soft head1,0,5,0%,30
+git edit last commit,0,5,0%,30.2
+destructeur php,0,5,0%,31.8
+git branch d,0,5,0%,35.6
+redis delete all keys,0,5,0%,35.8
+git merge and rebase,0,5,0%,36
+yagni,0,5,0%,37
+git amend previous commit,0,5,0%,37.8
+rabbitmq course,0,5,0%,38.4
+cherry pick commit from another branch,0,5,0%,39.2
+git rebase and merge,0,5,0%,41.4
+docker rabbitmq management,0,5,0%,42.4
+php scope,0,5,0%,42.4
+how to install git,0,5,0%,43
+xampp php,0,5,0%,44.4
+cloning github repository,0,5,0%,46
+git unstage a commit,0,5,0%,47.6
+loops in php,0,5,0%,48
+php enumeration,0,5,0%,48.2
+php for-loop,0,5,0%,49.2
+docker installation,0,5,0%,49.8
+how to clone a github repository,0,5,0%,49.8
+github clone repository,0,5,0%,50
+git rebase merge,0,5,0%,51.6
+how to undo last commit,0,5,0%,53
+how to clone git repo,0,5,0%,54.6
+enumeration php,0,5,0%,59.8
+revert last commit github,0,5,0%,61.6
+how to clear redis cache,0,5,0%,61.8
+feature branch workflow,0,5,0%,64.2
+redis monitoring,0,5,0%,66
+undo commit git,0,5,0%,66.8
+database recovery plan,0,5,0%,78.8
+database disaster recovery best practices,0,5,0%,83.2
+optional php,0,4,0%,3.5
+redis atomic counter,0,4,0%,4.25
+git commit specific file,0,4,0%,5
+what is constructor and destructor in php,0,4,0%,6.5
+php 8.0 for loop syntax manual,0,4,0%,6.75
+php array_column objects public properties manual,0,4,0%,8
+php foreach object public properties manual,0,4,0%,8
+php function optional argument,0,4,0%,8.25
+sudo systemctl reload nginx,0,4,0%,8.25
+"""rabbitmq"" -""hiring"" -""job"" -site:reddit.com -site:twitter.com -site:x.com 
+-site:wykop.pl -site:tripadvisor.com -site:youtube.com -site:yelp.com 
+-site:booking.com -site:facebook.com -site:instagram.com -site:tiktok.com",0,4,0%,8.5
+php do while,0,4,0%,8.5
+php extra arguments user-defined function php 8 manual,0,4,0%,9
+getter and setter in php,0,4,0%,9.5
+php list assignment object property manual,0,4,0%,9.5
+php manual constructors and destructors official,0,4,0%,9.5
+php class destructor,0,4,0%,9.75
+php user-defined functions extra arguments allowed manual,0,4,0%,9.75
+git diff only staged,0,4,0%,10
+"nginx expires 1y add_header cache-control public immutable hashed assets 
+best practice",0,4,0%,10
+rabbitmq x-expires,0,4,0%,10
+redis lpush vs rpush,0,4,0%,10
+include fastcgi_params,0,4,0%,10.5
+keepalive_timeout nginx,0,4,0%,10.5
+php __destruct called at end of script manual,0,4,0%,10.5
+server_tokens off,0,4,0%,10.5
+proxy_set_header nginx,0,4,0%,10.75
+php static closure,0,4,0%,11.5
+php class property,0,4,0%,12.75
+rabbitmq vs redis vs kafka,0,4,0%,13
+php object type,0,4,0%,13.25
+redis get value,0,4,0%,13.25
+php define global constant,0,4,0%,13.5
+php class tutorial pdf,0,4,0%,14.25
+php object example,0,4,0%,15.5
+php class methods,0,4,0%,16
+redis string,0,4,0%,16
+class php constructor,0,4,0%,16.5
+php konstruktor,0,4,0%,16.5
+php variable types list,0,4,0%,16.5
+php do while loop,0,4,0%,17
+php for loop syntax,0,4,0%,17.25
+nginx directives,0,4,0%,18.25
+php iterate through array,0,4,0%,18.5
+redis delete keys,0,4,0%,19
+index array in php,0,4,0%,19.25
+proxy set header host,0,4,0%,19.25
+php while continue,0,4,0%,19.5
+php typed properties,0,4,0%,20
+loop through array php,0,4,0%,20.75
+php array value,0,4,0%,21
+laravel horizon alternative,0,4,0%,21.75
+rabbitmq exchange vs queue,0,4,0%,22.25
+php di,0,4,0%,22.75
+s solid,0,4,0%,23.5
+rabbitmqctl,0,4,0%,24.25
+escape quotes php,0,4,0%,24.5
+set redis password,0,4,0%,24.5
+object in php,0,4,0%,25
+rm git,0,4,0%,25.5
+redis key value,0,4,0%,25.75
+git cherry pick commit from another branch,0,4,0%,26
+php array in array,0,4,0%,26
+php classes tutorial,0,4,0%,27
+objects in php,0,4,0%,27.25
+rabbitmq durable,0,4,0%,27.25
+php objects,0,4,0%,27.75
+git-reset,0,4,0%,28
+what does rabbitmq do,0,4,0%,28.5
+git cherry pick no commit,0,4,0%,29.5
+redis del key,0,4,0%,30.5
+how to cherry pick a commit from another branch,0,4,0%,33.75
+cherry-pick a commit,0,4,0%,34
+redis pub/sub,0,4,0%,35
+git reset --soft head1,0,4,0%,35.5
+redis pubsub,0,4,0%,35.75
+php for loops,0,4,0%,36
+php factory pattern,0,4,0%,37.5
+reset hard git,0,4,0%,38.25
+git clone github,0,4,0%,38.5
+clone from github,0,4,0%,39.5
+php for xampp,0,4,0%,40.25
+loops php,0,4,0%,41.25
+php in xampp,0,4,0%,41.25
+what does git reset do,0,4,0%,41.25
+increase php performance,0,4,0%,44
+what does redis mean,0,4,0%,44.5
+how to clone from github,0,4,0%,44.75
+cloning github repo,0,4,0%,47.25
+flush redis,0,4,0%,47.5
+for loops php,0,4,0%,47.5
+how to clone a repository in git,0,4,0%,47.5
+how redis works,0,4,0%,48.5
+reset commit,0,4,0%,48.5
+clone github repo,0,4,0%,50.75
+git clone from repository,0,4,0%,51.75
+php for each loop,0,4,0%,51.75
+git-clone,0,4,0%,52.25
+git unstaging,0,4,0%,52.5
+what is redis for,0,4,0%,52.5
+git push revert commit,0,4,0%,53.25
+amqp routing key,0,4,0%,54.5
+git reset commit,0,4,0%,55.5
+install git command line,0,4,0%,57.5
+github cancel last commit,0,4,0%,57.75
+redis-cli commands,0,4,0%,58.5
+revert last commit in git after push,0,4,0%,58.75
+cloning a repository,0,4,0%,59.25
+revert git commit before push,0,4,0%,59.5
+db disaster recovery,0,4,0%,62
+undo commits git,0,4,0%,65.5
+hadoop disaster recovery,0,4,0%,67.25
+git clone command line,0,4,0%,67.5
+git undo a commit after push,0,4,0%,69.25
+how to uncommit in git,0,4,0%,69.5
+monitor redis,0,4,0%,75.25
+git revert last commit local,0,4,0%,76.25
+software design,0,4,0%,78.5
+disaster recovery data,0,4,0%,88.25
+php time limit,0,3,0%,4
+git soft reset head 1,0,3,0%,4.67
+commit only one file git,0,3,0%,7
+x-expires,0,3,0%,7
+horizon supervisor,0,3,0%,7.67
+php manual for loop official,0,3,0%,8
+php_version,0,3,0%,8
+routing key in rabbitmq,0,3,0%,8
+unacked,0,3,0%,8.33
+"nginx add_header cache-control immutable expires 1y hashed assets best 
+practice",0,3,0%,8.67
+"""queue-fair.com"" -site:reddit.com -site:twitter.com -site:x.com 
+-site:wykop.pl -site:tripadvisor.com -site:youtube.com -site:yelp.com 
+-site:booking.com -site:facebook.com -site:instagram.com -site:tiktok.com",0,3,0%,9
+nginx hide version,0,3,0%,9
+php manual match expression uses strict comparison ===,0,3,0%,9
+php user-defined function extra arguments allowed php 8 documentation,0,3,0%,9
+rabbitmq delivery guarantee,0,3,0%,9
+php for i,0,3,0%,9.33
+php manual object operator -> access property method,0,3,0%,9.33
+maxmemory-policy redis,0,3,0%,9.67
+php extra arguments user-defined function ignored php 8 manual,0,3,0%,9.67
+php extra arguments user-defined functions allowed php 8,0,3,0%,9.67
+php match expression introduced php 8.0 manual,0,3,0%,9.67
+php match expression uses strict comparison === manual,0,3,0%,9.67
+php while and,0,3,0%,9.67
+redis incr and expire,0,3,0%,9.67
+php function parameter optional,0,3,0%,10
+php user-defined function extra arguments accepted php 8,0,3,0%,10
+redis del command,0,3,0%,10
+server_tokens off;,0,3,0%,10
+git diff unstaged changes,0,3,0%,10.33
+match statement php,0,3,0%,10.33
+php get class properties,0,3,0%,10.33
+php user-defined function extra arguments allowed manual,0,3,0%,10.67
+git diff unstaged,0,3,0%,11
+php list assignment object property allowed manual,0,3,0%,11
+rabbitmq users,0,3,0%,11
+nginx keepalive_timeout 65,0,3,0%,11.33
+php __destruct,0,3,0%,11.33
+php destruct,0,3,0%,11.67
+decrby,0,3,0%,12
+php construct,0,3,0%,12
+"""nginx -s reload""",0,3,0%,12.33
+php amqplib php amqplib,0,3,0%,12.67
+proxy_set_header host,0,3,0%,12.67
+del redis,0,3,0%,14
+php iterate over array,0,3,0%,16
+iterate array php,0,3,0%,17
+parameter in php,0,3,0%,17.33
+php foreach array,0,3,0%,17.33
+rabbitmq queue type,0,3,0%,17.33
+while in php,0,3,0%,17.33
+nginx keepalive,0,3,0%,18
+php decorator pattern,0,3,0%,18
+php enum cases,0,3,0%,18
+php object,0,3,0%,18
+allkeys-lru vs volatile-lru,0,3,0%,18.33
+class constructor php,0,3,0%,18.33
+php constructor class,0,3,0%,18.33
+redis get value of key,0,3,0%,18.33
+git revert soft,0,3,0%,18.67
+nginx x-forwarded-for,0,3,0%,18.67
+rabbitmq management ui,0,3,0%,18.67
+nginx upstream keepalive,0,3,0%,19.33
+nginx x forwarded proto https,0,3,0%,19.33
+lists in redis,0,3,0%,20
+php class constants,0,3,0%,20.33
+index array php,0,3,0%,20.67
+rabbitmq php,0,3,0%,20.67
+structural patterns,0,3,0%,20.67
+nginx serve static file,0,3,0%,21
+php array_map,0,3,0%,21.33
+laravel cache::remember,0,3,0%,21.67
+git add changes to last commit,0,3,0%,22
+nginx serve static files,0,3,0%,23
+observer php,0,3,0%,23.33
+redis show value of key,0,3,0%,23.67
+for while php,0,3,0%,24
+php class getter,0,3,0%,24
+laravel redis delete key,0,3,0%,24.33
+php constant,0,3,0%,24.33
+git remove a file,0,3,0%,25
+nginx keepalive_requests,0,3,0%,25
+rabbitmq consumers,0,3,0%,25
+delete keys redis,0,3,0%,25.33
+redis delete,0,3,0%,25.33
+git restore all staged files,0,3,0%,26
+php multidimensional associative array,0,3,0%,26
+php variable scope inside if block,0,3,0%,26
+rebase vs merge git,0,3,0%,26.33
+php class tutorial,0,3,0%,26.67
+git rebase instead of merge,0,3,0%,27
+git reset mixed,0,3,0%,27
+rabbitmq channel vs queue,0,3,0%,27
+legacy php systeem refactoren,0,3,0%,27.33
+nginx.conf ip restriction,0,3,0%,27.33
+php property,0,3,0%,27.33
+dockerfile ignore,0,3,0%,27.67
+git stash diff,0,3,0%,28.33
+remove git from project,0,3,0%,28.33
+redis authentication,0,3,0%,28.67
+redis get and delete,0,3,0%,28.67
+php escape single quote,0,3,0%,29
+redis delete many keys,0,3,0%,29
+nginx x-real-ip,0,3,0%,29.67
+solid acronym,0,3,0%,30
+freelance programmer hourly rate,0,3,0%,30.67
+git reset --hard head,0,3,0%,30.67
+how to remove files from git,0,3,0%,30.67
+cherry-pick commit git,0,3,0%,31.33
+clone a repository git,0,3,0%,31.33
+redis remove all keys,0,3,0%,32
+git head detached,0,3,0%,32.33
+redis cli host,0,3,0%,32.33
+php private constructor,0,3,0%,32.67
+php quotes,0,3,0%,32.67
+key value redis,0,3,0%,33.33
+forking a repository,0,3,0%,34
+improve php performance,0,3,0%,34
+laravel session driver redis,0,3,0%,34
+redis cli delete key,0,3,0%,35
+what is a detached head in git,0,3,0%,35
+git amend commit,0,3,0%,35.33
+git remote means,0,3,0%,35.33
+php arrow function,0,3,0%,35.67
+git merge rebase,0,3,0%,36
+rabbitmq help,0,3,0%,36.67
+redis info,0,3,0%,36.67
+solid oop,0,3,0%,37.67
+cherry pick a commit,0,3,0%,38.33
+queue messaging,0,3,0%,38.33
+redis cli clear cache,0,3,0%,38.33
+how to cherry pick commits from one branch to another,0,3,0%,39
+rabbitmq ports,0,3,0%,39
+php use enum as array key,0,3,0%,39.33
+structural design patterns,0,3,0%,39.33
+amend previous commit,0,3,0%,39.67
+git clone from github,0,3,0%,39.67
+git reset pushed commit,0,3,0%,39.67
+redis ping,0,3,0%,39.67
+redis key,0,3,0%,40
+redis-cli password,0,3,0%,40.33
+php loop for,0,3,0%,41.67
+rabbitmq alternatives,0,3,0%,41.67
+clone a git repo,0,3,0%,43.33
+git remove file from index,0,3,0%,43.67
+git remove files from repo,0,3,0%,44
+git clone tutorial,0,3,0%,44.67
+redis commands,0,3,0%,44.67
+soft push request,0,3,0%,44.67
+docker rabbitmq,0,3,0%,45
+what is a code smell,0,3,0%,45
+clone a github repository,0,3,0%,45.67
+git git clone,0,3,0%,45.67
+cloning a github repository,0,3,0%,46
+php with xampp,0,3,0%,46.33
+cloning a repo from github,0,3,0%,46.67
+cloning a github repo,0,3,0%,47
+cloning a repository git,0,3,0%,47
+clone a github repo,0,3,0%,47.33
+cloning git repo,0,3,0%,47.67
+cloning repo from github,0,3,0%,47.67
+how does git clone work,0,3,0%,48.33
+redis flush,0,3,0%,49.33
+clone repo from git,0,3,0%,50
+clone github repository,0,3,0%,50.67
+cloning a git repo,0,3,0%,50.67
+enumerate php,0,3,0%,51
+git revert last commit after push,0,3,0%,51
+php for in loop,0,3,0%,51
+redis-cli ping,0,3,0%,51
+git clone repository from github,0,3,0%,51.67
+exchanges in rabbitmq,0,3,0%,52
+redis logs,0,3,0%,52
+clone from git,0,3,0%,52.33
+delete last commit,0,3,0%,54.67
+git abort merging,0,3,0%,57
+connect to redis server,0,3,0%,57.67
+git undo commit after push,0,3,0%,58
+git redo commit,0,3,0%,58.33
+undo commit before push,0,3,0%,58.33
+git configure user,0,3,0%,58.67
+enums in php,0,3,0%,59
+git command line install,0,3,0%,59
+git revert commit before push,0,3,0%,59
+git backout commit,0,3,0%,60.67
+redis is used for,0,3,0%,60.67
+undo last commit github,0,3,0%,61
+github undo last pushed commit,0,3,0%,61.67
+undo previous commit,0,3,0%,63
+undo last commit pushed,0,3,0%,66.67
+revert the last commit,0,3,0%,67.33
+what is docker file,0,3,0%,68.67
+what is redis and what is it used for,0,3,0%,68.67
+how to uncommit git,0,3,0%,72
+monitoring redis,0,3,0%,72.33
+redis full form,0,3,0%,79.67
+how to increase website speed in php,0,3,0%,82.67
+php tutorial for parents,0,3,0%,238
+unacked messages in rabbitmq,0,2,0%,1
+nginx upstream name must be unique,0,2,0%,3.5
+"""rabbitmq"" -site:reddit.com -site:twitter.com -site:x.com -site:wykop.pl 
+-site:tripadvisor.com -site:youtube.com -site:yelp.com -site:booking.com 
+-site:facebook.com -site:instagram.com -site:tiktok.com",0,2,0%,5
+git only commit certain files,0,2,0%,5
+git commit a specific file,0,2,0%,5.5
+what is unacked in rabbitmq,0,2,0%,5.5
+destructor in php,0,2,0%,6
+php for loop syntax official manual,0,2,0%,6
+php object operator -> method call manual,0,2,0%,6
+php old style constructors removed php 8 manual,0,2,0%,6
+unacked rabbitmq,0,2,0%,6
+what is dockerignore,0,2,0%,6
+php object operator -> method call documentation,0,2,0%,6.5
+php heredoc behaves like double quoted string manual,0,2,0%,7
+php manual typed class constants 8.3,0,2,0%,7
+principle of s,0,2,0%,7
+git diff cached vs staged,0,2,0%,7.5
+php match expression introduced php 8 official manual,0,2,0%,7.5
+rabbitmq consumer prefetch fair dispatch documentation,0,2,0%,7.5
+maxmemory-policy,0,2,0%,8
+redis incr expire rate limiter official docs,0,2,0%,8
+systemctl reload nginx reload configuration without stopping,0,2,0%,8
+git commit only some files,0,2,0%,8.5
+lpop redis,0,2,0%,8.5
+php __destruct called on script shutdown manual,0,2,0%,8.5
+php for loop syntax manual,0,2,0%,8.5
+php function with optional parameters,0,2,0%,8.5
+php manual array_map preserves keys one array,0,2,0%,8.5
+properties and methods,0,2,0%,8.5
+rabbitmq at least once delivery,0,2,0%,8.5
+redis protected mode,0,2,0%,8.5
+php 8.0 class typed properties manual,0,2,0%,9
+redis del command return value,0,2,0%,9
+dependency inversion principle php,0,2,0%,9.5
+hide nginx version,0,2,0%,9.5
+nginx return directive server context official docs,0,2,0%,9.5
+nginx try_files directive docs,0,2,0%,9.5
+optional parameters php,0,2,0%,9.5
+php destructor called at end of script manual __destruct,0,2,0%,9.5
+php extra arguments user-defined function php 8 allowed,0,2,0%,9.5
+php extra arguments user-defined functions ignored manual,0,2,0%,9.5
+php foreach ordinary object public properties manual,0,2,0%,9.5
+php match expression documentation,0,2,0%,9.5
+php user-defined function extra arguments allowed,0,2,0%,9.5
+redis decr atomic documentation,0,2,0%,9.5
+redis decr command atomic official documentation,0,2,0%,9.5
+redis del returns 0 if key does not exist docs,0,2,0%,9.5
+git areas,0,2,0%,10
+php array_column objects public properties documentation,0,2,0%,10
+php constructor return value ignored manual,0,2,0%,10
+php extra arguments user defined function allowed php 8,0,2,0%,10
+php extra arguments user-defined function allowed,0,2,0%,10
+php extra arguments user-defined functions php 8 manual,0,2,0%,10
+php function parameter default value,0,2,0%,10
+php manual match expression strict comparison,0,2,0%,10
+php match expression strict comparison manual,0,2,0%,10
+php match operator,0,2,0%,10
+php user-defined function too many arguments php 8 manual,0,2,0%,10
+proxy_add_x_forwarded_for,0,2,0%,10
+proxy_set_header x-real-ip $remote_addr;,0,2,0%,10
+rabbitmq channels,0,2,0%,10
+site:nginx.org fastcgi_pass unix socket documentation,0,2,0%,10
+class property php,0,2,0%,10.5
+docker .dockerignore official docs,0,2,0%,10.5
+git diff only staged files,0,2,0%,10.5
+php 8 extra arguments user-defined function allowed,0,2,0%,10.5
+php anonymous functions inherit variables from parent scope use manual,0,2,0%,10.5
+php use (&$var) undefined variable closure,0,2,0%,10.5
+rabbitmq queue ttl,0,2,0%,10.5
+redis protected-mode,0,2,0%,10.5
+git diff staged changes,0,2,0%,11
+nginx proxy_set_header host $http_host,0,2,0%,11
+php array_walk vs foreach,0,2,0%,11
+rabbitmq expiration,0,2,0%,11
+php object operator,0,2,0%,11.5
+array foreach php,0,2,0%,12
+__construct in php,0,2,0%,12.5
+parameter php,0,2,0%,12.5
+redis requirepass,0,2,0%,12.5
+redis set key,0,2,0%,12.5
+php get object properties,0,2,0%,13
+__construct php,0,2,0%,14
+amqp://localhost:5672,0,2,0%,14
+git diff unstaged files,0,2,0%,14
+git find lost commit,0,2,0%,14
+git staged diff,0,2,0%,14
+proxy_set_header host $http_host;,0,2,0%,14
+proxy_set_header x-forwarded-for $remote_addr;,0,2,0%,14
+nginx proxy_set_header host,0,2,0%,14.5
+redis get value for key,0,2,0%,14.5
+destruct php,0,2,0%,15
+lpush,0,2,0%,15
+nginx events directive,0,2,0%,15
+nginx server listen,0,2,0%,15
+php array iteration,0,2,0%,15
+redis maxmemory policy,0,2,0%,15
+php for while,0,2,0%,15.5
+del key redis,0,2,0%,16
+php constructors,0,2,0%,16.5
+php function with parameters,0,2,0%,16.5
+git see staged changes,0,2,0%,17.5
+nginx server_name,0,2,0%,17.5
+rabbitmq vs redis,0,2,0%,17.5
+redis key naming conventions,0,2,0%,17.5
+secure redis,0,2,0%,17.5
+array_walk,0,2,0%,18
+git soft reset head ~1,0,2,0%,18
+nginx server tokens,0,2,0%,18
+php encapsulation,0,2,0%,18
+constructor en php,0,2,0%,18.5
+define constants in php,0,2,0%,18.5
+nginx keepalive upstream,0,2,0%,18.5
+nginx static files,0,2,0%,18.5
+php access object property,0,2,0%,18.5
+php class constructors,0,2,0%,18.5
+php function scope,0,2,0%,18.5
+rabbitmqctl docker,0,2,0%,18.5
+const in php,0,2,0%,19
+how to commit a specific file in git,0,2,0%,19
+how to define constant in php,0,2,0%,19
+php class examples,0,2,0%,19
+revert unpushed commit,0,2,0%,19
+git cherry pick without commit,0,2,0%,19.5
+match en php,0,2,0%,19.5
+php multiple constructors,0,2,0%,19.5
+redis language,0,2,0%,19.5
+x-forwarded-port nginx,0,2,0%,19.5
+delete key redis,0,2,0%,20
