@@ -142,6 +142,38 @@ return [
         'work-life-balance-it-tech-professionals',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Wycofane artykuły, które MAJĄ następcę: 301 zamiast 410
+    |--------------------------------------------------------------------------
+    |
+    | 410 mówi Google „zapomnij" i sygnały rankingowe parują. 301 mówi „przeniosłem
+    | tu" i konsolidują się na następcy. Wycofanie miało usunąć słabą treść z indeksu -
+    | 301 robi to samo, tylko nie wyrzuca dorobku. Powód, dla którego to dopisujemy
+    | (GSC 08.08-04.09.2026): `letter-i-in-solid-explanation-examples` stał na
+    | **pozycji 6.7** (pierwsza strona Google!), a `letter-s-in-solid-examples` na 12.4 -
+    | i oba oddawały 410. Para enumów to dokładnie ta kanibalizacja, którą CLAUDE.md
+    | wymienia z nazwy (`master-php-enums-use-cases-tips` kontra `php-enums-complete-guide`).
+    |
+    | WARUNEK, KTÓRY MUSI ZOSTAĆ SPEŁNIONY: cel jest PRAWDZIWYM następcą tematu.
+    | 301 na niepowiązaną stronę Google traktuje jak soft-404 (ignoruje przekierowanie
+    | i i tak wyrzuca URL), więc dopisanie tu czegokolwiek „żeby nie marnować" szkodzi.
+    | Pozostałe 40 wycofanych nie ma następcy (kariera, freelance, disaster recovery)
+    | i zostaje na 410 - to jest poprawne, nie zaniedbanie.
+    |
+    | Slug MUSI dalej być w `retired_slugs` - ta lista steruje wygaszaniem w bazie
+    | i pomijaniem przy publikacji (patrz CronController). Mapa poniżej zmienia
+    | WYŁĄCZNIE kod odpowiedzi dla wygaszonego artykułu.
+    |
+    */
+
+    'retired_redirects' => [
+        'letter-i-in-solid-explanation-examples' => '/course/design-patterns/solid/interface-segregation',
+        'letter-s-in-solid-examples' => '/course/design-patterns/solid/single-responsibility',
+        'master-php-enums-use-cases-tips' => '/php-enums-complete-guide',
+        'enums-php-guide' => '/php-enums-complete-guide',
+    ],
+
     'internal_linking' => [
         // Globalny włącznik.
         'enabled' => (bool) env('INTERNAL_LINKING', true),

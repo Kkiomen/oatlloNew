@@ -17,7 +17,7 @@ class RetireLegacyArticlesTest extends TestCase
     {
         parent::setUp();
 
-        // Tick regeneruje sitemap – kierujemy go w katalog tymczasowy, żeby nie
+        // Tick regeneruje sitemap - kierujemy go w katalog tymczasowy, żeby nie
         // nadpisać wersjonowanego public/sitemap.xml.
         $this->sitemapDir = storage_path('framework/testing/retire-sitemap-' . uniqid());
         File::ensureDirectoryExists($this->sitemapDir);
@@ -37,7 +37,7 @@ class RetireLegacyArticlesTest extends TestCase
      * `contents` jest castowane na `array` i renderowane blok po bloku
      * (`Article::getDisplayContents()`), więc fixture musi mieć kształt bloków.
      * Ze stringiem artykuł zapisuje się poprawnie, ale render trasy wywala się
-     * na `array_map()` – co ukrywało fakt, że wygaszony artykuł w ogóle się renderuje.
+     * na `array_map()` - co ukrywało fakt, że wygaszony artykuł w ogóle się renderuje.
      */
     private function article(string $slug, bool $published = true): Article
     {
@@ -92,7 +92,7 @@ class RetireLegacyArticlesTest extends TestCase
     /**
      * `site-map` wygląda jak slug artykułu i JEST w sitemapie, ale to prawdziwa
      * mapa strony (trasa `site.map`, `/mapa` na nią przekierowuje). Wpisanie jej
-     * na listę zabrałoby nawigację — i nie zobaczylibyśmy tego po samym slugu.
+     * na listę zabrałoby nawigację - i nie zobaczylibyśmy tego po samym slugu.
      */
     public function test_mapa_strony_nie_jest_na_liscie_do_wygaszenia(): void
     {
@@ -117,7 +117,7 @@ class RetireLegacyArticlesTest extends TestCase
     /**
      * NAJWAŻNIEJSZY TEST W TYM PLIKU.
      *
-     * Warunek publikacji w ticku to "is_published = false + data w przeszłości" –
+     * Warunek publikacji w ticku to "is_published = false + data w przeszłości" -
      * czyli dokładnie stan, w jakim zostaje wygaszony artykuł. Bez `whereNotIn`
      * w publishDueArticles() tick co godzinę cofałby własne wygaszenie, a my
      * zobaczylibyśmy sukces komendy i artykuły z powrotem na stronie.
@@ -162,7 +162,7 @@ class RetireLegacyArticlesTest extends TestCase
      * artykuł znikał z list, z sitemapy i z wyszukiwarki na stronie, ale trasa /{articleSlug}
      * czytała bazę BEZ warunku `is_published`, więc bezpośredni URL dalej oddawał 200
      * z pełną treścią. Wg GSC (19-25.07.2026) wygaszone artykuły zbierały nadal 4 z 15
-     * kliknięć domeny – czyli Google trzymał je w indeksie, bo miał je czym karmić.
+     * kliknięć domeny - czyli Google trzymał je w indeksie, bo miał je czym karmić.
      *
      * Test oblewa po usunięciu `where('is_published', true)` w HomeController::article().
      */
@@ -180,14 +180,21 @@ class RetireLegacyArticlesTest extends TestCase
 
     /**
      * 410 jest zarezerwowane dla świadomego wycofania. Artykuł po prostu jeszcze
-     * nieopublikowany (zaplanowany) ma zostać przy 404 – „nie ma", a nie „usunięte
+     * nieopublikowany (zaplanowany) ma zostać przy 404 - „nie ma", a nie „usunięte
      * na stałe", bo za godzinę tick może go opublikować.
+     *
+     * MINA (naprawiona 06.09.2026): fixture miał tu slug `php-enums-complete-guide`,
+     * czyli REALNY slug, który 10.08.2026 wszedł na żywo jako plik `.md`. Test nie
+     * podmienia `articles.path`, więc czytał prawdziwe `resources/articles/`, a `.md`
+     * ma pierwszeństwo przed bazą - od tamtej daty ten test dostawał 200 i oblewał,
+     * bez związku z tym, czego pilnuje. **Fixture nigdy nie może używać sluga, który
+     * kiedykolwiek trafi do `resources/articles/`** - stąd celowo absurdalna nazwa.
      */
     public function test_niewygaszony_ale_nieopublikowany_artykul_daje_404_a_nie_410(): void
     {
-        $this->article('php-enums-complete-guide', published: false);
+        $this->article('fixture-nieopublikowany-nigdy-nie-bedzie-plikiem-md', published: false);
 
-        $this->get('/php-enums-complete-guide')->assertStatus(404);
+        $this->get('/fixture-nieopublikowany-nigdy-nie-bedzie-plikiem-md')->assertStatus(404);
     }
 
     public function test_nieistniejacy_slug_dalej_daje_404(): void
@@ -199,6 +206,12 @@ class RetireLegacyArticlesTest extends TestCase
      * Trasa z kategorią (/{categorySlug}/{articleSlug}) to drugi wjazd na ten sam artykuł
      * i miała dokładnie tę samą dziurę. Bez tego testu naprawa jednej trasy wyglądałaby
      * na kompletną.
+     *
+     * Ten konkretny slug jest od 06.09.2026 w `articles.retired_redirects` (ma następcę:
+     * `php-enums-complete-guide`), więc poprawną odpowiedzią jest **301**, nie 410 -
+     * i o to właśnie chodzi. Test dalej pilnuje tego, o co mu chodziło: wygaszony artykuł
+     * NIE renderuje się przez trasę z kategorią. Zestaw „bez następcy => nadal 410"
+     * pokrywa `RetiredArticleRedirectTest`.
      */
     public function test_wygaszony_artykul_nie_przechodzi_takze_trasa_z_kategoria(): void
     {
@@ -207,6 +220,8 @@ class RetireLegacyArticlesTest extends TestCase
         $this->artisan('articles:retire-legacy --force')->assertSuccessful();
         $this->assertFalse($legacy->fresh()->is_published);
 
-        $this->get('/php/master-php-enums-use-cases-tips')->assertStatus(410);
+        $this->get('/php/master-php-enums-use-cases-tips')
+            ->assertStatus(301)
+            ->assertRedirect('/php-enums-complete-guide');
     }
 }

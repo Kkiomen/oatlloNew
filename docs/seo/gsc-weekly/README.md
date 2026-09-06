@@ -32,6 +32,25 @@ do tygodnia, a nie tylko oglądać jeden wykres w panelu.
   i publikowała wg starego harmonogramu. Przy każdej analizie warto puścić `curl -I` po kilku
   najświeższych slugach z `resources/articles/` i sprawdzić, czy są w `sitemap.xml`. To 10 sekund,
   a odróżnia „Google nas nie indeksuje" od „tej strony nie ma".
+- **Przekrój na JEDNĄ stronę robi się osobnym eksportem i pokazuje ułamek danych.** W panelu:
+  Skuteczność -> zakładka Strony -> klik w URL (to zakłada filtr) -> Eksportuj. W katalogu nazywamy
+  to `raw/{data}-performance-{okno}-page-{slug}/`. **Uwaga: przekroje sumują się do znacznie mniej
+  niż `Wykres.csv`.** Dla `caching-static-assets`: wykres 650 wyświetleń, a `Kraje`, `Zapytania`
+  i `Urządzenia` po **56**. GSC ukrywa rzadkie zapytania i wycina te wyświetlenia ze wszystkich
+  przekrojów naraz. Nie czytać tych sum jak procentów całości - to próbka 8.6%.
+  **Ogólniejszy wniosek: każda „pozycja" z `Strony.csv` jest średnią po wyświetleniach, których
+  w większości nie da się obejrzeć.**
+- **Nie budować wniosku na zgodności trzech liczb w dwóch agregatach.** 06.09 hipoteza „nasze dobre
+  pozycje to ruch ze ZEA" opierała się na tym, że nginx poz. 7-10 (1539 wyśw. / 8.67 / 0 klik.)
+  i ZEA (1371 wyśw. / 8.60 / 0 klik.) prawie się pokrywają. Przekrój na stronę obalił ją w dwie
+  minuty: ZEA to 18%, USA 80%. **Dwa agregaty mogą mieć te same trzy liczby, opisując rozłączne
+  wyświetlenia.** Zgodność agregatów to powód, żeby zrobić przekrój, a nie żeby go pominąć.
+- **Coverage „Nie znaleziono (404)" ma u nas ROSNĄĆ i nie jest to usterka.** Wycofane artykuły
+  (`config/articles.php` -> `retired_slugs`) oddają świadomie **410 Gone** (`HomeController:188`),
+  a GSC wrzuca 410 do tego samego kubełka co 404. Licznik 2 -> 7 (06.09) to Google skanujący
+  wycofane treści, czyli dokładnie to, o co chodziło. Analogicznie **rosnący licznik `noindex`**
+  (15 -> 28) to strony tagów, które mają być noindex - dowód, że dyrektywa działa. Alarmować ma
+  „zeskanowana, niezindeksowana", nie te dwa.
 - **Eksport 3-miesięczny z 2026-07-14** (`raw/2026-07-14-performance-3m/`) to historyczna baza
   sprzed przejścia na cadence tygodniowy. Porównywalny tylko po średnich dziennych i po CTR.
 
@@ -46,6 +65,18 @@ Performance = okno 7 dni. Coverage = stan na dzień eksportu.
 | **2026-08-09** | 01-07.08 | **19** | **15438** | **0.12%** | **20.9** | **260** | **136** | **56** |
 | _(wycinek)_ | 08-14.08 | 9 | 14819 | 0.06% | 25.6 | 320 | 134-152 | - |
 | **2026-08-23** | 15-21.08 | **8** | **12056** | **0.07%** | **29.5** | **371** | **148** | **52** |
+| _(wycinek)_ | 22-28.08 | 17 | 7319 | 0.23% | 25.3 | 423 | 171 | - |
+| **2026-09-06** | 29.08-04.09 | **17** | **7225** | **0.24%** | **21.6** | **423** | **171** | **49** |
+
+Eksport z 06.09 też zrobiono z filtrem „Ostatnich 28 dni" (08.08-04.09) i z tego samego powodu -
+poprzednia analiza jest sprzed dwóch tygodni. Coverage w obu wierszach z 06.09 to stan na dzień
+eksportu (szereg Coverage kończy się 28.08), więc jest ten sam.
+
+**Wyświetlenia spadły o połowę przy dwukrotnym wzroście kliknięć i to nie jest sprzeczność.**
+Pozycje spadających stron poprawiły się albo stanęły - Google zwęził zestaw zapytań, na których
+nas pokazuje, zamiast zdegradować rankingi. Od 06.09 **wyświetlenia nie są u nas miarą wzrostu**;
+patrzymy na kliknięcia i pozycję ważoną, wyświetlenia tylko jako mianownik CTR. Szczegóły
+w `2026-09-06.md`, ustalenie nr 1.
 
 Eksport z 23.08 zrobiono z filtrem **„Ostatnich 28 dni"** (25.07-21.08), bo poprzednia analiza jest
 sprzed dwóch tygodni i okno 7-dniowe zostawiłoby dziurę. Wiersze wyżej to **wycinki 7-dniowe
@@ -67,11 +98,22 @@ to 1629/dzień zamiast 2205 - przy porównaniu z kolejnym tygodniem pamiętać, 
 1. **Zindeksowane strony** - jedyne wąskie gardło, które w czerwcu naprawdę blokowało wzrost.
 2. **„Zeskanowana, ale niezindeksowana"** - sygnał jakościowy. Rośnie = Google ogląda i odrzuca.
 3. **CTR domeny** - przy naszych pozycjach (10-15) to najtańsza dźwignia: tytuł i opis, nie treść.
-4. **Lista „duże wyświetlenia / 0 kliknięć, pozycja 8-16"** - kolejka robocza dla `lesson-seo`.
-   To z niej bierzemy paczkę lekcji do poprawy w danym tygodniu.
-   **Od 09.08 próg zawężony do pozycji < 12.** Dziesięć lekcji poprawionych 27.07 nie oderwało się
-   CTR-em od trendu domeny (0.15% -> 0.07% przy domenie 0.24% -> 0.12%), więc przepisywanie tytułu
-   na pozycji 12-16 nie jest udowodnioną dźwignią. Szczegóły w `2026-08-09.md`.
-5. **CTR artykułów `.md` kontra CTR lekcji kursów** - nowy wskaźnik od 09.08. Artykuły robiły 47%
-   kliknięć domeny z 10% wyświetleń (0.58% vs 0.07-0.20%). Jeśli to się utrzyma, główną dźwignią
-   jest tempo publikacji artykułów, a nie optymalizacja lekcji.
+4. **Kolejka robocza dla `lesson-seo` - OD 06.09 NA PAUZIE, a próg pozycji okazał się fałszywym
+   kryterium.** Historia: startowo „pozycja 8-16", 09.08 zawężone do <12 (dziesięć lekcji
+   poprawionych 27.07 nie oderwało się CTR-em od trendu domeny), 06.09 **próg pozycji wyrzucony
+   w całości**. Powód: przekrój na jedną stronę pokazał, że `caching-static-assets` jest na
+   **pozycji 6.18 w USA** i ma zero kliknięć, a wszystkie widoczne zapytania to permutacje jednej
+   dwunastowyrazowej linijki configu nginxa (100% desktop). Na całej domenie zapytania 8-20-wyrazowe
+   mają **najlepszą pozycję (12.94) i zero kliknięć**, a 1-3-wyrazowe najgorszą (30.37) i wszystkie
+   kliknięcia. **Wysoka pozycja przy zerowym CTR znaczy u nas „po drugiej stronie nie ma człowieka",
+   nie „popraw tytuł".** Nowa reguła kwalifikacji: **kształt zapytań** (krótkie, 1-4 słowa,
+   brzmiące jak pytanie człowieka), sprawdzany eksportem GSC z filtrem na tę jedną stronę.
+   Szczegóły w `2026-09-06.md`, ustalenie nr 3.
+5. **CTR artykułów `.md` kontra CTR lekcji kursów** - wskaźnik od 09.08. **Przewaga wynosi ok. 6x
+   i jest stabilna** (06.09: 0.602% vs 0.100%, 25% kliknięć domeny z 5.2% wyświetleń). Liczba
+   „10-20x" z 09.08 była artefaktem małej próbki (12 artykułów, 15 kliknięć) - nie cytować jej.
+   Kierunek się nie zmienia: artykuł to najtańsze kliknięcie w tym repo.
+6. **Czas od publikacji artykułu do pierwszych wyświetleń** - wskaźnik od 06.09, bo to on rządzi
+   tempem publikacji. 09.08: 3-4 tygodnie i pięć najnowszych artykułów z rzędu na zerze. 06.09:
+   dwa z ostatnich ośmiu weszły w **kilka dni** i od razu na pozycję 8-9, pozostałe sześć na zerze.
+   **Wyzwalacz rewizji tempa jest spełniony w połowie** - patrz `2026-09-06.md`, ustalenie nr 4.

@@ -29,8 +29,9 @@ ludzki nagłówek. Limit: `seo_title` ≤ 51 zn. Test: `tests/Feature/ArticleSeo
 44 artykuły (`retired_slugs`), tylko że tym razem groziła treściom jeszcze nieopublikowanym. Audyt 140
 zakolejkowanych artykułów przeciw 380 lekcjom (09.08.2026) znalazł 4 realne kolizje - m.in. artykuł
 `good-commit-messages` i lekcję `git-basics` o **identycznym slugu i niemal identycznym `seo_title`**.
-Zasada rozstrzygania: **head term dostaje artykuł** (ok. 2000 słów, a wg GSC artykuły konwertują 10-20x
-lepiej od lekcji), **lekcja zostaje zawężona do swojej roli w kursie** (ok. 700 słów, jeden krok
+Zasada rozstrzygania: **head term dostaje artykuł** (ok. 2000 słów, a wg GSC artykuły konwertują ok. 6x
+lepiej od lekcji - patrz sekcja SEO/CTR; wcześniejsze „10-20x" było artefaktem małej próbki),
+**lekcja zostaje zawężona do swojej roli w kursie** (ok. 700 słów, jeden krok
 materiału) - to jedna linijka `seo_title` zamiast przepisywania artykułu. Przed dodaniem artykułu
 o temacie, który jest w kursie, sprawdź `seo_title` lekcji.
 
@@ -568,6 +569,14 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   Dosypywanie do tej kolejki jej nie skróci. Przy 3/tydzień mamy stale ~9 artykułów w locie i to jest
   zdrowe. **Wyzwalacz do rewizji: gdy nowe artykuły zaczną zbierać wyświetlenia w ciągu tygodnia
   zamiast 3-4** (sprawdzalne w każdym cotygodniowym eksporcie GSC).
+  **STAN NA 06.09.2026: wyzwalacz jest spełniony W POŁOWIE, więc „3-4 tygodnie" jest w trakcie
+  unieważniania i nie należy go już cytować jako faktu.** `exponential-backoff-retry` (publikacja
+  02.09) miał po **dwóch dniach** 12 wyświetleń, pozycję 8.92 i kliknięcie; `laravel-api-resources-vs-fractal`
+  (26.08) wszedł na pozycję 8. Ale sześć z ostatnich ośmiu artykułów ma zero. To wyraźnie lepiej niż
+  09.08 (pięć najnowszych Z RZĘDU na zerze), ale to jeszcze nie „nowe artykuły zbierają wyświetlenia
+  w ciągu tygodnia". **Decyzja: tempo zostaje 3/tydzień, rewizja przy eksporcie ok. 20.09**, gdy
+  `fixing-sqlstate`, `debounce-vs-throttle` i `testable-php-code` będą miały po 2-3 tygodnie i będzie
+  wiadomo, czy ich zero to opóźnienie, czy odrzucenie. Nie przyspieszać wcześniej.
   **Strach przed „spamem" jest źle zaadresowany - mamy własny dowód, że wolumen nie szkodzi**:
   indeksacja skoczyła 48 -> 183 (11.07) i 183 -> 257 (25.07), czyli dwie paczki po ~135 i ~74 strony
   naraz, obie ze statusem *Powodzenie*, zero działań ręcznych. Google karze „scaled content abuse",
@@ -583,6 +592,30 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   co do dnia.
   **Kursy to inna sprawa — dodajemy w całości**: kurs to spójna hierarchia (kurs→rozdział→lekcja), Google
   oczekuje kompletu, a dowód jest własny — 86 podstron kursu PHP dodanych naraz to 88% ruchu domeny.
+- **Tick ogłasza do IndexNow ARTYKUŁY `.md`, nie tylko kursy (od 06.09.2026) - to była realna luka.**
+  `CronController::announceDueArticles()`. Wcześniej tick ogłaszał wyłącznie kursy, czyli treść
+  dodawaną raz na kilka tygodni, a **artykuły - 3/tydzień, 134 w kolejce - nie były ogłaszane wcale**.
+  Powód, dla którego luka była niewidoczna: artykuł `.md` wchodzi na żywo SAM, gdy `published_at`
+  minie - **bez deployu, bez eventu, bez commita** - więc nie odpalał się też ręczny
+  `indexnow:submit-sitemap` z checklisty wdrożenia („po deployu"). Jedyne treści, które faktycznie
+  publikujemy, były jedynymi, których nikt nie zgłaszał wyszukiwarkom. Regeneracja sitemapy w tym
+  samym ticku dokłada URL, ale to sygnał BIERNY (czekamy na crawl); IndexNow jest czynny.
+  **Nie jest udowodnione, że to skróci czas do pierwszych wyświetleń** (GSC: 6 z 8 ostatnich artykułów
+  na zerze, droga 3-4 tygodnie) - to usunięcie jedynej różnicy między artykułami a kursami, którą dało
+  się usunąć kodem. Sprawdzalne w eksporcie GSC ok. 20.09. Idempotencja przez
+  `storage/app/articles-announced.json` (jak przy kursach) - bez niej tick pingowałby 140 artykułów
+  co godzinę. **Pierwszy tick po wdrożeniu zgłosi ~20 żywych artykułów naraz i to jest w porządku.**
+  Test: `tests/Feature/CronAnnouncesArticlesTest.php`.
+- **Wycofany artykuł Z NASTĘPCĄ oddaje 301, nie 410** (`articles.retired_redirects`, od 06.09.2026).
+  410 mówi Google „zapomnij" i sygnały rankingowe parują; 301 konsoliduje je na następcy. Powód:
+  `letter-i-in-solid-explanation-examples` stał na **pozycji 6.7** (pierwsza strona Google) i oddawał
+  410, czyli oddawaliśmy tę pozycję za darmo; `letter-s-in-solid-examples` na 12.4. Para enumów
+  (`master-php-enums-use-cases-tips`, `enums-php-guide` -> `php-enums-complete-guide`) to dokładnie
+  ta kanibalizacja, którą ta sekcja wymienia wyżej. **WARUNEK: cel musi być PRAWDZIWYM następcą
+  tematu** - 301 na niepowiązaną stronę Google czyta jako soft-404 i ignoruje. Pozostałe 40 wycofanych
+  nie ma następcy (kariera, freelance, disaster recovery) i zostaje na 410 - to jest poprawne.
+  Slug MUSI dalej być w `retired_slugs` (ta lista steruje wygaszaniem w bazie i pomijaniem przy
+  publikacji). Test: `tests/Feature/RetiredArticleRedirectTest.php`.
 - **IndexNow** (Bing/Yandex/Seznam): powiadamianie wyszukiwarek o zmianach URL. Klucz w `INDEXNOW_KEY`
   (env), plik weryfikacyjny hostowany dynamicznie pod `/{key}.txt` (trasa `indexnow.key`, `routes/web.php`
   przed łapaczami `/{articleSlug}`). Serwis `App\Services\IndexNowService` (guard: pusty klucz = no‑op,
@@ -608,6 +641,10 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   o `APP_URL` (tożsamość wdrożenia), nie o nazwę środowiska. **Nie dopisywać tu warunku na `APP_ENV`** -
   `tests/Feature/CanonicalDomainTest.php` oblewa wtedy na zestawie `production/prod/staging/local/testing`,
   bo 301 ma padać w każdym z nich.
+  **POTWIERDZONE NA PRODUKCJI 06.09.2026 - sprawa domknięta.** `www.` i `http://` dają 301 na apeks
+  (sprawdzone na czterech wariantach), a GSC pokazuje spadek „duplikat, inna kanoniczna" **7 -> 5**
+  w pierwszym oknie prawie wolnym od zatrucia. W `Strony.csv` zostały dwa URL-e z `www.` (68 i 47
+  wyświetleń, zero kliknięć) - to ogon sprzed naprawy, wygaśnie sam.
 - **`route()` w cache'owanej treści bierze host z ŻĄDANIA - i tak zatruwa się sitemapa.**
   `MarkdownArticleParser` buduje `image` artykułu przez `route('article.cover')`, a sparsowane `.md`
   są cache'owane. Jedno wejście robota na `www.` wsadzało do cache'u okładkę na złym hoście, a sitemap
@@ -616,15 +653,41 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   przybija korzeń `route()` (żeby zatrucie nie powstało), a `SitemapService::canonicalizeOwnHost()`
   czyści URL na wyjściu (żeby JUŻ ZATRUTY wpis nie wyciekł, zanim ktoś wyczyści cache). Obce hosty
   (obrazek z CDN we frontmatterze) zostają nietknięte. Test: `tests/Feature/SitemapCanonicalHostTest.php`.
-- **CTR: artykuły `.md` biją lekcje kursów 10-20x i to zmienia priorytety** (GSC 01-07.08.2026).
-  Artykuły zrobiły 47% kliknięć domeny z 10% wyświetleń (CTR 0.58%, pojedyncze sztuki 1.6-2.8%),
-  lekcje kursów 0.07-0.20%. Powód nie jest kosmetyczny: artykuł łapie KONKRETNY problem
-  („horizon vs supervisor"), gdzie klika się w obietnicę odpowiedzi, a lekcja łapie zapytanie OGÓLNE
-  („php match", „git reset"), gdzie pierwsze wyniki to php.net i git-scm, a my jesteśmy dwunastym
-  linkiem do tej samej rzeczy. **Dlatego przepisywanie tytułów lekcji na pozycjach 12-16 nie jest
-  udowodnioną dźwignią** - dziesięć lekcji poprawionych 27.07 nie oderwało się CTR-em od trendu
-  domeny (0.15% → 0.07% przy domenie 0.24% → 0.12%), mimo że nowe tytuły były na produkcji.
-  Kolejka `lesson-seo` zawężona do pozycji < 12. Szczegóły: `docs/seo/gsc-weekly/2026-08-09.md`.
+- **CTR: artykuły `.md` biją lekcje kursów ok. 6x i to zmienia priorytety** (GSC 08.08-04.09.2026).
+  20 żywych artykułów zrobiło **25% kliknięć domeny z 5.2% wyświetleń** (CTR 0.602%), lekcje 0.100%.
+  **Liczba „10-20x" z 09.08 była artefaktem małej próbki** (12 artykułów, 15 kliknięć) - nie cytować
+  jej; przewaga jest realna i stabilna, ale wynosi 6x. Powód nie jest kosmetyczny: artykuł łapie
+  KONKRETNY problem („horizon vs supervisor"), gdzie klika się w obietnicę odpowiedzi, a lekcja łapie
+  zapytanie OGÓLNE („php match", „git reset"), gdzie pierwsze wyniki to php.net i git-scm, a my
+  jesteśmy dwunastym linkiem do tej samej rzeczy.
+- **Kolejka `lesson-seo` jest OD 06.09 NA PAUZIE, a PRÓG POZYCJI został wyrzucony jako fałszywe
+  kryterium.** Reguła (duże wyświetlenia, 0 kliknięć, pozycja < 12) wskazywała na lekcje nginx/rabbitmq
+  z pozycjami 7.6-9.6. Obaliły ją dwie kontrole. Po pierwsze te lekcje **nigdy nie przeszły przez
+  `lesson-seo`** (jeden commit w `git log`), a mają dokładnie takie `seo_title`, jakie ten skill by
+  napisał - nie ma czego przepisywać. Po drugie przekrój na jedną stronę pokazał, że
+  `caching-static-assets` jest na **pozycji 6.18 w USA** (80% mierzalnych wyświetleń; ZEA tylko 18%)
+  i ma zero kliknięć, bo **wszystkie widoczne zapytania to permutacje jednej dwunastowyrazowej linijki
+  configu nginxa**, 100% desktop. Na całej domenie zapytania 8-20-wyrazowe mają **najlepszą pozycję
+  (12.94) i zero kliknięć**, a 1-3-wyrazowe najgorszą (30.37) i wszystkie kliknięcia.
+  **Wysoka pozycja przy zerowym CTR znaczy u nas „po drugiej stronie nie ma człowieka", nie „popraw
+  tytuł".** Nowe kryterium kwalifikacji lekcji: **kształt zapytań** (krótkie, 1-4 słowa, brzmiące jak
+  pytanie człowieka), sprawdzany eksportem GSC z filtrem na tę jedną stronę. Historia progu
+  (8-16 -> <12 -> wyrzucony) i dowody: `docs/seo/gsc-weekly/2026-09-06.md`, ustalenie nr 3.
+- **AI Overviews NIE są naszym problemem - sprawdzone 06.09 i sprawa zamknięta.** Kontrola na
+  `php-function-arguments-guide` (77 krótkich, ludzkich zapytań, 9+ krajów, 14% mobile) daje na
+  czołowych frazach **CTR 1.8-2.3% przy pozycji ~9-10**, czyli normalny. Zerowy CTR jest cechą
+  konkretnych stron z zapytaniami maszynowymi (`caching-static-assets`: 6 permutacji jednej linijki
+  configu, 0% mobile), nie całej domeny. **Diagnoza upraszcza się do zwykłej fizyki SEO**: pozycja
+  9-10 klika ~2%, pozycja 25-30 klika ~0%, a większość naszych wyświetleń jest na 25-30. To dobra
+  wiadomość - pozycje da się poprawić treścią, AI Overviews nie da się niczym.
+- **Pozycje z `Strony.csv` są średnimi po wyświetleniach, których w większości nie da się obejrzeć.**
+  Dla `caching-static-assets`: 650 wyświetleń w `Wykres.csv`, ale `Kraje`, `Zapytania` i `Urządzenia`
+  sumują się po **56** (8.6%) - GSC ukrywa rzadkie zapytania i wycina je ze wszystkich przekrojów
+  naraz. Nie traktować przekrojów jak procentów całości.
+- **Wyświetlenia PRZESTAŁY być miarą wzrostu** (od 06.09). W oknie 29.08-04.09 spadły o połowę
+  (12056 -> 7225) przy DWUKROTNYM wzroście kliknięć (8 -> 17) i poprawie pozycji ważonej (29.5 -> 21.6).
+  Pozycje spadających stron poprawiły się albo stanęły - to zawężenie zestawu zapytań przez Google,
+  nie degradacja rankingów. Śledzimy kliknięcia i pozycję ważoną; wyświetlenia tylko jako mianownik CTR.
 
 ## Checklist wdrożenia (produkcja)
 
@@ -637,6 +700,12 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
    Sprawdź raz, że `https://oatllo.com/{INDEXNOW_KEY}.txt` zwraca klucz.
 5. **Artykuły `.md`** są teraz w `resources/articles/` (commit + `git pull`) — upewnij się, że produkcja
    nie ma w `.env` starego `ARTICLES_MD_PATH=storage/app/articles` (domyślnie czyta `resources/articles`).
+   **Po KAŻDYM deployu sprawdź `curl -I https://oatllo.com/{najnowszy-artykul-z-przeszla-data}` = 200.**
+   Nie jest to paranoja: 23.08.2026 wyszło, że commit `cf8939b` (reorganizacja kolejki z 09.08) nigdy
+   nie trafił na produkcję. Objaw był **niewidoczny** - strona działała, kolejka „jechała", tylko wg
+   starego planu: artykuł celowo przyspieszony (`evaluate-llm-output`, termin 19.08) dawał 404 i nie
+   było go w sitemapie, a artykuł celowo odłożony na 2027 (`useful-git-commands`) stał opublikowany.
+   Bez tego `curl` nic tego nie zgłasza - `git pull` na `.md` nie ma żadnej innej bramki.
 5a. **Kanoniczny host** (jednorazowo, po wdrożeniu poprawki z 09.08):
    - `php artisan config:clear && php artisan cache:clear` - **konieczne**. W cache'u sparsowanych `.md`
      siedzą okładki z hostem `www.`, a stary `config:cache` jest jednym z dwóch podejrzanych

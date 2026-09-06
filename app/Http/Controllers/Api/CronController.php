@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Services\Article\MarkdownArticleRepository;
 use App\Services\Course\MarkdownCourseRepository;
 use App\Services\IndexNowService;
 use App\Services\SitemapService;
@@ -51,6 +52,8 @@ class CronController extends Controller
 
         $published = $this->publishDueArticles();
 
+        $articles = $this->announceDueArticles();
+
         $courses = $this->announceDueCourses();
 
         $sitemapOk = $this->regenerateSitemap();
@@ -60,6 +63,7 @@ class CronController extends Controller
             'retired_count' => $retired,
             'published_count' => count($published),
             'published' => $published,
+            'articles_announced' => $articles,
             'courses_announced' => $courses,
             'sitemap_regenerated' => $sitemapOk,
             'social' => $this->runSocial($request),
@@ -170,6 +174,75 @@ class CronController extends Controller
         }
 
         return $published;
+    }
+
+    /**
+     * Ogłasza do IndexNow artykuły .md, które właśnie weszły na żywo.
+     *
+     * LUKA, KTÓRĄ TO ZAMYKA (znaleziona 06.09.2026): tick ogłaszał KURSY, a artykułów
+     * NIE - mimo że kursy dodajemy raz na kilka tygodni, a artykuły wychodzą **3 razy
+     * w tygodniu** i jest ich 134 w kolejce do czerwca 2027. Artykuł .md wchodzi na żywo
+     * SAM, gdy `published_at` minie: nie ma deployu, nie ma eventu, nie ma commita -
+     * więc nie odpalał się też `indexnow:submit-sitemap` z checklisty wdrożenia, bo
+     * tamta komenda jest ręczna i „po deployu". W efekcie jedyne treści, które faktycznie
+     * publikujemy, były jedynymi, których nikt nie zgłaszał wyszukiwarkom.
+     *
+     * Dlaczego to podejrzewamy o realny koszt: GSC (08.08-04.09.2026) pokazuje, że
+     * **6 z 8 ostatnich artykułów ma ZERO wyświetleń**, a droga od publikacji do
+     * pierwszych wyświetleń wynosiła 3-4 tygodnie. Regeneracja sitemapy w tym samym ticku
+     * dokłada URL do mapy, ale to jest sygnał BIERNY (czekamy na crawl). IndexNow jest
+     * czynny. Nie jest to dowód, że ping skróci ten czas - to jest usunięcie jedynej
+     * różnicy między artykułami a kursami, którą da się usunąć kodem. Sprawdzalne
+     * w kolejnym eksporcie GSC.
+     *
+     * Idempotencja przez plik stanu w storage/app (gitignorowane, przeżywa deploy) -
+     * dokładnie jak przy kursach. Bez tego każdy tick pingowałby wszystkie 140 artykułów
+     * co godzinę i spalił limity IndexNow.
+     *
+     * PIERWSZE URUCHOMIENIE na produkcji zobaczy ~20 żywych artykułów naraz i zgłosi je
+     * wszystkie. To jest w porządku (IndexNow przyjmuje batch i te URL-e są prawdziwe),
+     * ale warto o tym wiedzieć, patrząc na log pierwszego ticka po wdrożeniu.
+     *
+     * Cały krok w try/catch - jak reszta ticka, błąd nie może go przerwać.
+     *
+     * @return array<int, string> slugi artykułów ogłoszonych w tym ticku
+     */
+    private function announceDueArticles(): array
+    {
+        $stateFile = 'articles-announced.json';
+
+        try {
+            $announced = [];
+            if (Storage::exists($stateFile)) {
+                $decoded = json_decode((string) Storage::get($stateFile), true);
+                $announced = is_array($decoded) ? $decoded : [];
+            }
+
+            $live = app(MarkdownArticleRepository::class)->published();
+            $newlyAnnounced = [];
+            $urls = [];
+
+            foreach ($live as $article) {
+                if (in_array($article->slug, $announced, true)) {
+                    continue;
+                }
+
+                $urls[] = $article->getRoute();
+                $announced[] = $article->slug;
+                $newlyAnnounced[] = $article->slug;
+            }
+
+            if ($urls !== []) {
+                IndexNowService::submitMany($urls);
+                Storage::put($stateFile, json_encode(array_values($announced)));
+            }
+
+            return $newlyAnnounced;
+        } catch (\Throwable $e) {
+            Log::warning('Cron: nie udało się ogłosić artykułów do IndexNow: ' . $e->getMessage());
+
+            return [];
+        }
     }
 
     /**

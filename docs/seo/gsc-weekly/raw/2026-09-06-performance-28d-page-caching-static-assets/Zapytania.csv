@@ -1,0 +1,11 @@
+Najczęstsze zapytania,Kliknięcia,Wyświetlenia,CTR,Pozycja
+nginx expires 1y add_header cache-control public immutable for hashed assets,0,33,0%,4.52
+nginx expires 1y add_header cache-control public immutable static assets,0,9,0%,8.33
+"nginx expires 1y add_header cache-control public immutable for hashed 
+assets best practice",0,6,0%,8.83
+"nginx expires 1y add_header cache-control public immutable hashed assets 
+best practice",0,4,0%,10
+"nginx add_header cache-control immutable expires 1y hashed assets best 
+practice",0,3,0%,8.67
+"nginx add_header cache-control public immutable expires 1y hashed assets 
+best practice",0,1,0%,9

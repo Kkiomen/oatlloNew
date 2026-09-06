@@ -182,10 +182,27 @@ class HomeController extends Controller
      * Wygaszony świadomie => **410 Gone**, nie 404: 410 znaczy „usunięte na stałe" i Google
      * wyrzuca taki URL z indeksu szybciej niż 404, który czyta jako „może wróci". Reszta
      * (literówka w URL-u, artykuł zaplanowany na przyszłość) zostaje przy 404.
+     *
+     * WYJĄTEK OD 410: wycofany artykuł, który MA następcę, dostaje **301** na niego
+     * (`articles.retired_redirects`). 410 każe Google zapomnieć, więc sygnały rankingowe
+     * parują; 301 je konsoliduje na następcy. Powód (GSC 08.08-04.09.2026):
+     * `letter-i-in-solid-explanation-examples` stał na **pozycji 6.7** i oddawał 410,
+     * czyli oddawaliśmy pierwszą stronę Google za nic. Szczegóły i warunek „to musi być
+     * PRAWDZIWY następca" w komentarzu przy `retired_redirects` w `config/articles.php`.
      */
     private function abortForHiddenArticle(string $articleSlug): never
     {
-        abort(in_array($articleSlug, config('articles.retired_slugs', []), true) ? 410 : 404);
+        $isRetired = in_array($articleSlug, config('articles.retired_slugs', []), true);
+
+        if ($isRetired) {
+            $successor = config('articles.retired_redirects', [])[$articleSlug] ?? null;
+
+            if (is_string($successor) && $successor !== '') {
+                abort(redirect($successor, 301));
+            }
+        }
+
+        abort($isRetired ? 410 : 404);
     }
 
     public function articleWithCategory(Request $request, string $categorySlug, string $articleSlug): View
