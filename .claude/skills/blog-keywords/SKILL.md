@@ -23,6 +23,23 @@ For the given topic, produce:
    Prefer a specific, long-tail phrase with clear intent over a broad head term.
    State the likely **search intent** (informational / how-to / problem / comparison).
 
+   **HARD GATE, measured on our own domain** (GSC 08.08-04.09.2026, 20 articles):
+   articles whose primary keyword was a **head term** landed at **median position
+   46** - page 5, zero clicks, forever. Articles on a **narrow** phrase (named
+   feature, version, literal error text, X vs Y) landed at **median 13.7**.
+
+   So before writing the primary keyword down, answer: **would a developer type
+   exactly this phrase?** If the topic can be phrased many equally likely ways
+   ("caching strategies", "nodejs project structure"), there is no single query
+   to rank for - go back to `blog-ideas` and narrow the topic. Do not paper over
+   a broad topic with a narrow-sounding keyword: the body then mismatches the
+   phrase and ranks for neither.
+
+   If the topic is a bare architectural pattern (circuit breaker, saga, CQRS),
+   **anchor the primary keyword to a framework we actually use** ("circuit breaker
+   laravel http client"). Unanchored, we compete with Fowler and Microsoft Learn
+   and we lose - `repository-pattern-laravel` sits at position 48.8.
+
 2. **Secondary keywords** (3–6) — closely related phrases and subtopics to cover.
    These become H2/H3 sections.
 

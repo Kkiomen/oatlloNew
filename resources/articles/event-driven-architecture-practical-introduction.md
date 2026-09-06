@@ -1,5 +1,6 @@
 ---
 name: "Event-Driven Architecture: A Practical Introduction"
+seo_title: "Event-Driven Architecture with Laravel Events"
 slug: event-driven-architecture-practical-introduction
 short_description: "A practical intro to event-driven architecture: events vs commands, brokers, choreography vs orchestration, and the real costs you'll hit."
 language: en

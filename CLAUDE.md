@@ -592,6 +592,23 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   co do dnia.
   **Kursy to inna sprawa — dodajemy w całości**: kurs to spójna hierarchia (kurs→rozdział→lekcja), Google
   oczekuje kompletu, a dowód jest własny — 86 podstron kursu PHP dodanych naraz to 88% ruchu domeny.
+- **KSZTAŁT TEMATU ARTYKUŁU PRZEWIDUJE POZYCJĘ - zmierzone, nie przeczucie** (GSC 08.08-04.09.2026,
+  20 artykułów z danymi). Wąskie (nazwana funkcja, wersja, dosłowny błąd, X vs Y) mają **medianę
+  pozycji 13.7**; szerokie (koncept, goły wzorzec, „complete guide", listicle, „strategies") mają
+  **medianę 46.0**, czyli piątą stronę Google i zero kliknięć na zawsze. Wiek tego NIE tłumaczy:
+  artykuł z 26.08 stoi na 8.0, starszy z 22.07 na 49.8. Zwycięzcy: `laravel-api-resources-vs-fractal`
+  8.0, `exponential-backoff-retry` 8.9, `php-8-3-typed-class-constants` 12.5, `laravel-job-batching` 12.6.
+  Przegrani: `nodejs-project-structure` 52.0, `evaluate-llm-output` 51.3, `cors-policy-error-fix` 49.8,
+  `repository-pattern-laravel` 48.8, `php-enums-complete-guide` 46.0.
+  **To TEN SAM mechanizm, co „artykuły biją lekcje", tylko o piętro niżej**: mała domena nie wygrywa
+  head termu. Lekcja przegrywa z php.net na „php match", szeroki artykuł przegrywa z Laravel News
+  na „repository pattern laravel". **Goły wzorzec architektoniczny (circuit breaker, saga, CQRS)
+  MUSI być zakotwiczony we frameworku**, inaczej konkurujemy z Fowlerem i Microsoft Learn.
+  Reguła wpisana do skilli **`blog-ideas`** (zablokowane kształty + bramka „czy da się to wpisać
+  jako JEDNĄ frazę") i **`blog-keywords`** (twarda bramka przy frazie głównej) - to one pilnują
+  wszystkich przyszłych artykułów. **UWAGA: `blog-ideas` wcześniej sam ZACHĘCAŁ do przegrywających
+  kształtów** („Best-practices / patterns: evergreen", „Listicle") - stąd 24% kolejki w tym kształcie.
+  Kolejka 128 artykułów jest w 76% dobrze ukształtowana i **nie wymaga przepisywania**.
 - **Tick ogłasza do IndexNow ARTYKUŁY `.md`, nie tylko kursy (od 06.09.2026) - to była realna luka.**
   `CronController::announceDueArticles()`. Wcześniej tick ogłaszał wyłącznie kursy, czyli treść
   dodawaną raz na kilka tygodni, a **artykuły - 3/tydzień, 134 w kolejce - nie były ogłaszane wcale**.

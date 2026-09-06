@@ -1,5 +1,6 @@
 ---
 name: "6 Common Database Design Mistakes to Avoid"
+seo_title: "6 MySQL Schema Mistakes and How to Fix Them"
 slug: database-design-mistakes
 short_description: "Six database design mistakes that quietly wreck performance and data integrity, plus the concrete SQL fix for each one."
 language: en
