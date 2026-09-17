@@ -1,0 +1,1004 @@
+Najczęstsze zapytania,Kliknięcia,Wyświetlenia,CTR,Pozycja
+php optional parameters,1,56,1.79%,9.18
+php function optional parameter,1,39,2.56%,8.69
+ddd architecture,1,8,12.5%,42.88
+php exit code,1,7,14.29%,11.86
+php match,0,472,0%,10.93
+software architecture,0,368,0%,39.36
+domain-driven design hexagonal architecture,0,163,0%,60.91
+bounded context,0,104,0%,51.45
+match php,0,103,0%,11.6
+php match statement,0,102,0%,9.54
+domain driven design,0,78,0%,47.4
+php while,0,61,0%,15.28
+what is rabbitmq,0,61,0%,35.61
+software application architecture,0,61,0%,57.82
+rabbitmq quorum queues,0,59,0%,29.2
+php class constructor optional parameters,0,55,0%,22.18
+php class constructor,0,52,0%,19.08
+rabbitmq troubleshooting,0,51,0%,20.84
+php exit,0,50,0%,15.64
+php for loop,0,49,0%,23.16
+code smells,0,49,0%,47.49
+php optional parameter,0,48,0%,9.31
+exit php,0,45,0%,20.4
+php match function,0,44,0%,9.64
+php constructor,0,44,0%,17.89
+php die,0,42,0%,19.14
+quorum queues,0,42,0%,32.05
+php variable scope,0,40,0%,29.05
+php while loop,0,39,0%,15.21
+ddd programing,0,38,0%,38.05
+php end life is,0,36,0%,26.86
+hexagonal architecture,0,36,0%,69.94
+issues with rabbitmq,0,35,0%,27.57
+sw architecture,0,35,0%,32.86
+constructor and destructor in php,0,33,0%,7.42
+php variable scope foreach,0,33,0%,11.94
+php match syntax,0,32,0%,7.69
+match in php,0,32,0%,15.59
+"""php_method(amqp_channel_class, waitforconfirm)""",0,30,0%,9.03
+php class constructor with parameters,0,30,0%,17.37
+git remove,0,30,0%,23.5
+php class constant array,0,29,0%,16.38
+php class constant,0,29,0%,18.41
+software architecture for beginners,0,29,0%,27.59
+rabbitmq queue type classic vs quorum vs stream,0,29,0%,29.17
+what is software architecture,0,29,0%,38.41
+php class example with constructor,0,28,0%,19.93
+persistent queue rabbitmq,0,28,0%,24.68
+rabbitmq queue type classic vs quorum,0,28,0%,26.61
+quorum queue,0,28,0%,33.71
+php class constructor public or private,0,27,0%,13.26
+php constant naming convention,0,27,0%,16.04
+php class constructor example,0,27,0%,20.07
+php object class example,0,27,0%,21.59
+php class variable scope,0,27,0%,22.22
+rabbitmq classic queue vs quorum,0,27,0%,24.63
+php variable scope in function,0,27,0%,31.81
+quorum queues rabbitmq,0,27,0%,34.85
+php class extends properties,0,26,0%,16.15
+php variable scope if statement,0,26,0%,19.08
+php class constructor overloading,0,26,0%,24.35
+php variable scope javatpoint,0,26,0%,24.92
+php variable scope outside function,0,26,0%,26.69
+git rebase vs merge,0,26,0%,26.92
+php variable scope try catch,0,26,0%,33.31
+what is rabbitmq server,0,26,0%,34.31
+php class constructor return value,0,25,0%,12.32
+php class inheritance constructor,0,25,0%,15.04
+php class constructor array,0,25,0%,17.24
+php legacy code moderniseren,0,25,0%,18.68
+php variable scope inside if block,0,25,0%,20.08
+rabbitmq classic vs quorum,0,25,0%,27.12
+rabbitmq quorum queue,0,25,0%,30.76
+layered architecture,0,25,0%,38.88
+what is rabbitmq used for?,0,25,0%,41.4
+software architecture explained,0,25,0%,48.48
+monitor rabbitmq,0,25,0%,78
+"""acmepay"" payment gateway",0,24,0%,8.62
+x-queue-type quorum,0,24,0%,17.5
+php class extends constructor,0,24,0%,18.88
+quorum queues vs classic queue,0,24,0%,24.29
+php array of arrays,0,24,0%,26.17
+rabbitmq quorum vs classic,0,24,0%,28.33
+rabbitmq-queues grow,0,24,0%,32.96
+rabbitmq quorum,0,24,0%,34.5
+quorum rabbitmq,0,24,0%,36.21
+rabbitmq usage,0,24,0%,39.21
+how to monitor rabbitmq,0,24,0%,74.08
+php class constant vs static,0,23,0%,20.09
+rabbitmq high availability,0,23,0%,20.65
+rabbitmq quorum queues vs classic,0,23,0%,26.04
+rebase vs merge,0,23,0%,26.57
+git remove files,0,23,0%,27.13
+what is rabbitmq?,0,23,0%,35.83
+quorum queue rabbitmq,0,23,0%,36.43
+what is rabbitmq for,0,23,0%,37.61
+software design,0,23,0%,80.13
+git remove file,0,22,0%,24.05
+php array index,0,22,0%,24.45
+php class example,0,22,0%,26.27
+rabbitmq use,0,22,0%,45.68
+rabbitmq monitoring,0,22,0%,82.32
+what is rabbitmq used for,0,21,0%,40.81
+software architectures,0,21,0%,44.86
+monitoring rabbitmq,0,21,0%,75.57
+php matches,0,20,0%,16.4
+x-delivery-count rabbitmq,0,20,0%,28.7
+when to use rabbitmq,0,20,0%,36.4
+rabbitmq uses,0,20,0%,45.65
+rabbitmq routing key wildcard,0,19,0%,25.84
+architecture layers,0,19,0%,33.37
+laravel session_driver redis .env,0,18,0%,10
+rabbitmq topic,0,18,0%,48.17
+php function default value,0,17,0%,9.41
+while php,0,17,0%,17.41
+remove file from git,0,17,0%,24.53
+rabbitmq topic exchange,0,17,0%,41.18
+what is code smell,0,17,0%,41.18
+"""static php_method(amqp_channel_class, waitforconfirm)""",0,16,0%,7.81
+php return match,0,16,0%,9.06
+php const,0,16,0%,20.12
+php variable in string single quote,0,16,0%,23.12
+php classes,0,16,0%,29.88
+nginx expires 1y add_header cache-control public immutable for hashed assets,0,15,0%,5
+php match example,0,15,0%,8.47
+php class variable default value,0,15,0%,16.2
+php define constant in class,0,15,0%,16.6
+php array of array,0,15,0%,20.8
+for loop php,0,15,0%,24.07
+software architecture tutorial,0,15,0%,31.6
+strangler fig pattern,0,15,0%,65.73
+php class properties,0,14,0%,11.64
+die in php,0,14,0%,13.07
+construct php,0,14,0%,15.71
+php variable scope inside function,0,14,0%,24.43
+git unstage all,0,14,0%,42.29
+domain-driven design,0,14,0%,44.79
+view llm results,0,14,0%,68.64
+php match default,0,13,0%,8.23
+"""/applications/xampp/xamppfiles/htdocs"" apache friends",0,13,0%,8.85
+php optional arguments,0,13,0%,9.38
+php match expression,0,13,0%,9.69
+do while loop php,0,13,0%,17.46
+php class variables example,0,13,0%,21.08
+git rm,0,13,0%,21.31
+amend commit,0,13,0%,34.69
+rabbitmq topics,0,13,0%,46.85
+code smell,0,13,0%,52.69
+php 8 match,0,12,0%,9.67
+php parameters,0,12,0%,10
+php __construct,0,12,0%,10.17
+php class inheritance parent constructor,0,12,0%,17.5
+while in php,0,12,0%,18.08
+while loop php,0,12,0%,19.5
+php class constant type,0,12,0%,23.25
+remove files from git,0,12,0%,24.08
+git undo commit,0,12,0%,67.92
+return match php,0,11,0%,8.09
+php public variable,0,11,0%,16.64
+speed up php,0,11,0%,17.82
+constructor php,0,11,0%,20.55
+git reset,0,11,0%,22.18
+rabbitmq troubleshooting issues,0,11,0%,25
+architecture layering,0,11,0%,32.09
+choreography vs orchestration,0,11,0%,34.45
+php enum,0,11,0%,48
+rabbitmq dashboard,0,11,0%,65
+php match multiple values,0,10,0%,8.1
+php while and,0,10,0%,11.8
+php while do,0,10,0%,15.2
+constructor in php,0,10,0%,15.6
+php escape quotes,0,10,0%,17.4
+php class constructor not called,0,10,0%,17.9
+git add specific file,0,10,0%,20.4
+php class constants,0,10,0%,20.4
+layer architecture,0,10,0%,36.9
+architecture of a software,0,10,0%,47
+git undo push,0,10,0%,50.7
+git revert commit after push,0,10,0%,55.5
+database disaster recovery,0,10,0%,68.7
+git revert last commit,0,10,0%,70.7
+php optional argument,0,9,0%,7.89
+nginx expires 1y add_header cache-control public immutable static assets,0,9,0%,8.33
+array_walk vs array_map,0,9,0%,8.67
+"%""acmepay"" payment gateway",0,9,0%,9.89
+php function arguments,0,9,0%,11.89
+difference between class and object in php,0,9,0%,16.11
+php do while loop,0,9,0%,16.89
+php loop while,0,9,0%,20
+constants php,0,9,0%,23.11
+rabbitmq queue vs exchange,0,9,0%,23.56
+troubleshooting rabbitmq,0,9,0%,25.44
+array of arrays php,0,9,0%,25.56
+php iterate array,0,9,0%,28.22
+rebase and merge,0,9,0%,30.11
+what is ddd,0,9,0%,34.33
+orchestration vs choreography,0,9,0%,35
+rabbitmq cluster,0,9,0%,37.11
+domain driven architecture,0,9,0%,38.33
+learn software architecture,0,9,0%,42.44
+php application performance,0,9,0%,47.33
+git revert a commit after push,0,9,0%,53.11
+git uncommit last commit,0,9,0%,65.56
+git uncommit,0,9,0%,72
+rabbitmq vs kafka vs redis vs sqs,0,8,0%,5.5
+php die vs exit,0,8,0%,10.38
+git commit specific files,0,8,0%,11.12
+php default parameter,0,8,0%,11.88
+php function parameters,0,8,0%,12.12
+maintenance code php,0,8,0%,13.38
+php exit vs die,0,8,0%,14.38
+php class tutorial pdf,0,8,0%,14.75
+php parent constructor,0,8,0%,17.5
+while loop in php,0,8,0%,18.12
+php constant,0,8,0%,19.25
+php named parameters,0,8,0%,21.38
+php global variable,0,8,0%,22
+php constants,0,8,0%,22.12
+structural patterns,0,8,0%,22.62
+constants in php,0,8,0%,23.62
+php multidimensional associative array,0,8,0%,24
+whats rabbitmq,0,8,0%,33.75
+commit amend,0,8,0%,34.12
+rebase merge,0,8,0%,34.88
+php factory pattern,0,8,0%,39.38
+vertical slice development,0,8,0%,42.25
+remove git from folder,0,8,0%,42.75
+domain driven design architecture,0,8,0%,44.75
+xampp php,0,8,0%,46.5
+git clone repository,0,8,0%,60.5
+git undo commit before push,0,8,0%,61.62
+git reset last commit,0,8,0%,69.12
+modular monolith,0,8,0%,69.25
+php match true,0,7,0%,7.43
+php optional function parameters,0,7,0%,8.14
+match case php,0,7,0%,9.71
+php inf constant manual,0,7,0%,10
+php optional,0,7,0%,10.29
+php construct,0,7,0%,13
+die php,0,7,0%,13.86
+php while statement,0,7,0%,18
+php while syntax,0,7,0%,18.29
+php named arguments,0,7,0%,21
+destructeur php,0,7,0%,21.71
+php variable declared function,0,7,0%,23
+php iterate over array,0,7,0%,24.29
+explain while loop in php,0,7,0%,25.43
+git removing files,0,7,0%,25.86
+for loop in php,0,7,0%,26.43
+php legacy code,0,7,0%,26.71
+cherry picking commits,0,7,0%,27
+git remove file from tracking,0,7,0%,28.86
+git commit amend example,0,7,0%,32.57
+software layers,0,7,0%,35.29
+what are code smells,0,7,0%,39.29
+clone git repository,0,7,0%,40.29
+how to clone git repository,0,7,0%,44.43
+how to cherry pick,0,7,0%,45.14
+php xampp,0,7,0%,45.57
+rabbitmq docker,0,7,0%,45.86
+speed up php website,0,7,0%,46
+git unstaged files,0,7,0%,55
+enums in php,0,7,0%,55.43
+cqrs,0,7,0%,65.14
+git revert to last commit,0,7,0%,65.14
+modular monolithic architecture,0,7,0%,66.57
+git undo last commit,0,7,0%,66.86
+git undo a commit,0,7,0%,70.71
+revert last commit git,0,7,0%,72.71
+git undo a local commit,0,7,0%,73.29
+unacked meaning,0,6,0%,2.67
+php __construct constructor official manual,0,6,0%,9
+optional php,0,6,0%,9.17
+x-message-ttl rabbitmq,0,6,0%,9.17
+redis incr expire rate limiter pattern official documentation,0,6,0%,9.67
+php destructor,0,6,0%,11.17
+php function parameter,0,6,0%,11.17
+rabbitmq unacked messages,0,6,0%,11.17
+unacked,0,6,0%,12
+git diff staged,0,6,0%,13
+php constructors,0,6,0%,16.83
+php const array,0,6,0%,17.67
+php class variables,0,6,0%,19
+php multiple constructors,0,6,0%,19.33
+do while loop in php,0,6,0%,19.67
+php define constant,0,6,0%,19.83
+php abstract class constructor,0,6,0%,20.17
+php escape single quote,0,6,0%,20.33
+php array iterate,0,6,0%,20.67
+rabbitmq clustering,0,6,0%,22.17
+constant php,0,6,0%,22.67
+php array in array,0,6,0%,24.83
+rabbitmq message format,0,6,0%,26.33
+how to fork a repo in git,0,6,0%,31.83
+php quotes,0,6,0%,32.83
+php global variable naming convention,0,6,0%,34.5
+git commit amend,0,6,0%,38.83
+vertical slices,0,6,0%,41.17
+cloning repository git,0,6,0%,53.33
+how to clone git,0,6,0%,53.83
+git delete last commit,0,6,0%,57.5
+removing last commit git,0,6,0%,58
+strangler pattern,0,6,0%,59.5
+git remove last commit,0,6,0%,59.83
+php speed optimization,0,6,0%,61
+git undo local commit,0,6,0%,63.33
+undo last commit git,0,6,0%,66.33
+modular monolith architecture,0,6,0%,68.67
+undo the last commit git,0,6,0%,70.33
+undoing git commit,0,6,0%,70.83
+uncommit git,0,6,0%,75
+php destructor called at script shutdown manual,0,5,0%,6.2
+git diff vs git diff --staged,0,5,0%,8.2
+php array_map preserves keys single array manual,0,5,0%,8.4
+redis incr expire rate limiter pattern official docs,0,5,0%,8.8
+rabbitmq x-message-ttl,0,5,0%,9.6
+x-expires rabbitmq,0,5,0%,9.6
+redis rate limiting incr expire official docs,0,5,0%,10
+x-message-ttl,0,5,0%,10
+php exit vs return,0,5,0%,10.2
+git diff unstaged changes,0,5,0%,12.6
+php arguments,0,5,0%,14.2
+escape quotes php,0,5,0%,15.8
+php exit while loop,0,5,0%,15.8
+php match string,0,5,0%,15.8
+php object example,0,5,0%,17.4
+php typed properties,0,5,0%,17.8
+php indexing,0,5,0%,18.6
+indexed array in php,0,5,0%,18.8
+php define vs const,0,5,0%,18.8
+php getters and setters,0,5,0%,18.8
+php constructor class,0,5,0%,19.2
+php classes constructor,0,5,0%,19.8
+php or die,0,5,0%,19.8
+php indexed arrays,0,5,0%,20.6
+php class const,0,5,0%,21.2
+const php,0,5,0%,22.4
+php while continue,0,5,0%,23
+enum php,0,5,0%,23.6
+global variables php,0,5,0%,24
+merge vs rebase,0,5,0%,24
+php objects,0,5,0%,24
+php while loop array,0,5,0%,24.2
+exit in php,0,5,0%,25.2
+git stash show diff,0,5,0%,26.2
+variable scope in php,0,5,0%,26.2
+remove file git,0,5,0%,26.6
+git reset head soft,0,5,0%,27
+php for loops,0,5,0%,29.4
+class in php,0,5,0%,29.6
+software application layers,0,5,0%,32.6
+modular monolith course,0,5,0%,32.8
+php performance tuning,0,5,0%,34.4
+software layered architecture,0,5,0%,34.6
+anemic domain model,0,5,0%,37.4
+structural design patterns,0,5,0%,38.2
+git amend previous commit,0,5,0%,38.6
+git cherry pick commit,0,5,0%,42.4
+what is domain driven design,0,5,0%,43.2
+git undo last commit keep changes,0,5,0%,43.6
+software development architecture,0,5,0%,44.2
+what is a code smell,0,5,0%,45.2
+architecture of software,0,5,0%,45.6
+php for xampp,0,5,0%,45.8
+xampp and php,0,5,0%,48.4
+php course outline,0,5,0%,49.8
+run rabbitmq in docker,0,5,0%,50.6
+git unstaging,0,5,0%,52.8
+git cloning,0,5,0%,53
+git clone repo command,0,5,0%,55.8
+clone git,0,5,0%,58.2
+git clone example,0,5,0%,58.6
+remove last commit git,0,5,0%,58.8
+clone a repository,0,5,0%,61.6
+syntaxvirtual.com,0,5,0%,62.4
+open software architecture,0,5,0%,67.4
+rabbitmq ready vs unacked,0,4,0%,4.75
+i in solid,0,4,0%,6.75
+php match expression uses strict comparison ===,0,4,0%,7
+getter and setter in php,0,4,0%,7.25
+how to commit only one file in git,0,4,0%,7.5
+unacked rabbitmq,0,4,0%,8.5
+php arrow functions capture variables by value manual,0,4,0%,9
+match statement php,0,4,0%,9.5
+php 8.5 getter setter,0,4,0%,9.5
+php match(),0,4,0%,9.5
+rabbitmq default exchange,0,4,0%,9.5
+php match case,0,4,0%,9.75
+systemctl reload nginx reload configuration without dropping connections,0,4,0%,9.75
+"""nginx -s reload""",0,4,0%,10
+sudo nginx -s reload,0,4,0%,10
+php stop script,0,4,0%,10.25
+match function php,0,4,0%,10.5
+php class destructor,0,4,0%,10.5
+rabbitmq x-expires,0,4,0%,10.5
+git rm -r --cached,0,4,0%,10.75
+parameter in php,0,4,0%,10.75
+php exit manual,0,4,0%,10.75
+localhost:5672,0,4,0%,11
+php static closure,0,4,0%,11.75
+php konstruktor,0,4,0%,13.25
+for while php,0,4,0%,13.75
+matches php,0,4,0%,14.25
+php object type,0,4,0%,15
+while do php,0,4,0%,16
+construct in php,0,4,0%,16.25
+php static const,0,4,0%,16.25
+do-while loop php,0,4,0%,16.5
+php class methods,0,4,0%,17.5
+function __construct,0,4,0%,18
+index array php,0,4,0%,18
+php for loop syntax,0,4,0%,18
+__construct,0,4,0%,18.75
+php constant in class,0,4,0%,18.75
+php global,0,4,0%,18.75
+php const variable,0,4,0%,19
+php while loop continue,0,4,0%,19
+const in php,0,4,0%,20.5
+encapsulation in php,0,4,0%,20.5
+php stop execution,0,4,0%,20.75
+loop through array php,0,4,0%,21
+rabbitmq management ui,0,4,0%,21
+index array in php,0,4,0%,21.25
+php array iteration,0,4,0%,21.75
+match en php,0,4,0%,22.25
+php variable global,0,4,0%,22.25
+what is object in php,0,4,0%,22.25
+php option,0,4,0%,23.25
+git rebase vs git merge,0,4,0%,24.25
+git move,0,4,0%,25.5
+php classes example,0,4,0%,26.75
+matching php,0,4,0%,28
+php variables scope,0,4,0%,28
+git delete a file,0,4,0%,29
+amend last commit,0,4,0%,29.5
+what is software structure,0,4,0%,29.75
+git rm file,0,4,0%,30.5
+git commit --amend,0,4,0%,32.75
+php quote,0,4,0%,33.25
+php arrow function,0,4,0%,35
+amend a commit,0,4,0%,35.75
+domain-driven design architecture,0,4,0%,36
+git reset hard head,0,4,0%,36.25
+ddd programming,0,4,0%,36.75
+code smell examples,0,4,0%,38
+reset git,0,4,0%,38.25
+layered software,0,4,0%,38.75
+software architecture what is,0,4,0%,38.75
+what is the difference between aggregate and bounded context?,0,4,0%,40.25
+ddd software,0,4,0%,41
+layer architecture diagram,0,4,0%,41
+what is architecture in software,0,4,0%,41.5
+factory pattern php,0,4,0%,42.5
+git rebase and merge,0,4,0%,43.75
+domain-driven development,0,4,0%,44.25
+software architectural,0,4,0%,45
+ddd domain driven design,0,4,0%,46
+php in xampp,0,4,0%,46
+express project structure,0,4,0%,46.25
+bounded context in microservices,0,4,0%,46.5
+clone a git repository,0,4,0%,46.75
+domain driven development,0,4,0%,47
+cache_store laravel,0,4,0%,47.5
+github cloning repository,0,4,0%,48.5
+software architecture framework,0,4,0%,48.5
+design principles and design patterns,0,4,0%,48.75
+how to clone a git repository,0,4,0%,52.75
+php enumerations,0,4,0%,56.25
+ports and adapters,0,4,0%,58
+bounded contexts,0,4,0%,58.5
+git command clone repository,0,4,0%,61.25
+undo git commit,0,4,0%,70.75
+variables and constants in php,0,3,0%,3.67
+php array_map preserves keys one array manual,0,3,0%,7
+x-expires,0,3,0%,7
+rabbitmq binding key vs routing key,0,3,0%,7.67
+php while true,0,3,0%,8
+laravel redis facade illuminate\support\facades\redis set get example,0,3,0%,8.67
+php getter and setter,0,3,0%,8.67
+destructor in php,0,3,0%,9
+php function with parameters,0,3,0%,9
+"""/applications/xampp/xamppfiles/htdocs"" apachefriends",0,3,0%,9.33
+laravel redis facade redis::set redis::get illuminate\support\facades\redis,0,3,0%,9.33
+php __dir__ constant manual,0,3,0%,9.33
+php destructor called at end of script manual,0,3,0%,9.33
+php manual for loop syntax,0,3,0%,9.33
+exit vs die php,0,3,0%,9.67
+php manual object operator -> property method access,0,3,0%,10
+properties.php?id_cat=,0,3,0%,10
+redis incr expire rate limiter official documentation,0,3,0%,10
+how to commit specific files in git,0,3,0%,10.33
+redis incrby command atomic official documentation,0,3,0%,10.33
+php destruct,0,3,0%,10.67
+php die(),0,3,0%,10.67
+php8 match,0,3,0%,10.67
+what is constructor and destructor in php,0,3,0%,10.67
+php get class properties,0,3,0%,11
+php exit script,0,3,0%,11.67
+match php 8,0,3,0%,12
+php class property,0,3,0%,12.33
+php double,0,3,0%,12.33
+php parameter,0,3,0%,12.67
+php die with status code,0,3,0%,13
+php get object properties,0,3,0%,13
+php override constructor,0,3,0%,13
+parameter php,0,3,0%,13.67
+die and exit in php,0,3,0%,14
+php define global constant,0,3,0%,14.33
+php properties,0,3,0%,14.33
+php object properties,0,3,0%,14.67
+parameters php,0,3,0%,15.33
+foreach exit php,0,3,0%,15.67
+php exit foreach,0,3,0%,15.67
+git commit only one file,0,3,0%,16.33
+php break while loop,0,3,0%,16.67
+git add specific files,0,3,0%,17
+static variable in php,0,3,0%,17
+php escape double quotes,0,3,0%,17.67
+php class extends parent constructor,0,3,0%,18
+php escape quote,0,3,0%,18.33
+class constructor php,0,3,0%,18.67
+php constant defined,0,3,0%,18.67
+destruct php,0,3,0%,19
+php const define,0,3,0%,19
+php interface property,0,3,0%,19
+php class constant visibility,0,3,0%,19.33
+php-di,0,3,0%,19.33
+php while loops,0,3,0%,19.67
+while loops php,0,3,0%,19.67
+rabbitmq vs,0,3,0%,20
+or die php,0,3,0%,20.33
+git hard reset,0,3,0%,21
+php class constructors,0,3,0%,21
+php constants in class,0,3,0%,22
+while break php,0,3,0%,23
+git reset soft,0,3,0%,23.33
+php global var,0,3,0%,23.33
+php index of array,0,3,0%,23.33
+php loop through array of objects,0,3,0%,23.33
+php property,0,3,0%,23.33
+constant in php,0,3,0%,23.67
+xampp maximum execution time of 30 seconds exceeded,0,3,0%,23.67
+php loop through array,0,3,0%,24
+constructors in php,0,3,0%,24.67
+ubiquitous language,0,3,0%,25
+git reset hard,0,3,0%,25.67
+php global variables,0,3,0%,25.67
+layers in software architecture,0,3,0%,26
+php in object,0,3,0%,26
+php iterate through array,0,3,0%,26.33
+git reset soft head 1,0,3,0%,26.67
+object in php,0,3,0%,27
+git edit last commit message,0,3,0%,27.33
+git merge vs rebase,0,3,0%,27.67
+laravel design patterns,0,3,0%,27.67
+rm file from git,0,3,0%,29.33
+difference between merge and rebase,0,3,0%,30.67
+classes in php,0,3,0%,31
+laravel repository pattern,0,3,0%,31
+class and object in php,0,3,0%,31.67
+php bridge,0,3,0%,31.67
+cqrs php,0,3,0%,33.33
+software architecture layers,0,3,0%,34
+structural pattern,0,3,0%,34.33
+layered structure,0,3,0%,35.33
+event command,0,3,0%,35.67
+ddd's,0,3,0%,36
+layered architecture diagram,0,3,0%,36.33
+rabbitmqctl,0,3,0%,37
+code smells examples,0,3,0%,39
+layering architecture,0,3,0%,39.33
+amend previous commit,0,3,0%,39.67
+php scope,0,3,0%,39.67
+what is code smells,0,3,0%,40
+yagni,0,3,0%,40
+layers of software,0,3,0%,40.33
+cherry-pick commit from another branch,0,3,0%,41
+layered architecture in software architecture,0,3,0%,41
+code smells meaning,0,3,0%,41.33
+how to commit all files in git,0,3,0%,41.33
+aggregate root,0,3,0%,42.33
+rabbitmq commands,0,3,0%,42.67
+how to install git,0,3,0%,43.33
+cherry pick a commit from another branch,0,3,0%,43.67
+architecture layers diagram,0,3,0%,44.67
+ddd context map,0,3,0%,46.33
+how to clone from github,0,3,0%,46.67
+php with xampp,0,3,0%,47.67
+bounded context ddd,0,3,0%,48.33
+open host service pattern,0,3,0%,48.67
+clone git repo,0,3,0%,49
+git undo commit keep changes,0,3,0%,49
+ddd meaning,0,3,0%,49.33
+clone repo from git,0,3,0%,50
+clone github repo,0,3,0%,50.67
+git clone a repository,0,3,0%,52.67
+skills enhancement,0,3,0%,53
+clone a git,0,3,0%,56
+install git terminal,0,3,0%,56.67
+php-enum,0,3,0%,57.33
+software architecture definition,0,3,0%,63.33
+git cancel commit,0,3,0%,69.33
+redis monitor database,0,3,0%,84
+unacked messages in rabbitmq,0,2,0%,1
+"""apto_functions-class.php"" ""sort_multiple_match_check_on_query""",0,2,0%,4.5
+getters and setters in php,0,2,0%,5
+http localhost my_project index php,0,2,0%,5
+what is unacked in rabbitmq,0,2,0%,5.5
+rabbitmq consumer prefetch fair dispatch documentation,0,2,0%,6
+"nginx expires 1y add_header cache-control public immutable for hashed 
+assets best practice",0,2,0%,6.5
+rabbitmq at least once,0,2,0%,7.5
+php manual exit language construct official,0,2,0%,8
+git commit only some files,0,2,0%,8.5
+git diff cached vs staged,0,2,0%,8.5
+redis incr expire rate limiter pattern documentation,0,2,0%,8.5
+php __construct constructor manual,0,2,0%,9
+dependency inversion principle php,0,2,0%,9.5
+laravel queue_connection redis .env,0,2,0%,9.5
+nginx root directive maps uri to filesystem path,0,2,0%,9.5
+php 8.0 class typed properties manual,0,2,0%,9.5
+php destructor called at end of script manual __destruct,0,2,0%,9.5
+php manual array_column objects public properties,0,2,0%,9.5
+php match expression introduced php 8.0 manual,0,2,0%,9.5
+redis rate limiter incr expire official docs,0,2,0%,9.5
+systemctl reload nginx,0,2,0%,9.5
+types of constructor in php,0,2,0%,9.5
+default arguments in php,0,2,0%,10
+php __destruct end of script manual,0,2,0%,10
+php function parameter default value,0,2,0%,10
+php match expression documentation php.net,0,2,0%,10
+rabbitmq at-least-once delivery documentation,0,2,0%,10
+redis rate limiting incr expire pattern official docs,0,2,0%,10
+systemctl reload nginx reloads configuration without dropping connections,0,2,0%,10
+class property php,0,2,0%,10.5
+nginx try_files $uri $uri/ /; meaning,0,2,0%,10.5
+php anonymous functions inherit variables from parent scope use manual,0,2,0%,10.5
+php use (&$var) undefined variable closure,0,2,0%,10.5
+rabbitmq cli,0,2,0%,10.5
+rabbitmq consumer acknowledgements at least once delivery official docs,0,2,0%,10.5
+git diff unstaged,0,2,0%,11
+php user-defined function extra arguments allowed manual,0,2,0%,11
+what is die in php,0,2,0%,11
+php get object methods,0,2,0%,11.5
+rabbitmq channel vs queue,0,2,0%,11.5
+function parameters in php,0,2,0%,12.5
+php end script,0,2,0%,12.5
+php exit 0,0,2,0%,13
+php array_walk vs foreach,0,2,0%,14
+rabbitmq user permissions,0,2,0%,14.5
+what is encapsulation in php,0,2,0%,15
+php defined constants,0,2,0%,15.5
+php private const,0,2,0%,15.5
+bridge php,0,2,0%,16
+class php constructor,0,2,0%,16
+cqrs php example,0,2,0%,16
+exit php script,0,2,0%,16
+how to stop php script,0,2,0%,16
+php variable types list,0,2,0%,16.5
+do while in php,0,2,0%,17
+php destroy class,0,2,0%,17
+php foreach array of objects,0,2,0%,17
+php object literal,0,2,0%,17
+string match php,0,2,0%,17
+php object,0,2,0%,17.5
+php do while,0,2,0%,18
+php while loop break,0,2,0%,18
+rabbitmqctl commands,0,2,0%,18
+php for while,0,2,0%,18.5
+php global constants,0,2,0%,18.5
+php index array,0,2,0%,19
+rabbitmq exchange name,0,2,0%,19
+how to define constant in php,0,2,0%,19.5
+php exit for loop,0,2,0%,19.5
+php function use global variable,0,2,0%,19.5
+exit loop php,0,2,0%,20
+php const keyword,0,2,0%,20
+php constant class,0,2,0%,20
+php exit foreach loop,0,2,0%,20
+php local variable,0,2,0%,20
+php object access,0,2,0%,20
+class constant php,0,2,0%,21
+define constant php,0,2,0%,21
+git rm cached,0,2,0%,21
+loop through array in php,0,2,0%,21
+php exit function,0,2,0%,21
+git commit rm,0,2,0%,21.5
+git add change to last commit,0,2,0%,22
+numeric array in php,0,2,0%,22
+"optional parameter declared before required parameter is implicitly treated 
+as required.",0,2,0%,22
+php constant define,0,2,0%,22
+php define const,0,2,0%,22
+variable global php,0,2,0%,22
+access modifiers in php,0,2,0%,22.5
+add changes to last commit,0,2,0%,23
+php 8 named arguments,0,2,0%,23
+php class examples,0,2,0%,23
+php die or exit,0,2,0%,23
+php exit statement,0,2,0%,23
+php global variable in function,0,2,0%,23
+php indexed array,0,2,0%,23
+skill enhancement,0,2,0%,23
+while statement in php,0,2,0%,23
+define constant in php,0,2,0%,23.5
+php closures,0,2,0%,23.5
+php di,0,2,0%,23.5
+php object class,0,2,0%,23.5
+git add to last commit,0,2,0%,24
+rabbitmq memory,0,2,0%,24
+endwhile php,0,2,0%,24.5
+git delete,0,2,0%,24.5
+php class var,0,2,0%,24.5
+php declare global variable,0,2,0%,24.5
+variable php global,0,2,0%,24.5
+read model,0,2,0%,25.5
+it choreography vs orchestration,0,2,0%,26
+difference between rebase and merge,0,2,0%,26.5
+git commit one file,0,2,0%,26.5
+access specifiers in php,0,2,0%,27
+enums php,0,2,0%,27.5
+git cherry pick commit from another branch,0,2,0%,27.5
+ddd s,0,2,0%,28
+git delete file,0,2,0%,28
+git rm a file,0,2,0%,28
+git soft reset,0,2,0%,28
+design patterns laravel,0,2,0%,28.5
+git merge vs git rebase,0,2,0%,28.5
+git stash diff,0,2,0%,28.5
+what does rabbitmq do,0,2,0%,29
+what is exchange in rabbitmq,0,2,0%,29.5
+domain infrastructure,0,2,0%,30
+domain-driven architecture,0,2,0%,30.5
+global variable in php,0,2,0%,30.5
+php arrow functions,0,2,0%,31
+solid acronym,0,2,0%,31
+database layer architecture,0,2,0%,31.5
+software architecture layer,0,2,0%,31.5
+git cherry pick from another branch,0,2,0%,32.5
+layer software architecture,0,2,0%,32.5
+bounded context example,0,2,0%,33
+ddd value object,0,2,0%,33
+php scope of variables,0,2,0%,33
+what is ddd architecture,0,2,0%,33
+domain event pattern,0,2,0%,33.5
+git cherry-pick from another branch,0,2,0%,34
+layered software architecture,0,2,0%,34
+what is rabbit mq,0,2,0%,34
+architectural layers,0,2,0%,34.5
+git amend last commit,0,2,0%,34.5
+git staged changes,0,2,0%,35
+bounded context microservices,0,2,0%,35.5
+design patterns vs design principles,0,2,0%,35.5
+design principles vs design patterns,0,2,0%,36
+software architechture,0,2,0%,36
+software layer architecture,0,2,0%,36
+layered architecture software design,0,2,0%,36.5
+adapter class,0,2,0%,37
+laravel triggers,0,2,0%,37
+solid oop,0,2,0%,37
+architecture layer,0,2,0%,37.5
+how to fork a github repo,0,2,0%,37.5
+git amend,0,2,0%,38
+ddd aggregate root,0,2,0%,38.5
+git merge and rebase,0,2,0%,38.5
+how to use git clone,0,2,0%,38.5
+structural design pattern,0,2,0%,38.5
+vertical slice,0,2,0%,39
+command event,0,2,0%,39.5
+event in computer programming,0,2,0%,39.5
+quotes php,0,2,0%,39.5
+unstage all changes git,0,2,0%,40
+what is a layered architecture?,0,2,0%,40
+context mapping ddd,0,2,0%,40.5
+factory design pattern php,0,2,0%,40.5
+php oop class,0,2,0%,40.5
+what is domain-driven design,0,2,0%,40.5
+layered architecture examples,0,2,0%,41
+php variable type class,0,2,0%,41
+vertical slice architecture,0,2,0%,41
+vertical slicing architecture,0,2,0%,41
+ddd design,0,2,0%,41.5
+rabbitmq alternatives,0,2,0%,41.5
+architecture in software,0,2,0%,42
+domain-driven design ddd,0,2,0%,42
+php private constructor,0,2,0%,42
+rabbitmq ports,0,2,0%,42
+bounded context vs subdomain,0,2,0%,42.5
+layered systems architecture,0,2,0%,42.5
+php string enum,0,2,0%,43
+what is the software architecture,0,2,0%,43
+5 layer architecture,0,2,0%,43.5
+what is domain driven development,0,2,0%,43.5
+cloning a github repository,0,2,0%,44
+git remove files from repo,0,2,0%,44
+driven domain design,0,2,0%,44.5
+legacy php systeem refactoren,0,2,0%,45
+cloning a github repo,0,2,0%,46
+ddd context mapping,0,2,0%,46
+what is a software architecture,0,2,0%,46.5
+xampp pear install,0,2,0%,46.5
+event data structure,0,2,0%,47
+php singleton class example,0,2,0%,47
+architecture for software,0,2,0%,47.5
+ddd,0,2,0%,47.5
+layered architecture in software engineering,0,2,0%,47.5
+layered architecture model,0,2,0%,47.5
+yagni principle,0,2,0%,47.5
+ddd bounded context,0,2,0%,48
+git git clone,0,2,0%,48
+bounded context in ddd,0,2,0%,48.5
+ddd development,0,2,0%,48.5
+docker rabbitmq,0,2,0%,48.5
+hexagon architecture,0,2,0%,48.5
+unstage all files git,0,2,0%,48.5
+cloning github repository,0,2,0%,49
+php enum get value,0,2,0%,49
+cloning github repo,0,2,0%,50
+code smell meaning,0,2,0%,50.5
+node js project structure best practices,0,2,0%,50.5
+rabbitmq queue state,0,2,0%,50.5
+cloning a git repo,0,2,0%,52
+ddd bounded contexts,0,2,0%,52
+git clone,0,2,0%,52
+how to clone repository from github,0,2,0%,53
+bounded contexts ddd,0,2,0%,53.5
+delete last commit,0,2,0%,53.5
+github clone repo,0,2,0%,54
+runtime performance profiling tools,0,2,0%,54
+git undo commit after push,0,2,0%,54.5
+how to evaluate llm output,0,2,0%,54.5
+php enums,0,2,0%,55.5
+how to revert a commit in git after push,0,2,0%,56
+software architecture learning,0,2,0%,56.5
+high performance php,0,2,0%,57
+how to undo my last commit,0,2,0%,57.5
+git cancel commit not pushed,0,2,0%,58
+github cancel last commit,0,2,0%,58
+reverter ultimo commit,0,2,0%,58.5
+horizon laravel,0,2,0%,59
+uncommit my last commit,0,2,0%,59
+remove last commit,0,2,0%,60
+undo local commit,0,2,0%,60
+how to revert last commit in git without losing changes,0,2,0%,60.5
+how to undo a commit?,0,2,0%,60.5
+recommended strategies for validating llm outputs,0,2,0%,60.5
+revert the last commit in git remote,0,2,0%,60.5
+rollback last commit,0,2,0%,60.5
+how to remove latest commit,0,2,0%,61
+how to undo last commit that was pushed,0,2,0%,61.5
+revert last commit in git after push,0,2,0%,62
+git undo a commit after push,0,2,0%,62.5
+hexagonal (ports and adapters) architecture,0,2,0%,62.5
+delete last local commit,0,2,0%,63
+git clone repository command,0,2,0%,63
+revert last commit github,0,2,0%,64.5
+github rollback last commit,0,2,0%,65
+github undo last commit,0,2,0%,65
+git undo last local commit,0,2,0%,65.5
+strangler strategy,0,2,0%,65.5
+llm output,0,2,0%,66
+strangler fig method,0,2,0%,66.5
+enumeration in php,0,2,0%,67
+uncommit something,0,2,0%,67
+how to revert back to last commit,0,2,0%,67.5
+revert the last commit,0,2,0%,67.5
+undo last commit,0,2,0%,67.5
+undo commit git,0,2,0%,68
+git install command line,0,2,0%,68.5
+revert last commit,0,2,0%,70.5
+undo a commit that has been pushed,0,2,0%,70.5
+undo most recent local commit,0,2,0%,70.5
+output evaluation,0,2,0%,71
+git how to undo commit,0,2,0%,72.5
+how to uncommit git,0,2,0%,72.5
+how to uncommit in git,0,2,0%,73.5
+database disaster recovery planning,0,2,0%,76
+git revert last commit local,0,2,0%,76.5
+strangler fig approach,0,2,0%,76.5
+construct and destruct in php,0,1,0%,1
+die function in php,0,1,0%,1
+hy000,0,1,0%,1
+laravel cache remember,0,1,0%,1
+revert unpushed commit git,0,1,0%,1
+routing key in rabbitmq,0,1,0%,1
+s solid,0,1,0%,1
+what is a read model,0,1,0%,1
+horizon supervisor,0,1,0%,2
+in php,0,1,0%,2
+php array_map key,0,1,0%,2
+any free course,0,1,0%,3
+docker docs .dockerignore official,0,1,0%,3
+port 5672,0,1,0%,3
+what does this line do?,0,1,0%,3
+php,0,1,0%,4
+php 8.3 typed class constants documentation,0,1,0%,4
+amqp://127.0.0.1:5672,0,1,0%,5
+no it did not help,0,1,0%,5
+php manual constructors and destructors inheritance parent::__construct,0,1,0%,5
+php manual typed class constants php 8.3,0,1,0%,5
+s in solid,0,1,0%,5
+cum il instalez,0,1,0%,6
+php manual class constants typed 8.3,0,1,0%,6
+php manual constructors and destructors parent::__construct inheritance,0,1,0%,6
+site.alistair.cockburn.us hexagonal architecture ports adapters,0,1,0%,6
+while else php,0,1,0%,6
+command vs event,0,1,0%,7
+events vs commands,0,1,0%,7
+nginx error.log default location /var/log/nginx/error.log,0,1,0%,7
+nginx limit_req_zone,0,1,0%,7
+nginx server_name listen directive official docs,0,1,0%,7
+php 8.4 getter setter,0,1,0%,7
+php constructor __construct official manual,0,1,0%,7
+php constructor inheritance parent::__construct manual,0,1,0%,7
+php finally executes on exit manual,0,1,0%,7
+php foreach manual arrays official,0,1,0%,7
+php typed class constants introduced in php 8.3 official manual,0,1,0%,7
+php typed class constants introduced php 8.3 official documentation,0,1,0%,7
+php user-defined function extra arguments ignored documentation,0,1,0%,7
+rabbitmq exactly once delivery official docs,0,1,0%,7
+redis delete key,0,1,0%,7
+u,0,1,0%,7
+u!,0,1,0%,7
+what is i in solid,0,1,0%,7
+default exchange rabbitmq,0,1,0%,8
+fastcgi_pass,0,1,0%,8
+git diff unstaged files,0,1,0%,8
+gzip_types,0,1,0%,8
+laravel queue retry all,0,1,0%,8
+maximum execution time of 60 seconds exceeded,0,1,0%,8
+nginx location proxy_pass,0,1,0%,8
+php constructors inheritance parent::__construct manual,0,1,0%,8
+php continue 2,0,1,0%,8
+php extra arguments user-defined function php 8 manual,0,1,0%,8
+php getter,0,1,0%,8
+php manual object operator -> access property method,0,1,0%,8
+php manual object operator -> properties methods,0,1,0%,8
+php readonly class,0,1,0%,8
+rabbitmq acknowledgements official docs,0,1,0%,8
+redis rate limiter incr expire pattern documentation,0,1,0%,8
+server_tokens off;,0,1,0%,8
+вот это интересно,0,1,0%,8
+debian nginx sites-enabled symlink sites-available documentation,0,1,0%,9
+default nginx error log path /var/log/nginx/error.log,0,1,0%,9
+die vs exit php,0,1,0%,9
+driving driven,0,1,0%,9
+laravel redis_client phpredis predis .env,0,1,0%,9
+laravel retry failed jobs,0,1,0%,9
+laravel session driver redis documentation session_driver=redis,0,1,0%,9
+limit_req_zone,0,1,0%,9
+nginx access module allow deny official documentation,0,1,0%,9
+"nginx add_header cache-control public immutable expires 1y hashed assets 
+best practice",0,1,0%,9
+nginx conf.d vs sites-enabled,0,1,0%,9
+nginx error log default location /var/log/nginx/error.log,0,1,0%,9
+nginx error.log location /var/log/nginx/error.log default,0,1,0%,9
+nginx proxy_set_header host,0,1,0%,9
+nginx try_files $uri =404 documentation,0,1,0%,9
+php 8 user-defined function extra arguments allowed documentation,0,1,0%,9
+php 8 user-defined function too many arguments extra arguments allowed,0,1,0%,9
+php anonymous function use undefined variable by reference,0,1,0%,9
+php array_column objects public properties documentation,0,1,0%,9
+php closure use by reference undefined variable allowed,0,1,0%,9
+php exit finally block executed,0,1,0%,9
+php exit(),0,1,0%,9
+php extra arguments to user-defined function ignored php 8,0,1,0%,9
+php extra arguments user-defined function allowed,0,1,0%,9
+php finally exit behavior manual,0,1,0%,9
+php manual static variables function retain value between calls,0,1,0%,9
+php match expression introduced in php 8 manual,0,1,0%,9
+php object operator -> method call manual,0,1,0%,9
+php private protected public,0,1,0%,9
+php string concatenation operator . manual,0,1,0%,9
+php too many arguments user-defined functions php 8 manual,0,1,0%,9
+php user-defined function extra arguments ignored php 8,0,1,0%,9
+php user-defined functions extra arguments allowed php 8,0,1,0%,9
+rabbitmq default exchange routing key queue name docs,0,1,0%,9
+rabbitmq negative acknowledgements official docs,0,1,0%,9
+redis vs rabbitmq,0,1,0%,9
+restart nginx,0,1,0%,9
+srp ocp lsp isp dip,0,1,0%,9
+ssl_protocols nginx,0,1,0%,9
+commit only one file git,0,1,0%,10
+die() in php,0,1,0%,10
+git commit only specific files,0,1,0%,10
+git diff only staged files,0,1,0%,10
+git diff staged and unstaged,0,1,0%,10
+how to install that,0,1,0%,10
+laravel session driver redis session_driver=redis,0,1,0%,10
+match expression in php,0,1,0%,10
+nginx gzip_types,0,1,0%,10
+nginx keepalive_timeout,0,1,0%,10
+nginx proxy_set_header,0,1,0%,10
+nginx proxy_set_header host $host documentation,0,1,0%,10
+nginx proxy_set_header host $host official docs,0,1,0%,10
+nginx server_tokens off,0,1,0%,10
+nginx sites-available,0,1,0%,10
+nginx try_files directive documentation,0,1,0%,10
+php 8 user-defined function extra arguments ignored documentation,0,1,0%,10
+php __destruct called at end of script manual,0,1,0%,10
+php __destruct called on script shutdown manual,0,1,0%,10
+php extra arguments user-defined function allowed php 8 manual,0,1,0%,10
+php extra arguments user-defined function ignored php 8 documentation,0,1,0%,10

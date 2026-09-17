@@ -577,6 +577,13 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   w ciągu tygodnia". **Decyzja: tempo zostaje 3/tydzień, rewizja przy eksporcie ok. 20.09**, gdy
   `fixing-sqlstate`, `debounce-vs-throttle` i `testable-php-code` będą miały po 2-3 tygodnie i będzie
   wiadomo, czy ich zero to opóźnienie, czy odrzucenie. Nie przyspieszać wcześniej.
+  **STAN NA 17.09.2026 (rewizja wykonana): wyzwalacz SPEŁNIONY, tempo mimo to zostaje 3/tydzień.**
+  Trzy z czterech artykułów z 04-11.09 zebrały wyświetlenia w ciągu tygodnia, dwa od razu na
+  pozycji 8-9 - „3-4 tygodnie" jest nieaktualne. Ale sześć artykułów (29.07-31.08, m.in.
+  `testable-php-code`, `debounce-vs-throttle-javascript`, `php-8-4-property-hooks`) ma zero wyświetleń
+  po 2.5-7 tygodniach przy stronie stojącej na 200 - to odrzucenie, nie opóźnienie. **Wąskim gardłem
+  jest SELEKCJA tematów, nie tempo wchłaniania**; przyspieszenie przyciągnęłoby do przodu także
+  szerokie tematy z kolejki. Szczegóły: `docs/seo/gsc-weekly/2026-09-17.md`, ustalenia nr 2-3.
   **Strach przed „spamem" jest źle zaadresowany - mamy własny dowód, że wolumen nie szkodzi**:
   indeksacja skoczyła 48 -> 183 (11.07) i 183 -> 257 (25.07), czyli dwie paczki po ~135 i ~74 strony
   naraz, obie ze statusem *Powodzenie*, zero działań ręcznych. Google karze „scaled content abuse",

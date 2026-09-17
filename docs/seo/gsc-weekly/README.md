@@ -45,6 +45,11 @@ do tygodnia, a nie tylko oglądać jeden wykres w panelu.
   i ZEA (1371 wyśw. / 8.60 / 0 klik.) prawie się pokrywają. Przekrój na stronę obalił ją w dwie
   minuty: ZEA to 18%, USA 80%. **Dwa agregaty mogą mieć te same trzy liczby, opisując rozłączne
   wyświetlenia.** Zgodność agregatów to powód, żeby zrobić przekrój, a nie żeby go pominąć.
+- **„Ogon `www.` wygaśnie sam" dotyczy tylko URL-i, których wyświetlenia SPADAJĄ.** 17.09
+  `http://www.oatllo.com/laravel-job-batching` urósł 68 -> 77 w oknie przesuniętym za naprawę
+  kanonikalizacji, a apeks tego artykułu nie występuje w `Strony.csv` wcale. Serwer był poprawny
+  (301 + canonical) - to Google trzyma stary kanoniczny. Rosnący `www.` przy braku apeksu =
+  „Sprawdź URL" w GSC na apeksie, nie czekanie.
 - **Coverage „Nie znaleziono (404)" ma u nas ROSNĄĆ i nie jest to usterka.** Wycofane artykuły
   (`config/articles.php` -> `retired_slugs`) oddają świadomie **410 Gone** (`HomeController:188`),
   a GSC wrzuca 410 do tego samego kubełka co 404. Licznik 2 -> 7 (06.09) to Google skanujący
@@ -67,6 +72,12 @@ Performance = okno 7 dni. Coverage = stan na dzień eksportu.
 | **2026-08-23** | 15-21.08 | **8** | **12056** | **0.07%** | **29.5** | **371** | **148** | **52** |
 | _(wycinek)_ | 22-28.08 | 17 | 7319 | 0.23% | 25.3 | 423 | 171 | - |
 | **2026-09-06** | 29.08-04.09 | **17** | **7225** | **0.24%** | **21.6** | **423** | **171** | **49** |
+| _(wycinek)_ | 01-07.09 | 14 | 7444 | 0.19% | 15.2 | - | - | - |
+| **2026-09-17** | 08-14.09 | **10** | **5930** | **0.17%** | **13.4** | _brak eksportu_ | - | - |
+
+Eksport z 17.09: filtr „Ostatnich 28 dni" (18.08-14.09), **bez Coverage**. Wycinek 01-07.09
+zachodzi 4 dniami na wiersz 29.08-04.09 - wyrównanie do końca okna zamiast dziury. Szczegóły
+w `2026-09-17.md`.
 
 Eksport z 06.09 też zrobiono z filtrem „Ostatnich 28 dni" (08.08-04.09) i z tego samego powodu -
 poprzednia analiza jest sprzed dwóch tygodni. Coverage w obu wierszach z 06.09 to stan na dzień
