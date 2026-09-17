@@ -1,50 +1,61 @@
 ---
 title: "The match Expression in PHP 8+: A Modern Approach to Conditionals"
 slug: php-match-expression-guide
-seo_title: "PHP match Expression: Syntax and Examples (PHP 8+)"
-seo_description: "Learn the PHP match expression: syntax, strict === comparison, returning a value, and the match(true) trick - with clear, runnable examples for PHP 8+."
+seo_title: "PHP match Expression: Syntax, default and match(true)"
+seo_description: "PHP match explained: syntax, multiple values per arm, default, match(true) for ranges, return match and the UnhandledMatchError - runnable PHP 8 examples."
 ---
 
-The **PHP `match` expression**, introduced in **PHP 8**, is a modern construct for matching values and returning results. Unlike [the `switch` statement](/course/php/conditional-instructions/php-switch-statement-guide), it is an **expression**, meaning that **match always returns a value** that can be assigned to a variable or returned from a function.
+The **PHP `match` expression** (added in **PHP 8.0**) compares one value against a list of options with strict `===` and **returns the result of the first option that matches**. Think of it as a shorter, stricter [`switch`](/course/php/conditional-instructions/php-switch-statement-guide) that gives you a value back:
 
-Why it matters:
+```php
+<?php
+$status = 404;
 
-- Cleaner code: shorter, more readable than [`if`, `elseif`, and `else` chains](/course/php/conditional-instructions/conditional-statements-php-if-else-elseif) and `switch`.
-- Safer: uses **strict comparison (===)** – no unexpected matches like in `switch`.
-- No fall-through: you don’t need `break;`.
-- Requires completeness: if not all cases are covered, PHP throws an error (unless you add `default`).
+$message = match ($status) {
+    200 => 'OK',
+    404 => 'Not Found',
+    500 => 'Server Error',
+    default => 'Unknown status',
+};
 
-In practice, **match** is great for mapping values, formatting statuses, selecting labels, simple routers, and working with **enums** (PHP 8.1+). Enums are beyond this course, but if you want to go deeper, there is a [complete guide to PHP enums](/php-enums-complete-guide) on the blog.
+echo $message; // Not Found
+```
 
-**A common gotcha:** the thing that trips people up most when moving from `switch` to `match` is [strict comparison with `===`](/course/php/php-basics/operators-arithmetic-comparison-logic) - `match` compares with `===`, so the string `'2'` does not match the integer `2`. The second gotcha is coverage: if no arm matches and there is no `default`, PHP throws an `UnhandledMatchError` instead of quietly doing nothing like `switch`. Both are intentional - they catch bugs early. For a deeper side-by-side breakdown, see [what actually changed between match and switch](/php-match-vs-switch).
+Three things to know before anything else:
 
----
+- `match` is an **expression**, not a function and not a statement. It produces a value, so you assign it, `echo` it or `return` it.
+- It compares with **`===`**, so the string `'404'` does **not** match the integer `404`.
+- If nothing matches and there is no `default`, PHP throws an **`UnhandledMatchError`**.
 
-## How the PHP match expression works
-
-### PHP match vs switch vs if/elseif
-
-- **match vs switch**
-  - match uses **strict identity (===)**, switch defaults to **loose (==)**.
-  - match is an **expression** (returns a value), switch is a **statement** (does not).
-  - match has no fall-through — each arm ends automatically, no `break` needed.
-  - match enforces full coverage (or `default`), otherwise `UnhandledMatchError` is thrown.
-- **match vs if/elseif**
-  - if/elseif is more flexible for complex conditions or ranges.
-  - match is ideal for simple 1:1 matches (or multiple values to one result).
-  - You can use the `match (true)` trick for ranges (see below).
-
-### PHP match syntax
-
-- Each arm has the form: `condition => result,`
-- You can group multiple values in one arm, separated by commas.
-- The `default` arm is optional but recommended.
+Not to be confused with `preg_match()` - that is a function for regular expressions and has nothing to do with the `match` expression.
 
 ---
 
-## PHP match expression examples
+## PHP match syntax
 
-### Map a value to text with match
+```php
+$result = match (subject) {
+    value1 => result1,
+    value2, value3 => result2,
+    default => result3,
+};
+```
+
+The rules, all in one place:
+
+- The **subject** in the parentheses is evaluated once.
+- Each **arm** has the form `condition => result`. Arms are separated by commas; a comma after the last arm is allowed.
+- One arm can list **several values** separated by commas (they work like "or").
+- Arms are checked **top to bottom** and the **first match wins**. Nothing falls through, so there is no `break`.
+- The right side of `=>` must be a **single expression**, not a block of statements.
+- `default` is optional, but a match can have **only one** `default` arm.
+- The whole `match` ends with a **semicolon** after the closing `}`.
+
+---
+
+## PHP match examples
+
+### Basic example: map a value to text
 
 ```php
 <?php
@@ -64,41 +75,76 @@ $dayName = match ($day) {
 echo $dayName; // Wednesday
 ```
 
-### Multiple values in one arm
+This is the job `match` does best: turn one value into another. The same thing with `if`/`elseif` would take seven conditions and seven assignments.
+
+### Match multiple values in one arm
+
+Separate the values with commas. Any of them triggers the arm:
 
 ```php
 <?php
-$status = 201;
+$day = 'sat';
 
-$message = match ($status) {
-    200, 201, 202 => 'Success or accepted',
-    400, 404 => 'Client error',
-    500, 502, 503 => 'Server error',
-    default => 'Unknown status',
+$type = match ($day) {
+    'mon', 'tue', 'wed', 'thu', 'fri' => 'weekday',
+    'sat', 'sun' => 'weekend',
+    default => 'unknown',
 };
 
-echo $message; // Success or accepted
+echo $type; // weekend
 ```
 
-### match as an expression: assignment and return
+### The default arm
+
+`default` catches every value that no other arm matched. Two limits that people run into:
+
+- You can't write two `default` arms. PHP stops with `Fatal error: Match expressions may only contain one default arm`.
+- You can't mix `default` with other values in one arm (`'x', default => ...` is a syntax error). Put it on its own line - usually the last one.
+
+### What happens when nothing matches: UnhandledMatchError
+
+`switch` without a matching `case` quietly does nothing. `match` refuses to guess:
 
 ```php
 <?php
-function normalizeRole(string $role): string
-{
-    return match (strtolower($role)) {
-        'admin' => 'admin',
-        'owner', 'superuser' => 'admin',
-        'editor' => 'editor',
-        'viewer', 'reader' => 'viewer',
-        default => 'guest',
-    };
-}
+$day = 8;
 
-$userRole = normalizeRole('SuperUser'); // admin
+$type = match ($day) {
+    1, 2, 3, 4, 5 => 'weekday',
+    6, 7 => 'weekend',
+};
 ```
 
-### Ranges with match(true)
+Output:
+
+```text
+Fatal error: Uncaught UnhandledMatchError: Unhandled match case 8
+```
+
+The message includes the value that slipped through (strings are shown in quotes, e.g. `Unhandled match case 'abc'`), which makes the bug easy to find. The fix is either to add the missing value or to add a `default` arm. You can also catch this error like any other exception - you'll meet `try`/`catch` later in the course.
+
+### Strict comparison: '2' vs 2
+
+`match` uses [strict comparison with `===`](/course/php/php-basics/operators-arithmetic-comparison-logic), so the type has to match as well as the value:
+
+```php
+<?php
+$input = '2'; // a string, not an integer
+
+$result = match ($input) {
+    2 => 'number two',   // skipped: int vs string
+    '2' => 'string two', // this one matches
+    default => 'other',
+};
+
+echo $result; // string two
+```
+
+**The gotcha in real code:** everything that comes from a form, a URL or a file arrives as a **string**. If your arms are integers (`1 =>`, `2 =>`), nothing matches and you land in `default` or get an `UnhandledMatchError`. Convert the value first, for example `match ((int) $page) { ... }`.
+
+### match(true): ranges and other conditions
+
+`match` itself only checks `===`. To test conditions like "greater than", pass `true` as the subject - the first arm whose condition equals `true` wins:
 
 ```php
 <?php
@@ -115,126 +161,102 @@ $grade = match (true) {
 echo $grade; // B
 ```
 
-### Incomplete matches and UnhandledMatchError
+Two things to watch here:
+
+1. **Order matters.** If `$score >= 60` were the first arm, a score of 87 would get a `D`, because the first true condition wins.
+2. **The condition must be exactly `true`, not just "truthy".** A comparison like `$score >= 90` or `str_contains($text, 'PHP')` returns a real `true`/`false`, so it works. A value like `1` or a non-empty string does not - `1 === true` is `false`. That is how `preg_match()` catches people: it returns `1`, not `true`, so the arm never matches. Cast it with `(bool) preg_match(...)`.
 
 ```php
 <?php
-$day = 8;
+$text = 'I am learning PHP';
 
-try {
-    $type = match ($day) {
-        1, 2, 3, 4, 5 => 'weekday',
-        6, 7 => 'weekend',
-        // missing default → UnhandledMatchError
-    };
-} catch (UnhandledMatchError $e) {
-    echo "Match error: " . $e->getMessage();
-}
-```
-
-### Throwing exceptions inside match arms
-
-```php
-<?php
-function requireNonEmpty(?string $value): string
-{
-    return match (true) {
-        $value === null, $value === '' => throw new InvalidArgumentException('Value cannot be empty'),
-        default => $value,
-    };
-}
-
-echo requireNonEmpty('ok'); // ok
-```
-
-### match with enums (PHP 8.1+)
-
-```php
-<?php
-enum Status: string {
-    case Draft = 'draft';
-    case Published = 'published';
-    case Archived = 'archived';
-}
-
-function statusLabel(Status $s): string
-{
-    return match ($s) {
-        Status::Draft => 'Draft',
-        Status::Published => 'Published',
-        Status::Archived => 'Archived',
-    };
-}
-
-echo statusLabel(Status::Published); // Published
-```
-
-### Strict equality: '5' vs 5
-
-```php
-<?php
-$input = '2';
-
-$result = match ($input) {
-    2 => 'number two',   // no match (int vs string)
-    '2' => 'string two', // this matches
-    default => 'other',
+$topic = match (true) {
+    str_contains($text, 'PHP') => 'PHP',
+    str_contains($text, 'JavaScript') => 'JavaScript',
+    default => 'something else',
 };
 
-echo $result; // string two
+echo $topic; // PHP
 ```
+
+### return match from a function
+
+Because `match` is an expression, you can return it directly. You'll write your own functions in the [functions chapter](/course/php/function/php-functions-basics-guide); for now it's enough to see the shape:
+
+```php
+<?php
+function shippingCost(string $country): int
+{
+    return match ($country) {
+        'PL' => 10,
+        'DE', 'FR' => 25,
+        default => 50,
+    };
+}
+
+echo shippingCost('DE'); // 25
+```
+
+### Only the matching arm runs
+
+PHP checks the arms one by one and stops at the first match. The results of the other arms are **never evaluated**, so a function call on the right side of a non-matching arm doesn't run at all. That's why an arm can safely throw an error, e.g. `default => throw new InvalidArgumentException('Unknown role')` - it only fires when that arm is chosen.
 
 ---
 
-## Best Practices and Common Mistakes
+## When not to use match
 
-### Best Practices
+- **You need several statements per branch.** The right side of `=>` is one expression. If a branch has to set three variables and print something, use `if`/`elseif` or `switch`.
+- **You rely on loose comparison on purpose.** Then `switch` (`==`) is the honest choice - but usually it's better to convert the type and keep `match`.
+- **Your server runs PHP 7.** `match` doesn't exist there and the file fails with a parse error such as `syntax error, unexpected '=>'`. Also, since PHP 8.0 `match` is a reserved word, so old code with a function named `match()` breaks on upgrade.
 
-- Use **match** for value mapping (1:1 or grouped values).
-- Ensure **completeness**: add `default` or cover all values.
-- Keep return types consistent (e.g., all strings).
-- Use **match(true)** for simple range conditions.
-- Combine with **enums** for maximum safety (forces full coverage).
-- Keep arms simple; extract heavy logic into functions.
-- Always end arms with commas.
+### match vs switch in one table
 
-### Common Mistakes
+| | `match` | `switch` |
+|---|---|---|
+| Comparison | strict `===` | loose `==` |
+| Returns a value | yes | no |
+| Needs `break` | no | yes, or it falls through |
+| No matching case | `UnhandledMatchError` | nothing happens |
+| Multiple statements per branch | no | yes |
 
-- Forgetting `default` or incomplete coverage → UnhandledMatchError.
-- Expecting loose comparison (==) like switch → match uses strict ===.
-- Mixing return types across arms → may cause TypeError or reduce clarity.
-- Putting side effects inside arms → harder to test; better to extract logic.
-- Duplicating values in multiple arms → later arms are unreachable.
+`match` also works well with **enums** (PHP 8.1+). Enums are beyond this course, but there is a [complete guide to PHP enums](/php-enums-complete-guide) on the blog.
+
+---
+
+## Common mistakes with PHP match
+
+- **Forgetting the semicolon** after the closing `}` - it's an expression, so it ends like one.
+- **Comparing a string input with integer arms** - convert the type first.
+- **Putting a broad condition first in `match(true)`** - later arms become unreachable.
+- **Using a truthy value in `match(true)`** - cast to `bool`.
+- **Leaving out `default` for values you don't control** - user input will eventually hit a value you didn't list.
 
 ---
 
 ## Summary
 
-- The **match** expression in PHP 8+ is concise, strict, and safer than switch.
-- It’s an **expression**: always returns a value.
-- Uses **strict identity (===)**.
-- No fall-through, no `break` needed.
-- Enforces full coverage (or `default`).
-- Ideal for mapping, enums, and validation.
+- `match` (PHP 8.0+) compares a value with `===` and returns the result of the first matching arm.
+- Several values can share one arm: `'sat', 'sun' => 'weekend'`.
+- `default` handles everything else; without it an unmatched value throws `UnhandledMatchError`.
+- `match (true)` turns it into a compact chain of conditions - order the arms from most to least specific.
+- Each arm is a single expression; for multi-step branches use `if` or `switch`.
 
----
-
-Now you know how to use the **PHP `match` expression** to write cleaner, safer, and more predictable conditionals.
+In the next lesson you'll see how `exit` and `die` stop a script completely.
 
 ## FAQ
 
-### What is the difference between PHP match and switch?
+### Is match a function or a statement in PHP?
 
-`match` uses strict comparison (`===`), is an **expression** that returns a value, has no fall-through (so no `break`), and requires every case to be covered or it throws. `switch` uses loose comparison (`==`), is a statement that returns nothing, and falls through until it hits a `break`.
+Neither - `match` is an **expression**. It evaluates to a value, which is why you can write `$x = match (...) { ... };` or `return match (...) { ... };`. It is also unrelated to `preg_match()`, which is a regular expression function.
 
-### Does the PHP match expression use strict comparison?
+### How do I match multiple values in a PHP match expression?
 
-Yes. `match` compares with `===` (strict identity), so the types must match too - the string `'2'` will **not** match the integer `2`.
+List them in one arm separated by commas: `'sat', 'sun' => 'weekend',`. The arm matches if the subject is identical (`===`) to any of the listed values.
 
 ### What happens if no arm matches in a PHP match?
 
-If no arm matches and there is no `default`, PHP throws an `UnhandledMatchError`. Add a `default` arm to safely handle every other value.
+If no arm matches and there is no `default`, PHP throws an `UnhandledMatchError` with a message like `Unhandled match case 8`. Add a `default` arm to handle every other value.
 
-### When was the match expression added to PHP?
+### Can a PHP match arm run multiple lines of code?
 
-The `match` expression was added in **PHP 8.0**. Using it with enums requires **PHP 8.1** or newer.
+No. The right side of `=>` must be a single expression. For branches that need several statements, use `if`/`elseif` or `switch`, or put the logic in a function and call it from the arm.

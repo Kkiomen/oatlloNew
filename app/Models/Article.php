@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Services\Article\ContentSanitizer;
 use App\Services\Article\InternalLinker;
+use App\Services\Article\ScheduledArticleLinkStripper;
 use App\Services\Generator\InternalUrlsGenerator;
 use App\Services\Generator\TagForArticleGenerator;
 use Carbon\Carbon;
@@ -191,10 +192,12 @@ class Article extends Model
         }
 
         $sanitizer = app(ContentSanitizer::class);
+        $stripper = app(ScheduledArticleLinkStripper::class);
 
-        $blocks = array_map(function ($content) use ($sanitizer) {
+        // Linki do zakolejkowanych artykułów .md zdejmujemy do dnia ich publikacji (404).
+        $blocks = array_map(function ($content) use ($sanitizer, $stripper) {
             if (($content['type'] ?? null) === 'text' && !empty($content['content'])) {
-                $content['content'] = $sanitizer->sanitize((string) $content['content']);
+                $content['content'] = $stripper->strip($sanitizer->sanitize((string) $content['content']));
             }
 
             return $content;

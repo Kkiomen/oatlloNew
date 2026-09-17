@@ -1,262 +1,206 @@
 ---
 title: "Ending Scripts in PHP: exit and die"
 slug: php-exit-die-guide
-seo_title: "PHP exit and die: Script Termination Complete Guide"
-seo_description: "Learn how to use exit and die in PHP to terminate scripts. Master exit codes, messages, and best practices for web and CLI applications."
+seo_title: "PHP exit and die: Stop a Script, Exit Codes, exit vs die"
+seo_description: "PHP exit and die stop a script immediately. See exit vs die, exit codes (int vs string), the or die idiom, and what changed in PHP 8.4."
 ---
 
-In this lesson, you’ll learn about the **script termination instructions in PHP**: `exit` and `die`. You’ll understand when and how to use them in practice (both in web applications and CLI scripts), how to pass **messages** and **exit codes**, and how to follow **best practices**. You’ll also see how they differ from `return` and `break`, as well as common pitfalls to avoid.
-
----
-
-## Basics: what do exit and die do?
-
-### In short
-
-- **`exit`** and **`die`** in PHP are *language constructs* (not functions) that **immediately terminate the entire script**.
-- They are **synonyms** — they behave identically. Choice is a matter of style (`die` is often used for fatal errors, `exit` in general contexts).
-- They can accept:
-  - an **integer** — used as an **exit code** (important in CLI),
-  - a **string** — which will be **output** before termination.
-
-Examples of valid syntax:
-
-- `exit;`
-- `exit();`
-- `exit(0);` — terminate with code 0 (success in CLI).
-- `exit(1);` — terminate with error code 1.
-- `exit("Error: no permission");`
-- `die("Something went wrong");`
-- `die;`
-
-In PHP 8+, the argument must be either **int** or **string** (see the lesson on [variables and data types in PHP](/course/php/php-basics/variables-and-data-types-in-php) for a refresher). Other types cause a **TypeError**.
-
-### What happens internally with exit/die?
-
-- The script stops immediately — no further code runs.
-- PHP still executes:
-  - any **finally blocks** (in try/catch/finally),
-  - **destructors** of objects,
-  - functions registered with **`register_shutdown_function`**.
-- If **output buffering** is enabled, its contents are flushed to the client (unless cleared).
-
-### Web vs CLI
-
-- In **web applications**, `exit` stops generating the HTTP response. If headers and content were already set, they will still be sent (depending on output buffering).
-- In **CLI** scripts, the integer from `exit(int)` becomes the **process exit code** (0 = success, >0 = error). This is crucial in automation, CI/CD, cron jobs.
-
----
-
-## PHP Code Examples
-
-### 1) Basic usage with message
+**`exit` stops a PHP script immediately, and `die` is exactly the same thing under another name.** Nothing after the call runs. You can call it with no argument, with a **string** (PHP prints it, then stops) or with an **integer** (PHP stops silently and uses the number as the exit code).
 
 ```php
 <?php
-die("Application stopped due to configuration error.");
-// This code will never run
-```
+$age = 15;
 
-### 2) Using exit codes (CLI)
-
-```php
-<?php
-$options = getopt("", ["file:"]);
-
-if (empty($options['file'])) {
-    fwrite(STDERR, "Usage: php script.php --file=path\n");
-    exit(1); // signal error
+if ($age < 18) {
+    exit("Access denied\n"); // prints the message and stops
 }
 
-// ... program logic ...
-exit(0); // success
+echo "Welcome!\n"; // never runs when $age is 15
 ```
 
-### 3) Safe redirect in a web app
+That is the whole idea. The rest of this lesson covers the details that trip people up: why `die(404)` prints nothing, what exit codes are for, whether `or die` is still a good idea, and what PHP 8.4 changed.
+
+## exit vs die: is there any difference?
+
+No. `die` is an **alias** of `exit` - the PHP manual lists them as equivalent, and they accept the same arguments and behave identically. Some tutorials claim that `die` is "for errors" or "can only print strings". That is a convention some teams follow, not a rule of the language.
 
 ```php
 <?php
-if (!isset($_SESSION['user_id'])) {
-    header("Location: /login.php", true, 302);
-    exit; // stop further execution
-}
+exit;           // stop, exit code 0
+exit();         // the same
+die;            // the same
+die("Bye\n");   // print "Bye", then stop
+exit(1);        // stop with exit code 1, print nothing
 ```
 
-Best practice: always use `exit` after `header('Location')` to prevent accidental data leakage.
+Pick one and use it consistently. Most modern codebases use `exit`, because its name says what it does.
 
-### 4) Returning API response and terminating
+## PHP exit with a string vs an integer
+
+The type of the argument decides what happens, and this is the most common source of confusion ([data types](/course/php/php-basics/variables-and-data-types-in-php) matter here):
+
+| Call | Printed | Exit code |
+|---|---|---|
+| `exit;` | nothing | 0 |
+| `exit("Stopped");` | `Stopped` | 0 |
+| `exit(3);` | nothing | 3 |
+| `exit("3");` | `3` | 0 |
+
+Two gotchas follow from this table:
+
+- **`die(404)` does not print "404".** An integer is never printed - it becomes the exit code. If you wanted to show a message, pass a string.
+- **`exit("3")` is not the same as `exit(3)`.** The quotes turn it into a string, so PHP prints `3` and still reports success (code 0).
+
+## PHP exit codes: what exit(0) and exit(1) mean
+
+When you run a script in the terminal (`php script.php`), PHP hands the exit code back to whatever started it: your shell, a cron job, a CI pipeline or a deploy script. The convention is simple:
+
+- **`0` means success.** This is also what you get when the script just reaches the end.
+- **Any other number means failure.** `1` is the usual "something went wrong"; you can use other numbers to tell different errors apart.
+
+Use values from **0 to 254**. The PHP manual reserves **255** for PHP itself - it is the code you get when a script dies from a fatal error.
 
 ```php
 <?php
-header('Content-Type: application/json; charset=UTF-8');
-
-echo json_encode(['status' => 'error', 'message' => 'Invalid input'], JSON_UNESCAPED_UNICODE);
-exit; // no further code should run
-```
-
-### 5) Difference: exit vs return
-
-```php
-<?php
-function calculate() {
-    if (rand(0,1)) {
-        return 123; // ends only this function
-    }
-    return 456;
-}
-
-$result = calculate();
-echo $result;
-
-if ($result < 200) {
-    exit("Result too small"); // ends entire script
-}
-```
-
-### 6) Difference: exit vs break/continue
-
-```php
-<?php
-foreach ([1,2,3] as $i) {
-    if ($i === 2) {
-        break; // exits loop only
-    }
-}
-echo "Script continues after break\n";
-
-foreach ([1,2,3] as $i) {
-    if ($i === 2) {
-        exit("Stopped at i=2"); // ends entire script
-    }
-}
-```
-
-### 7) Cleanup with finally and shutdown functions
-
-```php
-<?php
-register_shutdown_function(function () {
-    error_log("Shutdown: cleaning up");
-});
-
-try {
-    exit("Critical error. Exiting.\n");
-} finally {
-    error_log("Finally: closing resources");
-}
-```
-
-### 8) Controlling output buffering
-
-```php
-<?php
-ob_start();
-echo "Buffered output.";
-
-exit; // buffer is flushed by default
-
-// If you want to discard buffer:
-// ob_end_clean();
-// exit;
-```
-
-### 9) Fatal error handler before exit
-
-```php
-<?php
-function fatal(string $message, int $code = 1): void {
-    error_log("[FATAL] " . $message);
-    if (PHP_SAPI === 'cli') {
-        fwrite(STDERR, $message . PHP_EOL);
-    } else {
-        http_response_code(500);
-        header('Content-Type: text/plain; charset=UTF-8');
-        echo "Application error: " . $message;
-    }
-    exit($code);
-}
+const EXIT_OK = 0;
+const EXIT_MISSING_CONFIG = 2;
 
 if (!file_exists('config.php')) {
-    fatal('Missing config file', 2);
+    echo "config.php not found\n";
+    exit(EXIT_MISSING_CONFIG);
 }
+
+echo "Config loaded\n";
+exit(EXIT_OK);
 ```
 
-### 10) exit inside include/require affects entire script
+Named [constants](/course/php/php-basics/constants-in-php) make it obvious what each code means. To see the code after running the script:
+
+```bash
+php check-config.php
+echo $?              # Linux, macOS, Git Bash: prints 2 if config.php is missing
+```
+
+In PowerShell use `echo $LASTEXITCODE`, and in the old Windows `cmd` use `echo %ERRORLEVEL%`.
+
+In a browser the exit code does nothing visible - it is not an HTTP status code. `exit(404)` does **not** send a "404 Not Found" page; it just stops the script with an empty response. In the terminal it is even stranger: codes above 255 wrap around, so `exit(404)` shows up as **148**.
+
+## The `or die` idiom and why it is rarely used today
+
+In older PHP code you will see this pattern everywhere:
 
 ```php
 <?php
-// lib.php
-function checkPermissionOrExit(bool $ok): void {
-    if (!$ok) {
-        exit("Access denied");
-    }
-}
+file_exists('config.php') or die("Missing config file\n");
 
-// index.php
-require __DIR__.'/lib.php';
-checkPermissionOrExit(false);
-// exit in lib.php terminates index.php too
+echo "Config found\n";
 ```
 
----
+It works because of how `or` evaluates, which you saw in the lesson on [logical operators](/course/php/php-basics/operators-arithmetic-comparison-logic): if the left side is true, PHP never looks at the right side. If it is false, `die` runs.
 
-## Best Practices and Common Mistakes
+There are three catches. First, `or` has **lower precedence than `=`**, the same trap you met with `and` / `or` in the operators lesson, so mixing this idiom with assignments is easy to get wrong. Second, `die` with a string exits with code **0**, so a failing command-line script reports success.
 
-### Best Practices
+The biggest problem is what users see. In a web page, `or die("...")` cuts the page off in the middle and shows a raw message - often one that reveals details (file names, database errors) you do not want visitors to read. Today a plain `if` is clearer:
 
-- Use `exit`/`die` consciously, mainly:
-  - in **CLI scripts** to return exit codes,
-  - in **entry points** (controllers, front controllers) after sending a response or redirect,
-  - in small admin/utility scripts.
-- Always call `exit` after `header('Location')`.
-- For APIs: set headers, send JSON, then `exit`.
-- In CLI: write errors to **STDERR**, use **0** for success and >0 for errors.
-- Use **[constants](/course/php/php-basics/constants-in-php)** for exit codes (e.g., `const EXIT_SUCCESS = 0; const EXIT_FAILURE = 1;`).
-- Register **shutdown functions** if cleanup is needed.
-- Log critical errors before calling `exit`.
+```php
+<?php
+if (!file_exists('config.php')) {
+    echo "Missing config file\n";
+    exit(1);
+}
+```
 
-### What to Avoid
+It is one line longer, reads top to bottom, and lets you choose the exit code. In bigger applications errors are usually handled with exceptions instead of stopping the script - a topic for later in your PHP journey.
 
-- Don’t overuse `exit`/`die` inside **domain logic** — use exceptions instead.
-- Don’t confuse `exit` with `return` (function only) or `break` (loop only) — both get their own lessons later in the course: [break and continue in loops](/course/php/loop/php-break-continue-guide) and [functions and the return statement](/course/php/function/php-functions-basics-guide).
-- Don’t use numeric `exit` values as HTTP codes — they are different. Use `http_response_code()`.
-- Don’t show sensitive error details to end users. Log them securely instead.
-- Don’t assume code after `exit` will run (except finally/shutdown functions).
-- Don’t pass unsupported types to `exit` (PHP 8+ throws TypeError).
+## When to use exit in a real script
 
-### Ending response vs continuing processing
+`exit` is a blunt tool: it ends **everything**. That makes it a good fit in a few specific places:
 
-Sometimes you want to **end HTTP response** but still continue processing (e.g., sending email in background). Options:
+- **Command-line scripts** - stop early with a non-zero code when input is missing or a step fails, so cron or CI notices.
+- **After a redirect** - `header('Location: /login')` only *asks* the browser to go elsewhere; the rest of your script keeps running on the server unless you stop it.
 
-- `fastcgi_finish_request()` (if available).
-- Queue/background jobs (RabbitMQ, CRON, workers).
+```php
+<?php
+$isLoggedIn = false;
 
-Unlike `exit`, these let you respond early without killing the process.
+if (!$isLoggedIn) {
+    header('Location: /login'); // header() sends an HTTP header to the browser
+    exit;                       // without this, the code below still runs
+}
 
----
+echo "Secret dashboard data";
+```
+
+Forgetting that `exit` after a redirect is a classic security bug: the browser moves to `/login`, but the server has already generated the "secret" part of the page, and anyone who ignores the redirect (for example a script using `curl`) can read it.
+
+Also remember that `exit` stops the **whole file**, including any HTML written after `?>`. If you exit halfway through a template, the rest of the page is simply never sent.
+
+## PHP exit in a loop: exit vs break
+
+You already know `foreach` from the lesson on [iterating over arrays](/course/php/array/iterating-arrays-php-foreach-array-walk-array-chunk). If you call `exit` inside it, the loop does not just end - the entire script does:
+
+```php
+<?php
+$files = ['a.txt', 'b.txt', 'broken.txt', 'c.txt'];
+
+foreach ($files as $file) {
+    if ($file === 'broken.txt') {
+        exit("Stopped at $file\n");
+    }
+    echo "Processing $file\n";
+}
+
+echo "All done\n"; // never printed
+```
+
+Output:
+
+```text
+Processing a.txt
+Processing b.txt
+Stopped at broken.txt
+```
+
+If you only want to leave the loop and keep going with the code after it, you need `break` instead. Loops (`for`, `while`, `do-while`) and [break and continue](/course/php/loop/php-break-continue-guide) are covered in the next chapter, so for now just remember: `exit` never means "leave this loop" - it means "stop the program".
+
+## exit vs return in PHP
+
+People often search for this one, so a quick orientation. `return` ends a **function** and hands a value back to the code that called it; the script carries on. `exit` ends the **entire script**, no matter where it is called. You will write your own functions in the lesson on [functions and return](/course/php/function/php-functions-basics-guide). A good habit to take there: functions should usually `return`, and only the top-level script decides whether to `exit`.
+
+## What changed for exit and die in PHP 8.4
+
+Until PHP 8.4, `exit` and `die` were special *language constructs*. Since **PHP 8.4** they are real functions with the signature `exit(string|int $status = 0): never`. For everyday code nothing changes - `exit;` without parentheses still works. The differences show up with unusual arguments:
+
+- **Wrong types throw an error.** `exit([1])` (an array) now fails with a `TypeError`. Before 8.4, anything that was not an integer was quietly converted to a string and printed.
+- **`exit(true)` behaves differently.** Before 8.4 it printed `1` and exited with code 0. Now `true` is converted to the integer `1`, so it prints nothing and exits with code **1**.
+- **`exit(null)` and floats** like `exit(1.5)` now produce deprecation warnings.
+
+The fix is the same in every case: pass an integer or a string, nothing else. (One more detail for later: functions registered as shutdown functions and object destructors still run after `exit`. You will meet both once you get to functions and classes.)
 
 ## Summary
 
-- **`exit`** and **`die`** are aliases that immediately terminate the script.
-- Accept **int** (exit code) or **string** (message + termination).
-- In **web**: use after headers/responses, especially after redirects.
-- In **CLI**: use proper exit codes and write to STDERR.
-- Remember: finally blocks, destructors, and shutdown functions still execute.
-- Prefer exceptions for error handling in libraries; reserve exit for entry points.
+- `exit` and `die` are identical: they stop the script at once.
+- A string argument is printed and the exit code is 0; an integer is not printed and becomes the exit code.
+- Exit code 0 means success, 1-254 mean failure, 255 is reserved by PHP.
+- Prefer `if (...) { exit(1); }` over `... or die(...)`.
+- Always `exit` after a redirect header.
+- Inside a loop, `exit` stops the whole script, not just the loop.
+- Since PHP 8.4, pass only `int` or `string`.
 
----
+## FAQ
 
-## Mini Quiz
+### Is die the same as exit in PHP?
 
-1. What’s the difference between `exit(1)` in CLI vs web?
-2. What does `exit("Connection error")` do?
-3. Which ends only a loop: exit, return, or break?
-4. Why call `exit` after `header('Location: ...')`?
-5. Does die differ from exit?
-6. Does finally execute when exit is called?
-7. How to set HTTP 404 and terminate?
-8. How to log error to STDERR and exit with code 2 in CLI?
+Yes. `die` is an alias of `exit`: same arguments, same behaviour. The choice is purely a matter of style, and most modern code uses `exit`.
 
----
+### How do I return an exit code from a PHP script?
 
-You now have solid foundations for using `exit` and `die` in PHP. In the next lesson, we’ll move on to **exceptions and try/catch** for more controlled error handling in larger applications.
+Call `exit` with an integer, for example `exit(1);`. Run the script with `php script.php` and check the code with `echo $?` (Linux, macOS, Git Bash) or `echo $LASTEXITCODE` (PowerShell). Use 0 for success and 1-254 for errors.
+
+### Why does die("Error") return exit code 0?
+
+Because a string argument is only printed - it does not set the exit code, which stays at 0. To print a message and signal failure, print first and then call `exit(1);`.
+
+### Does exit stop only the loop or the whole script?
+
+The whole script. Code after the loop, and even HTML after `?>`, is never run. To leave only the loop, use `break`, which you will learn in the chapter on loops.

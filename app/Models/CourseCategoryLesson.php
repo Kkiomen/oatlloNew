@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\Article\ContentSanitizer;
+use App\Services\Article\ScheduledArticleLinkStripper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CourseCategory;
@@ -37,7 +38,8 @@ class CourseCategoryLesson extends Model
 
     /**
      * Treść lekcji (content_html) oczyszczona tuż przed wyświetleniem
-     * (myślniki em/en -> dywiz, słownik anti-AI).
+     * (myślniki em/en -> dywiz, słownik anti-AI) i bez linków do artykułów,
+     * które jeszcze nie wyszły (inaczej lekcja linkuje w 404 aż do ich publikacji).
      */
     public function getDisplayContentHtml(): string
     {
@@ -45,7 +47,9 @@ class CourseCategoryLesson extends Model
             return '';
         }
 
-        return app(ContentSanitizer::class)->sanitize((string) $this->content_html);
+        $html = app(ContentSanitizer::class)->sanitize((string) $this->content_html);
+
+        return app(ScheduledArticleLinkStripper::class)->strip($html);
     }
 
     /**
@@ -56,10 +60,11 @@ class CourseCategoryLesson extends Model
     public function getDisplayContents(): array
     {
         $sanitizer = app(ContentSanitizer::class);
+        $stripper = app(ScheduledArticleLinkStripper::class);
 
-        return array_map(function ($content) use ($sanitizer) {
+        return array_map(function ($content) use ($sanitizer, $stripper) {
             if (($content['type'] ?? null) === 'text' && !empty($content['content'])) {
-                $content['content'] = $sanitizer->sanitize((string) $content['content']);
+                $content['content'] = $stripper->strip($sanitizer->sanitize((string) $content['content']));
             }
 
             return $content;

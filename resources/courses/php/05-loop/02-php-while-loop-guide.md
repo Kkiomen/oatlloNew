@@ -1,306 +1,287 @@
 ---
-title: "The while Loop in PHP - Complete Lesson for Beginners"
+title: "The while Loop in PHP - Syntax, Examples and Common Mistakes"
 slug: php-while-loop-guide
-seo_title: "PHP while Loop Tutorial: Complete Guide for Beginners"
-seo_description: "Learn how to use while and do-while loops in PHP. Master loop syntax, file reading, database iteration, and best practices with examples."
+seo_title: "PHP while Loop: Syntax, Examples and Common Mistakes"
+seo_description: "How the PHP while loop works: syntax, a counter example with output, while (true), looping over an array, endwhile, and when to pick while over for."
 ---
 
-The **while loop in PHP** is a basic control structure that repeats a block of code **as long as a logical condition is true**. It is especially useful when:
+The **PHP while loop** repeats a block of code **as long as its condition is true**. PHP checks the condition **before every pass**, and the moment it becomes false, the loop stops and the program continues below it.
 
-- you don’t know in advance how many times the code should run (unknown number of iterations),
-- you read data from a stream (file, database, user input),
-- you wait for a condition to be met (data arrival, process completion).
-
-In PHP programming, the while loop is a foundation alongside [the for loop](/course/php/loop/php-for-loop-guide) and [the foreach loop](/course/php/loop/php-foreach-loop-guide). It allows you to write clean, concise code and solve real-world problems: from simple counters to iterating over database query results.
-
----
-
-## Basics: how does while work in PHP
-
-### Syntax of the while loop
-
-- The loop checks the **condition** at the beginning of each iteration.
-- If the condition is true, it executes the block and returns to check again.
-- If the condition is false, the loop ends.
+## PHP while loop syntax
 
 ```php
 <?php
 while (condition) {
-    // code executed as long as condition is true
+    // runs again and again while condition is true
 }
 ```
 
-Typically:
-
-- variables are initialized before the loop,
-- variables are updated inside the loop so that the condition eventually becomes false.
-
-### Comparison: while vs for vs foreach
-
-- **while**: best when the number of iterations is unknown (files, DB records).
-- **for**: convenient when the counter and iteration count are known (1 to 10).
-- **foreach**: preferred for arrays/collections (clearer than while in that context).
-
-### Variation: the do-while loop
-
-- [**do-while**](/course/php/loop/php-do-while-loop-guide) executes the block at least once, checking the condition only after the first pass.
-- Useful when you need to run something once (e.g., display a menu) and maybe repeat.
-
-```php
-<?php
-do {
-    // code runs at least once
-} while (condition);
-```
-
----
-
-## PHP Code Examples (with comments)
-
-### 1) Counting up
+The smallest useful example - count from 1 to 5:
 
 ```php
 <?php
 $i = 1;
+
 while ($i <= 5) {
     echo $i . PHP_EOL;
     $i++;
 }
-// Output: 1 2 3 4 5
 ```
 
-### 2) Counting down
+Output:
 
-```php
-<?php
-$i = 5;
-while ($i > 0) {
-    echo $i . ' ';
-    $i--;
-}
-// Output: 5 4 3 2 1
+```text
+1
+2
+3
+4
+5
 ```
 
-### 3) Summing numbers until 0 (CLI)
+Every while loop that counts has the same three parts:
 
-```php
-<?php
-$sum = 0;
+1. **Start value before the loop** - `$i = 1;`
+2. **Condition** - `$i <= 5`, built from the [comparison and logical operators](/course/php/php-basics/operators-arithmetic-comparison-logic) you already know.
+3. **Update inside the loop** - `$i++;`, which moves the value toward making the condition false.
 
-echo "Enter integers (0 to stop):" . PHP_EOL;
+In [the for loop](/course/php/loop/php-for-loop-guide) all three parts sit on one line. In a while loop they are spread out, and that is exactly why the update is so easy to forget (more on that below).
 
-while (true) {
-    $line = fgets(STDIN);
-    if ($line === false) break; // end of input (CTRL+D)
+## How the while loop works, step by step
 
-    $line = trim($line);
-    if ($line === '') continue; // skip empty lines
+Here is what PHP does with the example above:
 
-    $num = (int) $line;
-    if ($num === 0) break; // exit condition
+| Pass | `$i` before check | `$i <= 5`? | What happens |
+|------|------------------|------------|--------------|
+| 1 | 1 | true | prints 1, `$i` becomes 2 |
+| 2 | 2 | true | prints 2, `$i` becomes 3 |
+| 3 | 3 | true | prints 3, `$i` becomes 4 |
+| 4 | 4 | true | prints 4, `$i` becomes 5 |
+| 5 | 5 | true | prints 5, `$i` becomes 6 |
+| - | 6 | false | loop ends |
 
-    $sum += $num;
-}
+Notice that after the loop `$i` is **6**, not 5. The loop only stops because the value went one step past the limit.
 
-echo "Sum: {$sum}" . PHP_EOL;
-```
+### A while loop can run zero times
 
-### 4) while with break and continue
-
-```php
-<?php
-$i = 0;
-while ($i < 10) {
-    $i++;
-
-    if ($i % 2 === 0) continue; // skip even
-    if ($i > 7) break;          // stop when >7
-
-    echo $i . ' ';
-}
-// Output: 1 3 5 7
-```
-
-### 5) Using array as a queue
-
-```php
-<?php
-$queue = ['task1', 'task2', 'task3'];
-
-while (!empty($queue)) {
-    $task = array_shift($queue);
-    echo "Processing: {$task}" . PHP_EOL;
-}
-```
-
-### 6) Reading a file line by line
-
-```php
-<?php
-$path = __DIR__ . '/data.txt';
-$handle = fopen($path, 'r');
-if ($handle === false) die("Cannot open file: {$path}");
-
-while (($line = fgets($handle)) !== false) {
-    echo strtoupper($line);
-}
-
-if (!feof($handle)) {
-    fwrite(STDERR, "File read error." . PHP_EOL);
-}
-
-fclose($handle);
-```
-
-*Avoid the bad pattern `while (!feof($h)) { $line = fgets($h); ... }` — may duplicate or misread the last line.*
-
-### 7) Iterating DB results (PDO)
-
-```php
-<?php
-$pdo = new PDO(
-    'mysql:host=localhost;dbname=app;charset=utf8mb4',
-    'user',
-    'pass',
-    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-);
-
-$stmt = $pdo->query('SELECT id, name FROM users');
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    echo $row['id'] . ': ' . $row['name'] . PHP_EOL;
-}
-```
-
-### 8) do-while executes at least once
+Because the condition is checked first, a loop whose condition is false from the start never runs its body:
 
 ```php
 <?php
 $i = 10;
-do {
-    echo "Value of i: {$i}" . PHP_EOL;
-    $i++;
-} while ($i < 5);
-```
 
-### 9) Nested while – multiplication table 1–3
-
-```php
-<?php
-$i = 1;
-while ($i <= 3) {
-    $j = 1;
-    while ($j <= 3) {
-        echo ($i * $j) . ' ';
-        $j++;
-    }
-    echo PHP_EOL;
-    $i++;
-}
-```
-
-### 10) Infinite loop with time limit
-
-```php
-<?php
-$start = microtime(true);
-$timeout = 3.0;
-
-while (true) {
-    if (microtime(true) - $start >= $timeout) break;
-    usleep(200_000);
-}
-```
-
----
-
-## Best Practices and Common Mistakes
-
-### Best Practices
-
-- Always **initialize variables** before the loop.
-- Ensure **condition updates** inside the loop.
-- Always use **braces { }** even for single statements.
-- Prefer **foreach** for arrays; while fits unknown-length tasks (streams, queues, cursors).
-- In `while(true)`, always add **break conditions** and time/iteration limits — see [break and continue in loops](/course/php/loop/php-break-continue-guide).
-- Use safe patterns for I/O (strict checks like `!== false`).
-- Limit expensive I/O (echo/print) in long loops.
-
-### Common Mistakes
-
-- Forgetting to update variables → infinite loop.
-- Using `continue` before increment → stuck loop.
-- Wrong file read pattern with `feof`.
-- Off-by-one errors (`<` vs `<=`).
-- Using floats in conditions.
-- Using while for arrays instead of foreach.
-- Long loops in web context without limits → timeout risk (if you want to go deeper, see [PHP maximum execution time exceeded](/php-maximum-execution-time-exceeded)).
-
----
-
-## Summary
-
-- **while** runs code as long as the condition is true.
-- Best for unknown iteration count: streams, files, DB cursors.
-- Remember to init and update variables + exit conditions.
-- Use foreach for arrays.
-- Avoid pitfalls: infinite loops, bad file reads, float conditions.
-
----
-
-## Mini Quiz
-
-1. Output?
-
-```php
-$i = 1;
-while ($i <= 3) {
-    echo $i;
-    $i++;
-}
-```
-
-➡️ 123
-
-1. True/false:
-
-- A. while checks before execution. (true)
-- B. do-while checks after execution. (true)
-- C. do-while may not run at all. (false)
-- D. while always runs at least once. (false)
-
-1. Find bug:
-
-```php
-$i = 0;
 while ($i < 5) {
-    if ($i % 2 === 0) {
-        continue;
-    }
-    echo $i;
+    echo "This never prints";
+}
+
+echo "Done";
+```
+
+Output: `Done`. If you need a loop whose body always runs at least once, that is what [the do-while loop](/course/php/loop/php-do-while-loop-guide) is for - it is the next lesson.
+
+## while loop with multiple conditions (`&&`, `||`)
+
+The condition is just an expression, so you can combine checks with `&&` (and) or `||` (or). A common reason is a **safety limit**: "keep going until we get what we want, but never more than N times".
+
+Roll a die until you get a 6, but stop after 100 rolls no matter what:
+
+```php
+<?php
+$tries = 0;
+$roll = 0;
+
+while ($roll !== 6 && $tries < 100) {
+    $roll = rand(1, 6);
+    $tries++;
+    echo "Roll {$tries}: {$roll}" . PHP_EOL;
+}
+```
+
+Example output (yours will differ, `rand()` is random):
+
+```text
+Roll 1: 5
+Roll 2: 2
+Roll 3: 6
+```
+
+This is the typical job for while: **you don't know in advance how many passes you need**. You can't write "roll 3 times" because nobody knows when the 6 shows up.
+
+Another example without randomness - how many years until 1000 doubles at 7% interest?
+
+```php
+<?php
+$balance = 1000;
+$years = 0;
+
+while ($balance < 2000) {
+    $balance = $balance * 1.07;
+    $years++;
+}
+
+echo "Doubled after {$years} years: " . round($balance, 2);
+```
+
+Output: `Doubled after 11 years: 2104.85`
+
+## PHP while loop over an array
+
+For "visit every element" [the foreach loop](/course/php/loop/php-foreach-loop-guide) is simpler, but a while loop with an index counter works too, and it's worth seeing once:
+
+```php
+<?php
+$fruits = ['apple', 'banana', 'cherry'];
+$i = 0;
+$count = count($fruits);
+
+while ($i < $count) {
+    echo $i . ': ' . $fruits[$i] . PHP_EOL;
     $i++;
 }
 ```
 
-➡️ Infinite loop (i not updated on continue).
+Output:
 
-1. Correct file read pattern? ➡️ `while (($line = fgets($h)) !== false) { ... }`
-2. Best for array iteration? ➡️ foreach
-3. Output?
-
-```php
-$count = 0;
-while (true) {
-    $count++;
-    if ($count === 3) break;
-}
-echo $count;
+```text
+0: apple
+1: banana
+2: cherry
 ```
 
-➡️ 3
+Use `$i < $count`, not `$i <= $count`. Indexes start at 0, so the last one is `count - 1`; with `<=` PHP would try to read `$fruits[3]` and show an "Undefined array key" warning.
 
-1. Good practice? ➡️ Add time/iteration limit to while(true).
-2. Difference while vs for? ➡️ while: unknown iterations, for: known counter/iterations.
+Where while really shines with arrays is when the **array shrinks inside the loop**. Here we keep taking the last element until nothing is left:
 
----
+```php
+<?php
+$stack = ['first', 'second', 'third'];
 
-Now you know how to use the **while and do-while loops** in PHP to handle unknown-length tasks like reading files, processing queues, or iterating DB results.
+while (!empty($stack)) {
+    $item = array_pop($stack);
+    echo "Taking: {$item}" . PHP_EOL;
+}
+```
+
+Output:
+
+```text
+Taking: third
+Taking: second
+Taking: first
+```
+
+There is no counter at all - `array_pop()` removes an element on every pass, so `!empty($stack)` eventually becomes false.
+
+## while (true) in PHP
+
+`while (true)` is a loop whose condition can never become false on its own. It is only correct when something **inside** the body ends it, usually `break`:
+
+```php
+<?php
+$attempts = 0;
+
+while (true) {
+    $attempts++;
+    $roll = rand(1, 6);
+
+    if ($roll === 6) {
+        break;
+    }
+}
+
+echo "Got a 6 after {$attempts} attempts";
+```
+
+Example output: `Got a 6 after 3 attempts`
+
+`break` exits the loop immediately. You saw it briefly in the for loop lesson, and [break and continue](/course/php/loop/php-break-continue-guide) get their own lesson at the end of this chapter. Prefer a real condition when you can write one - the `$roll !== 6 && $tries < 100` version above says in one line when the loop ends, while `while (true)` makes the reader hunt for the `break`.
+
+## Alternative syntax: while ... endwhile
+
+PHP also accepts a colon and `endwhile;` instead of braces. It is handy in templates that mix PHP and HTML, just like `for ... endfor`:
+
+```php
+<?php $i = 1; ?>
+<ul>
+<?php while ($i <= 3): ?>
+    <li>Item <?= $i ?></li>
+<?php $i++; endwhile; ?>
+</ul>
+```
+
+Output:
+
+```html
+<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+</ul>
+```
+
+Both forms behave identically. In plain PHP files stick to braces.
+
+## while vs for in PHP: which one to use
+
+- **Use `for`** when you know the number of passes up front: "10 times", "from 1 to 100".
+- **Use `while`** when the end depends on something that happens inside the loop: a die roll, a balance reaching a target, an array becoming empty.
+- **Use `foreach`** to visit every element of an array.
+
+Anything written with one can be rewritten with another. Pick the one that makes the stopping rule easiest to read.
+
+## Common while loop mistakes
+
+### 1) Forgetting to update the variable (infinite loop)
+
+```php
+<?php
+$i = 1;
+
+while ($i <= 5) {
+    echo $i;
+    // missing $i++ - $i stays 1 forever
+}
+```
+
+The condition never changes, so the loop never ends. In the terminal stop the script with `Ctrl+C`. In the browser PHP gives up after the configured time limit (30 seconds by default) with a "Maximum execution time exceeded" error. When a loop hangs, first check: **which line changes the variable in my condition?**
+
+### 2) Updating the variable in only one branch
+
+If `$i++` sits inside an `if`, passes that skip the `if` never move the counter. Keep the update at a place that runs on **every** pass, usually the last line of the body.
+
+### 3) Post-increment surprise
+
+`echo $i++;` prints the value **before** the increment. The loop below prints 1, 2, 3, but `$i` ends at 4:
+
+```php
+<?php
+$i = 1;
+
+while ($i <= 3) {
+    echo $i++ . PHP_EOL;
+}
+echo "After the loop: {$i}";
+```
+
+It works, but a separate `$i++;` line is easier to read.
+
+### 4) Comparing floats with `!=`
+
+Adding `0.1` ten times does not give exactly `1.0` in PHP (floats are stored approximately), so `while ($x != 1.0)` never stops. Compare with `<` or `<=` instead, or count with integers.
+
+## FAQ
+
+### What is a while loop in PHP?
+
+A while loop repeats a block of code as long as its condition is true. PHP checks the condition before each pass, so if it is false at the start, the body never runs.
+
+### What is the difference between while and do-while in PHP?
+
+`while` checks the condition before the first pass and can run zero times; `do-while` checks it after the pass, so its body always runs at least once. The [do-while lesson](/course/php/loop/php-do-while-loop-guide) covers it in detail.
+
+### How do I stop a while loop in PHP?
+
+Make the condition false, for example by incrementing a counter, or use `break` to leave the loop immediately. A `while (true)` loop can only be stopped by `break` (or by the script ending).
+
+### Can I use && in a PHP while condition?
+
+Yes. `while ($roll !== 6 && $tries < 100)` keeps looping only while both parts are true. Adding a maximum-attempts check like this is a simple way to guarantee the loop ends.

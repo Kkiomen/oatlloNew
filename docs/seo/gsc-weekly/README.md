@@ -104,13 +104,36 @@ to 91 dni (~1167/dzień), a 6249 to 7 dni (~893/dzień).
 W oknie 01-07.08 jeden dzień (05.08) dał 5661 wyświetleń przy ~1500 w pozostałe. Bez niego średnia
 to 1629/dzień zamiast 2205 - przy porównaniu z kolejnym tygodniem pamiętać, że 2205 nie jest poziomem.
 
+## Pozycja LUDZKICH zapytań - główna miara od 17.09 (uzupełniać co tydzień)
+
+**Średnia pozycja domeny kłamie i to kosztowało nas miesiąc złudzenia.** Między 23.08 a 17.09
+spadła z 29.5 do 13.4, stron na pozycji 5-10 przybyło 18 -> 97, a kliknięcia stały (59 -> 51 -> 49
+na 28 dni). Na pozycji 5-10 mieliśmy CTR **0.26%** przy normie 2-5%: poprawa szła wyłącznie na
+długich, maszynowych zapytaniach (ustalenie nr 3 z 06.09). Dlatego śledzimy **pozycję ważoną
+wyświetleniami zapytań 1-3-wyrazowych** z `Zapytania.csv` - to tam siedzą ludzie i kliknięcia.
+
+| Eksport | Okno | Zapytań 1-3 sł. | Wyśw. | Klik. | Poz. ważona |
+|---|---|---|---|---|---|
+| 2026-07-14 | 3M | 438 | 7610 | 6 | 23.87 |
+| 2026-07-27 | 7d | 391 | 977 | 1 | 23.00 |
+| 2026-08-09 | 7d | 508 | 1487 | 1 | 30.51 |
+| 2026-08-23 | 28d | 544 | 6725 | 4 | 30.55 |
+| 2026-09-06 | 28d | 543 | 6974 | 2 | 30.37 |
+| **2026-09-17** | 28d | **559** | **5366** | **3** | **28.52** |
+
+Liczba jest z próbki (GSC ukrywa rzadkie zapytania), ale liczona zawsze tak samo, więc trend jest
+porównywalny. Skok 23 -> 30.5 w sierpniu to wejście ~200 nowych stron na głębokie pozycje, nie
+utrata rankingów. **Cel: zejść poniżej 20.** Kliknięć z tej tabeli nie czytać wprost - większość
+kliknięć GSC nie przypisuje do żadnego zapytania.
+
 ## Wskaźniki, które śledzimy (i dlaczego akurat te)
 
 1. **Zindeksowane strony** - jedyne wąskie gardło, które w czerwcu naprawdę blokowało wzrost.
 2. **„Zeskanowana, ale niezindeksowana"** - sygnał jakościowy. Rośnie = Google ogląda i odrzuca.
 3. **CTR domeny** - przy naszych pozycjach (10-15) to najtańsza dźwignia: tytuł i opis, nie treść.
-4. **Kolejka robocza dla `lesson-seo` - OD 06.09 NA PAUZIE, a próg pozycji okazał się fałszywym
-   kryterium.** Historia: startowo „pozycja 8-16", 09.08 zawężone do <12 (dziesięć lekcji
+4. **Kolejka robocza dla `lesson-seo` - OD 17.09 GRUPA TESTOWA 5 lekcji PHP** (krótkie ludzkie
+   zapytania, przepisane pod lukę wobec SERP-a, ocena ok. 08-12.10 - patrz `2026-09-17.md`).
+   Wcześniej (06.09) na pauzie, a próg pozycji okazał się fałszywym kryterium. Historia: startowo „pozycja 8-16", 09.08 zawężone do <12 (dziesięć lekcji
    poprawionych 27.07 nie oderwało się CTR-em od trendu domeny), 06.09 **próg pozycji wyrzucony
    w całości**. Powód: przekrój na jedną stronę pokazał, że `caching-static-assets` jest na
    **pozycji 6.18 w USA** i ma zero kliknięć, a wszystkie widoczne zapytania to permutacje jednej

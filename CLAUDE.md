@@ -697,6 +697,17 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   tytuł".** Nowe kryterium kwalifikacji lekcji: **kształt zapytań** (krótkie, 1-4 słowa, brzmiące jak
   pytanie człowieka), sprawdzany eksportem GSC z filtrem na tę jedną stronę. Historia progu
   (8-16 -> <12 -> wyrzucony) i dowody: `docs/seo/gsc-weekly/2026-09-06.md`, ustalenie nr 3.
+  **OD 17.09 GRUPA TESTOWA 5 lekcji PHP** (`php-match-expression-guide`, `php-function-arguments-guide`,
+  `php-constructor-destructor-guide`, `php-exit-die-guide`, `php-while-loop-guide`) - wybrane wg
+  nowego kryterium (krótkie ludzkie zapytania, pozycja 9-19) i przepisane pod LUKĘ WOBEC SERP-a
+  (co mają strony nad nami), nie pod tytuł. Ocena w eksporcie ok. 08-12.10; baseline w
+  `docs/seo/gsc-weekly/2026-09-17.md`. **Nie rozszerzać na kolejne lekcje przed tą oceną.**
+  Powód ruchu: kliknięcia domeny stoją (59 -> 51 -> 49 na 28 dni), a pozycja ważona zapytań 1-3-wyrazowych
+  - główna miara od 17.09 - stoi na ~28-30 (średnia domeny poprawiała się wyłącznie na zapytaniach maszynowych).
+- **Linki do zakolejkowanych artykułów `.md` są zdejmowane przy renderze** (`ScheduledArticleLinkStripper`,
+  wołany w `Article::getDisplayContents()` i `CourseCategoryLesson::getDisplayContentHtml()`). Można więc
+  linkować artykuł, zanim wyjdzie - do dnia publikacji `<a>` jest odpakowany do tekstu (inaczej 404
+  na żywej stronie), potem link wraca sam. Test: `tests/Feature/ScheduledArticleLinkTest.php`.
 - **AI Overviews NIE są naszym problemem - sprawdzone 06.09 i sprawa zamknięta.** Kontrola na
   `php-function-arguments-guide` (77 krótkich, ludzkich zapytań, 9+ krajów, 14% mobile) daje na
   czołowych frazach **CTR 1.8-2.3% przy pozycji ~9-10**, czyli normalny. Zerowy CTR jest cechą
