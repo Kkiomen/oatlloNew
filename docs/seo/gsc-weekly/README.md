@@ -16,6 +16,11 @@ do tygodnia, a nie tylko oglądać jeden wykres w panelu.
 
 ## Pułapki przy czytaniu tych danych
 
+- **Zanim ocenisz zmianę, sprawdź, czy w ogóle wyszła z laptopa: `git status -sb`.** 03.10 wyszło,
+  że analiza i przepisane lekcje z 17.09 (grupa testowa `lesson-seo`) stały w lokalnym `main`
+  (`ahead 2`) i nigdy nie zostały wypchnięte. Produkcja nie miała czego pociągnąć, a `curl`
+  z checklisty wdrożenia tego nie łapie - sprawdza tylko, czy serwer pociągnął to, co jest w originie.
+  Prawie trzy tygodnie „testu" bez testu. Dla zmian treści dodatkowo `curl` na `<title>` zmienionej strony.
 - **GSC ma ~2-3 dni opóźnienia.** Okno „ostatnich 7 dni" kończy się ~2 dni przed eksportem, więc
   eksport z 27.07 pokrywa 19-25.07. Nie porównuj końcówek okien.
 - **Średnia pozycja spada, gdy przybywa zindeksowanych stron** i to nie jest regres. Nowe strony
@@ -74,6 +79,12 @@ Performance = okno 7 dni. Coverage = stan na dzień eksportu.
 | **2026-09-06** | 29.08-04.09 | **17** | **7225** | **0.24%** | **21.6** | **423** | **171** | **49** |
 | _(wycinek)_ | 01-07.09 | 14 | 7444 | 0.19% | 15.2 | - | - | - |
 | **2026-09-17** | 08-14.09 | **10** | **5930** | **0.17%** | **13.4** | _brak eksportu_ | - | - |
+| _(wycinek)_ | 16-22.09 | 25 | 4571 | 0.55% | 10.9 | - | - | - |
+| **2026-10-03** | 23-29.09 | **21** | **4511** | **0.47%** | **9.4** | _brak eksportu_ | - | - |
+
+Eksport z 03.10: filtr „Ostatnich 28 dni" (02.09-29.09), **bez Coverage**. Dzień 15.09 (3 klik.)
+wypada między wierszami. Na 28 dni: **71 kliknięć** (17.09: 49) - pierwszy realny wzrost kliknięć.
+Szczegóły w `2026-10-03.md`.
 
 Eksport z 17.09: filtr „Ostatnich 28 dni" (18.08-14.09), **bez Coverage**. Wycinek 01-07.09
 zachodzi 4 dniami na wiersz 29.08-04.09 - wyrównanie do końca okna zamiast dziury. Szczegóły
@@ -119,7 +130,8 @@ wyświetleniami zapytań 1-3-wyrazowych** z `Zapytania.csv` - to tam siedzą lud
 | 2026-08-09 | 7d | 508 | 1487 | 1 | 30.51 |
 | 2026-08-23 | 28d | 544 | 6725 | 4 | 30.55 |
 | 2026-09-06 | 28d | 543 | 6974 | 2 | 30.37 |
-| **2026-09-17** | 28d | **559** | **5366** | **3** | **28.52** |
+| 2026-09-17 | 28d | 559 | 5366 | 3 | 28.52 |
+| **2026-10-03** | 28d | **571** | **3664** | **2** | **23.57** |
 
 Liczba jest z próbki (GSC ukrywa rzadkie zapytania), ale liczona zawsze tak samo, więc trend jest
 porównywalny. Skok 23 -> 30.5 w sierpniu to wejście ~200 nowych stron na głębokie pozycje, nie
@@ -131,8 +143,9 @@ kliknięć GSC nie przypisuje do żadnego zapytania.
 1. **Zindeksowane strony** - jedyne wąskie gardło, które w czerwcu naprawdę blokowało wzrost.
 2. **„Zeskanowana, ale niezindeksowana"** - sygnał jakościowy. Rośnie = Google ogląda i odrzuca.
 3. **CTR domeny** - przy naszych pozycjach (10-15) to najtańsza dźwignia: tytuł i opis, nie treść.
-4. **Kolejka robocza dla `lesson-seo` - OD 17.09 GRUPA TESTOWA 5 lekcji PHP** (krótkie ludzkie
-   zapytania, przepisane pod lukę wobec SERP-a, ocena ok. 08-12.10 - patrz `2026-09-17.md`).
+4. **Kolejka robocza dla `lesson-seo` - GRUPA TESTOWA 5 lekcji PHP** (krótkie ludzkie
+   zapytania, przepisane pod lukę wobec SERP-a 17.09, baseline w `2026-09-17.md`). **03.10: NIE BYŁA
+   WDROŻONA** (niewypchnięty commit) - ocena 3-4 tygodnie od faktycznego wdrożenia, patrz `2026-10-03.md`.
    Wcześniej (06.09) na pauzie, a próg pozycji okazał się fałszywym kryterium. Historia: startowo „pozycja 8-16", 09.08 zawężone do <12 (dziesięć lekcji
    poprawionych 27.07 nie oderwało się CTR-em od trendu domeny), 06.09 **próg pozycji wyrzucony
    w całości**. Powód: przekrój na jedną stronę pokazał, że `caching-static-assets` jest na

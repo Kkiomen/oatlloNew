@@ -700,8 +700,11 @@ Strony błędów: `resources/views/errors/{404,500}.blade.php` (samowystarczalne
   **OD 17.09 GRUPA TESTOWA 5 lekcji PHP** (`php-match-expression-guide`, `php-function-arguments-guide`,
   `php-constructor-destructor-guide`, `php-exit-die-guide`, `php-while-loop-guide`) - wybrane wg
   nowego kryterium (krótkie ludzkie zapytania, pozycja 9-19) i przepisane pod LUKĘ WOBEC SERP-a
-  (co mają strony nad nami), nie pod tytuł. Ocena w eksporcie ok. 08-12.10; baseline w
-  `docs/seo/gsc-weekly/2026-09-17.md`. **Nie rozszerzać na kolejne lekcje przed tą oceną.**
+  (co mają strony nad nami), nie pod tytuł. Baseline w `docs/seo/gsc-weekly/2026-09-17.md`.
+  **03.10 wyszło, że commit z tymi lekcjami NIGDY NIE ZOSTAŁ WYPCHNIĘTY** (`main` ahead 2) - na
+  produkcji stały stare wersje. Ocena: **3-4 tygodnie od faktycznego wdrożenia**, eksportem 7-dniowym
+  w całości po nim (nie 08-12.10). **Nie rozszerzać na kolejne lekcje przed tą oceną.**
+  Przy każdej analizie GSC najpierw `git status -sb` - `ahead N` znaczy, że oceniasz coś, czego nie ma.
   Powód ruchu: kliknięcia domeny stoją (59 -> 51 -> 49 na 28 dni), a pozycja ważona zapytań 1-3-wyrazowych
   - główna miara od 17.09 - stoi na ~28-30 (średnia domeny poprawiała się wyłącznie na zapytaniach maszynowych).
 - **Linki do zakolejkowanych artykułów `.md` są zdejmowane przy renderze** (`ScheduledArticleLinkStripper`,
