@@ -80,9 +80,10 @@ Performance = okno 7 dni. Coverage = stan na dzień eksportu.
 | _(wycinek)_ | 01-07.09 | 14 | 7444 | 0.19% | 15.2 | - | - | - |
 | **2026-09-17** | 08-14.09 | **10** | **5930** | **0.17%** | **13.4** | _brak eksportu_ | - | - |
 | _(wycinek)_ | 16-22.09 | 25 | 4571 | 0.55% | 10.9 | - | - | - |
-| **2026-10-03** | 23-29.09 | **21** | **4511** | **0.47%** | **9.4** | _brak eksportu_ | - | - |
+| **2026-10-03** | 23-29.09 | **21** | **4511** | **0.47%** | **9.4** | **454** | **198** | **43** |
 
-Eksport z 03.10: filtr „Ostatnich 28 dni" (02.09-29.09), **bez Coverage**. Dzień 15.09 (3 klik.)
+Eksport z 03.10: filtr „Ostatnich 28 dni" (02.09-29.09). Coverage = stan na **21.09** (koniec szeregu);
+niezindeksowane rosną wyłącznie przez `noindex` 28 -> 84, przyczyny po stronie Google spadły 128 -> 95. Dzień 15.09 (3 klik.)
 wypada między wierszami. Na 28 dni: **71 kliknięć** (17.09: 49) - pierwszy realny wzrost kliknięć.
 Szczegóły w `2026-10-03.md`.
 
