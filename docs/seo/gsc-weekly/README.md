@@ -61,6 +61,10 @@ do tygodnia, a nie tylko oglądać jeden wykres w panelu.
   wycofane treści, czyli dokładnie to, o co chodziło. Analogicznie **rosnący licznik `noindex`**
   (15 -> 28) to strony tagów, które mają być noindex - dowód, że dyrektywa działa. Alarmować ma
   „zeskanowana, niezindeksowana", nie te dwa.
+- **Każda średnia ważona wyświetleniami poprawia się, gdy Google zwęża zestaw zapytań** - także
+  „pozycja ludzkich zapytań". 03.10 napisaliśmy „te same frazy stoją wyżej" na podstawie samej liczby
+  zapytań; 16.10 porównanie ze stałymi wagami pokazało, że od sześciu tygodni nie awansowała żadna
+  grupa fraz. Twierdzenie o awansie wymaga przecięcia zapytań dwóch eksportów i stałych wag.
 - **Eksport 3-miesięczny z 2026-07-14** (`raw/2026-07-14-performance-3m/`) to historyczna baza
   sprzed przejścia na cadence tygodniowy. Porównywalny tylko po średnich dziennych i po CTR.
 
@@ -81,6 +85,12 @@ Performance = okno 7 dni. Coverage = stan na dzień eksportu.
 | **2026-09-17** | 08-14.09 | **10** | **5930** | **0.17%** | **13.4** | _brak eksportu_ | - | - |
 | _(wycinek)_ | 16-22.09 | 25 | 4571 | 0.55% | 10.9 | - | - | - |
 | **2026-10-03** | 23-29.09 | **21** | **4511** | **0.47%** | **9.4** | **454** | **198** | **43** |
+| _(wycinek)_ | 30.09-06.10 | 25 | 4058 | 0.62% | 9.9 | - | - | - |
+| **2026-10-16** | 07-13.10 | **22** | **4048** | **0.54%** | **10.6** | **446** | **210** | **38** |
+
+Eksport z 16.10: filtr „Ostatnich 28 dni" (16.09-13.10), wycinki bez zakładki z poprzednim wierszem.
+Coverage = stan na **12.10**. Na 28 dni: **93 kliknięcia**, ale tygodniowo stoi 21-25 od 16.09 - plateau.
+„Wykryta, niezindeksowana" 52 -> 65 przy 15 artykułach od 09.09 bez jednego wyświetlenia. Szczegóły w `2026-10-16.md`.
 
 Eksport z 03.10: filtr „Ostatnich 28 dni" (02.09-29.09). Coverage = stan na **21.09** (koniec szeregu);
 niezindeksowane rosną wyłącznie przez `noindex` 28 -> 84, przyczyny po stronie Google spadły 128 -> 95. Dzień 15.09 (3 klik.)
@@ -132,7 +142,22 @@ wyświetleniami zapytań 1-3-wyrazowych** z `Zapytania.csv` - to tam siedzą lud
 | 2026-08-23 | 28d | 544 | 6725 | 4 | 30.55 |
 | 2026-09-06 | 28d | 543 | 6974 | 2 | 30.37 |
 | 2026-09-17 | 28d | 559 | 5366 | 3 | 28.52 |
-| **2026-10-03** | 28d | **571** | **3664** | **2** | **23.57** |
+| 2026-10-03 | 28d | 571 | 3664 | 2 | 23.57 |
+| **2026-10-16** | 28d | **421** | **2311** | **0** | **16.84** |
+
+**UWAGA (16.10): spadek tej miary od września jest W CAŁOŚCI kompozycyjny.** Na wspólnym zestawie
+zapytań 1-3-wyrazowych, z pozycjami nowego eksportu ważonymi wyświetleniami STAREGO, zmiana wynosi:
+
+| Okres | Wspólnych zapytań | Zmiana poz. (stałe wagi) | Wypadło (wyśw. / poz.) |
+|---|---|---|---|
+| 06.09 -> 17.09 | 397 | +0.17 | 520 / 37.8 |
+| 17.09 -> 03.10 | 354 | +0.24 | 1563 / 37.1 |
+| **03.10 -> 16.10** | **333** | **+0.16** | **588 / 35.4** |
+
+Czyli te same frazy stoją w miejscu (minimalnie niżej), a „poprawa" 30.4 -> 16.8 to wypadanie fraz
+z pozycji 35+ i przesuwanie wyświetleń ku frazom, na których już stoimy wysoko. **Cel <20 jest
+formalnie osiągnięty i nic nie znaczy.** Od 16.10 o awansie świadczy tylko kolumna „stałe wagi"
+(ujemna = awans); kolumnę poz. ważonej zostawiamy dla ciągłości. Metoda w `2026-10-16.md`, ustalenie nr 2.
 
 Liczba jest z próbki (GSC ukrywa rzadkie zapytania), ale liczona zawsze tak samo, więc trend jest
 porównywalny. Skok 23 -> 30.5 w sierpniu to wejście ~200 nowych stron na głębokie pozycje, nie
